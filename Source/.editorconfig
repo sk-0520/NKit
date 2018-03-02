@@ -1,0 +1,19 @@
+﻿root = true
+
+[*]
+end_of_line = crlf
+charset = utf-8
+indent_style = sp
+indent_size = 4
+trim_trailing_whitespace = space
+insert_final_newline = true
+
+[*.xaml]
+indent_size = 2
+
+[*.xml]
+indent_style = tab
+
+[*.js]
+indent_style = tab
+

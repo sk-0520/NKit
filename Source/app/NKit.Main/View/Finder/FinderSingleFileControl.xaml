@@ -1,0 +1,186 @@
+﻿<!--
+  DataContext に FindItemViewModel ぶち込み型。
+-->
+<UserControl
+  x:Name="root"
+  x:Class="ContentTypeTextNet.NKit.Main.View.Finder.FinderSingleFileControl"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ 
+  xmlns:app_utility_view_converter="clr-namespace:ContentTypeTextNet.NKit.Utility.View.Converter;assembly=NKit.Utility"
+  
+  xmlns:app_main_view_converter="clr-namespace:ContentTypeTextNet.NKit.Main.View.Converter"
+  xmlns:app_main_view_finder="clr-namespace:ContentTypeTextNet.NKit.Main.View.Finder"
+
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+  mc:Ignorable="d" 
+  d:DesignHeight="300" 
+  d:DesignWidth="300"
+>
+  <UserControl.Resources>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <app_utility_view_converter:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+    <app_utility_view_converter:NotNullToBooleanConverter x:Key="NotNullToBooleanConverter" />
+    <app_utility_view_converter:BinaryToTextConverter x:Key="BinaryToTextConverter" />
+    <app_utility_view_converter:HumanLikeByteConverter x:Key="HumanLikeByteConverter" />
+    <app_utility_view_converter:DoubleToParameterPercentConverter x:Key="DoubleToParameterPercentConverter" />
+    <app_utility_view_converter:DoubleToPercentConverter x:Key="DoubleToPercentConverter" />
+    <app_main_view_converter:MicrosoftOfficeExcelCellAddressConverter x:Key="MicrosoftOfficeExcelCellAddressConverter" />
+    <app_main_view_converter:MicrosoftOfficeExcelMatchesConverter x:Key="MicrosoftOfficeExcelMatchesConverter" />
+  </UserControl.Resources>
+  <Grid>
+    <StackPanel Orientation="Vertical" >
+
+      <StackPanel Orientation="Horizontal">
+        <TextBlock>file size:</TextBlock>
+        <TextBox Text="{Binding SingleItem.FileSize, ElementName=root, Mode=OneWay}"/>
+        <Button Command="{Binding SingleItem.CopyFileSize, ElementName=root}">copy</Button>
+      </StackPanel>
+
+      <StackPanel x:Name="FileHash" Orientation="Horizontal" DataContext="{Binding SingleItem.FileHash, ElementName=root}">
+        <ComboBox ItemsSource="{Binding HashTypeItems}" SelectedItem="{Binding SelectedHashType}" />
+        <Button Command="{Binding Execute}">hash</Button>
+        <ContentControl>
+          <ContentControl.Style>
+            <Style TargetType="ContentControl">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding RunState}" Value="Finished">
+                  <Setter Property="Content">
+                    <Setter.Value>
+                      <TextBlock>
+                        <Hyperlink Command="{Binding CopyHash}" CommandParameter="{Binding HashValue}">
+                          <Run Text="copy:" />
+                          <Run Text="{Binding CurrentHashType, Mode=OneTime}" />
+                          <Run Text="{Binding HashValue, Mode=OneWay, Converter={StaticResource BinaryToTextConverter}}" />
+                        </Hyperlink>
+                      </TextBlock>
+                    </Setter.Value>
+                  </Setter>
+                </DataTrigger>
+              </Style.Triggers>
+              <Setter Property="Content" Value="{Binding RunState}" />
+            </Style>
+          </ContentControl.Style>
+        </ContentControl>
+      </StackPanel>
+
+      <GroupBox Header="content" Visibility="{Binding SingleItem.MatchedContent, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <StackPanel>
+          <GroupBox Header="text" Visibility="{Binding SingleItem.ContentIsText, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <StackPanel DataContext="{Binding SingleItem.ContentText, ElementName=root}">
+              <Label>Encoding:</Label>
+              <TextBlock Text="{Binding EncodingCheck.Encoding, Mode=OneTime}" />
+              <Label>Matches:</Label>
+              <app_main_view_finder:FindTextMatchControl ItemsSource="{Binding SingleItem.ContentMatches, Mode=TwoWay, ElementName=root}" />
+            </StackPanel>
+          </GroupBox>
+          
+          <GroupBox Header="office" Visibility="{Binding SingleItem.ContentIsMsOffice, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <StackPanel DataContext="{Binding SingleItem.ContentMsOffice, ElementName=root}">
+              <Label>type:</Label>
+              <TextBlock Text="{Binding OfficeType}" />
+              <ContentControl>
+                <ContentControl.Resources>
+                  <StackPanel x:Key="Excel">
+                    <ItemsControl ItemsSource="{Binding MatchSheet}">
+                      <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                          <StackPanel>
+                            <Label>sheet:</Label>
+                            <app_main_view_finder:FindTextMatchControl IsSelectable="False" ShowSingleLine="True" ShowSingleUnmatchText="{Binding SheetName}" ItemsSource="{Binding SheetNameResult.Matches}" />
+
+                            <Label>cells:</Label>
+                            <app_main_view_finder:FindTextMatchControl ItemsSource="{Binding CellResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}" />
+
+                            <Label>shape:</Label>
+                            <app_main_view_finder:FindTextMatchControl ItemsSource="{Binding ShapeResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}" />
+                          </StackPanel>
+                        </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                  </StackPanel>
+                  <StackPanel x:Key="Word">
+                    <Label>elements:</Label>
+                    <!--<ItemsControl ItemsSource="{Binding ElementResults}">
+                      <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                          <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                      </ItemsControl.ItemsPanel>
+                      <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                          <StackPanel>
+                            <Label>type:</Label>
+                            <TextBlock Text="{Binding ElementType}" />
+                            <ContentControl>
+                              <ContentControl.Style>
+                                <Style TargetType="ContentControl">
+                                  <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementType}" Value="PARAGRAPH">
+                                      <Setter Property="Content">
+                                        <Setter.Value>
+                                          <app_main_view_finder:FindTextMatchControl ItemsSource="{Binding TextResult.Matches}" />
+                                        </Setter.Value>
+                                      </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementType}" Value="TABLE">
+                                      <Setter Property="Content">
+                                        <Setter.Value>
+                                          <ItemsControl ItemsSource="{Binding CellResults}">
+                                            <ItemsControl.ItemTemplate>
+                                              <DataTemplate>
+                                                <app_main_view_finder:FindTextMatchControl ItemsSource="{Binding TextResult.Matches}" />
+                                              </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                          </ItemsControl>
+                                        </Setter.Value>
+                                      </Setter>
+                                    </DataTrigger>
+                                  </Style.Triggers>
+                                </Style>
+                              </ContentControl.Style>
+                            </ContentControl>
+                          </StackPanel>
+                        </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                    </ItemsControl>-->
+                    <app_main_view_finder:FindTextMatchControl ItemsSource="{Binding SingleItem.ContentMsOfficeWordElements, Mode=TwoWay, ElementName=root}" />
+                  </StackPanel>
+                </ContentControl.Resources>
+                <ContentControl.Style>
+                  <Style TargetType="ContentControl">
+                    <Style.Triggers>
+                      <!--<DataTrigger Binding="{Binding IsMatched}" Value="False">
+                        <Setter Property="Content" Value="" />
+                      </DataTrigger>-->
+                      <DataTrigger Binding="{Binding OfficeType}" Value="Excel1997">
+                        <Setter Property="Content" Value="{StaticResource Excel}" />
+                      </DataTrigger>
+                      <DataTrigger Binding="{Binding OfficeType}" Value="Excel2007">
+                        <Setter Property="Content" Value="{StaticResource Excel}" />
+                      </DataTrigger>
+                      <DataTrigger Binding="{Binding OfficeType}" Value="Word1997">
+                        <Setter Property="Content" Value="{StaticResource Word}" />
+                      </DataTrigger>
+                      <DataTrigger Binding="{Binding OfficeType}" Value="Word2007">
+                        <Setter Property="Content" Value="{StaticResource Word}" />
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </ContentControl.Style>
+              </ContentControl>
+            </StackPanel>
+          </GroupBox>
+          <GroupBox Header="xml/html" Visibility="{Binding SingleItem.ContentIsXmlHtml, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <StackPanel>
+              <TextBlock>XML/HTML</TextBlock>
+              <TextBlock>TODO</TextBlock>
+            </StackPanel>
+          </GroupBox>
+        </StackPanel>
+      </GroupBox>
+
+    </StackPanel>
+
+  </Grid>
+</UserControl>

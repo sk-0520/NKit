@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5E887E36-5AE0-4EFB-B6AA-4FA9B6911DA9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ContentTypeTextNet.NKit.Utility</RootNamespace>
+    <AssemblyName>NKit.Utility</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(SolutionDir)..\Output\$(Configuration)\$(Platform)\$(SolutionName)\lib</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(SolutionDir)..\Output\$(Configuration)\$(Platform)\$(SolutionName)\lib</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CommonServiceLocator.2.0.2\lib\net47\CommonServiceLocator.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ContentTypeTextNet.PInvoke, Version=1.0.6341.29050, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ContentTypeTextNet.PInvoke.1.0.0.26\lib\net46\ContentTypeTextNet.PInvoke.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Hnx8.ReadJEnc, Version=1.3.0.821, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ReadJEnc.1.3.0.0821\lib\net\Hnx8.ReadJEnc.dll</HintPath>
+      <Private>True</Private>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MessagePack, Version=1.7.3.4, Culture=neutral, PublicKeyToken=b4a0369545f0a1be, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MessagePack.1.7.3.4\lib\net47\MessagePack.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Prism, Version=7.0.0.396, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Prism.Core.7.0.0.396\lib\net45\Prism.dll</HintPath>
+      <Private>True</Private>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Prism.Wpf, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Prism.Wpf.6.3.0\lib\net45\Prism.Wpf.dll</HintPath>
+      <Private>True</Private>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.4.0\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attribute\PixelKindAttribute.cs" />
+    <Compile Include="CompatibleForms\CompatibleFormWindow.cs" />
+    <Compile Include="CompatibleForms\FolderBrowserDialog.cs" />
+    <Compile Include="Define\Px.cs" />
+    <Compile Include="Model\IconPath.cs" />
+    <Compile Include="Model\Range.cs" />
+    <Compile Include="Model\Serializer.cs" />
+    <Compile Include="Model\ShortcutFile.cs" />
+    <Compile Include="Model\TextOperator.cs" />
+    <Compile Include="Model\UIUtility.cs" />
+    <Compile Include="Model\Unmanaged\Com.cs" />
+    <Compile Include="Model\Unmanaged\Gdi.cs" />
+    <Compile Include="Model\Unmanaged\GlobalAllocModel.cs" />
+    <Compile Include="Model\Unmanaged\UnmanagedModelBase.cs" />
+    <Compile Include="View\Attach\GridHelpers.cs" />
+    <Compile Include="Model\Cacher.cs" />
+    <Compile Include="Model\ConfigurationCacher.cs" />
+    <Compile Include="Define\RunState.cs" />
+    <Compile Include="Model\ClipboardOperator.cs" />
+    <Compile Include="Model\Counter.cs" />
+    <Compile Include="Model\Dialogs.cs" />
+    <Compile Include="Model\DisplayConverter.cs" />
+    <Compile Include="Model\Encoding.cs" />
+    <Compile Include="Model\Models.cs" />
+    <Compile Include="Model\PathChanger.cs" />
+    <Compile Include="Model\UnitConverter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModell\ViewModel.cs" />
+    <Compile Include="View\Converter\BinaryToTextConverter.cs" />
+    <Compile Include="View\Converter\DoubleToParameterPercentConverter.cs" />
+    <Compile Include="View\Converter\DoubleToPercentConverter.cs" />
+    <Compile Include="View\Converter\EnumToBooleanConverter.cs" />
+    <Compile Include="View\Converter\EscapeAccessKeyConverter.cs" />
+    <Compile Include="View\Converter\HumanLikeByteConverter.cs" />
+    <Compile Include="View\Converter\KeyBindingToGestureTextConverter.cs" />
+    <Compile Include="View\Converter\NotNullToBooleanConverter.cs" />
+    <Compile Include="View\Selector\ComboBoxItemTemplateSelector.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NKit.Package\NKit.Package.csproj">
+      <Project>{afa0c4ad-38a8-416d-922d-f66f976f8106}</Project>
+      <Name>NKit.Package</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

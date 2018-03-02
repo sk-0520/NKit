@@ -1,0 +1,79 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{A3ECDBE3-5487-4635-AA05-597EB42AB395}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{BA7C2163-9D37-4D39-96AC-9DB9269B97D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Boot", "NKit.Boot\NKit.Boot.csproj", "{9CAE0FFA-9E3D-4C49-AF99-2FB1454C8E1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Main", "app\NKit.Main\NKit.Main.csproj", "{248CD44D-7FA9-4E7F-94AA-E1507F527CC0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{91FBCEEB-423A-4ACA-84B8-80970B97402B}"
+	ProjectSection(SolutionItems) = preProject
+		common\AssemblyResolveHelper.cs = common\AssemblyResolveHelper.cs
+		common\CommonUtility.cs = common\CommonUtility.cs
+		common\Disposer.cs = common\Disposer.cs
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Package", "lib\NKit.Package\NKit.Package.csproj", "{AFA0C4AD-38A8-416D-922D-F66F976F8106}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{EC7DD560-DC29-47BE-9247-4640D226D853}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Main.Test", "app\NKit.Main.Test\NKit.Main.Test.csproj", "{E1BB0FF2-7F0E-48B4-A4A3-C608532F9D69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Utility", "lib\NKit.Utility\NKit.Utility.csproj", "{5E887E36-5AE0-4EFB-B6AA-4FA9B6911DA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Utility.Test", "lib\NKit.Utility.Test\NKit.Utility.Test.csproj", "{39A3ED0E-0570-460D-8615-166CB5626315}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{66D532B9-D238-4BFA-A493-7CE2FEA5EFA2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9CAE0FFA-9E3D-4C49-AF99-2FB1454C8E1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CAE0FFA-9E3D-4C49-AF99-2FB1454C8E1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CAE0FFA-9E3D-4C49-AF99-2FB1454C8E1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CAE0FFA-9E3D-4C49-AF99-2FB1454C8E1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{248CD44D-7FA9-4E7F-94AA-E1507F527CC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{248CD44D-7FA9-4E7F-94AA-E1507F527CC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{248CD44D-7FA9-4E7F-94AA-E1507F527CC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{248CD44D-7FA9-4E7F-94AA-E1507F527CC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFA0C4AD-38A8-416D-922D-F66F976F8106}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFA0C4AD-38A8-416D-922D-F66F976F8106}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFA0C4AD-38A8-416D-922D-F66F976F8106}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFA0C4AD-38A8-416D-922D-F66F976F8106}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1BB0FF2-7F0E-48B4-A4A3-C608532F9D69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1BB0FF2-7F0E-48B4-A4A3-C608532F9D69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1BB0FF2-7F0E-48B4-A4A3-C608532F9D69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1BB0FF2-7F0E-48B4-A4A3-C608532F9D69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E887E36-5AE0-4EFB-B6AA-4FA9B6911DA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E887E36-5AE0-4EFB-B6AA-4FA9B6911DA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E887E36-5AE0-4EFB-B6AA-4FA9B6911DA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E887E36-5AE0-4EFB-B6AA-4FA9B6911DA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39A3ED0E-0570-460D-8615-166CB5626315}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39A3ED0E-0570-460D-8615-166CB5626315}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39A3ED0E-0570-460D-8615-166CB5626315}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39A3ED0E-0570-460D-8615-166CB5626315}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{248CD44D-7FA9-4E7F-94AA-E1507F527CC0} = {BA7C2163-9D37-4D39-96AC-9DB9269B97D9}
+		{AFA0C4AD-38A8-416D-922D-F66F976F8106} = {A3ECDBE3-5487-4635-AA05-597EB42AB395}
+		{EC7DD560-DC29-47BE-9247-4640D226D853} = {BA7C2163-9D37-4D39-96AC-9DB9269B97D9}
+		{E1BB0FF2-7F0E-48B4-A4A3-C608532F9D69} = {EC7DD560-DC29-47BE-9247-4640D226D853}
+		{5E887E36-5AE0-4EFB-B6AA-4FA9B6911DA9} = {A3ECDBE3-5487-4635-AA05-597EB42AB395}
+		{39A3ED0E-0570-460D-8615-166CB5626315} = {66D532B9-D238-4BFA-A493-7CE2FEA5EFA2}
+		{66D532B9-D238-4BFA-A493-7CE2FEA5EFA2} = {A3ECDBE3-5487-4635-AA05-597EB42AB395}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DCA37A7D-11B2-4BEF-BD2E-1441C71C69AB}
+	EndGlobalSection
+EndGlobal

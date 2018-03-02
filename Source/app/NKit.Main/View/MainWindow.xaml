@@ -1,0 +1,51 @@
+﻿<Window 
+  x:Class="ContentTypeTextNet.NKit.Main.View.MainWindow"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  mc:Ignorable="d"
+  
+  xmlns:app_main_view_finder="clr-namespace:ContentTypeTextNet.NKit.Main.View.Finder"
+  
+  Title="MainWindow" 
+  Width="640"
+  Height="480" 
+  ResizeMode="CanResizeWithGrip"
+>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    
+    <TabControl Grid.Row="0">
+      <TabItem Header="finder" DataContext="{Binding FinderManager}">
+        <app_main_view_finder:FinderManagerControl />
+      </TabItem>
+
+      <TabItem Header="file" DataContext="{Binding FileManager}">
+
+      </TabItem>
+
+      <TabItem Header="capture" DataContext="{Binding CaptureManager}">
+
+      </TabItem>
+
+      <TabItem Header="system" DataContext="{Binding SystemManager}">
+
+      </TabItem>
+
+      <TabItem Header="app" DataContext="{Binding AppManager}">
+
+      </TabItem>
+
+    </TabControl>
+
+    <StatusBar Grid.Row="1">
+      <StatusBarItem>
+        すてーたすばーーーーーーーーーーーーーーーーーーーーー
+      </StatusBarItem>
+    </StatusBar>
+  </Grid>
+</Window>
