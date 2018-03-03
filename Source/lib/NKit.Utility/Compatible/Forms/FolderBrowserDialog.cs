@@ -6,9 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using ContentTypeTextNet.NKit.Utility.Model;
-using Forms = System.Windows.Forms;
 
-namespace ContentTypeTextNet.NKit.Utility.CompatibleForms
+namespace ContentTypeTextNet.NKit.Utility.Compatible.Forms
 {
     /// <summary>
     /// <see cref="System.Windows.Forms.FolderBrowserDialog"/>互換クラス。
@@ -18,12 +17,12 @@ namespace ContentTypeTextNet.NKit.Utility.CompatibleForms
         public FolderBrowserDialog()
             : base()
         {
-            this.Dialog = new Forms.FolderBrowserDialog();
+            this.Dialog = new System.Windows.Forms.FolderBrowserDialog();
         }
 
         #region property
 
-        Forms.FolderBrowserDialog Dialog { get; set; }
+        System.Windows.Forms.FolderBrowserDialog Dialog { get; set; }
 
         /// <summary>
         ///  <see cref="Component"/> を格納している <see cref="IContainer"/> を取得します。
@@ -98,14 +97,14 @@ namespace ContentTypeTextNet.NKit.Utility.CompatibleForms
         public bool? ShowDialog()
         {
             var compatibleresult = Dialog.ShowDialog();
-            return compatibleresult == Forms.DialogResult.OK;
+            return compatibleresult== System.Windows.Forms.DialogResult.OK;
         }
 
-        public bool? ShowDialog(Window owner)
+        public bool? ShowDialog(System.Windows.Window owner)
         {
             var form = new CompatibleFormWindow(owner);
             var compatibleresult = Dialog.ShowDialog(form);
-            return compatibleresult == Forms.DialogResult.OK;
+            return compatibleresult == System.Windows.Forms.DialogResult.OK;
         }
 
         #endregion

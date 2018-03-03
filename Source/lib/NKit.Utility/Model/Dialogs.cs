@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ContentTypeTextNet.NKit.Utility.CompatibleForms;
+using ContentTypeTextNet.NKit.Utility.Compatible.Forms;
 
 namespace ContentTypeTextNet.NKit.Utility.Model
 {

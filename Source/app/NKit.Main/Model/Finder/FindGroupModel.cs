@@ -52,8 +52,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                 return false;
             }
 
-            var pc = new PathChanger();
-            FindGroupSetting.RootDirectoryPath = pc.GetUpDirectoryPath(path);
+            FindGroupSetting.RootDirectoryPath = PathUtility.GetUpDirectoryPath(path);
 
             return FindGroupSetting.RootDirectoryPath != path;
         }
