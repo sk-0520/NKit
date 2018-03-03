@@ -1,17 +1,17 @@
-﻿<UserControl 
+<UserControl
   x:Class="ContentTypeTextNet.NKit.Main.View.Finder.FinderManagerControl"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  
+
   xmlns:app_utility_view_converter="clr-namespace:ContentTypeTextNet.NKit.Utility.View.Converter;assembly=NKit.Utility"
-  
+
   xmlns:app_main_define="clr-namespace:ContentTypeTextNet.NKit.Main.Define"
   xmlns:app_main_view_converter="clr-namespace:ContentTypeTextNet.NKit.Main.View.Converter"
   xmlns:app_main_view_finder="clr-namespace:ContentTypeTextNet.NKit.Main.View.Finder"
-  
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-  mc:Ignorable="d" 
-  d:DesignHeight="300" 
+
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  mc:Ignorable="d"
+  d:DesignHeight="300"
   d:DesignWidth="300"
 >
   <UserControl.Resources>
@@ -159,7 +159,20 @@
                   <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <ListView Grid.Row="0" ScrollViewer.CanContentScroll="False" VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.IsVirtualizing="True" SelectionMode="Extended" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}">
+                <ListView
+                  Grid.Row="0"
+                  ScrollViewer.CanContentScroll="False"
+                  VirtualizingPanel.ScrollUnit="Pixel"
+                  VirtualizingPanel.IsVirtualizing="True"
+                  SelectionMode="Extended"
+                  ItemsSource="{Binding Items}"
+                  SelectedItem="{Binding SelectedItem}"
+                >
+                  <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <VirtualizingStackPanel Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                  </ListView.ItemsPanel>
                   <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                       <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
@@ -197,14 +210,14 @@
                               </Grid.ColumnDefinitions>
                               <ToggleButton Grid.Row="0" FontSize="6" IsChecked="{Binding MatchedName, Mode=OneTime}">name</ToggleButton>
                               <ToggleButton Grid.Row="1" FontSize="6" IsChecked="{Binding MatchedContent, Mode=OneTime}">body</ToggleButton>
-                              <app_main_view_finder:FindTextMatchControl 
-                                Grid.Row="0" 
-                                Grid.RowSpan="2" 
-                                Grid.Column="1" 
-                                IsSelectable="False" 
+                              <app_main_view_finder:FindTextMatchControl
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="1"
+                                IsSelectable="False"
                                 Background="Transparent"
-                                ShowSingleLine="True" 
-                                ShowSingleUnmatchText="{Binding FileName}" 
+                                ShowSingleLine="True"
+                                ShowSingleUnmatchText="{Binding FileName}"
                                 ItemsSource="{Binding FileNameMatches}"
                               />
                             </Grid>
@@ -274,7 +287,7 @@
                     </ContentControl.Style>
                   </ContentControl>
                 </ScrollViewer>
-                
+
               </Grid>
             </Grid>
 
