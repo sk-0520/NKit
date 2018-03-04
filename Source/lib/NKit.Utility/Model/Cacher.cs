@@ -129,4 +129,34 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         #endregion
     }
+
+    public class CacheItem<T>
+    {
+        #region variable
+
+        T _value;
+
+        #endregion
+
+        public CacheItem(T value)
+        {
+            Value = value;
+        }
+
+        #region property
+
+        public T Value
+        {
+            get
+            {
+                LastUsedTimestamp = DateTime.Now;
+                return this._value;
+            }
+            private set { this._value = value; }
+        }
+
+        public DateTime LastUsedTimestamp { get; private set; }
+
+        #endregion
+    }
 }

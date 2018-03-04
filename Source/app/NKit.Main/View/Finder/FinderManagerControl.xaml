@@ -23,6 +23,7 @@
     <app_utility_view_converter:HumanLikeByteConverter x:Key="HumanLikeByteConverterUnit" SizeFormat="{}{1}" />
     <app_utility_view_converter:DoubleToParameterPercentConverter x:Key="DoubleToParameterPercentConverter" />
     <app_utility_view_converter:DoubleToPercentConverter x:Key="DoubleToPercentConverter" />
+    <app_main_view_converter:FilePathToIconConverter x:Key="FilePathToIconConverter" />
   </UserControl.Resources>
   <Grid>
     <Grid.RowDefinitions>
@@ -206,14 +207,18 @@
                               </Grid.RowDefinitions>
                               <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                               </Grid.ColumnDefinitions>
                               <ToggleButton Grid.Row="0" FontSize="6" IsChecked="{Binding MatchedName, Mode=OneTime}">name</ToggleButton>
                               <ToggleButton Grid.Row="1" FontSize="6" IsChecked="{Binding MatchedContent, Mode=OneTime}">body</ToggleButton>
+
+                              <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Source="{Binding FilePath, Converter={StaticResource FilePathToIconConverter}}" />
+
                               <app_main_view_finder:FindTextMatchControl
                                 Grid.Row="0"
                                 Grid.RowSpan="2"
-                                Grid.Column="1"
+                                Grid.Column="2"
                                 IsSelectable="False"
                                 Background="Transparent"
                                 ShowSingleLine="True"

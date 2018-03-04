@@ -50,6 +50,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             } else {
                 Items = CollectionViewSource.GetDefaultView(ItemViewModels);
             }
+            //var items = (BindingListCollectionView)Items;
             Items.Filter = FilterFileList;
         }
 

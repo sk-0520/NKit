@@ -160,6 +160,7 @@
     <Compile Include="Define\FindPatternKind.cs" />
     <Compile Include="Define\HashType.cs" />
     <Compile Include="Define\MicrosoftOfficeFileType.cs" />
+    <Compile Include="Global.cs" />
     <Compile Include="Model\ApplicationExecutor.cs" />
     <Compile Include="Model\App\AppManagerModel.cs" />
     <Compile Include="Model\App\AppSetting.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ManagerViewModelBase.cs" />
     <Compile Include="ViewModel\System\SystemManagerViewModel.cs" />
+    <Compile Include="View\Converter\FilePathToIconConverter.cs" />
     <Compile Include="View\Converter\MicrosoftOfficeExcelCellAddressConverter.cs" />
     <Compile Include="View\Converter\MicrosoftOfficeExcelMatchesConverter.cs" />
     <Compile Include="View\Finder\FinderManagerControl.xaml.cs">
