@@ -50,7 +50,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             } else {
                 Items = CollectionViewSource.GetDefaultView(ItemViewModels);
             }
-            //var items = (BindingListCollectionView)Items;
+
             Items.Filter = FilterFileList;
         }
 
@@ -286,8 +286,6 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         #endregion
 
         #region command
-
-        public ICommand Execute => new DelegateCommand(() => Model.ExecuteAsync().ConfigureAwait(false));
 
         public ICommand UpRootDirectoryPath => new DelegateCommand(() => {
             if(Model.UpRootDirectoryPath()) {

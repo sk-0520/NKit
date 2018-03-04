@@ -46,17 +46,6 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.File
 
         #region command
 
-        public ICommand Execute
-        {
-            get
-            {
-                return new DelegateCommand(() => {
-                    CurrentHashType = SelectedHashType;
-                    Model.ExecuteAsync().ContinueWith(t => HashValue = t.Result).ConfigureAwait(false);
-                });
-            }
-        }
-
         public ICommand CopyHash => new DelegateCommand<byte[]>(hash => Model.CopyHash(hash));
 
         #endregion
@@ -64,6 +53,16 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.File
         #region function
 
 
+
+        #endregion
+
+        #region RunnableViewModelBase
+
+        protected override Task<byte[]> ExecuteCore()
+        {
+            CurrentHashType = SelectedHashType;
+            return base.ExecuteCore().ContinueWith(t => HashValue = t.Result);
+        }
 
         #endregion
     }

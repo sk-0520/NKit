@@ -6,9 +6,11 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Xml.Serialization;
 using ContentTypeTextNet.NKit.Utility.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
+using Prism.Commands;
 using Prism.Mvvm;
 
 namespace ContentTypeTextNet.NKit.Utility.ViewModell
@@ -176,7 +178,32 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
 
         #endregion
 
-        #region MyRegion
+        #region command
+
+        protected virtual Task<TExecuteResult> ExecuteCore()
+        {
+            var task = Model.ExecuteAsync();
+            task.ConfigureAwait(false);
+            return task;
+        }
+
+        protected virtual bool GetCanExecute()
+        {
+            return true;
+        }
+
+        #endregion
+
+        #region command
+
+        public ICommand Execute => new DelegateCommand(
+            () => ExecuteCore().ConfigureAwait(false),
+            () => GetCanExecute()
+        );
+
+        #endregion
+
+        #region SingleModelViewModelBase
 
         protected override void AttachModelEventsCore()
         {

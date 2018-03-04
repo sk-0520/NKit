@@ -25,11 +25,5 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.File
         public string Information => Model.Information;
 
         #endregion
-
-        #region command
-
-        public ICommand Execute => new DelegateCommand(() => Model.ExecuteAsync().ConfigureAwait(false));
-
-        #endregion
     }
 }
