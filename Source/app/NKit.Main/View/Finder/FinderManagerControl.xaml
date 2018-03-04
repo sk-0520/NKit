@@ -296,7 +296,7 @@
               </Grid>
             </Grid>
 
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="8" />
+            <GridSplitter Grid.Column="1" Style="{StaticResource DefaultVericalGridSplitter}" />
 
           </Grid>
         </DataTemplate>
