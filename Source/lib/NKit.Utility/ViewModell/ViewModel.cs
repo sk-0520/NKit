@@ -189,7 +189,12 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
 
         protected virtual bool GetCanExecute()
         {
-            return true;
+            var canExecuteValues = new[] {
+                RunState.None,
+                RunState.Finished,
+                RunState.Error,
+            };
+            return canExecuteValues.Any(v => v == RunState);
         }
 
         #endregion
@@ -225,6 +230,7 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
         {
             if(RunnableProperties.Any(s => s == e.PropertyName)) {
                 RaisePropertyChanged(e.PropertyName);
+                CommandManager.InvalidateRequerySuggested();
             }
 
             ChangedModelPropertyCore(e);
