@@ -10,6 +10,7 @@
   xmlns:app_utility_view_converter="clr-namespace:ContentTypeTextNet.NKit.Utility.View.Converter;assembly=NKit.Utility"
   
   xmlns:app_main_view_converter="clr-namespace:ContentTypeTextNet.NKit.Main.View.Converter"
+  xmlns:app_main_view_control="clr-namespace:ContentTypeTextNet.NKit.Main.View.Control"
   xmlns:app_main_view_finder="clr-namespace:ContentTypeTextNet.NKit.Main.View.Finder"
 
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
@@ -39,7 +40,8 @@
 
       <StackPanel x:Name="FileHash" Orientation="Horizontal" DataContext="{Binding SingleItem.FileHash, ElementName=root}">
         <ComboBox ItemsSource="{Binding HashTypeItems}" SelectedItem="{Binding SelectedHashType}" />
-        <Button Command="{Binding RunCommand}">hash</Button>
+        <!--<Button Command="{Binding RunCommand}">hash</Button>-->
+        <app_main_view_control:RunnableControl RunnableItem="{Binding}" />
         <ContentControl>
           <ContentControl.Style>
             <Style TargetType="ContentControl">
@@ -74,7 +76,7 @@
               <app_main_view_finder:FindTextMatchControl ItemsSource="{Binding SingleItem.ContentMatches, Mode=TwoWay, ElementName=root}" />
             </StackPanel>
           </GroupBox>
-          
+
           <GroupBox Header="office" Visibility="{Binding SingleItem.ContentIsMsOffice, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel DataContext="{Binding SingleItem.ContentMsOffice, ElementName=root}">
               <Label>type:</Label>

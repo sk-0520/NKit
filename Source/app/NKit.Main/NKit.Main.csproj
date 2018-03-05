@@ -112,6 +112,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="View\Control\RunnableControl.xaml.cs">
+      <DependentUpon>RunnableControl.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\Finder\FinderManagerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -136,13 +139,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="..\..\common\AssemblyResolveHelper.cs">
+    <Compile Include="..\..\Common\AssemblyResolveHelper.cs">
       <Link>Common\AssemblyResolveHelper.cs</Link>
     </Compile>
-    <Compile Include="..\..\common\CommonUtility.cs">
+    <Compile Include="..\..\Common\CommonUtility.cs">
       <Link>Common\CommonUtility.cs</Link>
     </Compile>
-    <Compile Include="..\..\common\Disposer.cs">
+    <Compile Include="..\..\Common\Disposer.cs">
       <Link>Common\Disposer.cs</Link>
     </Compile>
     <Compile Include="App.xaml.cs">
@@ -224,6 +227,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\Resources\Theme\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Control\RunnableControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

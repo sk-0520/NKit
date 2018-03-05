@@ -31,5 +31,9 @@ namespace ContentTypeTextNet.NKit.Utility.Define
         /// 異常終了
         /// </summary>
         Error,
+        /// <summary>
+        /// キャンセル
+        /// </summary>
+        Cancel,
     }
 }

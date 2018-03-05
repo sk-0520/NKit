@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Boot", "NKit.Boot\NKit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Main", "app\NKit.Main\NKit.Main.csproj", "{248CD44D-7FA9-4E7F-94AA-E1507F527CC0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{91FBCEEB-423A-4ACA-84B8-80970B97402B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{91FBCEEB-423A-4ACA-84B8-80970B97402B}"
 	ProjectSection(SolutionItems) = preProject
 		common\AssemblyResolveHelper.cs = common\AssemblyResolveHelper.cs
 		common\CommonUtility.cs = common\CommonUtility.cs

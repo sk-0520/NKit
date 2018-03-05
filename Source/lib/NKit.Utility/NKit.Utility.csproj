@@ -100,6 +100,7 @@
     <Compile Include="Define\Px.cs" />
     <Compile Include="Model\Icon.cs" />
     <Compile Include="Model\Range.cs" />
+    <Compile Include="Model\RunnableModel.cs" />
     <Compile Include="Model\Serializer.cs" />
     <Compile Include="Model\ShortcutFile.cs" />
     <Compile Include="Model\TextOperator.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="Model\Unmanaged\Gdi.cs" />
     <Compile Include="Model\Unmanaged\GlobalAllocModel.cs" />
     <Compile Include="Model\Unmanaged\UnmanagedModelBase.cs" />
+    <Compile Include="ViewModell\RunnableViewModel.cs" />
     <Compile Include="View\Attach\GridHelpers.cs" />
     <Compile Include="Model\Cacher.cs" />
     <Compile Include="Model\ConfigurationCacher.cs" />

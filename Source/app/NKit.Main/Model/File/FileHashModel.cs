@@ -45,10 +45,12 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         #region RunnableModelBase
 
+        public override bool Cancelable => false;
+
         protected override Task<PreparaResult<byte[]>> PreparationCoreAsync(CancellationToken cancelToken)
         {
             HashProvider = new HashProvider(HashType);
-            ;
+            
             FileStream = FileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
             return base.PreparationCoreAsync(cancelToken);
         }

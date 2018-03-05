@@ -7,6 +7,7 @@
 
   xmlns:app_main_define="clr-namespace:ContentTypeTextNet.NKit.Main.Define"
   xmlns:app_main_view_converter="clr-namespace:ContentTypeTextNet.NKit.Main.View.Converter"
+  xmlns:app_main_view_control="clr-namespace:ContentTypeTextNet.NKit.Main.View.Control"
   xmlns:app_main_view_finder="clr-namespace:ContentTypeTextNet.NKit.Main.View.Finder"
 
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -127,7 +128,8 @@
                 </StackPanel>
               </ScrollViewer>
 
-              <Button Grid.Row="1" Command="{Binding RunCommand}">find!</Button>
+              <!--<Button Grid.Row="1" Command="{Binding RunCommand}">find!</Button>-->
+              <app_main_view_control:RunnableControl Grid.Row="1" RunnableItem="{Binding}" />
             </Grid>
 
             <Grid Grid.Column="2">
