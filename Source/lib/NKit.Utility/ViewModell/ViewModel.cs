@@ -6,7 +6,9 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using System.Xml.Serialization;
 using ContentTypeTextNet.NKit.Utility.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
@@ -150,7 +152,7 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
         #endregion
     }
 
-    public abstract class RunnableViewModelBase<TModel, TExecuteResult> : SingleModelViewModelBase<TModel>
+    public abstract class RunnableViewModelBase<TModel, TExecuteResult> : SingleModelViewModelBase<TModel>, IReadOnlyRunnableStatus
         where TModel : RunnableModelBase<TExecuteResult>
     {
         #region variable
@@ -167,9 +169,16 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
 
         public RunnableViewModelBase(TModel model)
             : base(model)
-        { }
+        {
+            Execute = GetInvokeUI(() =>
+                new DelegateCommand(
+                    () => ExecuteCore().ConfigureAwait(false),
+                    () => CanExecute
+                )
+            );
+        }
 
-        #region property
+        #region IReadOnlyRunnableStatus
 
         public RunState RunState => Model.RunState;
         public DateTime StartTimestamp => Model.StartTimestamp;
@@ -178,7 +187,24 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
 
         #endregion
 
-        #region command
+        #region property
+
+        protected virtual bool CanExecute
+        {
+            get
+            {
+                var canExecuteValues = new[] {
+                    RunState.None,
+                    RunState.Finished,
+                    RunState.Error,
+                };
+                return canExecuteValues.Any(v => v == RunState);
+            }
+        }
+
+        #endregion
+
+        #region function
 
         protected virtual Task<TExecuteResult> ExecuteCore()
         {
@@ -187,24 +213,34 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
             return task;
         }
 
-        protected virtual bool GetCanExecute()
+        protected void InvokeUI(Action action)
         {
-            var canExecuteValues = new[] {
-                RunState.None,
-                RunState.Finished,
-                RunState.Error,
-            };
-            return canExecuteValues.Any(v => v == RunState);
+            if(Dispatcher.CurrentDispatcher == Application.Current.Dispatcher) {
+                action();
+            } else {
+                Application.Current.Dispatcher.Invoke(action);
+            }
         }
+
+        protected T GetInvokeUI<T>(Func<T> func)
+        {
+            if(Dispatcher.CurrentDispatcher == Application.Current.Dispatcher) {
+                return func();
+            } else {
+                var result = default(T);
+                Application.Current.Dispatcher.Invoke(() => {
+                    result = func();
+                });
+                return result;
+            }
+        }
+
 
         #endregion
 
         #region command
 
-        public ICommand Execute => new DelegateCommand(
-            () => ExecuteCore().ConfigureAwait(false),
-            () => GetCanExecute()
-        );
+        public DelegateCommand Execute { get; private set; }
 
         #endregion
 
@@ -223,17 +259,22 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
 
             Model.PropertyChanged -= Model_PropertyChanged;
         }
-        protected virtual void ChangedModelPropertyCore(PropertyChangedEventArgs e)
+        protected virtual void OnChangedModelProperty(PropertyChangedEventArgs e)
         { }
 
         void ChangedModelProperty(PropertyChangedEventArgs e)
         {
             if(RunnableProperties.Any(s => s == e.PropertyName)) {
                 RaisePropertyChanged(e.PropertyName);
-                CommandManager.InvalidateRequerySuggested();
+                if(e.PropertyName == nameof(Model.RunState)) {
+                    InvokeUI(() => {
+                        RaisePropertyChanged(nameof(CanExecute));
+                        Execute.RaiseCanExecuteChanged();
+                    });
+                }
             }
 
-            ChangedModelPropertyCore(e);
+            OnChangedModelProperty(e);
         }
 
         #endregion

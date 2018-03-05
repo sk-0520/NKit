@@ -88,7 +88,19 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         #endregion
     }
 
-    public abstract class RunnableModelBase<TExecuteResult> : ModelBase
+    public interface IReadOnlyRunnableStatus
+    {
+        #region property
+
+        DateTime StartTimestamp { get; }
+        DateTime EndTimestamp { get; }
+        TimeSpan PreparationSpan { get; }
+        RunState RunState { get; }
+
+        #endregion
+    }
+
+    public abstract class RunnableModelBase<TExecuteResult> : ModelBase, IReadOnlyRunnableStatus
     {
         #region variable
 
@@ -99,7 +111,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         #endregion
 
-        #region property
+        #region IReadOnlyRunnableStatus
 
         public DateTime StartTimestamp
         {
