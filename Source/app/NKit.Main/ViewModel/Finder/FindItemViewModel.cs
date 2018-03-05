@@ -119,7 +119,35 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { /* TwoWay ダミー */}
         }
 
-        public bool ContentIsXmlHtml => false;//Model.FileContentSearchResult.Text != null;
+        public bool ContentIsXmlHtml => Model.FileContentSearchResult.XmlHtml != null;
+        public XmlHtmlSearchResult ContentXmlHtml => Model.FileContentSearchResult.XmlHtml;
+        public IReadOnlyList<TextSearchMatch> ContentXmlHtmlMatches
+        {
+            get
+            {
+                if(!ContentIsXmlHtml) {
+                    return null;
+                }
+
+                var list = new List<TextSearchMatch>(ContentXmlHtml.Results.Count);
+                foreach(var result in ContentXmlHtml.Results) {
+                    if(result.NodeType == HtmlAgilityPack.HtmlNodeType.Comment) {
+                        var comment = (XmlHtmlCommentSearchResult)result;
+                        list.AddRange(comment.Matches);
+                    } else {
+                        var element = (XmlHtmlElementSearchResult)result;
+                        list.AddRange(element.ElementResult.Matches);
+                        foreach(var attribute in element.AttributeKeyResults) {
+                            list.AddRange(attribute.KeyResult.Matches);
+                            list.AddRange(attribute.ValueResult.Matches);
+                        }
+                    }
+                }
+
+                return list;
+            }
+            set { /* TwoWay ダミー */}
+        }
 
         public FileTypeViewModel FileType => new FileTypeViewModel(Model.FileType);
 
@@ -184,6 +212,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 nameof(ContentMsOfficeWordElements),
 
                 nameof(ContentIsXmlHtml),
+                nameof(ContentXmlHtml),
+                //nameof(ContentXmlHtmlMatches),
             };
 
             foreach(var propertyName in propertyNames) {

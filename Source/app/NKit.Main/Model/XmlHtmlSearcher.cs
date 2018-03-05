@@ -178,7 +178,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
 
             if(setting.AttributeValue) {
                 var ts = new TextSearcher();
-                result.ValueResult = ts.Search(attribute.OriginalName, regex);
+                result.ValueResult = ts.Search(attribute.Value, regex);
             }
 
             result.IsMatched = result.KeyResult.IsMatched || result.ValueResult.IsMatched;
@@ -198,17 +198,13 @@ namespace ContentTypeTextNet.NKit.Main.Model
                 NodeType = node.NodeType,
             };
 
-            // ルートノードは補正しておく
-            if(node.NodeType == HtmlNodeType.Document) {
-                node = node.OwnerDocument.DocumentNode.FirstChild;
-            }
-
             if(setting.Element) {
                 var ts = new TextSearcher();
                 switch(node.NodeType) {
-                    //case HtmlNodeType.Document:
-                    //    result.ElementResult = ts.Search(node.OriginalName, regex);
-                    //    break;
+                    case HtmlNodeType.Document:
+                        //result.ElementResult = ts.Search(node.OriginalName, regex);
+                        //break;
+                        throw new NotSupportedException();
 
                     case HtmlNodeType.Text:
                         result.ElementResult = ts.Search(node.InnerText, regex);
@@ -258,13 +254,16 @@ namespace ContentTypeTextNet.NKit.Main.Model
 
         IEnumerable<XmlHtmlNodeSearchResultBase> SearchNodes(HtmlNode node, Regex regex, IReadOnlyFindXmlHtmlContentSetting setting)
         {
-            Debug.Assert(node.NodeType != HtmlNodeType.Document);
+            //Debug.Assert(node.NodeType != HtmlNodeType.Document);
 
-            var nodeResult = SearchNode(node, regex, setting);
-            if(nodeResult.IsMatched) {
-                yield return nodeResult;
+            if(node.NodeType == HtmlNodeType.Element || node.NodeType == HtmlNodeType.Text) {
+                var nodeResult = SearchNode(node, regex, setting);
+                if(nodeResult.IsMatched) {
+                    yield return nodeResult;
+                }
             }
-            if(node.NodeType == HtmlNodeType.Element) {
+
+            if(node.NodeType == HtmlNodeType.Element || node.NodeType == HtmlNodeType.Document) {
                 var childResults = node.ChildNodes
                     .Select(n => SearchNodes(n, regex, setting))
                     .SelectMany(rs => rs)
@@ -287,13 +286,8 @@ namespace ContentTypeTextNet.NKit.Main.Model
 
             var result = new XmlHtmlSearchResult();
 
-            result.Results.Add(SearchNode(document.DocumentNode, regex, setting));
-            var childNodes = document.DocumentNode.FirstChild.ChildNodes
-                .Select(n => SearchNodes(n, regex, setting))
-                .SelectMany(rs => rs)
-                .Where(r => r.IsMatched)
-            ;
-            result.Results.AddRange(childNodes);
+            var nodeResults = SearchNodes(document.DocumentNode, regex, setting);
+            result.Results.AddRange(nodeResults);
 
             result.IsMatched = result.Results.Any(r => r.IsMatched);
 

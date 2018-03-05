@@ -135,6 +135,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             var isMatches = new SearchResultBase[] {
                 result.Text,
                 result.MicrosoftOffice,
+                result.XmlHtml
             };
 
             result.IsMatched = isMatches.Any(i => i?.IsMatched ?? false);
