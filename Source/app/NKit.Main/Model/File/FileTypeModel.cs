@@ -50,7 +50,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
         /// 全く調べてなかったけど file コマンドないんですね！
         /// </summary>
         /// <returns></returns>
-        protected override Task<None> ExecuteCoreAsync(CancellationToken cancelToken)
+        protected override Task<None> RunCoreAsync(CancellationToken cancelToken)
         {
             Information = "";
             var executor = new BusyBoxExecutor(AppSetting.UsePlatformBusyBox, "file", FileInfo.FullName);
@@ -61,7 +61,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
                 Information += "[E]" + e.Data;
             };
 
-            return executor.ExecuteAsync(cancelToken).ContinueWith(t => None.Void);
+            return executor.RunAsync(cancelToken).ContinueWith(t => None.Void);
         }
 
         #endregion

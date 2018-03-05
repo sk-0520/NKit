@@ -97,6 +97,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         DateTime EndTimestamp { get; }
         TimeSpan PreparationSpan { get; }
         RunState RunState { get; }
+        bool IsRunningCancel { get; }
 
         #endregion
     }
@@ -110,11 +111,11 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         TimeSpan _preparationSpan;
         RunState _runState;
 
+        bool _isRunningCancel;
+
         #endregion
 
         #region property
-
-        public Task RunningTask { get; private set; } = Task.CompletedTask;
 
         #endregion
 
@@ -143,6 +144,12 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             private set { SetProperty(ref this._runState, value); }
         }
 
+        public bool IsRunningCancel
+        {
+            get { return this._isRunningCancel; }
+            set { SetProperty(ref this._isRunningCancel, value); }
+        }
+
         #endregion
 
         #region function
@@ -157,11 +164,11 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         /// <returns>真なら処理を継続、偽なら<see cref="TExecuteResult"/>を返して未処理とする。</returns>
         protected virtual Task<PreparaResult<TExecuteResult>> PreparationCoreAsync(CancellationToken cancelToken) => GetDefaultPreparaValueTask(true);
 
-        protected abstract Task<TExecuteResult> ExecuteCoreAsync(CancellationToken cancelToken);
+        protected abstract Task<TExecuteResult> RunCoreAsync(CancellationToken cancelToken);
 
-        public async Task<TExecuteResult> ExecuteAsync(CancellationToken cancelToken)
+        public async Task<TExecuteResult> RunAsync(CancellationToken cancelToken)
         {
-            RunningTask = Task.CompletedTask;
+            IsRunningCancel = false;
             EndTimestamp = DateTime.MinValue;
             StartTimestamp = DateTime.Now;
 
@@ -169,17 +176,17 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                 RunState = RunState.Prepare;
 
                 var preTask = PreparationCoreAsync(cancelToken);
-                RunningTask = preTask;
-
                 var preResult = await preTask;
+                IsRunningCancel = preTask.IsCanceled;
+
                 PreparationSpan = DateTime.Now - StartTimestamp;
 
-                if(preResult.Success) {
+                if(preResult.Success && !IsRunningCancel) {
                     RunState = RunState.Running;
 
-                    var execTask = ExecuteCoreAsync(cancelToken);
-                    RunningTask = execTask;
+                    var execTask = RunCoreAsync(cancelToken);
                     var result = await execTask;
+                    IsRunningCancel = execTask.IsCanceled;
 
                     RunState = RunState.Finished;
                     return result;
@@ -193,8 +200,6 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                 throw;
             } finally {
                 EndTimestamp = DateTime.Now;
-                RunningTask.Dispose();
-                RunningTask = Task.CompletedTask;
             }
         }
 

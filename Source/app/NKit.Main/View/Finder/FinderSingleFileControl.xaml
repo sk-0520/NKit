@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   DataContext に FindItemViewModel ぶち込み型。
 -->
 <UserControl
@@ -39,7 +39,7 @@
 
       <StackPanel x:Name="FileHash" Orientation="Horizontal" DataContext="{Binding SingleItem.FileHash, ElementName=root}">
         <ComboBox ItemsSource="{Binding HashTypeItems}" SelectedItem="{Binding SelectedHashType}" />
-        <Button Command="{Binding Execute}">hash</Button>
+        <Button Command="{Binding RunCommand}">hash</Button>
         <ContentControl>
           <ContentControl.Style>
             <Style TargetType="ContentControl">

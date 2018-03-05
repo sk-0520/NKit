@@ -140,7 +140,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             return result;
         }
 
-        IEnumerable<FileSystemInfo> GetFiles(DirectoryInfo targetDirectory, string searchPattern, int limitLevel)
+        IEnumerable<FileSystemInfo> GetFiles(DirectoryInfo targetDirectory, string searchPattern, int limitLevel, CancellationToken cancelToken)
         {
             var files = targetDirectory.EnumerateFiles(searchPattern, SearchOption.TopDirectoryOnly);
             foreach(var file in files) {
@@ -159,7 +159,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                     }
 
                     // アクセスできるようなので中を検索していく
-                    var filesInDir = GetFiles(dir, searchPattern, limitLevel - 1);
+                    var filesInDir = GetFiles(dir, searchPattern, limitLevel - 1, cancelToken);
                     foreach(var file in filesInDir) {
                         yield return file;
                     }
@@ -222,7 +222,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             return base.PreparationCoreAsync(cancelToken);
         }
 
-        protected override Task<None> ExecuteCoreAsync(CancellationToken cancelToken)
+        protected override Task<None> RunCoreAsync(CancellationToken cancelToken)
         {
             Items.Clear();
 
@@ -230,9 +230,11 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             var limitLevel = CurrentFindGroupSetting.DirectoryLimitLevel;
 
             return Task.Run(() => {
-                var files = GetFiles(dirInfo, "*", limitLevel);
+                var files = GetFiles(dirInfo, "*", limitLevel, cancelToken);
 
                 foreach(var file in files) {
+                    cancelToken.ThrowIfCancellationRequested();
+
                     var fileNameSearchResult = SearchNamePattern(file);
 
                     var fileContentSearchResult = FileContentSearchResult.NotFound;

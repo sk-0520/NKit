@@ -53,7 +53,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             return base.PreparationCoreAsync(cancelToken);
         }
 
-        protected override Task<byte[]> ExecuteCoreAsync(CancellationToken cancelToken)
+        protected override Task<byte[]> RunCoreAsync(CancellationToken cancelToken)
         {
             return Task.Run(() => HashProvider.Execute(FileStream));
         }

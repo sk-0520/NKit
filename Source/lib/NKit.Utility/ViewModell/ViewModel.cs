@@ -164,6 +164,7 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
             nameof(RunnableModelBase<TExecuteResult>.StartTimestamp),
             nameof(RunnableModelBase<TExecuteResult>.EndTimestamp),
             nameof(RunnableModelBase<TExecuteResult>.PreparationSpan),
+            nameof(RunnableModelBase<TExecuteResult>.IsRunningCancel),
         };
 
         #endregion
@@ -171,10 +172,17 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
         public RunnableViewModelBase(TModel model)
             : base(model)
         {
-            Execute = GetInvokeUI(() =>
+            RunCommand = GetInvokeUI(() =>
                 new DelegateCommand(
-                    () => ExecuteCore().ConfigureAwait(false),
-                    () => CanExecute
+                    () => RunCore().ConfigureAwait(false),
+                    () => CanRun
+                )
+            );
+
+            CancelRunCommand = GetInvokeUI(() =>
+                new DelegateCommand(
+                    () => CancelCore(),
+                    () => CanCancel
                 )
             );
         }
@@ -185,12 +193,13 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
         public DateTime StartTimestamp => Model.StartTimestamp;
         public DateTime EndTimestamp => Model.EndTimestamp;
         public TimeSpan PreparationSpan => Model.PreparationSpan;
+        public bool IsRunningCancel => Model.IsRunningCancel;
 
         #endregion
 
         #region property
 
-        protected virtual bool CanExecute
+        protected virtual bool CanRun
         {
             get
             {
@@ -203,17 +212,34 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
             }
         }
 
-        protected CancellationTokenSource ExecuteCancellationTokenSource { get; } = new CancellationTokenSource();
+        protected virtual bool CanCancel
+        {
+            get
+            {
+                var canExecuteValues = new[] {
+                    RunState.Prepare,
+                    RunState.Running,
+                };
+                return canExecuteValues.Any(v => v == RunState);
+            }
+        }
+
+        protected CancellationTokenSource RunningCancellationTokenSource { get; } = new CancellationTokenSource();
 
         #endregion
 
         #region function
 
-        protected virtual Task<TExecuteResult> ExecuteCore()
+        protected virtual Task<TExecuteResult> RunCore()
         {
-            var task = Model.ExecuteAsync(ExecuteCancellationTokenSource.Token);
+            var task = Model.RunAsync(RunningCancellationTokenSource.Token);
             task.ConfigureAwait(false);
             return task;
+        }
+
+        protected virtual void CancelCore()
+        {
+            RunningCancellationTokenSource.Cancel();
         }
 
         protected void InvokeUI(Action action)
@@ -243,7 +269,9 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
 
         #region command
 
-        public DelegateCommand Execute { get; private set; }
+        public DelegateCommand RunCommand { get; private set; }
+        public DelegateCommand CancelRunCommand { get; private set; }
+
 
         #endregion
 
@@ -269,15 +297,30 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
         {
             if(RunnableProperties.Any(s => s == e.PropertyName)) {
                 RaisePropertyChanged(e.PropertyName);
-                if(e.PropertyName == nameof(Model.RunState)) {
+                if(e.PropertyName == nameof(Model.RunState) || e.PropertyName == nameof(Model.IsRunningCancel) ) {
                     InvokeUI(() => {
-                        RaisePropertyChanged(nameof(CanExecute));
-                        Execute.RaiseCanExecuteChanged();
+                        RaisePropertyChanged(nameof(CanRun));
+                        RaisePropertyChanged(nameof(IsRunningCancel));
+                        RunCommand.RaiseCanExecuteChanged();
+                        CancelRunCommand.RaiseCanExecuteChanged();
                     });
                 }
             }
 
             OnChangedModelProperty(e);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(!IsDisposed) {
+                if(CanCancel) {
+                    RunningCancellationTokenSource.Cancel();
+                }
+
+                RunningCancellationTokenSource.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
 
         #endregion

@@ -58,10 +58,10 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.File
 
         #region RunnableViewModelBase
 
-        protected override Task<byte[]> ExecuteCore()
+        protected override Task<byte[]> RunCore()
         {
             CurrentHashType = SelectedHashType;
-            return base.ExecuteCore().ContinueWith(t => HashValue = t.Result);
+            return base.RunCore().ContinueWith(t => HashValue = t.Result);
         }
 
         #endregion

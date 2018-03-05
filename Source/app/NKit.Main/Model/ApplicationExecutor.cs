@@ -58,7 +58,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
             return base.PreparationCoreAsync(cancelToken);
         }
 
-        protected sealed override Task<int> ExecuteCoreAsync(CancellationToken cancelToken)
+        protected sealed override Task<int> RunCoreAsync(CancellationToken cancelToken)
         {
             ExecuteTask = new TaskCompletionSource<int>();
 
