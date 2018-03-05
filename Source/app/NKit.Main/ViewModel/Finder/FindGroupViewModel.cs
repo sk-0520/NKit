@@ -161,22 +161,28 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { SetPropertyValue(Model.FindGroupSetting.XmlHtmlContent, value, nameof(Model.FindGroupSetting.XmlHtmlContent.IsEnabled)); }
         }
 
-        public bool XmlContentIgnoreElement
+        public bool XmlContentElement
         {
-            get { return Model.FindGroupSetting.XmlHtmlContent.IgnoreElement; }
-            set { SetPropertyValue(Model.FindGroupSetting.XmlHtmlContent, value, nameof(Model.FindGroupSetting.XmlHtmlContent.IgnoreElement)); }
+            get { return Model.FindGroupSetting.XmlHtmlContent.Element; }
+            set { SetPropertyValue(Model.FindGroupSetting.XmlHtmlContent, value, nameof(Model.FindGroupSetting.XmlHtmlContent.Element)); }
         }
 
-        public bool XmlContentIgnoreAttribute
+        public bool XmlContentAttributeKey
         {
-            get { return Model.FindGroupSetting.XmlHtmlContent.IgnoreAttribute; }
-            set { SetPropertyValue(Model.FindGroupSetting.XmlHtmlContent, value, nameof(Model.FindGroupSetting.XmlHtmlContent.IgnoreAttribute)); }
+            get { return Model.FindGroupSetting.XmlHtmlContent.AttributeKey; }
+            set { SetPropertyValue(Model.FindGroupSetting.XmlHtmlContent, value, nameof(Model.FindGroupSetting.XmlHtmlContent.AttributeKey)); }
         }
 
-        public bool XmlContentIgnoreComment
+        public bool XmlContentAttributeValue
         {
-            get { return Model.FindGroupSetting.XmlHtmlContent.IgnoreComment; }
-            set { SetPropertyValue(Model.FindGroupSetting.XmlHtmlContent, value, nameof(Model.FindGroupSetting.XmlHtmlContent.IgnoreComment)); }
+            get { return Model.FindGroupSetting.XmlHtmlContent.AttributeValue; }
+            set { SetPropertyValue(Model.FindGroupSetting.XmlHtmlContent, value, nameof(Model.FindGroupSetting.XmlHtmlContent.AttributeValue)); }
+        }
+
+        public bool XmlContentComment
+        {
+            get { return Model.FindGroupSetting.XmlHtmlContent.Comment; }
+            set { SetPropertyValue(Model.FindGroupSetting.XmlHtmlContent, value, nameof(Model.FindGroupSetting.XmlHtmlContent.Comment)); }
         }
 
         public bool XmlContentIgnoreHtmlLinkValue

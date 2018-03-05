@@ -125,11 +125,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                 if(CurrentFindGroupSetting.XmlHtmlContent.IsEnabled && CachedFileNameKindPatterns[FileNameKind.XmlHtml].IsMatch(file.Name)) {
                     try {
                         // XMLとか検索した記憶あんまねぇなぁ
-                        if(result.Text != null && result.Text.EncodingCheck.IsSuccess) {
-                            result.XmlHtml = searcher.SearchXmlHtml(CachedFileContentPattern, result.Text.EncodingCheck.Encoding, CurrentFindGroupSetting.XmlHtmlContent);
-                        } else {
-                            result.XmlHtml = searcher.SearchXmlHtml(CachedFileContentPattern, CurrentFindGroupSetting.XmlHtmlContent);
-                        }
+                        result.XmlHtml = searcher.SearchXmlHtml(CachedFileContentPattern, CurrentFindGroupSetting.XmlHtmlContent);
                     } catch(Exception ex) {
                         Debug.WriteLine(ex);
                     }

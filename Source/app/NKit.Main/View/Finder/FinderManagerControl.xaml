@@ -116,9 +116,10 @@
                           <CheckBox IsChecked="{Binding XmlHtmlContentIsEnabled}">xml/html</CheckBox>
                         </GroupBox.Header>
                         <StackPanel>
-                          <CheckBox IsChecked="{Binding XmlContentIgnoreElement}">IgnoreElement</CheckBox>
-                          <CheckBox IsChecked="{Binding XmlContentIgnoreAttribute}">IgnoreAttribute</CheckBox>
-                          <CheckBox IsChecked="{Binding XmlContentIgnoreComment}">IgnoreComment</CheckBox>
+                          <CheckBox IsChecked="{Binding XmlContentElement}">Element</CheckBox>
+                          <CheckBox IsChecked="{Binding XmlContentAttributeKey}">AttributeKey</CheckBox>
+                          <CheckBox IsChecked="{Binding XmlContentAttributeValue}">AttributeValue</CheckBox>
+                          <CheckBox IsChecked="{Binding XmlContentComment}">Comment</CheckBox>
                           <CheckBox IsChecked="{Binding XmlContentIgnoreHtmlLinkValue}">IgnoreHtmlLinkValue</CheckBox>
                         </StackPanel>
                       </GroupBox>

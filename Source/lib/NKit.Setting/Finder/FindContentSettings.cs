@@ -84,19 +84,24 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         #region property
 
         /// <summary>
-        /// 要素を検索対象外とするか。
+        /// 要素を検索対象とするか。
         /// </summary>
-        bool IgnoreElement { get; }
+        bool Element { get; }
         /// <summary>
-        /// 属性(属性のキーのみ)を検索対象外とするか。
+        /// 属性のキーを検索対象とするか。
         /// </summary>
-        bool IgnoreAttribute { get; }
+        bool AttributeKey { get; }
         /// <summary>
-        /// コメント内を検索対象外とするか。
+        /// 属性の値を検索対象とするか。
         /// </summary>
-        bool IgnoreComment { get; }
+        bool AttributeValue { get; }
+        /// <summary>
+        /// コメントを検索対象とするか。
+        /// </summary>
+        bool Comment { get; }
         /// <summary>
         /// a[href], img[src] の値を検索対象外とするか。
+        /// <para><see cref="AttributeKey"/>, <see cref="AttributeValue"/> に思いっきり影響される。</para>
         /// </summary>
         bool IgnoreHtmlLinkValue { get; }
 
@@ -111,9 +116,10 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
     {
         #region IReadOnlyFindXmlHtmlContentSetting
 
-        public bool IgnoreElement { get; set; }
-        public bool IgnoreAttribute { get; set; }
-        public bool IgnoreComment { get; set; }
+        public bool Element { get; set; } = true;
+        public bool AttributeKey { get; set; } = true;
+        public bool AttributeValue { get; set; } = true;
+        public bool Comment { get; set; } = true;
         public bool IgnoreHtmlLinkValue { get; set; }
 
         #endregion
