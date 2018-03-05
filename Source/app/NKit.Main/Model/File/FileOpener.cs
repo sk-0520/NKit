@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ContentTypeTextNet.Library.PInvoke.Windows;
 
 namespace ContentTypeTextNet.NKit.Main.Model.File
 {
@@ -42,9 +43,9 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             return null;
         }
 
-        public void ShowProperty(FileSystemInfo fileSystemInfo)
+        public void ShowProperty(FileSystemInfo fileSystemInfo, IntPtr hWnd)
         {
-            throw new NotImplementedException("windows api");
+            NativeMethods.SHObjectProperties(hWnd, SHOP.SHOP_FILEPATH, fileSystemInfo.FullName, string.Empty);
         }
     }
 }

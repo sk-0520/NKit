@@ -1,4 +1,4 @@
-﻿<UserControl 
+<UserControl 
   x:Name="root"
   x:Class="ContentTypeTextNet.NKit.Main.View.Finder.FinderMultiFileControl"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -18,28 +18,62 @@
     <app_utility_view_converter:HumanLikeByteConverter x:Key="HumanLikeByteConverter" />
   </UserControl.Resources>
   <Grid>
-    <StackPanel>
-      <Label>count:</Label>
-      <TextBlock Text="{Binding MultiItem.Count, ElementName=root}" />
-      <Label>sum size</Label>
-      <TextBlock Text="{Binding MultiItem.TotalSize, ElementName=root, Converter={StaticResource HumanLikeByteConverter}}" />
-      <TextBlock Text="{Binding MultiItem.TotalSize, ElementName=root}" />
+    <TabControl>
+      <TabItem Header="general" IsSelected="{Binding MultiItem.IsSelectedGeneral, ElementName=root}">
+        <ScrollViewer>
+          <StackPanel>
+            <Label>count:</Label>
+            <TextBlock Text="{Binding MultiItem.Count, ElementName=root}" />
+            <Label>sum size</Label>
+            <TextBlock Text="{Binding MultiItem.TotalSize, ElementName=root, Converter={StaticResource HumanLikeByteConverter}}" />
+            <TextBlock Text="{Binding MultiItem.TotalSize, ElementName=root}" />
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
 
-      <ItemsControl ItemsSource="{Binding MultiItem.Items, ElementName=root}">
-        <ItemsControl.ItemsPanel>
-          <ItemsPanelTemplate>
-            <VirtualizingStackPanel />
-          </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
-          <DataTemplate>
-            <Expander Header="{Binding FileName}">
-              <app_main_view_finder:FinderSingleFileControl SingleItem="{Binding}" />
-            </Expander>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
+      <TabItem IsSelected="{Binding MultiItem.IsSelectedSingleFile, ElementName=root}">
+        <!--<TabItem.Style>
+          <Style TargetType="TabItem">
+            <Setter Property="Width" Value="100" />
+          </Style>
+        </TabItem.Style>-->
+        <TabItem.Header>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-    </StackPanel>
+            <TextBlock Grid.Column="0">selected file:</TextBlock>
+            <ComboBox x:Name="selectedSingleFile" Grid.Column="1" SelectedItem="{Binding MultiItem.SelectedSingleItem, ElementName=root}" ItemsSource="{Binding MultiItem.Items, ElementName=root}">
+              <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <!-- なんでか知らんけど仮想化しないと謎のゴミが入る -->
+                  <VirtualizingStackPanel />
+                </ItemsPanelTemplate>
+              </ComboBox.ItemsPanel>
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding FileName}" />
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </Grid>
+        </TabItem.Header>
+
+        <app_main_view_finder:FinderSingleFileControl SingleItem="{Binding MultiItem.SelectedSingleItem, ElementName=root, Mode=TwoWay}">
+          <app_main_view_finder:FinderSingleFileControl.Style>
+            <Style TargetType="app_main_view_finder:FinderSingleFileControl">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding MultiItem.SelectedSingleItem, ElementName=root}" Value="{x:Null}">
+                  <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </app_main_view_finder:FinderSingleFileControl.Style>
+        </app_main_view_finder:FinderSingleFileControl>
+
+      </TabItem>
+    </TabControl>
   </Grid>
 </UserControl>

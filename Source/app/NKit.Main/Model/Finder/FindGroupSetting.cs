@@ -38,8 +38,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         /// 検索するディレクトリ階層上限。
         /// <para>0で無制限</para>
         /// </summary>
-        public int DirectoryLimitLevel { get; set; } = 1;
-
+        public int DirectoryLimitLevel { get; set; }
+#if DEBUG
+            = 0;
+#endif
         /// <summary>
         /// ファイル内まで検索するか。
         /// </summary>

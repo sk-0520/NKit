@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using ContentTypeTextNet.NKit.Utility.ViewModell;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
@@ -12,17 +15,49 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
     {
         #region variable
 
+        FindItemViewModel _selectedSingleItem;
+        bool _isSelectedGeneral;
+        bool _isSelectedSingleFile;
 
         #endregion
 
         public FindMultiItemsViewModel()
         {
+            Items = GetInvokeUI(() => new ObservableCollection<FindItemViewModel>());
             Items.CollectionChanged += Items_CollectionChanged;
         }
 
         #region property
 
-        public ObservableCollection<FindItemViewModel> Items { get; } = new ObservableCollection<FindItemViewModel>();
+        public ObservableCollection<FindItemViewModel> Items { get; } 
+
+        public FindItemViewModel SelectedSingleItem
+        {
+            get { return this._selectedSingleItem; }
+            set
+            {
+                if(SetProperty(ref this._selectedSingleItem, value)) {
+                    if(SelectedSingleItem != null) {
+                        IsSelectedGeneral = false;
+                        IsSelectedSingleFile = true;
+                    } else {
+                        IsSelectedGeneral = true;
+                        IsSelectedSingleFile = false;
+                    }
+                }
+            }
+        }
+
+        public bool IsSelectedGeneral
+        {
+            get { return this._isSelectedGeneral; }
+            set { SetProperty(ref this._isSelectedGeneral, value); }
+        }
+        public bool IsSelectedSingleFile
+        {
+            get { return this._isSelectedSingleFile; }
+            set { SetProperty(ref this._isSelectedSingleFile, value); }
+        }
 
         public bool IsEnabled => 1 < Items.Count;
 
@@ -32,7 +67,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         #endregion
 
-        #region property
+        #region function
 
         void RaisePropertiesChanged()
         {
@@ -40,6 +75,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             RaisePropertyChanged(nameof(Count));
             RaisePropertyChanged(nameof(TotalSize));
         }
+
 
         #endregion
 
@@ -56,8 +92,14 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         #endregion
 
-        private void Items_CollectionChanged(object sender, global::System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            if(e.Action == NotifyCollectionChangedAction.Remove) {
+                if(e.OldItems.Cast<FindItemViewModel>().Any(i => i == SelectedSingleItem)) {
+                    SelectedSingleItem = null;
+                }
+            }
+
             RaisePropertiesChanged();
         }
     }

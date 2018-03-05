@@ -281,30 +281,28 @@
                   </ListView.ContextMenu>
                 </ListView>
 
-                <ScrollViewer Grid.Row="1" Visibility="{Binding ShowSelectedFileDetail, Converter={StaticResource BooleanToVisibilityConverter}}" Height="{Binding ActualHeight, ElementName=fileListPanel, Converter={StaticResource DoubleToParameterPercentConverter}, ConverterParameter=0.5}">
-                  <ContentControl>
-                    <ContentControl.Style>
-                      <Style TargetType="ContentControl">
-                        <Style.Triggers>
-                          <DataTrigger Binding="{Binding MultiSelectedItem.IsEnabled}" Value="True">
-                            <Setter Property="Content">
-                              <Setter.Value>
-                                <app_main_view_finder:FinderMultiFileControl MultiItem="{Binding MultiSelectedItem}" />
-                              </Setter.Value>
-                            </Setter>
-                          </DataTrigger>
-                          <DataTrigger Binding="{Binding MultiSelectedItem.IsEnabled}" Value="False">
-                            <Setter Property="Content">
-                              <Setter.Value>
-                                <app_main_view_finder:FinderSingleFileControl SingleItem="{Binding SelectedItem, Mode=TwoWay}" />
-                              </Setter.Value>
-                            </Setter>
-                          </DataTrigger>
-                        </Style.Triggers>
-                      </Style>
-                    </ContentControl.Style>
-                  </ContentControl>
-                </ScrollViewer>
+                <ContentControl Grid.Row="1" Visibility="{Binding ShowSelectedFileDetail, Converter={StaticResource BooleanToVisibilityConverter}}" Height="{Binding ActualHeight, ElementName=fileListPanel, Converter={StaticResource DoubleToParameterPercentConverter}, ConverterParameter=0.5}">
+                  <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding MultiSelectedItem.IsEnabled}" Value="True">
+                          <Setter Property="Content">
+                            <Setter.Value>
+                              <app_main_view_finder:FinderMultiFileControl MultiItem="{Binding MultiSelectedItem}" />
+                            </Setter.Value>
+                          </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding MultiSelectedItem.IsEnabled}" Value="False">
+                          <Setter Property="Content">
+                            <Setter.Value>
+                              <app_main_view_finder:FinderSingleFileControl SingleItem="{Binding SelectedItem, Mode=TwoWay}" />
+                            </Setter.Value>
+                          </Setter>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </ContentControl.Style>
+                </ContentControl>
 
               </Grid>
             </Grid>

@@ -19,12 +19,33 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         bool _isSelected;
 
+        bool _isSelectedContentGeneral;
+        bool _isSelectedContentText;
+        bool _isSelectedContentMsOffice;
+        bool _isSelectedContentXmlHtml;
+
         #endregion
 
         public FindItemViewModel(FindItemModel model)
             : base(model)
         {
             FileInfo = (FileInfo)model.FileSystemInfo;
+
+            // だっせぇ
+            if(Model.FileContentSearchResult.IsMatched) {
+                if(ContentIsText) {
+                    IsSelectedContentText = true;
+                }
+                if(ContentIsXmlHtml) {
+                    IsSelectedContentXmlHtml = true;
+                }
+                if(ContentIsMsOffice) {
+                    IsSelectedContentMsOffice = true;
+                }
+            }
+            if(!(ContentIsText || ContentIsXmlHtml | ContentIsMsOffice)) {
+                IsSelectedContentGeneral = true;
+            }
         }
 
         #region property
@@ -109,6 +130,28 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             get { return this._isSelected; }
             set { SetProperty(ref this._isSelected, value); }
         }
+
+        public bool IsSelectedContentGeneral
+        {
+            get { return this._isSelectedContentGeneral; }
+            set { SetProperty(ref this._isSelectedContentGeneral, value); }
+        }
+        public bool IsSelectedContentText
+        {
+            get { return this._isSelectedContentText; }
+            set { SetProperty(ref this._isSelectedContentText, value); }
+        }
+        public bool IsSelectedContentMsOffice
+        {
+            get { return this._isSelectedContentMsOffice; }
+            set { SetProperty(ref this._isSelectedContentMsOffice, value); }
+        }
+        public bool IsSelectedContentXmlHtml
+        {
+            get { return this._isSelectedContentXmlHtml; }
+            set { SetProperty(ref this._isSelectedContentXmlHtml, value); }
+        }
+
 
         #endregion
 

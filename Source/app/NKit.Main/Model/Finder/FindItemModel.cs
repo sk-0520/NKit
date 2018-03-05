@@ -63,7 +63,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         public void ShowProperty()
         {
             var opener = new FileOpener();
-            opener.ShowProperty(FileSystemInfo);
+            opener.ShowProperty(FileSystemInfo, IntPtr.Zero/*TODO: どうすんのよこれ*/);
         }
 
         public void CopyFileSize()

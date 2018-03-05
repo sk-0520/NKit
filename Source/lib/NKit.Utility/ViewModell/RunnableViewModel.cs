@@ -129,29 +129,6 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
             RunningCancellationTokenSource.Cancel();
         }
 
-        protected void InvokeUI(Action action)
-        {
-            if(Dispatcher.CurrentDispatcher == Application.Current.Dispatcher) {
-                action();
-            } else {
-                Application.Current.Dispatcher.Invoke(action);
-            }
-        }
-
-        protected T GetInvokeUI<T>(Func<T> func)
-        {
-            if(Dispatcher.CurrentDispatcher == Application.Current.Dispatcher) {
-                return func();
-            } else {
-                var result = default(T);
-                Application.Current.Dispatcher.Invoke(() => {
-                    result = func();
-                });
-                return result;
-            }
-        }
-
-
         #endregion
 
         #region RunnableItem
