@@ -173,10 +173,7 @@
     <Compile Include="Model\File\FileOpener.cs" />
     <Compile Include="Model\File\FileTypeModel.cs" />
     <Compile Include="Model\Finder\FinderManagerModel.cs" />
-    <Compile Include="Model\Finder\FinderSetting.cs" />
-    <Compile Include="Model\Finder\FindContentSettings.cs" />
     <Compile Include="Model\Finder\FindGroupModel.cs" />
-    <Compile Include="Model\Finder\FindGroupSetting.cs" />
     <Compile Include="Model\Finder\FindItemModel.cs" />
     <Compile Include="Model\SearchPatternCreator.cs" />
     <Compile Include="Model\HashProvider.cs" />

@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.NKit.Setting.Define;
 
-namespace ContentTypeTextNet.NKit.Main.Model.Finder
+namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
 {
     public class FindGroupSetting : SettingBase
     {

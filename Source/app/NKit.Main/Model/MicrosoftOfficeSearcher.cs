@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
 using ContentTypeTextNet.NKit.Main.Model.Microsoft.Office;
+using ContentTypeTextNet.NKit.NKit.Setting.Finder;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
