@@ -112,6 +112,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\XmlHtmlSearcher.cs" />
     <Compile Include="View\Control\RunnableControl.xaml.cs">
       <DependentUpon>RunnableControl.xaml</DependentUpon>
     </Compile>

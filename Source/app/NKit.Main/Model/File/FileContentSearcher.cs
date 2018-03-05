@@ -28,6 +28,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         public TextSearchResult Text { get; set; }
         public MicrosoftOfficeSearchResultBase MicrosoftOffice { get; set; }
+        public XmlHtmlSearchResult XmlHtml { get; set; }
 
         #endregion
     }
@@ -48,6 +49,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         Stream FileStream { get; }
 
+        TextSearchResult TextSearchResult { get;set;}
+        MicrosoftOfficeSearchResultBase MicrosoftOfficeSearchResult { get;set;}
+        XmlHtmlSearchResult XmlHtmlSearchResult { get;set;}
+
         #endregion
 
         #region function
@@ -61,7 +66,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             FileStream.Position = 0;
 
             var ts = new TextSearcher();
-            return ts.Search(FileStream, regex);
+            return TextSearchResult = ts.Search(FileStream, regex);
         }
 
         public MicrosoftOfficeExcelSearchResult SearchMicrosoftExcel(MicrosoftOfficeFileType excelType, Regex regex, IReadOnlyFindMicrosoftOfficeExcelContentSetting setting)
@@ -73,7 +78,9 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             FileStream.Position = 0;
 
             var es = new MicrosoftOfficeExcelSearcher();
-            return es.Search(excelType, FileStream, regex, setting);
+            var result = es.Search(excelType, FileStream, regex, setting);
+            MicrosoftOfficeSearchResult = result;
+            return result;
         }
 
         public MicrosoftOfficeWordSearchResult SearchMicrosoftWord(MicrosoftOfficeFileType wordType, Regex regex, IReadOnlyFindMicrosoftOfficeWordContentSetting setting)
@@ -85,7 +92,9 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             FileStream.Position = 0;
 
             var ws = new MicrosoftOfficeWordSearcher();
-            return ws.Search(wordType, FileStream, regex, setting);
+            var result = ws.Search(wordType, FileStream, regex, setting);
+            MicrosoftOfficeSearchResult = result;
+            return result;
         }
 
         /// <summary>
@@ -107,15 +116,33 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             switch(officeType) {
                 case MicrosoftOfficeFileType.Excel1997:
                 case MicrosoftOfficeFileType.Excel2007:
-                    return SearchMicrosoftExcel(officeType, regex, parameter.Excel);
+                    return MicrosoftOfficeSearchResult = SearchMicrosoftExcel(officeType, regex, parameter.Excel);
 
                 case MicrosoftOfficeFileType.Word2007:
-                    return SearchMicrosoftWord(officeType, regex, parameter.Word);
+                    return MicrosoftOfficeSearchResult = SearchMicrosoftWord(officeType, regex, parameter.Word);
 
                 default:
                     return MicrosoftOfficeSearchResultBase.NotFound;
             }
 
+        }
+
+        public XmlHtmlSearchResult SearchXmlHtml(Regex regex, IReadOnlyFindXmlHtmlContentSetting setting)
+        {
+            if(File.Length == 0) {
+                return XmlHtmlSearchResult.NotFound;
+            }
+            FileStream.Position = 0;
+
+            XmlHtmlSearchResult result;
+            var xs = new XmlHtmlSearcher();
+            if(TextSearchResult != null && TextSearchResult.EncodingCheck != null && TextSearchResult.EncodingCheck.IsSuccess) {
+                result = xs.Search(FileStream, regex, TextSearchResult.EncodingCheck.Encoding, setting);
+            } else {
+                result = xs.Search(FileStream, regex, setting);
+            }
+            XmlHtmlSearchResult = result;
+            return result;
         }
 
         #endregion
