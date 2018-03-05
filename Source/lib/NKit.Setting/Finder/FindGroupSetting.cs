@@ -19,7 +19,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         /// <summary>
         /// 検索対象ディレクトリパス。
         /// </summary>
-        public string RootDirectoryPath { get; set; } = "Z:\\abc";
+        public string RootDirectoryPath { get; set; }
 
         /// <summary>
         /// ファイル名検索パターン種別。
@@ -56,7 +56,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         /// <summary>
         /// ファイル内検索内容。
         /// </summary>
-        public string FileContentSearchPattern { get; set; } = "を"; //"領"
+        public string FileContentSearchPattern { get; set; }
 
         public FindMicrosoftOfficeContentSetting MicrosoftOfficeContent { get; } = new FindMicrosoftOfficeContentSetting();
         public FindXmlHtmlContentSetting XmlHtmlContent { get; } = new FindXmlHtmlContentSetting();

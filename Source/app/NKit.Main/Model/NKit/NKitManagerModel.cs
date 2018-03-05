@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ContentTypeTextNet.NKit.NKit.Setting;
 
 namespace ContentTypeTextNet.NKit.Main.Model.NKit
 {
     public class NKitManagerModel : ManagerModelBase
     {
-        public NKitManagerModel(Setting setting)
+        public NKitManagerModel(MainSetting setting)
             : base(setting)
         { }
     }

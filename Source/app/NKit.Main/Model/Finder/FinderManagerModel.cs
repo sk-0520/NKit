@@ -4,13 +4,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ContentTypeTextNet.NKit.NKit.Setting;
 using ContentTypeTextNet.NKit.NKit.Setting.Finder;
 
 namespace ContentTypeTextNet.NKit.Main.Model.Finder
 {
     public class FinderManagerModel : ManagerModelBase
     {
-        public FinderManagerModel(Setting setting)
+        public FinderManagerModel(MainSetting setting)
             : base(setting)
         { }
 

@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ContentTypeTextNet.NKit.Main.Model.Finder;
-using ContentTypeTextNet.NKit.NKit.Setting;
 using ContentTypeTextNet.NKit.NKit.Setting.Finder;
 using ContentTypeTextNet.NKit.NKit.Setting.NKit;
-using ContentTypeTextNet.NKit.Utility.Model;
 
-namespace ContentTypeTextNet.NKit.Main.Model
+namespace ContentTypeTextNet.NKit.NKit.Setting
 {
-    public sealed class Setting : SettingBase
+    public class MainSetting: SettingBase
     {
         #region property
 
@@ -22,6 +19,5 @@ namespace ContentTypeTextNet.NKit.Main.Model
         public NKitSetting NKit { get; set; } = new NKitSetting();
 
         #endregion
-
     }
 }

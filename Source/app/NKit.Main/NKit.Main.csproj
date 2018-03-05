@@ -182,7 +182,6 @@
     <Compile Include="Model\Microsoft\Office\MicrosoftOfficeOperator.cs" />
     <Compile Include="Model\MicrosoftOfficeSearcher.cs" />
     <Compile Include="Model\SearchBase.cs" />
-    <Compile Include="Model\Setting.cs" />
     <Compile Include="Model\StreamPostionKeeper.cs" />
     <Compile Include="Model\System\SystemManagerModel.cs" />
     <Compile Include="Model\TextSearcher.cs" />

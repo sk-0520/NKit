@@ -62,6 +62,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
     public class FindMicrosoftOfficeContentSetting : FindContentSettingBase, IReadOnlyFindMicrosoftOfficeExcelContentSetting, IReadOnlyFindMicrosoftOfficeContentSetting, IReadOnlyFindMicrosoftOfficeWordContentSetting
     {
         #region IReadOnlyFindMicrosoftOfficeContentSetting
+
         public bool TextInShape { get; set; }
 
         #endregion

@@ -8,6 +8,7 @@ using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
 using ContentTypeTextNet.NKit.Main.Model.NKit;
 using ContentTypeTextNet.NKit.Main.Model.System;
+using ContentTypeTextNet.NKit.NKit.Setting;
 using ContentTypeTextNet.NKit.Utility.Model;
 using Prism.Mvvm;
 
@@ -20,7 +21,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
 #if DEBUG
         public bool IsInitialized { get; private set; } = false;
 #endif
-        Setting Setting { get; set; }
+        MainSetting Setting { get; set; }
 
         public NKitManagerModel NKitManager { get; private set; }
         public FinderManagerModel FinderManager { get; private set; }
@@ -40,7 +41,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
                 throw new InvalidOperationException();
             }
 #endif
-            Setting = new Setting();
+            Setting = new MainSetting();
 
             NKitManager = new NKitManagerModel(Setting);
             FinderManager = new FinderManagerModel(Setting);
