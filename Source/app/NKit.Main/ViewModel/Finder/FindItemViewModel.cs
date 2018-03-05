@@ -114,16 +114,16 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         #region command
 
-        public ICommand CopyFileSize => new DelegateCommand(() => Model.CopyFileSize());
+        public ICommand CopyFileSizeCommand => new DelegateCommand(() => Model.CopyFileSize());
 
-        public ICommand OpenFile => new DelegateCommand(() => Model.OpenFile());
-        public ICommand OpenDirectory => new DelegateCommand(() => Model.OpenDirectory());
-        public ICommand ShowProperty => new DelegateCommand(() => Model.ShowProperty());
+        public ICommand OpenFileCommand => new DelegateCommand(() => Model.OpenFile());
+        public ICommand OpenDirectoryCommand => new DelegateCommand(() => Model.OpenDirectory());
+        public ICommand ShowPropertyCommand => new DelegateCommand(() => Model.ShowProperty());
 
-        public ICommand CopyFile => new DelegateCommand(() => Model.CopyFile());
-        public ICommand CopyNameWithExtension => new DelegateCommand(() => Model.CopyNameWithExtension());
-        public ICommand CopyNameWithoutExtension => new DelegateCommand(() => Model.CopyNameWithoutExtension());
-        public ICommand CopyDirectory => new DelegateCommand(() => Model.CopyDirectory());
+        public ICommand CopyFileCommand => new DelegateCommand(() => Model.CopyFile());
+        public ICommand CopyNameWithExtensionCommand => new DelegateCommand(() => Model.CopyNameWithExtension());
+        public ICommand CopyNameWithoutExtensionCommand => new DelegateCommand(() => Model.CopyNameWithoutExtension());
+        public ICommand CopyDirectoryCommand => new DelegateCommand(() => Model.CopyDirectory());
 
         #endregion
 

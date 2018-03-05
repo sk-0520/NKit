@@ -298,13 +298,13 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         #region command
 
-        public ICommand UpRootDirectoryPath => new DelegateCommand(() => {
+        public ICommand UpRootDirectoryPathCommand => new DelegateCommand(() => {
             if(Model.UpRootDirectoryPath()) {
                 RaisePropertyChanged(nameof(RootDirectoryPath));
             }
         });
 
-        public ICommand SelectRootDirectoryPath => new DelegateCommand(() => {
+        public ICommand SelectRootDirectoryPathCommand => new DelegateCommand(() => {
             if(Model.SelectRootDirectoryPathFromDialog()) {
                 RaisePropertyChanged(nameof(RootDirectoryPath));
             }

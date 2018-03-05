@@ -41,14 +41,14 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         #region command
 
-        public ICommand AddNewGroup => new DelegateCommand(() => {
+        public ICommand AddNewGroupCommand => new DelegateCommand(() => {
             var model = Model.AddNewGroup();
             var viewModel = new FindGroupViewModel(model);
             GroupViewModels.Add(viewModel);
             SelectedGroupItem = viewModel;
         });
 
-        public ICommand RemoveGroup => new DelegateCommand<FindGroupViewModel>(vm => {
+        public ICommand RemoveGroupCommand => new DelegateCommand<FindGroupViewModel>(vm => {
             if(SelectedGroupItem == vm) {
                 // くるしい, 近しい子を選んであげるべき
                 SelectedGroupItem = GroupViewModels.Where(g => g != vm).FirstOrDefault();

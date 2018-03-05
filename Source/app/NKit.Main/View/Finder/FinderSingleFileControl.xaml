@@ -34,8 +34,8 @@
 
       <StackPanel Orientation="Horizontal">
         <TextBlock>file size:</TextBlock>
-        <TextBox Text="{Binding SingleItem.FileSize, ElementName=root, Mode=OneWay}"/>
-        <Button Command="{Binding SingleItem.CopyFileSize, ElementName=root}">copy</Button>
+        <TextBox Text="{Binding SingleItem.FileSizeCommand, ElementName=root, Mode=OneWay}"/>
+        <Button Command="{Binding SingleItem.CopyFileSizeCommand, ElementName=root}">copy</Button>
       </StackPanel>
 
       <StackPanel x:Name="FileHash" Orientation="Horizontal" DataContext="{Binding SingleItem.FileHash, ElementName=root}">
@@ -50,7 +50,7 @@
                   <Setter Property="Content">
                     <Setter.Value>
                       <TextBlock>
-                        <Hyperlink Command="{Binding CopyHash}" CommandParameter="{Binding HashValue}">
+                        <Hyperlink Command="{Binding CopyHashCommand}" CommandParameter="{Binding HashValue}">
                           <Run Text="copy:" />
                           <Run Text="{Binding CurrentHashType, Mode=OneTime}" />
                           <Run Text="{Binding HashValue, Mode=OneWay, Converter={StaticResource BinaryToTextConverter}}" />

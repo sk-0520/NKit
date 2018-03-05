@@ -32,14 +32,14 @@
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
-    <Button Grid.Row="0" Command="{Binding AddNewGroup}">add new group</Button>
+    <Button Grid.Row="0" Command="{Binding AddNewGroupCommand}">add new group</Button>
     <TabControl Grid.Row="1" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroupItem}">
       <TabControl.ItemTemplate>
         <DataTemplate>
           <StackPanel Orientation="Horizontal">
             <Label Content="{Binding GroupName}" />
             <Label Content="{Binding RunState}" />
-            <Button Command="{Binding DataContext.RemoveGroup, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">remove</Button>
+            <Button Command="{Binding DataContext.RemoveGroupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">remove</Button>
           </StackPanel>
         </DataTemplate>
       </TabControl.ItemTemplate>
@@ -65,8 +65,8 @@
 
                   <Label>dir:</Label>
                   <TextBox Text="{Binding RootDirectoryPath, UpdateSourceTrigger=PropertyChanged}" />
-                  <Button Command="{Binding UpRootDirectoryPath}">up</Button>
-                  <Button Command="{Binding SelectRootDirectoryPath}">open</Button>
+                  <Button Command="{Binding UpRootDirectoryPathCommand}">up</Button>
+                  <Button Command="{Binding SelectRootDirectoryPathCommand}">open</Button>
                   <Label>limit:</Label>
                   <Grid>
                     <Grid.ColumnDefinitions>
@@ -269,14 +269,14 @@
                           <Setter Property="IsEnabled" Value="{Binding SelectedItem, Converter={StaticResource NotNullToBooleanConverter}}" />
                         </Style>
                       </ContextMenu.Resources>
-                      <MenuItem Header="open: file" Command="{Binding SelectedItem.OpenFile}" />
-                      <MenuItem Header="open: directory" Command="{Binding SelectedItem.OpenDirectory}"/>
-                      <MenuItem Header="show: property" Command="{Binding SelectedItem.ShowProperty}" />
+                      <MenuItem Header="open: file" Command="{Binding SelectedItem.OpenFileCommand}" />
+                      <MenuItem Header="open: directory" Command="{Binding SelectedItem.OpenDirectoryCommand}"/>
+                      <MenuItem Header="show: property" Command="{Binding SelectedItem.ShowPropertyCommand}" />
                       <Separator />
-                      <MenuItem Header="copy: file"  Command="{Binding SelectedItem.CopyFile}"/>
-                      <MenuItem Header="copy: name(with ext)"  Command="{Binding SelectedItem.CopyNameWithExtension}"/>
-                      <MenuItem Header="copy: name(without ext)"  Command="{Binding SelectedItem.CopyNameWithoutExtension}"/>
-                      <MenuItem Header="copy: directory"  Command="{Binding SelectedItem.CopyDirectory}"/>
+                      <MenuItem Header="copy: file"  Command="{Binding SelectedItem.CopyFileCommand}"/>
+                      <MenuItem Header="copy: name(with ext)"  Command="{Binding SelectedItem.CopyNameWithExtensionCommand}"/>
+                      <MenuItem Header="copy: name(without ext)"  Command="{Binding SelectedItem.CopyNameWithoutExtensionCommand}"/>
+                      <MenuItem Header="copy: directory"  Command="{Binding SelectedItem.CopyDirectoryCommand}"/>
                     </ContextMenu>
                   </ListView.ContextMenu>
                 </ListView>
