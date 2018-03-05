@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using ContentTypeTextNet.NKit.Main.Model.App;
 using ContentTypeTextNet.NKit.Main.Model.Wapper;
+using ContentTypeTextNet.NKit.NKit.Setting.NKit;
 using ContentTypeTextNet.NKit.Utility.Model;
 
 namespace ContentTypeTextNet.NKit.Main.Model.File
@@ -19,17 +19,17 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         #endregion
 
-        public FileTypeModel(FileInfo fileInfo, IReadOnlyAppSetting appSetting)
+        public FileTypeModel(FileInfo fileInfo, IReadOnlyNKitSetting nkitSetting)
         {
             FileInfo = fileInfo;
-            AppSetting = appSetting;
+            NKitSetting = nkitSetting;
         }
 
         #region property
 
         FileInfo FileInfo { get; }
 
-        IReadOnlyAppSetting AppSetting { get; }
+        IReadOnlyNKitSetting NKitSetting { get; }
 
         public string Information
         {
@@ -53,7 +53,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
         protected override Task<None> RunCoreAsync(CancellationToken cancelToken)
         {
             Information = "";
-            var executor = new BusyBoxExecutor(AppSetting.UsePlatformBusyBox, "file", FileInfo.FullName);
+            var executor = new BusyBoxExecutor(NKitSetting.UsePlatformBusyBox, "file", FileInfo.FullName);
             executor.ReceivedOutput = e => {
                 Information += "[I]" + e.Data;
             };

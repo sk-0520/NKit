@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ContentTypeTextNet.NKit.Main.Model.App;
 using ContentTypeTextNet.NKit.Main.Model.Capture;
 using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
+using ContentTypeTextNet.NKit.Main.Model.NKit;
 using ContentTypeTextNet.NKit.Main.Model.System;
 using ContentTypeTextNet.NKit.Utility.Model;
 using Prism.Mvvm;
@@ -22,7 +22,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
 #endif
         Setting Setting { get; set; }
 
-        public AppManagerModel AppManager { get; private set; }
+        public NKitManagerModel NKitManager { get; private set; }
         public FinderManagerModel FinderManager { get; private set; }
         public FileManagerModel FileManager { get; private set; }
         public CaptureManagerModel CaptureManager { get; private set; }
@@ -42,7 +42,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
 #endif
             Setting = new Setting();
 
-            AppManager = new AppManagerModel(Setting);
+            NKitManager = new NKitManagerModel(Setting);
             FinderManager = new FinderManagerModel(Setting);
             FileManager = new FileManagerModel(Setting);
             CaptureManager = new CaptureManagerModel(Setting);

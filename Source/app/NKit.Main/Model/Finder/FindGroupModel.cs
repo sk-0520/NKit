@@ -9,27 +9,27 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Main.Define;
-using ContentTypeTextNet.NKit.Main.Model.App;
 using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.NKit.Setting.Finder;
+using ContentTypeTextNet.NKit.NKit.Setting.NKit;
 using ContentTypeTextNet.NKit.Utility.Model;
 
 namespace ContentTypeTextNet.NKit.Main.Model.Finder
 {
     public class FindGroupModel : RunnableModelBase<None>
     {
-        public FindGroupModel(FindGroupSetting findGroupSetting, IReadOnlyFinderSetting finderSetting, IReadOnlyAppSetting appSetting)
+        public FindGroupModel(FindGroupSetting findGroupSetting, IReadOnlyFinderSetting finderSetting, IReadOnlyNKitSetting nkitSetting)
         {
             FindGroupSetting = findGroupSetting;
             FinderSetting = finderSetting;
-            AppSetting = appSetting;
+            NKitSetting = nkitSetting;
         }
 
         #region proeprty
 
         public FindGroupSetting FindGroupSetting { get; }
         public IReadOnlyFinderSetting FinderSetting { get; }
-        public IReadOnlyAppSetting AppSetting { get; }
+        public IReadOnlyNKitSetting NKitSetting { get; }
         /// <summary>
         /// 検索時に使用した設定。
         /// </summary>
@@ -243,7 +243,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                         fileContentSearchResult = SearchFlieContentPattern(file);
                     }
 
-                    var findItem = new FindItemModel(dirInfo, file, fileNameSearchResult, fileContentSearchResult, AppSetting);
+                    var findItem = new FindItemModel(dirInfo, file, fileNameSearchResult, fileContentSearchResult, NKitSetting);
                     Items.Add(findItem);
                 }
 

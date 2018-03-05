@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ContentTypeTextNet.NKit.Main.Model.App;
+using ContentTypeTextNet.NKit.Main.Model.NKit;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.App
 {
-    public class AppManagerViewModel : ManagerViewModelBase<AppManagerModel>
+    public class NKitManagerViewModel : ManagerViewModelBase<NKitManagerModel>
     {
-        public AppManagerViewModel(AppManagerModel model)
+        public NKitManagerViewModel(NKitManagerModel model)
             : base(model)
         { }
     }

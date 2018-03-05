@@ -164,8 +164,7 @@
     <Compile Include="Define\MicrosoftOfficeFileType.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Model\ApplicationExecutor.cs" />
-    <Compile Include="Model\App\AppManagerModel.cs" />
-    <Compile Include="Model\App\AppSetting.cs" />
+    <Compile Include="Model\NKit\NKitManagerModel.cs" />
     <Compile Include="Model\Capture\CaptureManagerModel.cs" />
     <Compile Include="Model\File\FileContentSearcher.cs" />
     <Compile Include="Model\File\FileHashModel.cs" />
@@ -188,7 +187,7 @@
     <Compile Include="Model\System\SystemManagerModel.cs" />
     <Compile Include="Model\TextSearcher.cs" />
     <Compile Include="Model\Wapper\BusyBoxExecutor.cs" />
-    <Compile Include="ViewModel\App\AppManagerViewModel.cs" />
+    <Compile Include="ViewModel\NKit\NKitManagerViewModel.cs" />
     <Compile Include="ViewModel\Capture\CaptureManagerViewModel.cs" />
     <Compile Include="ViewModel\File\FileHashViewModel.cs" />
     <Compile Include="ViewModel\File\FileManagerViewModel.cs" />

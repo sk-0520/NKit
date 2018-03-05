@@ -42,6 +42,7 @@
     <Compile Include="Finder\FindContentSettings.cs" />
     <Compile Include="Finder\FinderSetting.cs" />
     <Compile Include="Finder\FindGroupSetting.cs" />
+    <Compile Include="NKit\NKitSetting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingBase.cs" />
     <Compile Include="WindowSetting.cs" />

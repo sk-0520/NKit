@@ -19,7 +19,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel
         public MainViewModel(MainModel model)
             : base(model)
         {
-            AppManager = new AppManagerViewModel(Model.AppManager);
+            AppManager = new NKitManagerViewModel(Model.NKitManager);
             CaptureManager = new CaptureManagerViewModel(Model.CaptureManager);
             FileManager = new FileManagerViewModel(Model.FileManager);
             FinderManager = new FinderManagerViewModel(Model.FinderManager);
@@ -28,7 +28,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel
 
         #region property
 
-        public AppManagerViewModel AppManager { get; }
+        public NKitManagerViewModel AppManager { get; }
         public CaptureManagerViewModel CaptureManager { get; }
         public FileManagerViewModel FileManager { get; }
         public FinderManagerViewModel FinderManager { get; }

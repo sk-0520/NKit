@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContentTypeTextNet.NKit.Main.Model.App
+namespace ContentTypeTextNet.NKit.Main.Model.NKit
 {
-    public class AppManagerModel : ManagerModelBase
+    public class NKitManagerModel : ManagerModelBase
     {
-        public AppManagerModel(Setting setting)
+        public NKitManagerModel(Setting setting)
             : base(setting)
         { }
     }

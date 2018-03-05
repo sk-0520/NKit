@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ContentTypeTextNet.NKit.NKit.Setting;
 
-namespace ContentTypeTextNet.NKit.Main.Model.App
+namespace ContentTypeTextNet.NKit.NKit.Setting.NKit
 {
-    public interface IReadOnlyAppSetting
+    public interface IReadOnlyNKitSetting
     {
         #region property
 
@@ -16,7 +15,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.App
         #endregion
     }
 
-    public class AppSetting : SettingBase, IReadOnlyAppSetting
+    public class NKitSetting : SettingBase, IReadOnlyNKitSetting
     {
         #region IReadOnlyApplicationSetting
 
