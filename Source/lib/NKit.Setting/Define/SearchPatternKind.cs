@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContentTypeTextNet.NKit.Main.Define
+namespace ContentTypeTextNet.NKit.NKit.Setting.Define
 {
     /// <summary>
     /// 検索パターン種別。
     /// <para>ファイル名のフィルタ処理。</para>
     /// </summary>
-    public enum FindPatternKind
+    public enum SearchPatternKind
     {
         /// <summary>
         /// 部分一致。
@@ -25,5 +25,4 @@ namespace ContentTypeTextNet.NKit.Main.Define
         /// </summary>
         Regex,
     }
-
 }

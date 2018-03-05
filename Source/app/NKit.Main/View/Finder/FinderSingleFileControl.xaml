@@ -97,7 +97,7 @@
             <Label>Encoding:</Label>
             <TextBlock Text="{Binding EncodingCheck.Encoding, Mode=OneTime}" />
             <Label>Matches:</Label>
-            <app_main_view_finder:FindTextMatchControl ItemsSource="{Binding SingleItem.ContentMatches, Mode=TwoWay, ElementName=root}" />
+            <app_main_view_control:TextSearchMatchControl ItemsSource="{Binding SingleItem.ContentMatches, Mode=TwoWay, ElementName=root}" />
           </StackPanel>
 
         </ScrollViewer>
@@ -116,13 +116,13 @@
                       <DataTemplate>
                         <StackPanel>
                           <Label>sheet:</Label>
-                          <app_main_view_finder:FindTextMatchControl IsSelectable="False" ShowSingleLine="True" ShowSingleUnmatchText="{Binding SheetName}" ItemsSource="{Binding SheetNameResult.Matches}" />
+                          <app_main_view_control:TextSearchMatchControl IsSelectable="False" ShowSingleLine="True" ShowSingleUnmatchText="{Binding SheetName}" ItemsSource="{Binding SheetNameResult.Matches}" />
 
                           <Label>cells:</Label>
-                          <app_main_view_finder:FindTextMatchControl ItemsSource="{Binding CellResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}" />
+                          <app_main_view_control:TextSearchMatchControl ItemsSource="{Binding CellResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}" />
 
                           <Label>shape:</Label>
-                          <app_main_view_finder:FindTextMatchControl ItemsSource="{Binding ShapeResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}" />
+                          <app_main_view_control:TextSearchMatchControl ItemsSource="{Binding ShapeResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}" />
                         </StackPanel>
                       </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -130,7 +130,7 @@
                 </StackPanel>
                 <StackPanel x:Key="Word">
                   <Label>elements:</Label>
-                  <app_main_view_finder:FindTextMatchControl ItemsSource="{Binding SingleItem.ContentMsOfficeWordElements, Mode=TwoWay, ElementName=root}" />
+                  <app_main_view_control:TextSearchMatchControl ItemsSource="{Binding SingleItem.ContentMsOfficeWordElements, Mode=TwoWay, ElementName=root}" />
                 </StackPanel>
               </ContentControl.Resources>
               <ContentControl.Style>

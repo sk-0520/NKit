@@ -5,12 +5,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Main.Define;
+using ContentTypeTextNet.NKit.NKit.Setting.Define;
 
-namespace ContentTypeTextNet.NKit.Main.Model.Finder
+namespace ContentTypeTextNet.NKit.Main.Model
 {
-    public class FindPatternCreator
+    public class SearchPatternCreator
     {
-        public FindPatternCreator()
+        public SearchPatternCreator()
         { }
 
 
@@ -40,7 +41,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             return new Regex(usingPattern, options);
         }
 
-        public Regex CreateRegex(FindPatternKind findPatternKind, string pattern, bool ignoreCase)
+        public Regex CreateRegex(SearchPatternKind searchPatternKind, string pattern, bool ignoreCase)
         {
             var options = RegexOptions.None;
             if(ignoreCase) {
@@ -49,14 +50,14 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
             var usingPattern = pattern ?? string.Empty;
 
-            switch(findPatternKind) {
-                case FindPatternKind.PartialMatch:
+            switch(searchPatternKind) {
+                case SearchPatternKind.PartialMatch:
                     return CreatePartialRegex(usingPattern, options);
 
-                case FindPatternKind.WildcardCharacter:
+                case SearchPatternKind.WildcardCharacter:
                     return CreateWildcardRegex(usingPattern, options);
 
-                case FindPatternKind.Regex:
+                case SearchPatternKind.Regex:
                     return new Regex(usingPattern, options);
 
                 default:
@@ -79,7 +80,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
             var joinPattern = string.Join("|", wildcardNames);
             var bothLimitPattern = AddWildcardBothLimit(joinPattern);
-            return CreateRegex(FindPatternKind.Regex, bothLimitPattern, true);
+            return CreateRegex(SearchPatternKind.Regex, bothLimitPattern, true);
         }
 
         #endregion

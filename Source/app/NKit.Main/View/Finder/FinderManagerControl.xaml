@@ -79,11 +79,11 @@
                   </Grid>
 
                   <Label>name:</Label>
-                  <TextBox Text="{Binding FileNameFindPattern, UpdateSourceTrigger=PropertyChanged}"/>
+                  <TextBox Text="{Binding FileNameSearchPattern, UpdateSourceTrigger=PropertyChanged}"/>
                   <CheckBox IsChecked="{Binding FileNameIgnoreCase}">FileNameIgnoreCase</CheckBox>
 
                   <Label>type:</Label>
-                  <app_main_view_finder:FindPatternKindControl FindPatternKind="{Binding FileNameFindPatternKind, Mode=TwoWay}" />
+                  <app_main_view_control:SearchPatternSelectControl SearchPatternKind="{Binding FileNameSearchPatternKind, Mode=TwoWay}" />
 
                   <Separator />
 
@@ -93,11 +93,11 @@
                     </Expander.Header>
                     <StackPanel>
                       <Label>content:</Label>
-                      <TextBox Text="{Binding FileContentFindPattern}" />
+                      <TextBox Text="{Binding FileContentSearchPattern}" />
                       <CheckBox IsChecked="{Binding FileContentIgnoreCase}">FileContentIgnoreCase</CheckBox>
 
                       <Label>type:</Label>
-                      <app_main_view_finder:FindPatternKindControl FindPatternKind="{Binding FileContentFindPatternKind, Mode=TwoWay}" />
+                      <app_main_view_control:SearchPatternSelectControl SearchPatternKind="{Binding FileContentSearchPatternKind, Mode=TwoWay}" />
 
                       <GroupBox>
                         <GroupBox.Header>
@@ -228,7 +228,7 @@
                                 </Image.Style>
                               </Image>
 
-                              <app_main_view_finder:FindTextMatchControl
+                              <app_main_view_control:TextSearchMatchControl
                                 Grid.Row="0"
                                 Grid.RowSpan="2"
                                 Grid.Column="2"

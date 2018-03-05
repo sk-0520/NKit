@@ -14,6 +14,7 @@ using System.Windows.Threading;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
+using ContentTypeTextNet.NKit.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
 using ContentTypeTextNet.NKit.Utility.ViewModell;
 using Prism.Commands;
@@ -68,9 +69,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { SetPropertyValue(Model.FindGroupSetting, value); }
         }
 
-        public FindPatternKind FileNameFindPatternKind
+        public SearchPatternKind FileNameSearchPatternKind
         {
-            get { return Model.FindGroupSetting.FileNameFindPatternKind; }
+            get { return Model.FindGroupSetting.FileNameSearchPatternKind; }
             set { SetPropertyValue(Model.FindGroupSetting, value); }
         }
 
@@ -80,9 +81,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { SetPropertyValue(Model.FindGroupSetting, value); }
         }
 
-        public string FileNameFindPattern
+        public string FileNameSearchPattern
         {
-            get { return Model.FindGroupSetting.FileNameFindPattern; }
+            get { return Model.FindGroupSetting.FileNameSearchPattern; }
             set { SetPropertyValue(Model.FindGroupSetting, value); }
         }
         public int DirectoryLimitLevel
@@ -103,9 +104,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             }
         }
 
-        public FindPatternKind FileContentFindPatternKind
+        public SearchPatternKind FileContentSearchPatternKind
         {
-            get { return Model.FindGroupSetting.FileContentFindPatternKind; }
+            get { return Model.FindGroupSetting.FileContentSearchPatternKind; }
             set { SetPropertyValue(Model.FindGroupSetting, value); }
         }
 
@@ -115,9 +116,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { SetPropertyValue(Model.FindGroupSetting, value); }
         }
 
-        public string FileContentFindPattern
+        public string FileContentSearchPattern
         {
-            get { return Model.FindGroupSetting.FileContentFindPattern; }
+            get { return Model.FindGroupSetting.FileContentSearchPattern; }
             set { SetPropertyValue(Model.FindGroupSetting, value); }
         }
 
@@ -267,8 +268,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                     if(string.IsNullOrWhiteSpace(EasyFileNameFilterPattern)) {
                         CachedEasyFileNameFilterPattern = FullMatchRegex;
                     } else {
-                        var pc = new FindPatternCreator();
-                        CachedEasyFileNameFilterPattern = pc.CreateRegex(FindPatternKind.PartialMatch, EasyFileNameFilterPattern, true);
+                        var pc = new SearchPatternCreator();
+                        CachedEasyFileNameFilterPattern = pc.CreateRegex(SearchPatternKind.PartialMatch, EasyFileNameFilterPattern, true);
                     }
                     Items.Refresh();
                 }
@@ -284,8 +285,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                     if(string.IsNullOrWhiteSpace(EasyExtensionFilterPattern)) {
                         CachedEasyExtensionFilterPattern = FullMatchRegex;
                     } else {
-                        var pc = new FindPatternCreator();
-                        CachedEasyExtensionFilterPattern = pc.CreateRegex(FindPatternKind.PartialMatch, EasyExtensionFilterPattern, true);
+                        var pc = new SearchPatternCreator();
+                        CachedEasyExtensionFilterPattern = pc.CreateRegex(SearchPatternKind.PartialMatch, EasyExtensionFilterPattern, true);
                     }
                     Items.Refresh();
                 }

@@ -127,11 +127,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Finder\FindTextMatchControl.xaml">
+    <Page Include="View\Control\TextSearchMatchControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Finder\FindPatternKindControl.xaml">
+    <Page Include="View\Control\SearchPatternSelectControl .xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -160,7 +160,6 @@
       <DependentUpon>Constants.cs</DependentUpon>
     </Compile>
     <Compile Include="Define\FileNameKind.cs" />
-    <Compile Include="Define\FindPatternKind.cs" />
     <Compile Include="Define\HashType.cs" />
     <Compile Include="Define\MicrosoftOfficeFileType.cs" />
     <Compile Include="Global.cs" />
@@ -179,7 +178,7 @@
     <Compile Include="Model\Finder\FindGroupModel.cs" />
     <Compile Include="Model\Finder\FindGroupSetting.cs" />
     <Compile Include="Model\Finder\FindItemModel.cs" />
-    <Compile Include="Model\Finder\FindPatternCreator.cs" />
+    <Compile Include="Model\SearchPatternCreator.cs" />
     <Compile Include="Model\HashProvider.cs" />
     <Compile Include="Model\MainModel.cs" />
     <Compile Include="Model\ManagerModelBase.cs" />
@@ -216,11 +215,11 @@
     <Compile Include="View\Finder\FinderSingleFileControl.xaml.cs">
       <DependentUpon>FinderSingleFileControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Finder\FindTextMatchControl.xaml.cs">
-      <DependentUpon>FindTextMatchControl.xaml</DependentUpon>
+    <Compile Include="View\Control\TextSearchMatchControl.xaml.cs">
+      <DependentUpon>TextSearchMatchControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Finder\FindPatternKindControl.xaml.cs">
-      <DependentUpon>FindPatternKindControl.xaml</DependentUpon>
+    <Compile Include="View\Control\SearchPatternSelectControl .xaml.cs">
+      <DependentUpon>SearchPatternSelectControl .xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -270,6 +269,11 @@
     <ProjectReference Include="..\..\lib\NKit.Package\NKit.Package.csproj">
       <Project>{afa0c4ad-38a8-416d-922d-f66f976f8106}</Project>
       <Name>NKit.Package</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lib\NKit.Setting\NKit.Setting.csproj">
+      <Project>{76f8b393-7678-4183-8172-d74045686b13}</Project>
+      <Name>NKit.Setting</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\lib\NKit.Utility\NKit.Utility.csproj">

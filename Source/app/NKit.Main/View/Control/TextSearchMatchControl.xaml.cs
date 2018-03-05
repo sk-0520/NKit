@@ -17,14 +17,14 @@ using System.Windows.Shapes;
 using ContentTypeTextNet.NKit.Main.Model;
 using ContentTypeTextNet.NKit.Utility.Model;
 
-namespace ContentTypeTextNet.NKit.Main.View.Finder
+namespace ContentTypeTextNet.NKit.Main.View.Control
 {
     /// <summary>
-    /// FindTextMatchControl.xaml の相互作用ロジック
+    /// TextSearchMatchControl.xaml の相互作用ロジック
     /// </summary>
-    public partial class FindTextMatchControl : UserControl
+    public partial class TextSearchMatchControl : UserControl
     {
-        public FindTextMatchControl()
+        public TextSearchMatchControl()
         {
             InitializeComponent();
         }
@@ -40,13 +40,13 @@ namespace ContentTypeTextNet.NKit.Main.View.Finder
         public static readonly DependencyProperty InformationFontFamilyProperty = DependencyProperty.Register(
             nameof(InformationFontFamily),
             typeof(FontFamily),
-            typeof(FindTextMatchControl),
+            typeof(TextSearchMatchControl),
             new PropertyMetadata(new FontFamily("MS Gothic"), InformationFontFamilyPropertyChanged)
         );
 
         private static void InformationFontFamilyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((FindTextMatchControl)d).InformationFontFamily = (FontFamily)e.NewValue;
+            ((TextSearchMatchControl)d).InformationFontFamily = (FontFamily)e.NewValue;
         }
 
         #endregion
@@ -62,13 +62,13 @@ namespace ContentTypeTextNet.NKit.Main.View.Finder
         public static readonly DependencyProperty InformationForegroundProperty = DependencyProperty.Register(
             nameof(InformationForeground),
             typeof(Brush),
-            typeof(FindTextMatchControl),
+            typeof(TextSearchMatchControl),
             new PropertyMetadata(default(Brush), InformationForegroundPropertyChanged)
         );
 
         private static void InformationForegroundPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((FindTextMatchControl)d).InformationForeground = (Brush)e.NewValue;
+            ((TextSearchMatchControl)d).InformationForeground = (Brush)e.NewValue;
         }
 
         #endregion
@@ -84,13 +84,13 @@ namespace ContentTypeTextNet.NKit.Main.View.Finder
         public static readonly DependencyProperty InformationBackgroundProperty = DependencyProperty.Register(
             nameof(InformationBackground),
             typeof(Brush),
-            typeof(FindTextMatchControl),
+            typeof(TextSearchMatchControl),
             new PropertyMetadata(Brushes.LightGray, InformationBackgroundPropertyChanged)
         );
 
         private static void InformationBackgroundPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((FindTextMatchControl)d).InformationBackground = (Brush)e.NewValue;
+            ((TextSearchMatchControl)d).InformationBackground = (Brush)e.NewValue;
         }
 
         #endregion
@@ -106,13 +106,13 @@ namespace ContentTypeTextNet.NKit.Main.View.Finder
         public static readonly DependencyProperty MatchForegroundProperty = DependencyProperty.Register(
             nameof(MatchForeground),
             typeof(Brush),
-            typeof(FindTextMatchControl),
+            typeof(TextSearchMatchControl),
             new PropertyMetadata(default(Brush), MatchForegroundPropertyChanged)
         );
 
         private static void MatchForegroundPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((FindTextMatchControl)d).MatchForeground = (Brush)e.NewValue;
+            ((TextSearchMatchControl)d).MatchForeground = (Brush)e.NewValue;
         }
 
         #endregion
@@ -128,13 +128,13 @@ namespace ContentTypeTextNet.NKit.Main.View.Finder
         public static readonly DependencyProperty MatchBackgroundProperty = DependencyProperty.Register(
             nameof(MatchBackground),
             typeof(Brush),
-            typeof(FindTextMatchControl),
+            typeof(TextSearchMatchControl),
             new PropertyMetadata(Brushes.Pink, MatchBackgroundPropertyChanged)
         );
 
         private static void MatchBackgroundPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((FindTextMatchControl)d).MatchBackground = (Brush)e.NewValue;
+            ((TextSearchMatchControl)d).MatchBackground = (Brush)e.NewValue;
         }
 
         #endregion
@@ -150,13 +150,13 @@ namespace ContentTypeTextNet.NKit.Main.View.Finder
         public static readonly DependencyProperty MatchFontWeightProperty = DependencyProperty.Register(
             nameof(MatchFontWeight),
             typeof(FontWeight),
-            typeof(FindTextMatchControl),
+            typeof(TextSearchMatchControl),
             new PropertyMetadata(FontWeights.Bold, MatchFontWeightPropertyChanged)
         );
 
         private static void MatchFontWeightPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((FindTextMatchControl)d).MatchFontWeight = (FontWeight)e.NewValue;
+            ((TextSearchMatchControl)d).MatchFontWeight = (FontWeight)e.NewValue;
         }
 
         #endregion
@@ -173,14 +173,14 @@ namespace ContentTypeTextNet.NKit.Main.View.Finder
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
             nameof(ItemsSource),
             typeof(IEnumerable<TextSearchMatch>),
-            typeof(FindTextMatchControl),
+            typeof(TextSearchMatchControl),
             new PropertyMetadata(Enumerable.Empty<TextSearchMatch>(), PropertyChangedCallback)
         );
 
         private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((FindTextMatchControl)d).ItemsSource = (IEnumerable<TextSearchMatch>)e.NewValue;
-            ((FindTextMatchControl)d).BuildMatchItems();
+            ((TextSearchMatchControl)d).ItemsSource = (IEnumerable<TextSearchMatch>)e.NewValue;
+            ((TextSearchMatchControl)d).BuildMatchItems();
         }
 
         #endregion
@@ -196,13 +196,13 @@ namespace ContentTypeTextNet.NKit.Main.View.Finder
         public static readonly DependencyProperty HiddenTopLineOnlyProperty = DependencyProperty.Register(
             nameof(HiddenTopLineOnly),
             typeof(bool),
-            typeof(FindTextMatchControl),
+            typeof(TextSearchMatchControl),
             new PropertyMetadata(true, HiddenTopLineOnlyPropertyChanged)
         );
 
         private static void HiddenTopLineOnlyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((FindTextMatchControl)d).HiddenTopLineOnly = (bool)e.NewValue;
+            ((TextSearchMatchControl)d).HiddenTopLineOnly = (bool)e.NewValue;
         }
 
         #endregion
@@ -218,13 +218,13 @@ namespace ContentTypeTextNet.NKit.Main.View.Finder
         public static readonly DependencyProperty ShowSingleLineProperty = DependencyProperty.Register(
             nameof(ShowSingleLine),
             typeof(bool),
-            typeof(FindTextMatchControl),
+            typeof(TextSearchMatchControl),
             new PropertyMetadata(false, ShowSingleLinePropertyChanged)
         );
 
         private static void ShowSingleLinePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((FindTextMatchControl)d).ShowSingleLine = (bool)e.NewValue;
+            ((TextSearchMatchControl)d).ShowSingleLine = (bool)e.NewValue;
         }
 
         #endregion
@@ -240,13 +240,13 @@ namespace ContentTypeTextNet.NKit.Main.View.Finder
         public static readonly DependencyProperty ShowSingleUnmatchTextProperty = DependencyProperty.Register(
             nameof(ShowSingleUnmatchText),
             typeof(string),
-            typeof(FindTextMatchControl),
+            typeof(TextSearchMatchControl),
             new PropertyMetadata(string.Empty, ShowSingleUnmatchTextPropertyChanged)
         );
 
         private static void ShowSingleUnmatchTextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((FindTextMatchControl)d).ShowSingleUnmatchText = (string)e.NewValue;
+            ((TextSearchMatchControl)d).ShowSingleUnmatchText = (string)e.NewValue;
         }
 
         #endregion
@@ -262,13 +262,13 @@ namespace ContentTypeTextNet.NKit.Main.View.Finder
         public static readonly DependencyProperty IsSelectableProperty = DependencyProperty.Register(
             nameof(IsSelectable),
             typeof(bool),
-            typeof(FindTextMatchControl),
+            typeof(TextSearchMatchControl),
             new PropertyMetadata(true, IsSelectablePropertyChanged)
         );
 
         private static void IsSelectablePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((FindTextMatchControl)d).IsSelectable = (bool)e.NewValue;
+            ((TextSearchMatchControl)d).IsSelectable = (bool)e.NewValue;
         }
 
         #endregion
@@ -284,13 +284,13 @@ namespace ContentTypeTextNet.NKit.Main.View.Finder
         public static readonly DependencyProperty UserSelectedCommandProperty = DependencyProperty.Register(
             nameof(UserSelectedCommand),
             typeof(ICommand),
-            typeof(FindTextMatchControl),
+            typeof(TextSearchMatchControl),
             new PropertyMetadata(default(ICommand), UserSelectedCommandPropertyChanged)
         );
 
         private static void UserSelectedCommandPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((FindTextMatchControl)d).UserSelectedCommand = (ICommand)e.NewValue;
+            ((TextSearchMatchControl)d).UserSelectedCommand = (ICommand)e.NewValue;
         }
 
         #endregion

@@ -1,6 +1,6 @@
 <UserControl
   x:Name="root"
-  x:Class="ContentTypeTextNet.NKit.Main.View.Finder.FindTextMatchControl"
+  x:Class="ContentTypeTextNet.NKit.Main.View.Control.TextSearchMatchControl"
 
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 

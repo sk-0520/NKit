@@ -74,7 +74,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
         TextSearchResult SearchNamePattern(FileSystemInfo fileSystemInfo)
         {
-            if(string.IsNullOrEmpty(FindGroupSetting.FileNameFindPattern)) {
+            if(string.IsNullOrEmpty(FindGroupSetting.FileNameSearchPattern)) {
                 return TextSearchResult.NotFound;
             }
 
@@ -183,10 +183,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                 return GetDefaultPreparaValueTask(false);
             }
 
-            var patternCreator = new FindPatternCreator();
+            var patternCreator = new SearchPatternCreator();
 
             try {
-                CachedFileNamePattern = patternCreator.CreateRegex(FindGroupSetting.FileNameFindPatternKind, FindGroupSetting.FileNameFindPattern, FindGroupSetting.FileNameIgnoreCase);
+                CachedFileNamePattern = patternCreator.CreateRegex(FindGroupSetting.FileNameSearchPatternKind, FindGroupSetting.FileNameSearchPattern, FindGroupSetting.FileNameIgnoreCase);
             } catch(ArgumentException ex) {
                 Debug.WriteLine(ex);
                 return GetDefaultPreparaValueTask(false);
@@ -195,7 +195,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
             if(FindGroupSetting.FindFileContent) {
                 try {
-                    CachedFileContentPattern = patternCreator.CreateRegex(FindGroupSetting.FileContentFindPatternKind, FindGroupSetting.FileContentFindPattern, FindGroupSetting.FileContentIgnoreCase);
+                    CachedFileContentPattern = patternCreator.CreateRegex(FindGroupSetting.FileContentSearchPatternKind, FindGroupSetting.FileContentSearchPattern, FindGroupSetting.FileContentIgnoreCase);
 
                     CachedFileNameKindPatterns = new[] {
                         new { Kind = FileNameKind.Text,  Pattern = FinderSetting.TextNamePattern, },
@@ -238,7 +238,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                     var fileNameSearchResult = SearchNamePattern(file);
 
                     var fileContentSearchResult = FileContentSearchResult.NotFound;
-                    if(CurrentFindGroupSetting.FindFileContent && !string.IsNullOrEmpty(CurrentFindGroupSetting.FileContentFindPattern)) {
+                    if(CurrentFindGroupSetting.FindFileContent && !string.IsNullOrEmpty(CurrentFindGroupSetting.FileContentSearchPattern)) {
                         fileContentSearchResult = SearchFlieContentPattern(file);
                     }
 
