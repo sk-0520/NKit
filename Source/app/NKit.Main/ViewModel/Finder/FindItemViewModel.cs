@@ -40,8 +40,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public string FileNameWithoutExtension => Path.GetFileNameWithoutExtension(FileName);
         public string Extension => Path.GetExtension(FilePath).Replace(".", string.Empty);
         public string DirectoryPath => Path.GetDirectoryName(FilePath);
-
         public long FileSize => FileInfo.Length;
+        public bool IsHiddenFile => FileInfo.Attributes.HasFlag(FileAttributes.Hidden);
 
         public IReadOnlyList<TextSearchMatch> FileNameMatches => Model.FileNameSearchResult.Matches;
 

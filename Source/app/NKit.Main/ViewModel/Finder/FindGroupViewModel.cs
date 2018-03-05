@@ -28,6 +28,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         bool _expandedFileContent;
 
+        bool _isEnabledHiddenFileFiler = true;
         bool _isEnabledFileNameFilter = true;
         bool _isEnabledFileContentFilter = true;
 
@@ -222,6 +223,16 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             }
         }
 
+        public bool IsEnabledHiddenFileFiler
+        {
+            get { return this._isEnabledHiddenFileFiler; }
+            set
+            {
+                if(SetProperty(ref this._isEnabledHiddenFileFiler, value)) {
+                    Items.Refresh();
+                }
+            }
+        }
 
         public bool IsEnabledFileNameFilter
         {
@@ -311,6 +322,12 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         private bool FilterFileList(object obj)
         {
             var item = (FindItemViewModel)obj;
+
+            if(IsEnabledHiddenFileFiler) {
+                if(item.IsHiddenFile) {
+                    return false;
+                }
+            }
 
             if(IsEnabledFileNameFilter) {
                 if(!item.MatchedName) {

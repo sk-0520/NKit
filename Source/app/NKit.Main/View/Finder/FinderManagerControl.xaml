@@ -137,8 +137,9 @@
               </Grid.RowDefinitions>
 
               <ToolBar Grid.Row="0">
-                <CheckBox IsChecked="{Binding IsEnabledFileNameFilter}">name:</CheckBox>
-                <CheckBox IsChecked="{Binding IsEnabledFileContentFilter}">content:</CheckBox>
+                <CheckBox IsChecked="{Binding IsEnabledHiddenFileFiler}">hidden</CheckBox>
+                <CheckBox IsChecked="{Binding IsEnabledFileNameFilter}">name</CheckBox>
+                <CheckBox IsChecked="{Binding IsEnabledFileContentFilter}">content</CheckBox>
 
                 <Separator />
 
@@ -213,7 +214,17 @@
                               <ToggleButton Grid.Row="0" FontSize="6" IsChecked="{Binding MatchedName, Mode=OneTime}">name</ToggleButton>
                               <ToggleButton Grid.Row="1" FontSize="6" IsChecked="{Binding MatchedContent, Mode=OneTime}">body</ToggleButton>
 
-                              <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Source="{Binding FilePath, Converter={StaticResource FilePathToIconConverter}}" />
+                              <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Source="{Binding FilePath, Converter={StaticResource FilePathToIconConverter}}">
+                                <Image.Style>
+                                  <Style TargetType="Image">
+                                    <Style.Triggers>
+                                      <DataTrigger Binding="{Binding IsHiddenFile}" Value="True">
+                                        <Setter Property="Opacity" Value="0.6" />
+                                      </DataTrigger>
+                                    </Style.Triggers>
+                                  </Style>
+                                </Image.Style>
+                              </Image>
 
                               <app_main_view_finder:FindTextMatchControl
                                 Grid.Row="0"
