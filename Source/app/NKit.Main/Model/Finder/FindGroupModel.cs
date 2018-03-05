@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model.App;
@@ -170,7 +171,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
         #region RunnableModelBase
 
-        protected override Task<PreparaResult<None>> PreparationCoreAsync()
+        protected override Task<PreparaResult<None>> PreparationCoreAsync(CancellationToken cancelToken)
         {
             if(string.IsNullOrEmpty(FindGroupSetting.RootDirectoryPath)) {
                 return GetDefaultPreparaValueTask(false);
@@ -218,10 +219,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             CurrentFindGroupSetting = (FindGroupSetting)FindGroupSetting.Clone();
 
 
-            return base.PreparationCoreAsync();
+            return base.PreparationCoreAsync(cancelToken);
         }
 
-        protected override Task<None> ExecuteCoreAsync()
+        protected override Task<None> ExecuteCoreAsync(CancellationToken cancelToken)
         {
             Items.Clear();
 

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Utility.Model;
@@ -45,7 +46,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
 
         #region RunnableModelBase
 
-        protected override Task<PreparaResult<int>> PreparationCoreAsync()
+        protected override Task<PreparaResult<int>> PreparationCoreAsync(CancellationToken cancelToken)
         {
             ExecuteProcess = new Process();
 
@@ -54,10 +55,10 @@ namespace ContentTypeTextNet.NKit.Main.Model
             ExecuteProcess.EnableRaisingEvents = true;
             ExecuteProcess.Exited += Process_Exited;
 
-            return base.PreparationCoreAsync();
+            return base.PreparationCoreAsync(cancelToken);
         }
 
-        protected sealed override Task<int> ExecuteCoreAsync()
+        protected sealed override Task<int> ExecuteCoreAsync(CancellationToken cancelToken)
         {
             ExecuteTask = new TaskCompletionSource<int>();
 
@@ -117,9 +118,9 @@ namespace ContentTypeTextNet.NKit.Main.Model
             ExecuteProcess.BeginOutputReadLine();
         }
 
-        protected override Task<PreparaResult<int>> PreparationCoreAsync()
+        protected override Task<PreparaResult<int>> PreparationCoreAsync(CancellationToken cancelToken)
         {
-            var result = base.PreparationCoreAsync();
+            var result = base.PreparationCoreAsync(cancelToken);
 
             ExecuteProcess.StartInfo.UseShellExecute = false;
             ExecuteProcess.StartInfo.CreateNoWindow = true;

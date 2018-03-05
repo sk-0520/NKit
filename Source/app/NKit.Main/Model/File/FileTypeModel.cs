@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Main.Model.App;
 using ContentTypeTextNet.NKit.Main.Model.Wapper;
@@ -40,16 +41,16 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         #region RunnableModelBase
 
-        protected override Task<PreparaResult<None>> PreparationCoreAsync()
+        protected override Task<PreparaResult<None>> PreparationCoreAsync(CancellationToken cancelToken)
         {
-            return base.PreparationCoreAsync();
+            return base.PreparationCoreAsync(cancelToken);
         }
 
         /// <summary>
         /// 全く調べてなかったけど file コマンドないんですね！
         /// </summary>
         /// <returns></returns>
-        protected override Task<None> ExecuteCoreAsync()
+        protected override Task<None> ExecuteCoreAsync(CancellationToken cancelToken)
         {
             Information = "";
             var executor = new BusyBoxExecutor(AppSetting.UsePlatformBusyBox, "file", FileInfo.FullName);
@@ -60,7 +61,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
                 Information += "[E]" + e.Data;
             };
 
-            return executor.ExecuteAsync().ContinueWith(t => None.Void);
+            return executor.ExecuteAsync(cancelToken).ContinueWith(t => None.Void);
         }
 
         #endregion

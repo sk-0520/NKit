@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -202,13 +203,15 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
             }
         }
 
+        protected CancellationTokenSource ExecuteCancellationTokenSource { get; } = new CancellationTokenSource();
+
         #endregion
 
         #region function
 
         protected virtual Task<TExecuteResult> ExecuteCore()
         {
-            var task = Model.ExecuteAsync();
+            var task = Model.ExecuteAsync(ExecuteCancellationTokenSource.Token);
             task.ConfigureAwait(false);
             return task;
         }

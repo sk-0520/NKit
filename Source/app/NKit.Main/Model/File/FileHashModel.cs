@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
@@ -44,15 +45,15 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         #region RunnableModelBase
 
-        protected override Task<PreparaResult<byte[]>> PreparationCoreAsync()
+        protected override Task<PreparaResult<byte[]>> PreparationCoreAsync(CancellationToken cancelToken)
         {
             HashProvider = new HashProvider(HashType);
             ;
             FileStream = FileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
-            return base.PreparationCoreAsync();
+            return base.PreparationCoreAsync(cancelToken);
         }
 
-        protected override Task<byte[]> ExecuteCoreAsync()
+        protected override Task<byte[]> ExecuteCoreAsync(CancellationToken cancelToken)
         {
             return Task.Run(() => HashProvider.Execute(FileStream));
         }

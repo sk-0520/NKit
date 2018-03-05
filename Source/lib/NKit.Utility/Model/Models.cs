@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using ContentTypeTextNet.NKit.Utility.Define;
@@ -111,6 +112,12 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         #endregion
 
+        #region property
+
+        public Task RunningTask { get; private set; } = Task.CompletedTask;
+
+        #endregion
+
         #region IReadOnlyRunnableStatus
 
         public DateTime StartTimestamp
@@ -148,25 +155,31 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         /// </summary>
         /// <typeparam name="TPreparaValue"></typeparam>
         /// <returns>真なら処理を継続、偽なら<see cref="TExecuteResult"/>を返して未処理とする。</returns>
-        protected virtual Task<PreparaResult<TExecuteResult>> PreparationCoreAsync() => GetDefaultPreparaValueTask(true);
+        protected virtual Task<PreparaResult<TExecuteResult>> PreparationCoreAsync(CancellationToken cancelToken) => GetDefaultPreparaValueTask(true);
 
-        protected abstract Task<TExecuteResult> ExecuteCoreAsync();
+        protected abstract Task<TExecuteResult> ExecuteCoreAsync(CancellationToken cancelToken);
 
-        public async Task<TExecuteResult> ExecuteAsync()
+        public async Task<TExecuteResult> ExecuteAsync(CancellationToken cancelToken)
         {
+            RunningTask = Task.CompletedTask;
             EndTimestamp = DateTime.MinValue;
             StartTimestamp = DateTime.Now;
 
             try {
                 RunState = RunState.Prepare;
 
-                var preResult = await PreparationCoreAsync();
+                var preTask = PreparationCoreAsync(cancelToken);
+                RunningTask = preTask;
+
+                var preResult = await preTask;
                 PreparationSpan = DateTime.Now - StartTimestamp;
 
                 if(preResult.Success) {
                     RunState = RunState.Running;
 
-                    var result = await ExecuteCoreAsync();
+                    var execTask = ExecuteCoreAsync(cancelToken);
+                    RunningTask = execTask;
+                    var result = await execTask;
 
                     RunState = RunState.Finished;
                     return result;
@@ -180,6 +193,8 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                 throw;
             } finally {
                 EndTimestamp = DateTime.Now;
+                RunningTask.Dispose();
+                RunningTask = Task.CompletedTask;
             }
         }
 
