@@ -153,18 +153,18 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
         #endregion
     }
 
-    public abstract class RunnableViewModelBase<TModel, TExecuteResult> : SingleModelViewModelBase<TModel>, IReadOnlyRunnableStatus
-        where TModel : RunnableModelBase<TExecuteResult>
+    public abstract class RunnableViewModelBase<TModel, TRunResult> : SingleModelViewModelBase<TModel>, IReadOnlyRunnableStatus
+        where TModel : RunnableModelBase<TRunResult>
     {
         #region variable
 
         static string[] RunnableProperties =
         {
-            nameof(RunnableModelBase<TExecuteResult>.RunState),
-            nameof(RunnableModelBase<TExecuteResult>.StartTimestamp),
-            nameof(RunnableModelBase<TExecuteResult>.EndTimestamp),
-            nameof(RunnableModelBase<TExecuteResult>.PreparationSpan),
-            nameof(RunnableModelBase<TExecuteResult>.IsRunningCancel),
+            nameof(RunnableModelBase<TRunResult>.RunState),
+            nameof(RunnableModelBase<TRunResult>.StartTimestamp),
+            nameof(RunnableModelBase<TRunResult>.EndTimestamp),
+            nameof(RunnableModelBase<TRunResult>.PreparationSpan),
+            nameof(RunnableModelBase<TRunResult>.IsRunningCancel),
         };
 
         #endregion
@@ -230,7 +230,7 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
 
         #region function
 
-        protected virtual Task<TExecuteResult> RunCore()
+        protected virtual Task<TRunResult> RunCore()
         {
             var task = Model.RunAsync(RunningCancellationTokenSource.Token);
             task.ConfigureAwait(false);

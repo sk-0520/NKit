@@ -102,7 +102,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         #endregion
     }
 
-    public abstract class RunnableModelBase<TExecuteResult> : ModelBase, IReadOnlyRunnableStatus
+    public abstract class RunnableModelBase<TRunResult> : ModelBase, IReadOnlyRunnableStatus
     {
         #region variable
 
@@ -154,19 +154,19 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         #region function
 
-        protected PreparaResult<TExecuteResult> GetDefaultPreparaValue(bool value) => new PreparaResult<TExecuteResult>(value, default(TExecuteResult));
-        protected Task<PreparaResult<TExecuteResult>> GetDefaultPreparaValueTask(bool value) => Task.FromResult(GetDefaultPreparaValue(value));
+        protected PreparaResult<TRunResult> GetDefaultPreparaValue(bool value) => new PreparaResult<TRunResult>(value, default(TRunResult));
+        protected Task<PreparaResult<TRunResult>> GetDefaultPreparaValueTask(bool value) => Task.FromResult(GetDefaultPreparaValue(value));
 
         /// <summary>
         /// 準備処理。
         /// </summary>
         /// <typeparam name="TPreparaValue"></typeparam>
-        /// <returns>真なら処理を継続、偽なら<see cref="TExecuteResult"/>を返して未処理とする。</returns>
-        protected virtual Task<PreparaResult<TExecuteResult>> PreparationCoreAsync(CancellationToken cancelToken) => GetDefaultPreparaValueTask(true);
+        /// <returns>真なら処理を継続、偽なら<see cref="TRunResult"/>を返して未処理とする。</returns>
+        protected virtual Task<PreparaResult<TRunResult>> PreparationCoreAsync(CancellationToken cancelToken) => GetDefaultPreparaValueTask(true);
 
-        protected abstract Task<TExecuteResult> RunCoreAsync(CancellationToken cancelToken);
+        protected abstract Task<TRunResult> RunCoreAsync(CancellationToken cancelToken);
 
-        public async Task<TExecuteResult> RunAsync(CancellationToken cancelToken)
+        public async Task<TRunResult> RunAsync(CancellationToken cancelToken)
         {
             IsRunningCancel = false;
             EndTimestamp = DateTime.MinValue;
