@@ -33,7 +33,13 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         public Process OpenParentDirectory(FileSystemInfo fileSystemInfo)
         {
-            throw new NotImplementedException("Explorerに渡すやつ, 後でやる");
+            try {
+                return Process.Start("explorer", $"/e, /select,{fileSystemInfo.FullName}");
+            } catch(Exception ex) {
+                Debug.WriteLine(ex);
+            }
+
+            return null;
         }
 
         public void ShowProperty(FileSystemInfo fileSystemInfo)

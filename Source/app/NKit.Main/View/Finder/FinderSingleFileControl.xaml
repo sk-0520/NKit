@@ -34,7 +34,7 @@
 
       <StackPanel Orientation="Horizontal">
         <TextBlock>file size:</TextBlock>
-        <TextBox Text="{Binding SingleItem.FileSizeCommand, ElementName=root, Mode=OneWay}"/>
+        <TextBox Text="{Binding SingleItem.FileSize, ElementName=root, Mode=OneWay}"/>
         <Button Command="{Binding SingleItem.CopyFileSizeCommand, ElementName=root}">copy</Button>
       </StackPanel>
 
