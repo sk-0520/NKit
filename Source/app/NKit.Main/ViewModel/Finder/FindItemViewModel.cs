@@ -134,6 +134,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                     if(result.NodeType == HtmlAgilityPack.HtmlNodeType.Comment) {
                         var comment = (XmlHtmlCommentSearchResult)result;
                         list.AddRange(comment.Matches);
+                    } else if(result.NodeType == HtmlAgilityPack.HtmlNodeType.Text) {
+                        var text = (XmlHtmlTextSearchResult)result;
+                        list.AddRange(text.Matches);
                     } else {
                         var element = (XmlHtmlElementSearchResult)result;
                         list.AddRange(element.ElementResult.Matches);

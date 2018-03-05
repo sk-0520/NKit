@@ -87,7 +87,7 @@
 
                   <Separator />
 
-                  <Expander IsExpanded="{Binding ExpandedFileContent}">
+                  <Expander IsExpanded="{Binding FindFileContent}">
                     <Expander.Header>
                       <CheckBox IsChecked="{Binding FindFileContent}">FindFileContent</CheckBox>
                     </Expander.Header>
@@ -117,6 +117,7 @@
                         </GroupBox.Header>
                         <StackPanel>
                           <CheckBox IsChecked="{Binding XmlContentElement}">Element</CheckBox>
+                          <CheckBox IsChecked="{Binding XmlContentText}">Text</CheckBox>
                           <CheckBox IsChecked="{Binding XmlContentAttributeKey}">AttributeKey</CheckBox>
                           <CheckBox IsChecked="{Binding XmlContentAttributeValue}">AttributeValue</CheckBox>
                           <CheckBox IsChecked="{Binding XmlContentComment}">Comment</CheckBox>

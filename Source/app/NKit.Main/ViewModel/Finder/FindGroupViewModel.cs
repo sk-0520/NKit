@@ -27,7 +27,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         static readonly Regex FullMatchRegex = new Regex("");
 
-        bool _expandedFileContent;
+        //bool _expandedFileContent;
 
         bool _isEnabledHiddenFileFiler = true;
         bool _isEnabledFileNameFilter = true;
@@ -97,9 +97,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set
             {
                 if(SetPropertyValue(Model.FindGroupSetting, value)) {
-                    if(FindFileContent && !ExpandedFileContent) {
-                        ExpandedFileContent = true;
-                    }
+                    //if(FindFileContent && !ExpandedFileContent) {
+                    //    ExpandedFileContent = true;
+                    //}
                 }
             }
         }
@@ -167,6 +167,13 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { SetPropertyValue(Model.FindGroupSetting.XmlHtmlContent, value, nameof(Model.FindGroupSetting.XmlHtmlContent.Element)); }
         }
 
+        public bool XmlContentText
+        {
+            get { return Model.FindGroupSetting.XmlHtmlContent.Text; }
+            set { SetPropertyValue(Model.FindGroupSetting.XmlHtmlContent, value, nameof(Model.FindGroupSetting.XmlHtmlContent.Text)); }
+        }
+
+
         public bool XmlContentAttributeKey
         {
             get { return Model.FindGroupSetting.XmlHtmlContent.AttributeKey; }
@@ -193,11 +200,11 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         #endregion
 
-        public bool ExpandedFileContent
-        {
-            get { return this._expandedFileContent; }
-            set { SetProperty(ref this._expandedFileContent, value); }
-        }
+        //public bool ExpandedFileContent
+        //{
+        //    get { return this._expandedFileContent; }
+        //    set { SetProperty(ref this._expandedFileContent, value); }
+        //}
 
         ObservableCollection<FindItemViewModel> ItemViewModels { get; } = new ObservableCollection<FindItemViewModel>();
         public long EnabledItemsCount => ItemViewModels.Count(i => i.MatchedName && (!Model.CurrentFindGroupSetting.FindFileContent || (Model.CurrentFindGroupSetting.FindFileContent && i.MatchedContent)));

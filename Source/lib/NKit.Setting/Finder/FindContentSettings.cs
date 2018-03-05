@@ -84,9 +84,13 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         #region property
 
         /// <summary>
-        /// 要素を検索対象とするか。
+        /// 要素名を検索対象とするか。
         /// </summary>
         bool Element { get; }
+        /// <summary>
+        /// テキストノードを検索対象とするか。
+        /// </summary>
+        bool Text { get; }
         /// <summary>
         /// 属性のキーを検索対象とするか。
         /// </summary>
@@ -117,6 +121,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         #region IReadOnlyFindXmlHtmlContentSetting
 
         public bool Element { get; set; } = true;
+        public bool Text { get; set; } = true;
         public bool AttributeKey { get; set; } = true;
         public bool AttributeValue { get; set; } = true;
         public bool Comment { get; set; } = true;
