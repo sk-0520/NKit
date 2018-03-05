@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
   x:Name="root"
   x:Class="ContentTypeTextNet.NKit.Main.View.Finder.FindTextMatchControl"
 
@@ -10,34 +10,48 @@
   mc:Ignorable="d"
   d:DesignHeight="300" d:DesignWidth="300"
 >
-  <RichTextBox
-    x:Name="viewMatchItems"
-    IsReadOnly="True"
-    UndoLimit="0"
-    BorderThickness="0"
-    BorderBrush="{x:Null}"
+  <StackPanel>
+    <RichTextBox
+      x:Name="viewMatchItems"
+      IsReadOnly="True"
+      UndoLimit="0"
+      BorderThickness="0"
+      BorderBrush="{x:Null}"
 
-    Background="{Binding Background, ElementName=root}"
+      Background="{Binding Background, ElementName=root}"
 
-    Focusable="{Binding IsSelectable, ElementName=root}"
-    IsHitTestVisible="{Binding IsSelectable, ElementName=root}"
+      Focusable="{Binding IsSelectable, ElementName=root}"
+      IsHitTestVisible="{Binding IsSelectable, ElementName=root}"
 
-    MouseDoubleClick="viewMatchItems_MouseDoubleClick"
-    KeyDown="viewMatchItems_KeyDown"
-  >
-    <RichTextBox.Resources>
-      <Style TargetType="Paragraph">
-        <Setter Property="Margin" Value="0"/>
-        <Setter Property="LineStackingStrategy" Value="MaxHeight"/>
-        <Setter Property="LineHeight" Value="1" />
-      </Style>
-    </RichTextBox.Resources>
-    <!-- PageWidth どうしようかね -->
-    <FlowDocument
-      LineHeight="1"
-      PageWidth="9999"
-    />
-  </RichTextBox>
+      MouseDoubleClick="viewMatchItems_MouseDoubleClick"
+      KeyDown="viewMatchItems_KeyDown"
+    >
+      <RichTextBox.Resources>
+        <Style TargetType="Paragraph">
+          <Setter Property="Margin" Value="0"/>
+          <Setter Property="LineStackingStrategy" Value="MaxHeight"/>
+          <Setter Property="LineHeight" Value="1" />
+        </Style>
+      </RichTextBox.Resources>
+        <!-- PageWidth どうしようかね -->
+        <FlowDocument
+          LineHeight="1"
+          PageWidth="9999"
+        />
+    </RichTextBox>
+    <TextBlock x:Name="viewSingleLineMatchItems">
+      <!--<TextBlock.Style>
+        <Style TargetType="TextBlock">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding Visibility, ElementName=viewMatchItems}" Value="Collapsed">
+              <Setter Property="Visibility" Value="Visible" />
+            </DataTrigger>
+          </Style.Triggers>
+          <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+      </TextBlock.Style>-->
+    </TextBlock>
+  </StackPanel>
   <!--<StackPanel>
     <ListView Background="Transparent" BorderThickness="0" SelectionMode="Single" ItemsSource="{Binding ItemsSource, ElementName=root}">
       <ListView.View>

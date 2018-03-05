@@ -303,44 +303,58 @@ namespace ContentTypeTextNet.NKit.Main.View.Finder
             return string.Format(f, value);
         }
 
+        IEnumerable<Inline> BuildSingleInlines(IReadOnlyList<TextSearchMatch> matches)
+        {
+            var line = matches.First().LineText;
+
+            var nextStartIndex = 0;
+
+            foreach(var match in matches) {
+                var headText = line.Substring(nextStartIndex, match.CharacterPostion - nextStartIndex);
+                var bodyText = line.Substring(match.CharacterPostion, match.Length);
+                nextStartIndex = match.CharacterPostion + match.Length;
+
+                var headElement = new Run(headText);
+                var bodyElement = new Run(bodyText) {
+                    Foreground = MatchForeground,
+                    Background = MatchBackground,
+                    FontWeight = MatchFontWeight,
+                };
+
+                yield return headElement;
+                yield return bodyElement;
+            }
+
+            var tailText = line.Substring(nextStartIndex);
+            var tailElement = new Run(tailText);
+
+            yield return tailElement;
+        }
+
         void BuildMatchItemsSingleLine(IReadOnlyList<TextSearchMatch> matches)
         {
             var p = new Paragraph();
-
+            var inlines = new List<Inline>();
             if(matches.Any()) {
                 // いや～、これはどうにもならんだろ
                 p.Tag = matches.First();
-
-                var line = matches.First().LineText;
-
-                var nextStartIndex = 0;
-
-                foreach(var match in matches) {
-                    var headText = line.Substring(nextStartIndex, match.CharacterPostion - nextStartIndex);
-                    var bodyText = line.Substring(match.CharacterPostion, match.Length);
-                    nextStartIndex = match.CharacterPostion + match.Length;
-
-                    var headElement = new Run(headText);
-                    var bodyElement = new Run(bodyText) {
-                        Foreground = MatchForeground,
-                        Background = MatchBackground,
-                        FontWeight = MatchFontWeight,
-                    };
-
-                    p.Inlines.Add(headElement);
-                    p.Inlines.Add(bodyElement);
-                }
-
-                var tailText = line.Substring(nextStartIndex);
-                var tailElement = new Run(tailText);
-                p.Inlines.Add(tailElement);
+                inlines.AddRange(BuildSingleInlines(matches));
             } else {
-                p.Inlines.Add(new Run(ShowSingleUnmatchText));
+                inlines.Add(new Run(ShowSingleUnmatchText));
             }
 
+
             // 覚書: 呼び出し時にクリア済み
-            this.viewMatchItems.Document.Blocks.Add(p);
+            if(IsSelectable) {
+                p.Inlines.AddRange(inlines);
+                this.viewMatchItems.Document.Blocks.Add(p);
+                this.viewMatchItems.Visibility = Visibility.Visible;
+            } else {
+                this.viewSingleLineMatchItems.Inlines.AddRange(inlines);
+                this.viewSingleLineMatchItems.Visibility = Visibility.Visible;
+            }
         }
+
 
         void BuildMatchItemsMultiLine(IReadOnlyList<TextSearchMatch> matches)
         {
@@ -434,11 +448,16 @@ namespace ContentTypeTextNet.NKit.Main.View.Finder
 
             // 覚書: 呼び出し時にクリア済み
             this.viewMatchItems.Document.Blocks.AddRange(blocks);
+            this.viewMatchItems.Visibility = Visibility.Visible;
         }
 
         void BuildMatchItems()
         {
             this.viewMatchItems.Document.Blocks.Clear();
+            this.viewSingleLineMatchItems.Inlines.Clear();
+
+            this.viewMatchItems.Visibility = Visibility.Collapsed;
+            this.viewSingleLineMatchItems.Visibility = Visibility.Collapsed;
 
             if(ItemsSource == null) {
                 return;
@@ -447,14 +466,14 @@ namespace ContentTypeTextNet.NKit.Main.View.Finder
             var matches = ItemsSource.Cast<TextSearchMatch>().ToList();
 
             // 一行表示の場合、データがそもそも全部同じ行じゃないと無理
-            if(ShowSingleLine && (!matches.Any() || matches.GroupBy(m => m.LineNumber).Count() == 1)) {
+            if(ShowSingleLine) {
+                if(matches.Any() && 1 < matches.GroupBy(m => m.LineNumber).Count()) {
+                    throw new InvalidOperationException(nameof(ShowSingleLine));
+                }
                 BuildMatchItemsSingleLine(matches);
             } else if(matches.Any()) {
                 BuildMatchItemsMultiLine(matches);
             }
-
-
-
         }
 
         /*
