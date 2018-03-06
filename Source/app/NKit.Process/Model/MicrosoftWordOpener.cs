@@ -39,13 +39,13 @@ namespace ContentTypeTextNet.NKit.Process.Model
                         using(var document = ComModel.Create(documents.Com.Open(FilePath))) {
                             try {
                                 using(var paragraphs = ComModel.Create(document.Com.Paragraphs)) {
-                                    using(var paragraph = ComModel.Create(paragraphs.Com[DocumentLineNumber + 1])) {
-                                        //paragraph.Com.Range
+                                    // こっちの持ってるデータも怪しいので追々調整していくべし
+                                    using(var paragraph = ComModel.Create(paragraphs.Com[DocumentLineNumber])) {
                                         using(var paraRange = ComModel.Create(paragraph.Com.Range)) {
                                             word.Com.Visible = true;
 
-                                            paraRange.Com.Start += DocumentCharacterPosition + 1;
-                                            paraRange.Com.End = paraRange.Com.Start + DocumentLength + 1;
+                                            paraRange.Com.Start += DocumentCharacterPosition;
+                                            paraRange.Com.End = paraRange.Com.Start + DocumentLength;
                                             paraRange.Com.Select();
 
                                             ExcelQuit = false;

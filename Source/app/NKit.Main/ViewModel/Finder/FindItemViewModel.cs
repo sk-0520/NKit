@@ -195,6 +195,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             var parameter = new AssociationOpenParameter() {
                 LineNumber = match.DisplayLineNumber,
                 CharacterPostion = match.DisplayCharacterPostion,
+                CharacterLength = match.Length,
             };
 
             return parameter;

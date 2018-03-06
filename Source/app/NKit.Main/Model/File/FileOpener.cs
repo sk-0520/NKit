@@ -80,6 +80,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         public int LineNumber { get; set; }
         public int CharacterPostion { get; set; }
+        public int CharacterLength { get; set; }
 
         public AssociationSpreadSeetParameter SpreadSeet { get; set; } = new AssociationSpreadSeetParameter();
 
@@ -168,13 +169,17 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         Process OpenMicrosoftOfficeWordFile(FileInfo file, AssociationOpenParameter parameter)
         {
-            throw new NotImplementedException();
+            var processFile = CommonUtility.GetProcessApplication(CommonUtility.GetApplicationDirectoryForApplication());
+            var argument = $"--kind {AssociationFileKind.MicrosoftOfficeWord} --path \"{file.FullName}\" --doc_line {parameter.LineNumber} --doc_pos {parameter.CharacterPostion} --doc_len {parameter.CharacterLength} --doc_page {parameter.Document.Page}";
+            var executor = new ActionCliApplicationExecutor(processFile.FullName, argument);
+            executor.RunAsync(CancellationToken.None).ConfigureAwait(false);
+            return executor.ExecuteProcess;
         }
 
         Process OpenMicrosoftOfficeExcelFile(FileInfo file, AssociationOpenParameter parameter)
         {
             var processFile = CommonUtility.GetProcessApplication(CommonUtility.GetApplicationDirectoryForApplication());
-            var argument = $"--kind {AssociationFileKind.MicrosoftOfficeExcel} --path {file.FullName} --ss_sheet {parameter.SpreadSeet.SheetName} --ss_y {parameter.SpreadSeet.RowIndex} --ss_x {parameter.SpreadSeet.ColumnIndex}";
+            var argument = $"--kind {AssociationFileKind.MicrosoftOfficeExcel} --path \"{file.FullName}\" --ss_sheet {parameter.SpreadSeet.SheetName} --ss_y {parameter.SpreadSeet.RowIndex} --ss_x {parameter.SpreadSeet.ColumnIndex}";
             var executor = new ActionCliApplicationExecutor(processFile.FullName, argument);
             executor.RunAsync(CancellationToken.None).ConfigureAwait(false);
             return executor.ExecuteProcess;
