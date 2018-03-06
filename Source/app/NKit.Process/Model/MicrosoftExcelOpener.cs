@@ -10,7 +10,7 @@ using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Utility.Model.Unmanaged;
 using Excel = Microsoft.Office.Interop.Excel;
 
-namespace ContentTypeTextNet.NKit.Process.Model
+namespace ContentTypeTextNet.NKit.Rocket.Model
 {
     public class MicrosoftExcelOpener : ComOpenerBase
     {

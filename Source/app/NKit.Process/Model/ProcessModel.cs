@@ -9,7 +9,7 @@ using ContentTypeTextNet.NKit.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
 using Microsoft.Extensions.CommandLineUtils;
 
-namespace ContentTypeTextNet.NKit.Process.Model
+namespace ContentTypeTextNet.NKit.Rocket.Model
 {
     public class ProcessModel : ApplicationModelBase
     {

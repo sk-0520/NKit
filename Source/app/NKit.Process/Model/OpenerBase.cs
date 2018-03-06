@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 
-namespace ContentTypeTextNet.NKit.Process.Model
+namespace ContentTypeTextNet.NKit.Rocket.Model
 {
     public abstract class OpenerBase: DisposerBase
     {

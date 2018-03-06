@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
-using ContentTypeTextNet.NKit.Process.Model;
+using ContentTypeTextNet.NKit.Rocket.Model;
 
-namespace NKit.Process
+namespace NKit.Rocket
 {
     class Program
     {

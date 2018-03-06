@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Utility.Model.Unmanaged;
 using Word = Microsoft.Office.Interop.Word;
 
-namespace ContentTypeTextNet.NKit.Process.Model
+namespace ContentTypeTextNet.NKit.Rocket.Model
 {
     public class MicrosoftWordOpener : ComOpenerBase
     {
