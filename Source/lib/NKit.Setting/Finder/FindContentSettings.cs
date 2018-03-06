@@ -63,14 +63,14 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
     {
         #region IReadOnlyFindMicrosoftOfficeContentSetting
 
-        public bool TextInShape { get; set; }
+        public bool TextInShape { get; set; } = true;
 
         #endregion
 
         #region IReadOnlyFindMicrosoftOfficeExcelContentSetting
 
-        public bool SheetName { get; set; }
-        public bool PriorityFormula { get; set; }
+        public bool SheetName { get; set; } = true;
+        public bool PriorityFormula { get; set; } = false;
         public bool CommentInCell { get; set; }
 
         #endregion
