@@ -44,6 +44,11 @@
       <HintPath>..\..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\packages\Microsoft.Office.Interop.Word.15.0.4797.1003\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Prism, Version=7.0.0.396, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
@@ -75,7 +80,9 @@
     <Compile Include="..\..\Common\Disposer.cs">
       <Link>Common\Disposer.cs</Link>
     </Compile>
-    <Compile Include="Model\ExcelOpener.cs" />
+    <Compile Include="Model\MicrosoftExcelOpener.cs" />
+    <Compile Include="Model\MicrosoftWordOpener.cs" />
+    <Compile Include="Model\OpenerBase.cs" />
     <Compile Include="Model\ProcessModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

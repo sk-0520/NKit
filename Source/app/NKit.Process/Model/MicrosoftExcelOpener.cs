@@ -12,11 +12,11 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ContentTypeTextNet.NKit.Process.Model
 {
-    public class ExcelOpener : DisposerBase
+    public class MicrosoftExcelOpener : ComOpenerBase
     {
-        public ExcelOpener(string filePath, string spreadSheetSheetName, int spreadSheetRowIndex, int spreadSheetColumnIndex)
+        public MicrosoftExcelOpener(string filePath, string spreadSheetSheetName, int spreadSheetRowIndex, int spreadSheetColumnIndex)
+            :base(filePath)
         {
-            FilePath = filePath;
             SpreadSheetSheetName = spreadSheetSheetName;
             SpreadSheetRowIndex = spreadSheetRowIndex;
             SpreadSheetColumnIndex = spreadSheetColumnIndex;
@@ -24,12 +24,9 @@ namespace ContentTypeTextNet.NKit.Process.Model
 
         #region property
 
-        string FilePath { get; }
         string SpreadSheetSheetName { get; }
         int SpreadSheetRowIndex { get; }
         int SpreadSheetColumnIndex { get; }
-
-        bool ExcelQuit { get; set; } = true;
 
         #endregion
 
@@ -59,10 +56,17 @@ namespace ContentTypeTextNet.NKit.Process.Model
             return false;
         }
 
-        public bool Open()
+
+        #endregion
+
+        #region OpenerBase
+
+        public override bool Open()
         {
             using(var excel = ComModel.Create(new Excel.Application())) {
                 try {
+                    excel.Com.Visible = false;
+
                     using(var workbooks = ComModel.Create(excel.Com.Workbooks)) {
                         // 起動インスタンスでしかできないんすね。もっかしなにか解決策あるかもしれんし一応コードは生きたまま残しておく
                         var __TODO__ = false;

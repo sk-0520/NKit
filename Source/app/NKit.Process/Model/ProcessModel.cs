@@ -23,9 +23,22 @@ namespace ContentTypeTextNet.NKit.Process.Model
 
         string FilePath { get; set; }
 
+        #region spreadsheet
+
         string SpreadSheetSheetName { get; set; }
         int SpreadSheetRowIndex { get; set; }
         int SpreadSheetColumnIndex { get; set; }
+
+        #endregion
+
+        #region document
+
+        int DocumentLineNumber { get; set; }
+        int DocumentCharacterPosition { get; set; }
+        int DocumentLength { get; set; }
+        int DocumentPageNumber { get; set; }
+
+        #endregion
 
         #endregion
 
@@ -33,9 +46,16 @@ namespace ContentTypeTextNet.NKit.Process.Model
 
         void OpenMicrosoftExcel()
         {
-            var eo = new ExcelOpener(FilePath, SpreadSheetSheetName, SpreadSheetRowIndex, SpreadSheetColumnIndex);
+            var eo = new MicrosoftExcelOpener(FilePath, SpreadSheetSheetName, SpreadSheetRowIndex, SpreadSheetColumnIndex);
             eo.Open();
         }
+
+        void OpenMicrosoftWord()
+        {
+            var wo = new MicrosoftWordOpener(FilePath, DocumentLineNumber, DocumentCharacterPosition, DocumentLength, DocumentPageNumber);
+            wo.Open();
+        }
+
 
         #endregion
 
@@ -51,6 +71,11 @@ namespace ContentTypeTextNet.NKit.Process.Model
             var optionSpreadSheetX = CommandLineApplication.Option("--ss_x", $"row index (0 base)", CommandOptionType.SingleValue);
             var optionSpreadSheetY = CommandLineApplication.Option("--ss_y", $"col index (0 base)", CommandOptionType.SingleValue);
 
+            var optionDocumentLineNumber = CommandLineApplication.Option("--doc_line", "line number", CommandOptionType.SingleValue);
+            var optionDocumentCharacterPosition = CommandLineApplication.Option("--doc_pos", "line number", CommandOptionType.SingleValue);
+            var optionDocumentLength = CommandLineApplication.Option("--doc_len", "line number", CommandOptionType.SingleValue);
+            var optionDocumentPageNumber = CommandLineApplication.Option("--doc_page", "page number", CommandOptionType.SingleValue);
+
             if(!BuildCommandLine()) {
                 return GetDefaultPreparaValueTask(false);
             }
@@ -58,10 +83,22 @@ namespace ContentTypeTextNet.NKit.Process.Model
             AssociationFileKind = (AssociationFileKind)Enum.Parse(typeof(AssociationFileKind), optionKind.Value());
             FilePath = optionPath.Value();
 
-            if(AssociationFileKind == AssociationFileKind.MicrosoftOfficeExcel) {
-                SpreadSheetSheetName = optionSpreadSheetName.Value();
-                SpreadSheetColumnIndex = int.Parse(optionSpreadSheetX.Value());
-                SpreadSheetRowIndex = int.Parse(optionSpreadSheetY.Value());
+            switch(AssociationFileKind) {
+                case AssociationFileKind.MicrosoftOfficeExcel:
+                    SpreadSheetSheetName = optionSpreadSheetName.Value();
+                    SpreadSheetColumnIndex = int.Parse(optionSpreadSheetX.Value());
+                    SpreadSheetRowIndex = int.Parse(optionSpreadSheetY.Value());
+                    break;
+
+                case AssociationFileKind.MicrosoftOfficeWord:
+                    DocumentLineNumber = int.Parse(optionDocumentLineNumber.Value());
+                    DocumentCharacterPosition = int.Parse(optionDocumentCharacterPosition.Value());
+                    DocumentLength = int.Parse(optionDocumentLength.Value());
+                    DocumentPageNumber = int.Parse(optionDocumentPageNumber.Value());
+                    break;
+
+                default:
+                    break;
             }
 
             return base.PreparationCoreAsync(cancelToken);
@@ -72,6 +109,10 @@ namespace ContentTypeTextNet.NKit.Process.Model
             switch(AssociationFileKind) {
                 case AssociationFileKind.MicrosoftOfficeExcel:
                     OpenMicrosoftExcel();
+                    break;
+
+                case AssociationFileKind.MicrosoftOfficeWord:
+                    OpenMicrosoftWord();
                     break;
 
                 default:
