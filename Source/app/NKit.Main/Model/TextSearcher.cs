@@ -36,6 +36,9 @@ namespace ContentTypeTextNet.NKit.Main.Model
             CharacterPostion = characterPostion;
             Length = length;
             LineText = lineText;
+
+            DisplayLineNumber = LineNumber;
+            DisplayCharacterPostion = CharacterPostion;
         }
 
         #region property
@@ -51,6 +54,9 @@ namespace ContentTypeTextNet.NKit.Main.Model
         public string LineUnMatcheHead => LineText.Substring(0, CharacterPostion);
         public string LineUnMatcheTail => LineText.Substring(CharacterPostion + Length);
         public string LineHighlight => LineText.Substring(CharacterPostion, Length);
+
+        public virtual int DisplayLineNumber { get; set; }
+        public virtual int DisplayCharacterPostion { get; set; }
 
         public bool IsMatch => this != Unmatch;
 
@@ -153,7 +159,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
                 var macthes = regex.Matches(line.value).Cast<Match>();
                 foreach(var match in macthes) {
                     var searchMatch = CreateMatchObject(line.number, match.Index, match.Length, line.value);
-                    Debug.Assert(match.Value == searchMatch.LineHighlight);
+                    Debug.Assert(match.Value == searchMatch.LineHighlight, $"{match.Value} != {searchMatch.LineHighlight}");
                     result.Matches.Add(searchMatch);
                 }
             }
@@ -218,6 +224,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
 
     // func<> で定義したら引数名がわかめ
     public delegate TextSearchMatch CustomTextMatchCreatorDelagete(int lineNumber, int characterPostion, int length, string lineText);
+
 
     public sealed class CustomTextSearchMatchTextSeacher : TextSearcher
     {

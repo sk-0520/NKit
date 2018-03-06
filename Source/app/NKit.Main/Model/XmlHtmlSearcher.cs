@@ -165,7 +165,17 @@ namespace ContentTypeTextNet.NKit.Main.Model
 
         XmlHtmlCommentSearchResult SearchComment(HtmlNode node, Regex regex)
         {
-            var ts = new TextSearcher();
+            var ts = new CustomTextSearchMatchTextSeacher() {
+                CustomTextMatchCreator = (int lineNumber, int characterPostion, int length, string lineText) => {
+                    return new TextSearchMatch(lineNumber, characterPostion, length, lineText) {
+                        Header = $"{node.ParentNode.OriginalName}",
+                        Footer = "COMMENT",
+                        DisplayLineNumber = node.Line,
+                        DisplayCharacterPostion = node.LinePosition,
+                    };
+                },
+            };
+
             var textResult = ts.Search(node.InnerText, regex);
 
             if(!textResult.IsMatched) {
@@ -180,7 +190,16 @@ namespace ContentTypeTextNet.NKit.Main.Model
 
         XmlHtmlTextSearchResult SearchText(HtmlNode node, Regex regex)
         {
-            var ts = new TextSearcher();
+            var ts = new CustomTextSearchMatchTextSeacher() {
+                CustomTextMatchCreator = (int lineNumber, int characterPostion, int length, string lineText) => {
+                    return new TextSearchMatch(lineNumber, characterPostion, length, lineText) {
+                        Header = $"{node.ParentNode.OriginalName}",
+                        Footer = "TEXT",
+                        DisplayLineNumber = node.Line,
+                        DisplayCharacterPostion = node.LinePosition,
+                    };
+                },
+            };
             var textResult = ts.Search(node.InnerText, regex);
 
             if(!textResult.IsMatched) {
@@ -201,12 +220,30 @@ namespace ContentTypeTextNet.NKit.Main.Model
             };
 
             if(setting.AttributeKey) {
-                var ts = new TextSearcher();
+                var ts = new CustomTextSearchMatchTextSeacher() {
+                    CustomTextMatchCreator = (int lineNumber, int characterPostion, int length, string lineText) => {
+                        return new TextSearchMatch(lineNumber, characterPostion, length, lineText) {
+                            Header = $"{attribute.OwnerNode.OriginalName}",
+                            Footer = "ATTR-KEY",
+                            DisplayLineNumber = attribute.Line,
+                            DisplayCharacterPostion = attribute.LinePosition,
+                        };
+                    },
+                };
                 result.KeyResult = ts.Search(attribute.OriginalName, regex);
             }
 
             if(setting.AttributeValue) {
-                var ts = new TextSearcher();
+                var ts = new CustomTextSearchMatchTextSeacher() {
+                    CustomTextMatchCreator = (int lineNumber, int characterPostion, int length, string lineText) => {
+                        return new TextSearchMatch(lineNumber, characterPostion, length, lineText) {
+                            Header = $"{attribute.OwnerNode.OriginalName}",
+                            Footer = "ATTR-KEY",
+                            DisplayLineNumber = attribute.Line,
+                            DisplayCharacterPostion = attribute.LinePosition,
+                        };
+                    },
+                };
                 result.ValueResult = ts.Search(attribute.Value, regex);
             }
 
@@ -228,26 +265,16 @@ namespace ContentTypeTextNet.NKit.Main.Model
             var result = new XmlHtmlElementSearchResult();
 
             if(setting.Element) {
-                var ts = new TextSearcher();
-                //switch(node.NodeType) {
-                //    case HtmlNodeType.Document:
-                //        throw new NotSupportedException();
-
-                //    case HtmlNodeType.Text:
-                //        result.ElementResult = ts.Search(node.InnerText, regex);
-                //        break;
-
-                //    case HtmlNodeType.Element:
-                //        result.ElementResult = ts.Search(node.OriginalName, regex);
-                //        break;
-
-                //    case HtmlNodeType.Comment:
-                //        throw new NotSupportedException();
-
-                //    default:
-                //        result.ElementResult = TextSearchResult.NotFound;
-                //        break;
-                //}
+                var ts = new CustomTextSearchMatchTextSeacher() {
+                    CustomTextMatchCreator = (int lineNumber, int characterPostion, int length, string lineText) => {
+                        return new TextSearchMatch(lineNumber, characterPostion, length, lineText) {
+                            Header = $"{node.ParentNode.OriginalName}",
+                            Footer = "ELEMENT",
+                            DisplayLineNumber = node.Line,
+                            DisplayCharacterPostion = node.LinePosition,
+                        };
+                    },
+                };
                 result.ElementResult = ts.Search(node.OriginalName, regex);
             } else {
                 result.ElementResult = TextSearchResult.NotFound;

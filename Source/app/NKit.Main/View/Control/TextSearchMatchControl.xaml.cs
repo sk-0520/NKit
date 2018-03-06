@@ -207,6 +207,28 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
 
         #endregion
 
+        #region GroupingOneLineCharacters
+
+        public bool GroupingOneLineCharacters
+        {
+            get { return (bool)GetValue(GroupingOneLineCharactersProperty); }
+            set { SetValue(GroupingOneLineCharactersProperty, value); }
+        }
+
+        public static readonly DependencyProperty GroupingOneLineCharactersProperty = DependencyProperty.Register(
+            nameof(GroupingOneLineCharacters),
+            typeof(bool),
+            typeof(TextSearchMatchControl),
+            new PropertyMetadata(false, GroupingOneLineCharactersPropertyChanged)
+        );
+
+        private static void GroupingOneLineCharactersPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((TextSearchMatchControl)d).GroupingOneLineCharacters = (bool)e.NewValue;
+        }
+
+        #endregion
+
         #region ShowSingleLine
 
         public bool ShowSingleLine
@@ -355,22 +377,16 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             }
         }
 
-
-        void BuildMatchItemsMultiLine(IReadOnlyList<TextSearchMatch> matches)
+        IEnumerable<Block> BuildmatchItemsAllMultiLine(IReadOnlyList<TextSearchMatch> matches, bool hasHeader, bool hasFooter, bool showLine)
         {
-            var hasHeader = matches.Any(m => m.Header != null);
-            var hasFooter = matches.Any(m => m.Footer != null);
-
-            var showLine = !(HiddenTopLineOnly && matches.All(m => m.LineNumber == 1));
-
             var uc = new UnitConverter();
 
             var formatLength = new {
                 InfoHeader = hasHeader ? matches.Where(m => m.Header != null).Select(m => new StringInfo(m.Header.ToString()).LengthInTextElements).Max() : 0,
                 //TODO: InfoHeader のコピペ
                 InfoFooter = hasFooter ? matches.Where(m => m.Footer != null).Select(m => new StringInfo(m.Footer.ToString()).LengthInTextElements).Max() : 0,
-                LineNumber = showLine ? uc.GetNumberWidth(matches.Max(m => m.LineNumber)) : 0,
-                CharacterPostion = uc.GetNumberWidth(matches.Max(m => m.CharacterPostion)),
+                LineNumber = showLine ? uc.GetNumberWidth(matches.Max(m => m.DisplayLineNumber)) : 0,
+                CharacterPostion = uc.GetNumberWidth(matches.Max(m => m.DisplayCharacterPostion)),
             };
 
             var blocks = new List<Block>(matches.Count);
@@ -400,15 +416,17 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
 
                 // 行数
                 if(showLine) {
-                    var lineNumerElement = new Run(FormatNumer(match.LineNumber, formatLength.LineNumber)) {
-                        TextDecorations = TextDecorations.Underline,
+                    var lineNumerElement = new Run(FormatNumer(match.DisplayLineNumber, formatLength.LineNumber)) {
+                        FontWeight = FontWeights.Bold,
                     };
                     infoElement.Inlines.Add(lineNumerElement);
                 }
 
                 // 横位置
-                var positionBaseText = FormatNumer(match.CharacterPostion, formatLength.CharacterPostion);
-                var positionElement = new Run($"({positionBaseText})");
+                var positionBaseText = FormatNumer(match.DisplayCharacterPostion, formatLength.CharacterPostion);
+                var positionElement = new Run($"({positionBaseText})") {
+                    TextDecorations = TextDecorations.Underline,
+                };
                 infoElement.Inlines.Add(positionElement);
 
                 //TODO: hasHeader のコピペ
@@ -445,6 +463,26 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
 
                 blocks.Add(p);
             }
+
+            return blocks;
+        }
+
+        IEnumerable<Block> BuildmatchItemsGroupingMultiLine(IReadOnlyList<TextSearchMatch> matches, bool hasHeader, bool hasFooter, bool showLine)
+        {
+            throw new NotImplementedException("だりぃ");
+        }
+
+        void BuildMatchItemsMultiLine(IReadOnlyList<TextSearchMatch> matches)
+        {
+            var hasHeader = matches.Any(m => m.Header != null);
+            var hasFooter = matches.Any(m => m.Footer != null);
+
+            var showLine = !(HiddenTopLineOnly && matches.All(m => m.LineNumber == 1));
+
+            var blocks = GroupingOneLineCharacters
+                ? BuildmatchItemsGroupingMultiLine(matches, hasHeader, hasFooter, showLine)
+                : BuildmatchItemsAllMultiLine(matches, hasHeader, hasFooter, showLine)
+            ;
 
             // 覚書: 呼び出し時にクリア済み
             this.viewMatchItems.Document.Blocks.AddRange(blocks);

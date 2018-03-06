@@ -23,7 +23,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
 
         public string TextNamePattern { get; set; } = "*.txt|*.csv";
         public string MicrosoftOfficeNamePattern { get; set; } = "*.xls|*.xlsx|*.xlsm|*.docx";
-        public string XmlHtmlNamePattern { get; set; } = "*.xml|*.html|*.htm";
+        public string XmlHtmlNamePattern { get; set; } = "*.xml|*.html|*.htm|*.xaml";
 
         #endregion
     }

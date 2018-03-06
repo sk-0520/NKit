@@ -507,7 +507,9 @@ namespace ContentTypeTextNet.NKit.Main.Model
             var ts = new CustomTextSearchMatchTextSeacher() {
                 CustomTextMatchCreator = (int lineNumber, int characterPostion, int length, string lineText) => {
                     // 行と段落のあれやこれやでぐっちゃぐちゃなので行番号は段落番号に変更
-                    return new TextSearchMatch(elementIndex + 1, characterPostion, length, lineText);
+                    return new TextSearchMatch(elementIndex, characterPostion, length, lineText) {
+                        DisplayLineNumber = elementIndex + 1,
+                    };
                 },
             };
 

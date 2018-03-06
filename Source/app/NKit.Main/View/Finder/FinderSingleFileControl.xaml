@@ -163,7 +163,7 @@
       <TabItem Header="xml/html" IsSelected="{Binding SingleItem.IsSelectedContentXmlHtml, ElementName=root}" Visibility="{Binding SingleItem.ContentIsXmlHtml, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
         <ScrollViewer>
           <StackPanel DataContext="{Binding SingleItem.ContentXmlHtml, ElementName=root}">
-            <app_main_view_control:TextSearchMatchControl ItemsSource="{Binding SingleItem.ContentXmlHtmlMatches, Mode=TwoWay, ElementName=root}" />
+            <app_main_view_control:TextSearchMatchControl HiddenTopLineOnly="False"  ItemsSource="{Binding SingleItem.ContentXmlHtmlMatches, Mode=TwoWay, ElementName=root}" />
           </StackPanel>
         </ScrollViewer>
       </TabItem>
