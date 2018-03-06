@@ -25,7 +25,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
         protected string ExecuteFilePath { get; }
         protected string Arguments { get; set; }
 
-        protected Process ExecuteProcess { get; private set; }
+        public Process ExecuteProcess { get; private set; }
 
         /// <summary>
         /// プログラムの実行タスク。

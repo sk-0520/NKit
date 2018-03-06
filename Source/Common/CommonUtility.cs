@@ -9,9 +9,11 @@ namespace ContentTypeTextNet.NKit.Common
     {
         #region property
 
-        static string LibraryDirectoryname { get; } = "lib";
-        static string BinaryDirectoryname { get; } = "bin";
-        static string ApplicationDirectoryname { get; } = "app";
+        static string LibraryDirectoryName { get; } = "lib";
+        static string BinaryDirectoryName { get; } = "bin";
+        static string ApplicationDirectoryName { get; } = "app";
+
+        static string BinaryBusyboxDirectoryName { get; } = "busybox";
 
 
         #endregion
@@ -36,38 +38,38 @@ namespace ContentTypeTextNet.NKit.Common
 
         public static DirectoryInfo GetLibraryDirectory(params string[] args)
         {
-            var libDirPath = Path.Combine(GetRootDirectory(args).FullName, LibraryDirectoryname);
+            var libDirPath = Path.Combine(GetRootDirectory(args).FullName, LibraryDirectoryName);
             return new DirectoryInfo(libDirPath);
         }
 
         public static DirectoryInfo GetLibraryDirectoryForApplication()
         {
-            var libDirPath = Path.Combine(GetRootDirectoryForApplication().FullName, LibraryDirectoryname);
+            var libDirPath = Path.Combine(GetRootDirectoryForApplication().FullName, LibraryDirectoryName);
             return new DirectoryInfo(libDirPath);
         }
 
         public static DirectoryInfo GetBinaryDirectory(params string[] args)
         {
-            var libDirPath = Path.Combine(GetRootDirectory(args).FullName, BinaryDirectoryname);
+            var libDirPath = Path.Combine(GetRootDirectory(args).FullName, BinaryDirectoryName);
             return new DirectoryInfo(libDirPath);
         }
 
         public static DirectoryInfo GetBinaryDirectoryForApplication()
         {
-            var libDirPath = Path.Combine(GetRootDirectoryForApplication().FullName, BinaryDirectoryname);
+            var libDirPath = Path.Combine(GetRootDirectoryForApplication().FullName, BinaryDirectoryName);
             return new DirectoryInfo(libDirPath);
         }
 
 
         public static DirectoryInfo GetApplicationDirectory(params string[] args)
         {
-            var libDirPath = Path.Combine(GetRootDirectory(args).FullName, ApplicationDirectoryname);
+            var libDirPath = Path.Combine(GetRootDirectory(args).FullName, ApplicationDirectoryName);
             return new DirectoryInfo(libDirPath);
         }
 
         public static DirectoryInfo GetApplicationDirectoryForApplication()
         {
-            var libDirPath = Path.Combine(GetRootDirectoryForApplication().FullName, ApplicationDirectoryname);
+            var libDirPath = Path.Combine(GetRootDirectoryForApplication().FullName, ApplicationDirectoryName);
             return new DirectoryInfo(libDirPath);
         }
 
@@ -77,7 +79,13 @@ namespace ContentTypeTextNet.NKit.Common
             if(Environment.ProcessorCount == 64) {
                 name = "busybox64.exe";
             }
-            var path = Path.Combine(binaryDirectory.FullName, "busybox", name);
+            var path = Path.Combine(binaryDirectory.FullName, BinaryBusyboxDirectoryName, name);
+            return new FileInfo(path);
+        }
+
+        public static FileInfo GetProcessApplication(DirectoryInfo applicationDirectory)
+        {
+            var path = Path.Combine(applicationDirectory.FullName, "NKit.Process.exe");
             return new FileInfo(path);
         }
 

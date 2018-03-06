@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Library.PInvoke.Windows;
+using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.NKit.Setting.File;
 using ContentTypeTextNet.NKit.Utility.Model;
@@ -171,7 +173,11 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         Process OpenMicrosoftOfficeExcelFile(FileInfo file, AssociationOpenParameter parameter)
         {
-            throw new NotImplementedException();
+            var processFile = CommonUtility.GetProcessApplication(CommonUtility.GetApplicationDirectoryForApplication());
+            var argument = $"--kind {AssociationFileKind.MicrosoftOfficeExcel} --path {file.FullName} --ss_sheet {parameter.SpreadSeet.SheetName} --ss_y {parameter.SpreadSeet.RowIndex} --ss_x {parameter.SpreadSeet.ColumnIndex}";
+            var executor = new ActionCliApplicationExecutor(processFile.FullName, argument);
+            executor.RunAsync(CancellationToken.None).ConfigureAwait(false);
+            return executor.ExecuteProcess;
         }
 
 

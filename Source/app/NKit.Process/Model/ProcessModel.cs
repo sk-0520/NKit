@@ -47,7 +47,7 @@ namespace ContentTypeTextNet.NKit.Process.Model
             var optionKind = CommandLineApplication.Option("--kind", $"{nameof(AssociationFileKind)}", CommandOptionType.SingleValue);
             var optionPath = CommandLineApplication.Option("--path", $"file path", CommandOptionType.SingleValue);
 
-            var optionSpreadSheetName = CommandLineApplication.Option("--ss_name", $"sheet name", CommandOptionType.SingleValue);
+            var optionSpreadSheetName = CommandLineApplication.Option("--ss_sheet", $"sheet name", CommandOptionType.SingleValue);
             var optionSpreadSheetX = CommandLineApplication.Option("--ss_x", $"row index (0 base)", CommandOptionType.SingleValue);
             var optionSpreadSheetY = CommandLineApplication.Option("--ss_y", $"col index (0 base)", CommandOptionType.SingleValue);
 

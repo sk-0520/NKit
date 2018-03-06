@@ -37,10 +37,14 @@ namespace ContentTypeTextNet.NKit.Process.Model
 
         bool Show(ComModel<Excel.Application> excel, ComModel<Excel.Workbook> workbook)
         {
+            // インデックス自体は 0 始まりだが Excel 側が 1 始まりのため補正が必要
+            var y = SpreadSheetRowIndex + 1;
+            var x = SpreadSheetColumnIndex + 1;
+
             for(var i = 1; i <= workbook.Com.Sheets.Count; i++) {
                 using(var sheet = ComModel.Create((Excel.Worksheet)workbook.Com.Sheets.Item[i])) {
                     if(sheet.Com.Name == SpreadSheetSheetName) {
-                        using(var range = ComModel.Create((Excel.Range)sheet.Com.Cells[SpreadSheetRowIndex, SpreadSheetColumnIndex])) {
+                        using(var range = ComModel.Create((Excel.Range)sheet.Com.Cells[y, x])) {
                             excel.Com.Visible = true;
                             sheet.Com.Select();
                             range.Com.Select();
