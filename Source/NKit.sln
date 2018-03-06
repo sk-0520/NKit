@@ -13,6 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Main", "app\NKit.Main\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{91FBCEEB-423A-4ACA-84B8-80970B97402B}"
 	ProjectSection(SolutionItems) = preProject
+		Common\ApplicationModel.cs = Common\ApplicationModel.cs
 		common\AssemblyResolveHelper.cs = common\AssemblyResolveHelper.cs
 		common\CommonUtility.cs = common\CommonUtility.cs
 		common\Disposer.cs = common\Disposer.cs
@@ -31,6 +32,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{66D532B9-D238-4BFA-A493-7CE2FEA5EFA2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Setting", "lib\NKit.Setting\NKit.Setting.csproj", "{76F8B393-7678-4183-8172-D74045686B13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Process", "app\NKit.Process\NKit.Process.csproj", "{4C796AFB-AA0C-4A6E-B85F-EBB07486EA0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,6 +69,10 @@ Global
 		{76F8B393-7678-4183-8172-D74045686B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76F8B393-7678-4183-8172-D74045686B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76F8B393-7678-4183-8172-D74045686B13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C796AFB-AA0C-4A6E-B85F-EBB07486EA0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C796AFB-AA0C-4A6E-B85F-EBB07486EA0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C796AFB-AA0C-4A6E-B85F-EBB07486EA0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C796AFB-AA0C-4A6E-B85F-EBB07486EA0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +86,7 @@ Global
 		{39A3ED0E-0570-460D-8615-166CB5626315} = {66D532B9-D238-4BFA-A493-7CE2FEA5EFA2}
 		{66D532B9-D238-4BFA-A493-7CE2FEA5EFA2} = {A3ECDBE3-5487-4635-AA05-597EB42AB395}
 		{76F8B393-7678-4183-8172-D74045686B13} = {A3ECDBE3-5487-4635-AA05-597EB42AB395}
+		{4C796AFB-AA0C-4A6E-B85F-EBB07486EA0A} = {BA7C2163-9D37-4D39-96AC-9DB9269B97D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DCA37A7D-11B2-4BEF-BD2E-1441C71C69AB}
