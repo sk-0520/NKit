@@ -83,9 +83,9 @@ namespace ContentTypeTextNet.NKit.Common
             return new FileInfo(path);
         }
 
-        public static FileInfo GetProcessApplication(DirectoryInfo applicationDirectory)
+        public static FileInfo GetRocketApplication(DirectoryInfo applicationDirectory)
         {
-            var path = Path.Combine(applicationDirectory.FullName, "NKit.Process.exe");
+            var path = Path.Combine(applicationDirectory.FullName, "NKit.Rocket.exe");
             return new FileInfo(path);
         }
 

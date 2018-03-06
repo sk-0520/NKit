@@ -171,7 +171,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
         Process OpenMicrosoftOfficeWordFile(FileInfo file, AssociationOpenParameter parameter)
         {
             var argument = $"--kind {AssociationFileKind.MicrosoftOfficeWord} --path \"{file.FullName}\" --doc_line {parameter.LineNumber} --doc_pos {parameter.CharacterPostion} --doc_len {parameter.CharacterLength} --doc_page {parameter.Document.Page}";
-            var executor = new NKitCliApplicationExecutor(CommonUtility.GetProcessApplication, argument);
+            var executor = new NKitCliApplicationExecutor(CommonUtility.GetRocketApplication, argument);
             executor.RunAsync(CancellationToken.None).ConfigureAwait(false);
             return executor.ExecuteProcess;
         }
@@ -179,7 +179,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
         Process OpenMicrosoftOfficeExcelFile(FileInfo file, AssociationOpenParameter parameter)
         {
             var argument = $"--kind {AssociationFileKind.MicrosoftOfficeExcel} --path \"{file.FullName}\" --ss_sheet {parameter.SpreadSeet.SheetName} --ss_y {parameter.SpreadSeet.RowIndex} --ss_x {parameter.SpreadSeet.ColumnIndex}";
-            var executor = new NKitCliApplicationExecutor(CommonUtility.GetProcessApplication, argument);
+            var executor = new NKitCliApplicationExecutor(CommonUtility.GetRocketApplication, argument);
             executor.RunAsync(CancellationToken.None).ConfigureAwait(false);
             return executor.ExecuteProcess;
         }

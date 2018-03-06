@@ -33,7 +33,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{66D532B9-D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Setting", "lib\NKit.Setting\NKit.Setting.csproj", "{76F8B393-7678-4183-8172-D74045686B13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Process", "app\NKit.Process\NKit.Process.csproj", "{4C796AFB-AA0C-4A6E-B85F-EBB07486EA0A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Rocket", "app\NKit.Rocket\NKit.Rocket.csproj", "{4C796AFB-AA0C-4A6E-B85F-EBB07486EA0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
