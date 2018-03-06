@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model.File;
+using ContentTypeTextNet.NKit.NKit.Setting.File;
 using ContentTypeTextNet.NKit.NKit.Setting.Finder;
 using ContentTypeTextNet.NKit.NKit.Setting.NKit;
 using ContentTypeTextNet.NKit.Utility.Model;
@@ -18,10 +19,11 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 {
     public class FindGroupModel : RunnableModelBase<None>
     {
-        public FindGroupModel(FindGroupSetting findGroupSetting, IReadOnlyFinderSetting finderSetting, IReadOnlyNKitSetting nkitSetting)
+        public FindGroupModel(FindGroupSetting findGroupSetting, IReadOnlyFinderSetting finderSetting, IReadOnlyFileSetting fileSetting, IReadOnlyNKitSetting nkitSetting)
         {
             FindGroupSetting = findGroupSetting;
             FinderSetting = finderSetting;
+            FileSetting = fileSetting;
             NKitSetting = nkitSetting;
         }
 
@@ -29,6 +31,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
         public FindGroupSetting FindGroupSetting { get; }
         public IReadOnlyFinderSetting FinderSetting { get; }
+        public IReadOnlyFileSetting FileSetting { get; }
         public IReadOnlyNKitSetting NKitSetting { get; }
         /// <summary>
         /// 検索時に使用した設定。
@@ -245,7 +248,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                         fileContentSearchResult = SearchFlieContentPattern(file);
                     }
 
-                    var findItem = new FindItemModel(dirInfo, file, fileNameSearchResult, fileContentSearchResult, NKitSetting);
+                    var findItem = new FindItemModel(dirInfo, file, fileNameSearchResult, fileContentSearchResult, FileSetting.AssociationFile, NKitSetting);
                     Items.Add(findItem);
                 }
 

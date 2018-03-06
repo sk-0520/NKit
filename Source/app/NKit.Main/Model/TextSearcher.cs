@@ -60,6 +60,8 @@ namespace ContentTypeTextNet.NKit.Main.Model
 
         public bool IsMatch => this != Unmatch;
 
+        public object Tag { get; set; }
+
         #endregion
     }
 

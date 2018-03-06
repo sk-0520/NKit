@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Main.Define;
+using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
 using ContentTypeTextNet.NKit.Main.Model.Microsoft.Office;
 using ContentTypeTextNet.NKit.NKit.Setting.Finder;
@@ -190,6 +191,11 @@ namespace ContentTypeTextNet.NKit.Main.Model
                 var cellReference = new CellReference(cell.Raw);
                 match.Footer = " CELL";
                 match.Header = $"[{cellReference.FormatAsString()}] ";
+                match.Tag = new AssociationSpreadSeetParameter() {
+                    SheetName = cell.Raw.Sheet.SheetName,
+                    RowIndex = cell.Raw.RowIndex,
+                    ColumnIndex = cell.Raw.ColumnIndex,
+                };
             }
 
             var result = new MicrosoftOfficeExcelCellSearchResult() {
@@ -268,7 +274,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
             return shape is HSSFSimpleShape;
         }
 
-        IEnumerable<MicrosoftOfficeExcelShapeSearchResult> SearchShape1997(HSSFPatriarch patriarch, Regex regex, IReadOnlyFindMicrosoftOfficeContentSetting setting)
+        IEnumerable<MicrosoftOfficeExcelShapeSearchResult> SearchShape1997(ExcelSheet sheet, HSSFPatriarch patriarch, Regex regex, IReadOnlyFindMicrosoftOfficeContentSetting setting)
         {
             var shapes = patriarch
                 .GetShapes()
@@ -304,6 +310,11 @@ namespace ContentTypeTextNet.NKit.Main.Model
                                 var cellReference = new CellReference(result.RowIndex, result.ColumnIndex);
                                 match.Footer = " SHAPE";
                                 match.Header = $"[{cellReference.FormatAsString()}] ";
+                                match.Tag = new AssociationSpreadSeetParameter() {
+                                    SheetName = sheet.Raw.SheetName,
+                                    RowIndex = result.RowIndex,
+                                    ColumnIndex = result.ColumnIndex,
+                                };
                             }
                         }
 
@@ -322,7 +333,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
             return shape is XSSFSimpleShape;
         }
 
-        IEnumerable<MicrosoftOfficeExcelShapeSearchResult> SearchShape2007(XSSFDrawing drawing, Regex regex, IReadOnlyFindMicrosoftOfficeContentSetting setting)
+        IEnumerable<MicrosoftOfficeExcelShapeSearchResult> SearchShape2007(ExcelSheet sheet, XSSFDrawing drawing, Regex regex, IReadOnlyFindMicrosoftOfficeContentSetting setting)
         {
             var shapes = drawing
                 .GetShapes()
@@ -363,9 +374,9 @@ namespace ContentTypeTextNet.NKit.Main.Model
             var patriarchBase = sheet.Raw.CreateDrawingPatriarch();
 
             if(patriarchBase is HSSFPatriarch patriarch) {
-                return SearchShape1997(patriarch, regex, setting);
+                return SearchShape1997(sheet, patriarch, regex, setting);
             } else if(patriarchBase is XSSFDrawing drawing) {
-                return SearchShape2007(drawing, regex, setting);
+                return SearchShape2007(sheet, drawing, regex, setting);
             }
 
             // 来んでしょ
@@ -509,6 +520,9 @@ namespace ContentTypeTextNet.NKit.Main.Model
                     // 行と段落のあれやこれやでぐっちゃぐちゃなので行番号は段落番号に変更
                     return new TextSearchMatch(elementIndex, characterPostion, length, lineText) {
                         DisplayLineNumber = elementIndex + 1,
+                        Tag = new AssociationDocumentParameter() {
+                            Page = -1,//TODO: ページ番号の取り方が分かるんなら最初から対応してる
+                        }
                     };
                 },
             };

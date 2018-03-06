@@ -6,8 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using ContentTypeTextNet.NKit.Main.Model;
+using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
 using ContentTypeTextNet.NKit.Main.ViewModel.File;
+using ContentTypeTextNet.NKit.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.ViewModell;
 using Prism.Commands;
 
@@ -186,6 +188,20 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         #endregion
 
+        #region function
+
+        AssociationOpenParameter CreateCommonAssociationOpenParameter(TextSearchMatch match)
+        {
+            var parameter = new AssociationOpenParameter() {
+                LineNumber = match.DisplayLineNumber,
+                CharacterPostion = match.DisplayCharacterPostion,
+            };
+
+            return parameter;
+        }
+
+        #endregion
+
         #region command
 
         public ICommand CopyFileSizeCommand => new DelegateCommand(() => Model.CopyFileSize());
@@ -198,6 +214,53 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public ICommand CopyNameWithExtensionCommand => new DelegateCommand(() => Model.CopyNameWithExtension());
         public ICommand CopyNameWithoutExtensionCommand => new DelegateCommand(() => Model.CopyNameWithoutExtension());
         public ICommand CopyDirectoryCommand => new DelegateCommand(() => Model.CopyDirectory());
+
+        public ICommand OpenTextFileCommand
+        {
+            get
+            {
+                return new DelegateCommand<TextSearchMatch>(match => {
+                    var parameter = CreateCommonAssociationOpenParameter(match);
+                    Model.OpenAssociationFile(AssociationFileKind.Text, parameter);
+                });
+            }
+            set { /* TwoWay ダミー */}
+        }
+        public ICommand OpenMsOfficeExcelFileCommand
+        {
+            get
+            {
+                return new DelegateCommand<TextSearchMatch>(match => {
+                    var parameter = CreateCommonAssociationOpenParameter(match);
+                    parameter.SpreadSeet = (AssociationSpreadSeetParameter)match.Tag;
+                    Model.OpenAssociationFile(AssociationFileKind.MicrosoftOfficeExcel, parameter);
+                });
+            }
+            //set { /* TwoWay ダミー */}
+        }
+        public ICommand OpenMsOfficeWordFileCommand
+        {
+            get
+            {
+                return new DelegateCommand<TextSearchMatch>(match => {
+                    var parameter = CreateCommonAssociationOpenParameter(match);
+                    parameter.Document = (AssociationDocumentParameter)match.Tag;
+                    Model.OpenAssociationFile(AssociationFileKind.MicrosoftOfficeWord, parameter);
+                });
+            }
+            set { /* TwoWay ダミー */}
+        }
+        public ICommand OpenXmlHtmlFileCommand
+        {
+            get
+            {
+                return new DelegateCommand<TextSearchMatch>(match => {
+                    var parameter = CreateCommonAssociationOpenParameter(match);
+                    Model.OpenAssociationFile(AssociationFileKind.XmlHtml, parameter);
+                });
+            }
+            set { /* TwoWay ダミー */}
+        }
 
         #endregion
 
@@ -217,6 +280,11 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 nameof(ContentIsXmlHtml),
                 nameof(ContentXmlHtml),
                 //nameof(ContentXmlHtmlMatches),
+
+                nameof(OpenTextFileCommand),
+                nameof(OpenXmlHtmlFileCommand),
+                nameof(OpenMsOfficeExcelFileCommand),
+                nameof(OpenMsOfficeWordFileCommand),
             };
 
             foreach(var propertyName in propertyNames) {

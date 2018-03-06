@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ContentTypeTextNet.NKit.Utility.Model
@@ -62,6 +63,47 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
             return sc;
         }
+
+        /// <summary>
+        /// 指定範囲の値を指定処理で置き換える。
+        /// </summary>
+        /// <param name="src">対象。</param>
+        /// <param name="head">置き換え開始文字列。</param>
+        /// <param name="tail">置き換え終了文字列。</param>
+        /// <param name="dg">処理。</param>
+        /// <returns></returns>
+        public string ReplaceRange(string src, string head, string tail, Func<string, string> dg)
+        {
+            var escHead = Regex.Escape(head);
+            var escTail = Regex.Escape(tail);
+            var pattern = escHead + "(.+?)" + escTail;
+            var replacedText = Regex.Replace(src, pattern, (Match m) => dg(m.Groups[1].Value));
+            return replacedText;
+        }
+
+        /// <summary>
+        /// 指定範囲の値を指定のコレクションで置き換える。
+        /// </summary>
+        /// <param name="src">対象。</param>
+        /// <param name="head">置き換え開始文字列。</param>
+        /// <param name="tail">置き換え終了文字列。</param>
+        /// <param name="map">置き換え対象文字列と置き換え後文字列のペアであるコレクション。</param>
+        /// <returns></returns>
+        public string ReplaceRangeFromDictionary(string src, string head, string tail, IDictionary<string, string> map)
+        {
+            return ReplaceRange(src, head, tail, s => map.ContainsKey(s) ? map[s] : head + s + tail);
+        }
+        /// <summary>
+        /// ${key}をvalueに置き変える。
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="map"></param>
+        /// <returns></returns>
+        public string ReplaceFromDictionary(string src, IDictionary<string, string> map)
+        {
+            return ReplaceRangeFromDictionary(src, "${", "}", map);
+        }
+
 
         #endregion
     }

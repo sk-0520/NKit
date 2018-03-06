@@ -26,7 +26,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         FindGroupModel CreateGroupModel()
         {
             var setting = new FindGroupSetting();
-            var model = new FindGroupModel(setting, Setting.Finder, Setting.NKit);
+            var model = new FindGroupModel(setting, Setting.Finder, Setting.File, Setting.NKit);
 
             return model;
         }
