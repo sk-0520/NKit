@@ -33,7 +33,8 @@ namespace ContentTypeTextNet.NKit.Process.Model
 
         void OpenMicrosoftExcel()
         {
-
+            var eo = new ExcelOpener(FilePath, SpreadSheetSheetName, SpreadSheetRowIndex, SpreadSheetColumnIndex);
+            eo.Open();
         }
 
         #endregion

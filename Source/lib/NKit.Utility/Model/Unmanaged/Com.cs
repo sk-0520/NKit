@@ -16,6 +16,12 @@ namespace ContentTypeTextNet.NKit.Utility.Model.Unmanaged
             : base(comObject)
         { }
 
+        #region property
+
+        public T Com => Raw;
+
+        #endregion
+
         #region UnmanagedModelBase
 
         protected override void Dispose(bool disposing)
@@ -29,4 +35,13 @@ namespace ContentTypeTextNet.NKit.Utility.Model.Unmanaged
 
         #endregion
     }
+
+    public static class ComModel
+    {
+        public static ComModel<T> Create<T>(T comObject)
+        {
+            return new ComModel<T>(comObject);
+        }
+    }
+
 }

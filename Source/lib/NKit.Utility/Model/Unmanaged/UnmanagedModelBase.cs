@@ -26,6 +26,14 @@ namespace ContentTypeTextNet.NKit.Utility.Model.Unmanaged
             }
         }
 
+        #region property
+
+        IntPtr Handle => Raw;
+
+        #endregion
+
+        #region function
+
         /// <summary>
         /// 解放処理。
         /// <para>ハンドルにより処理色々なんでオーバーライドしてごちゃごちゃする。</para>
@@ -34,6 +42,8 @@ namespace ContentTypeTextNet.NKit.Utility.Model.Unmanaged
         {
             throw new NotImplementedException();
         }
+
+        #endregion
 
         #region UnmanagedBase
 
