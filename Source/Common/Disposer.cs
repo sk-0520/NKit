@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
@@ -32,6 +33,13 @@ namespace ContentTypeTextNet.NKit.Common
         /// </summary>
         [IgnoreDataMember, XmlIgnore]
         public bool IsDisposed { get; private set; }
+
+        protected void ThrowIfDisposed([CallerMemberName] string _callerMemberName = "")
+        {
+            if(IsDisposed) {
+                throw new ObjectDisposedException(_callerMemberName);
+            }
+        }
 
         /// <summary>
         /// <see cref="IDisposable.Dispose"/>の内部処理。
