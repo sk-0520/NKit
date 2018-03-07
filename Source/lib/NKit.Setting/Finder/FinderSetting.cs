@@ -8,7 +8,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
 {
     public interface IReadOnlyFinderSetting
     {
-        FindGroupSetting[] Groups { get; }
+        IReadOnlyFindGroupSetting[] Groups { get; }
 
         string TextNamePattern { get; }
         string MicrosoftOfficeNamePattern { get; }
@@ -20,6 +20,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         #region IReadOnlyFinderSetting
 
         public FindGroupSetting[] Groups { get; set; } = new FindGroupSetting[0];
+        IReadOnlyFindGroupSetting[] IReadOnlyFinderSetting.Groups => Groups;
 
         public string TextNamePattern { get; set; } = "*.txt|*.csv";
         public string MicrosoftOfficeNamePattern { get; set; } = "*.xls|*.xlsx|*.xlsm|*.docx";

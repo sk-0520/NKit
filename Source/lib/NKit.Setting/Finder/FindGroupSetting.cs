@@ -27,6 +27,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         int DirectoryLimitLevel { get; }
 
 
+
         /// <summary>
         /// ファイル名検索パターン種別。
         /// </summary>
