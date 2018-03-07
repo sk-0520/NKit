@@ -77,6 +77,8 @@
                     <Slider Grid.Column="0" Minimum="0" Maximum="10" Value="{Binding DirectoryLimitLevel}"  />
                     <TextBox Grid.Column="1" Text="{Binding DirectoryLimitLevel}" />
                   </Grid>
+                  <CheckBox IsChecked="{Binding FindHiddenDirectory}">FindHiddenDirectory</CheckBox>
+                  <CheckBox IsChecked="{Binding FindDotDirectory}">FindDotDirectory</CheckBox>
 
                   <Label>name:</Label>
                   <TextBox Text="{Binding FileNameSearchPattern, UpdateSourceTrigger=PropertyChanged}"/>

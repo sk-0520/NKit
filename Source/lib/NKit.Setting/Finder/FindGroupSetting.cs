@@ -25,8 +25,14 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         /// <para>0で無制限</para>
         /// </summary>
         int DirectoryLimitLevel { get; }
-
-
+        /// <summary>
+        /// 隠しディレクトリを検索するか。
+        /// </summary>
+        bool FindHiddenDirectory { get; }
+        /// <summary>
+        /// ディレクトリ名の先頭が . で始まるディレクトリを検索するか。
+        /// </summary>
+        bool FindDotDirectory { get; }
 
         /// <summary>
         /// ファイル名検索パターン種別。
@@ -37,7 +43,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         /// </summary>
         bool FileNameCase { get; }
         /// <summary>
-        /// ファイル名検索内容。
+        /// ファイル名検索パターン。
         /// </summary>
         string FileNameSearchPattern { get; }
         /// <summary>
@@ -71,6 +77,8 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
 
         public string RootDirectoryPath { get; set; }
         public int DirectoryLimitLevel { get; set; }
+        public bool FindHiddenDirectory { get; set; }
+        public bool FindDotDirectory { get; set; }
 
         public SearchPatternKind FileNameSearchPatternKind { get; set; }
         public bool FileNameCase { get; set; }

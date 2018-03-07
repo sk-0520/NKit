@@ -91,6 +91,18 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             get { return Model.FindGroupSetting.DirectoryLimitLevel; }
             set { SetPropertyValue(Model.FindGroupSetting, value); }
         }
+        public bool FindHiddenDirectory
+        {
+            get { return Model.FindGroupSetting.FindHiddenDirectory; }
+            set { SetPropertyValue(Model.FindGroupSetting, value); }
+        }
+        public bool FindDotDirectory
+        {
+            get { return Model.FindGroupSetting.FindDotDirectory; }
+            set { SetPropertyValue(Model.FindGroupSetting, value); }
+        }
+
+
         public bool FindFileContent
         {
             get { return Model.FindGroupSetting.FindFileContent; }

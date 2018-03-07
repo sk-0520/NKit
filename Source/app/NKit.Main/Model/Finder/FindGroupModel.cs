@@ -164,7 +164,22 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                         continue;
                     }
 
-                    // アクセスできるようなので中を検索していく
+                    // アクセスできるようなので検索条件に合致すれば中を検索していく
+
+                    // 隠しディレクトリのファイル列挙
+                    if(!CurrentFindGroupSetting.FindHiddenDirectory) {
+                        if(dir.Attributes.HasFlag(FileAttributes.Hidden)) {
+                            continue;
+                        }
+                    }
+
+                    // 先頭が . のディレクトリのファイル列挙
+                    if(!CurrentFindGroupSetting.FindDotDirectory) {
+                        if(dir.Name.StartsWith(".")) {
+                            continue;
+                        }
+                    }
+
                     var filesInDir = GetFiles(dir, searchPattern, limitLevel - 1, cancelToken);
                     foreach(var file in filesInDir) {
                         yield return file;
