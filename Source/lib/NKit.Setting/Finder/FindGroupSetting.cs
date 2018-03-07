@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.NKit.Setting.Define;
+using ContentTypeTextNet.NKit.Utility.Model;
 
 namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
 {
-    public interface IReadOnlyFindGroupSetting: IReadOnlyGuidIdSetting
+    public interface IReadOnlyFindGroupSetting : IReadOnlyGuidIdSetting
     {
         #region property
 
@@ -46,25 +47,34 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         /// ファイル名検索パターン。
         /// </summary>
         string FileNameSearchPattern { get; }
+
+        /// <summary>
+        /// ファイル検索に用いるファイルサイズの上下限を指定する。
+        /// <para>0は無制限。</para>
+        /// <para>一応のUI運用としては上限のみの指定でいいと思ってる。下限 0 の 上限 n みたいな。</para>
+        /// </summary>
+        IReadOnlyRange<long> FindFileSizeLimit { get; }
+
         /// <summary>
         /// ファイル内まで検索するか。
         /// </summary>
-        bool FindFileContent { get;  }
+        bool FindFileContent { get; }
         /// <summary>
         /// ファイル内検索方法。
         /// </summary>
-        SearchPatternKind FileContentSearchPatternKind { get;  }
+        SearchPatternKind FileContentSearchPatternKind { get; }
         /// <summary>
         /// ファイル内検索パターンにて大文字小文字を区別するか。
         /// </summary>
-        bool FileContentCase { get;  }
+        bool FileContentCase { get; }
         /// <summary>
         /// ファイル内検索内容。
         /// </summary>
-        string FileContentSearchPattern { get;  }
+        string FileContentSearchPattern { get; }
+
 
         IReadOnlyFindMicrosoftOfficeContentSetting MicrosoftOfficeContent { get; }
-        IReadOnlyFindXmlHtmlContentSetting XmlHtmlContent { get; } 
+        IReadOnlyFindXmlHtmlContentSetting XmlHtmlContent { get; }
 
         #endregion
     }
@@ -83,6 +93,11 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         public SearchPatternKind FileNameSearchPatternKind { get; set; }
         public bool FileNameCase { get; set; }
         public string FileNameSearchPattern { get; set; }
+
+        public Range<long> FindFileSizeLimit { get; set; }
+        IReadOnlyRange<long> IReadOnlyFindGroupSetting.FindFileSizeLimit => FindFileSizeLimit;
+
+
         public bool FindFileContent { get; set; } = true;
         public SearchPatternKind FileContentSearchPatternKind { get; set; }
         public bool FileContentCase { get; set; }

@@ -23,12 +23,9 @@ namespace ContentTypeTextNet.NKit.Utility.Model
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Serializable]
-    public class Range<T> : IReadOnlyRange<T>
+    public struct Range<T> : IReadOnlyRange<T>
         where T : IComparable
     {
-        public Range()
-        { }
-
         public Range(T head, T tail)
         {
             Head = head;
