@@ -45,13 +45,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public FindGroupViewModel(FindGroupModel model)
             : base(model)
         {
-            if(Dispatcher.CurrentDispatcher != Application.Current.Dispatcher) {
-                Application.Current.Dispatcher.Invoke(() => {
-                    Items = CollectionViewSource.GetDefaultView(ItemViewModels);
-                });
-            } else {
-                Items = CollectionViewSource.GetDefaultView(ItemViewModels);
-            }
+            Items = GetInvokeUI(() => CollectionViewSource.GetDefaultView(ItemViewModels));
 
             Items.Filter = FilterFileList;
         }

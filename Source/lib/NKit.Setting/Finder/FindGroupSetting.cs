@@ -7,7 +7,7 @@ using ContentTypeTextNet.NKit.NKit.Setting.Define;
 
 namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
 {
-    public interface IReadOnlyFindGroupSetting
+    public interface IReadOnlyFindGroupSetting: IReadOnlyGuidIdSetting
     {
         #region property
 
@@ -69,7 +69,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         #endregion
     }
 
-    public class FindGroupSetting : SettingBase, IReadOnlyFindGroupSetting
+    public class FindGroupSetting : GuidIdSettingBase, IReadOnlyFindGroupSetting
     {
         #region IReadOnlyFindGroupSetting
 
