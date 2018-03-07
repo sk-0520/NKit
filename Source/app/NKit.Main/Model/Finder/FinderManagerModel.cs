@@ -41,7 +41,9 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
         public void RemoveAtInGroups(int index)
         {
+            var model = Groups[index];
             Groups.RemoveAt(index);
+            model.Dispose();
         }
 
         #endregion
