@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,6 +60,14 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         /// <para>一応のUI運用としては上限のみの指定でいいと思ってる。下限 0 の 上限 n みたいな。</para>
         /// </summary>
         IReadOnlyRange<long> FilePropertySizeLimit { get; }
+        /// <summary>
+        /// 検索ファイル属性
+        /// </summary>
+        FileAttributes FilePropertyFileAttributes { get; }
+        /// <summary>
+        /// <see cref="FilePropertyFileAttributes"/> の選択
+        /// </summary>
+        FileAttributeEnabledJudgment FilePropertyFileAttributeEnabledJudgment { get; }
 
         /// <summary>
         /// ファイル内まで検索するか。
@@ -103,6 +112,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
 
         public Range<long> FilePropertySizeLimit { get; set; }
         IReadOnlyRange<long> IReadOnlyFindGroupSetting.FilePropertySizeLimit => FilePropertySizeLimit;
+        public FileAttributes FilePropertyFileAttributes { get; set; }
 
 
         public bool FindFileContent { get; set; } = true;

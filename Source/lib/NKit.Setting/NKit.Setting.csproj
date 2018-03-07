@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Define\AssociationFileKind.cs" />
+    <Compile Include="Define\FileAttributeEnabledJudgment.cs" />
     <Compile Include="Define\SearchPatternKind.cs" />
     <Compile Include="File\AssociationFileSetting.cs" />
     <Compile Include="File\FileSetting.cs" />
