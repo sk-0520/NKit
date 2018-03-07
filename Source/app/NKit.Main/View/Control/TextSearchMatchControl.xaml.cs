@@ -47,6 +47,7 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
         private static void InformationFontFamilyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((TextSearchMatchControl)d).InformationFontFamily = (FontFamily)e.NewValue;
+            ((TextSearchMatchControl)d).BuildMatchItems();
         }
 
         #endregion
@@ -69,6 +70,7 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
         private static void InformationForegroundPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((TextSearchMatchControl)d).InformationForeground = (Brush)e.NewValue;
+            ((TextSearchMatchControl)d).BuildMatchItems();
         }
 
         #endregion
@@ -91,6 +93,7 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
         private static void InformationBackgroundPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((TextSearchMatchControl)d).InformationBackground = (Brush)e.NewValue;
+            ((TextSearchMatchControl)d).BuildMatchItems();
         }
 
         #endregion

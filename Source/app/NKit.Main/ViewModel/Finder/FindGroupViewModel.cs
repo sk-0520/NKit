@@ -572,8 +572,13 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             Application.Current.Dispatcher.Invoke(() => {
                 switch(e.Action) {
                     case NotifyCollectionChangedAction.Reset:
+                        var oldItems = ItemViewModels;
                         ItemViewModels.Clear();
                         MultiSelectedItem.Items.Clear();
+                        foreach(var oldItem in oldItems) {
+                            oldItem.PropertyChanged -= FindItemModel_PropertyChanged;
+                            oldItem.Dispose();
+                        }
                         RaiseCountPropertyChanged();
                         break;
 
@@ -585,6 +590,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                         ItemViewModels.RemoveAt(e.OldStartingIndex);
                         foreach(var oldItem in e.OldItems.Cast<FindItemModel>()) {
                             oldItem.PropertyChanged -= FindItemModel_PropertyChanged;
+                            oldItem.Dispose();
                         }
                         RaiseCountPropertyChanged();
                         break;

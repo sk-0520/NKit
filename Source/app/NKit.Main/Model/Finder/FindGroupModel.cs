@@ -297,14 +297,17 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
             CurrentFindGroupSetting = (FindGroupSetting)FindGroupSetting.Clone();
 
+            var oldItems = Items;
+            Items.Clear();
+            foreach(var oldItem in oldItems) {
+                oldItem.Dispose();
+            }
 
             return base.PreparationCoreAsync(cancelToken);
         }
 
         protected override Task<None> RunCoreAsync(CancellationToken cancelToken)
         {
-            Items.Clear();
-
             var dirInfo = new DirectoryInfo(CachedUsingRootDirectoryPath);
             var limitLevel = CurrentFindGroupSetting.DirectoryLimitLevel;
 

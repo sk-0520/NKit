@@ -205,9 +205,10 @@
 
                 <ListView
                   Grid.Row="0"
-                  ScrollViewer.CanContentScroll="False"
+                  ScrollViewer.CanContentScroll="True"
                   VirtualizingPanel.ScrollUnit="Pixel"
                   VirtualizingPanel.IsVirtualizing="True"
+                  VirtualizingPanel.VirtualizationMode="Standard"
                   SelectionMode="Extended"
                   ItemsSource="{Binding Items}"
                   SelectedItem="{Binding SelectedItem}"
