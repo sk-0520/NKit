@@ -90,17 +90,17 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         {
             var file = (FileInfo)fileSystemInfo;
 
-            var disabledMaxSize = CurrentFindGroupSetting.FindFileSizeLimit.Tail == 0;
+            var disabledMaxSize = CurrentFindGroupSetting.FilePropertySizeLimit.Tail == 0;
 
-            if(CurrentFindGroupSetting.FindFileSizeLimit.Head == 0 && disabledMaxSize) {
+            if(CurrentFindGroupSetting.FilePropertySizeLimit.Head == 0 && disabledMaxSize) {
                 return new FilePropertySearchResult() {
                     IsMatched = true,
                 };
             }
 
             var sizeRange = Range.Create(
-                CurrentFindGroupSetting.FindFileSizeLimit.Head,
-                disabledMaxSize ? file.Length: CurrentFindGroupSetting.FindFileSizeLimit.Tail
+                CurrentFindGroupSetting.FilePropertySizeLimit.Head,
+                disabledMaxSize ? file.Length: CurrentFindGroupSetting.FilePropertySizeLimit.Tail
             );
 
             if(sizeRange.IsIn(file.Length)) {
@@ -284,7 +284,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
                     var fileNameSearchResult = SearchNamePattern(file);
 
-                    var filePropertySearchResult = SearchProperty(file);
+                    var filePropertySearchResult = FilePropertySearchResult.NotFound;
+                    if(CurrentFindGroupSetting.FindFileProperty) {
+                        filePropertySearchResult = SearchProperty(file);
+                    }
 
                     var fileContentSearchResult = FileContentSearchResult.NotFound;
                     if(CurrentFindGroupSetting.FindFileContent && !string.IsNullOrEmpty(CurrentFindGroupSetting.FileContentSearchPattern)) {

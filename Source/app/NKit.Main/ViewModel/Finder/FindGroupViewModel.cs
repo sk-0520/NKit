@@ -97,10 +97,16 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { SetPropertyValue(Model.FindGroupSetting, value); }
         }
 
-        public long FindFileSizLimiteMaximum
+        public bool FindFileProperty
         {
-            get { return Model.FindGroupSetting.FindFileSizeLimit.Tail; }
-            set { SetPropertyValue(Model.FindGroupSetting, Range.Create(Model.FindGroupSetting.FindFileSizeLimit.Head, value), nameof(Model.FindGroupSetting.FindFileSizeLimit)); }
+            get { return Model.FindGroupSetting.FindFileProperty; }
+            set { SetPropertyValue(Model.FindGroupSetting, value); }
+        }
+
+        public long FilePropertySizeLimitMaximum
+        {
+            get { return Model.FindGroupSetting.FilePropertySizeLimit.Tail; }
+            set { SetPropertyValue(Model.FindGroupSetting, Range.Create(Model.FindGroupSetting.FilePropertySizeLimit.Head, value), nameof(Model.FindGroupSetting.FilePropertySizeLimit)); }
         }
 
 
@@ -376,7 +382,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 }
             }
 
-            if(IsEnabledFilePropertyFilter) {
+            if(Model.CurrentFindGroupSetting.FindFileProperty && IsEnabledFilePropertyFilter) {
                 if(!item.MatchedProperty) {
                     if(item.IsSelected) {
                         item.IsSelected = false;
