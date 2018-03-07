@@ -55,6 +55,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         FileInfo FileInfo { get; }
 
         public bool MatchedName => Model.FileNameSearchResult.IsMatched;
+        public bool MatchedProperty => Model.FilePropertySearchResult.IsMatched;
         public bool MatchedContent => Model.FileContentSearchResult.IsMatched;
 
         public string RelativeDirectoryPath => Model.RelativeDirectoryPath;

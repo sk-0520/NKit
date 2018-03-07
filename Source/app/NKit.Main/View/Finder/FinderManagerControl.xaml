@@ -89,6 +89,20 @@
 
                   <Separator />
 
+                  <Label>prop</Label>
+                  <Label>size max:</Label>
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Slider Grid.Column="0" Minimum="0" Maximum="9999999" Value="{Binding FindFileSizLimiteMaximum}"  />
+                    <TextBox Grid.Column="1" Text="{Binding FindFileSizLimiteMaximum}" />
+                  </Grid>
+
+                  <Separator />
+
                   <Expander IsExpanded="{Binding FindFileContent}">
                     <Expander.Header>
                       <CheckBox IsChecked="{Binding FindFileContent}">FindFileContent</CheckBox>
@@ -145,6 +159,7 @@
               <ToolBar Grid.Row="0">
                 <CheckBox IsChecked="{Binding IsEnabledHiddenFileFiler}">hidden</CheckBox>
                 <CheckBox IsChecked="{Binding IsEnabledFileNameFilter}">name</CheckBox>
+                <CheckBox IsChecked="{Binding IsEnabledFilePropertyFilter}">prop</CheckBox>
                 <CheckBox IsChecked="{Binding IsEnabledFileContentFilter}">content</CheckBox>
 
                 <Separator />
@@ -211,16 +226,18 @@
                               <Grid.RowDefinitions>
                                 <RowDefinition Height="1*" />
                                 <RowDefinition Height="1*" />
+                                <RowDefinition Height="1*" />
                               </Grid.RowDefinitions>
                               <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                               </Grid.ColumnDefinitions>
-                              <ToggleButton Grid.Row="0" FontSize="6" IsChecked="{Binding MatchedName, Mode=OneTime}">name</ToggleButton>
-                              <ToggleButton Grid.Row="1" FontSize="6" IsChecked="{Binding MatchedContent, Mode=OneTime}">body</ToggleButton>
+                              <ToggleButton Grid.Row="0" FontSize="4" IsChecked="{Binding MatchedName, Mode=OneTime}">name</ToggleButton>
+                              <ToggleButton Grid.Row="1" FontSize="4" IsChecked="{Binding MatchedProperty, Mode=OneTime}">prop</ToggleButton>
+                              <ToggleButton Grid.Row="2" FontSize="4" IsChecked="{Binding MatchedContent, Mode=OneTime}">body</ToggleButton>
 
-                              <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Source="{Binding FilePath, Converter={StaticResource FilePathToIconConverter}}">
+                              <Image Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Source="{Binding FilePath, Converter={StaticResource FilePathToIconConverter}}">
                                 <Image.Style>
                                   <Style TargetType="Image">
                                     <Style.Triggers>
@@ -234,7 +251,7 @@
 
                               <app_main_view_control:TextSearchMatchControl
                                 Grid.Row="0"
-                                Grid.RowSpan="2"
+                                Grid.RowSpan="3"
                                 Grid.Column="2"
                                 IsSelectable="False"
                                 Background="Transparent"

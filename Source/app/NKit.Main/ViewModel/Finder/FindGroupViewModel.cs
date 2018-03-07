@@ -31,6 +31,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         bool _isEnabledHiddenFileFiler = true;
         bool _isEnabledFileNameFilter = true;
+        bool _isEnabledFilePropertyFilter = true;
         bool _isEnabledFileContentFilter = true;
 
         string _easyFileNameFilterPattern;
@@ -94,6 +95,12 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         {
             get { return Model.FindGroupSetting.FindDotDirectory; }
             set { SetPropertyValue(Model.FindGroupSetting, value); }
+        }
+
+        public long FindFileSizLimiteMaximum
+        {
+            get { return Model.FindGroupSetting.FindFileSizeLimit.Tail; }
+            set { SetPropertyValue(Model.FindGroupSetting, Range.Create(Model.FindGroupSetting.FindFileSizeLimit.Head, value), nameof(Model.FindGroupSetting.FindFileSizeLimit)); }
         }
 
 
@@ -265,6 +272,17 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             }
         }
 
+        public bool IsEnabledFilePropertyFilter
+        {
+            get { return this._isEnabledFilePropertyFilter; }
+            set
+            {
+                if(SetProperty(ref this._isEnabledFilePropertyFilter, value)) {
+                    Items.Refresh();
+                }
+            }
+        }
+
         public bool IsEnabledFileContentFilter
         {
             get { return this._isEnabledFileContentFilter; }
@@ -351,6 +369,15 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
             if(IsEnabledFileNameFilter) {
                 if(!item.MatchedName) {
+                    if(item.IsSelected) {
+                        item.IsSelected = false;
+                    }
+                    return false;
+                }
+            }
+
+            if(IsEnabledFilePropertyFilter) {
+                if(!item.MatchedProperty) {
                     if(item.IsSelected) {
                         item.IsSelected = false;
                     }

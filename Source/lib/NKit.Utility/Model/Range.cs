@@ -46,6 +46,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         public T Tail { get; set; }
 
         #endregion
+
     }
 
     /// <summary>
@@ -88,5 +89,23 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             }
         }
 
+    }
+
+    public static class RangeExtensions
+    {
+        #region function
+
+        /// <summary>
+        /// 指定された値が範囲内にあるか・。
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsIn<T>(this IReadOnlyRange<T> range, T value)
+            where T : IComparable
+        {
+            return 0 <= value.CompareTo(range.Head) && value.CompareTo(range.Tail) <= 0;
+        }
+
+        #endregion
     }
 }

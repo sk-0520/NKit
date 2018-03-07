@@ -120,6 +120,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\File\FilePropertySearchResult.cs" />
     <Compile Include="Model\NKit\NKitApplicationExecutor.cs" />
     <Compile Include="Model\XmlHtmlSearcher.cs" />
     <Compile Include="View\Control\RunnableControl.xaml.cs">

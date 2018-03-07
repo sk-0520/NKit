@@ -86,6 +86,32 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             return ts.Search(fileSystemInfo.Name, CachedFileNamePattern);
         }
 
+        FilePropertySearchResult SearchProperty(FileSystemInfo fileSystemInfo)
+        {
+            var file = (FileInfo)fileSystemInfo;
+
+            var disabledMaxSize = CurrentFindGroupSetting.FindFileSizeLimit.Tail == 0;
+
+            if(CurrentFindGroupSetting.FindFileSizeLimit.Head == 0 && disabledMaxSize) {
+                return new FilePropertySearchResult() {
+                    IsMatched = true,
+                };
+            }
+
+            var sizeRange = Range.Create(
+                CurrentFindGroupSetting.FindFileSizeLimit.Head,
+                disabledMaxSize ? file.Length: CurrentFindGroupSetting.FindFileSizeLimit.Tail
+            );
+
+            if(sizeRange.IsIn(file.Length)) {
+                return new FilePropertySearchResult() {
+                    IsMatched = true,
+                };
+            }
+
+            return FilePropertySearchResult.NotFound;
+        }
+
         FileContentSearchResult SearchFlieContentPattern(FileSystemInfo fileSystemInfo)
         {
             Debug.Assert(CurrentFindGroupSetting.FindFileContent);
@@ -258,12 +284,14 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
                     var fileNameSearchResult = SearchNamePattern(file);
 
+                    var filePropertySearchResult = SearchProperty(file);
+
                     var fileContentSearchResult = FileContentSearchResult.NotFound;
                     if(CurrentFindGroupSetting.FindFileContent && !string.IsNullOrEmpty(CurrentFindGroupSetting.FileContentSearchPattern)) {
                         fileContentSearchResult = SearchFlieContentPattern(file);
                     }
 
-                    var findItem = new FindItemModel(dirInfo, file, fileNameSearchResult, fileContentSearchResult, FileSetting.AssociationFile, NKitSetting);
+                    var findItem = new FindItemModel(dirInfo, file, fileNameSearchResult, filePropertySearchResult, fileContentSearchResult, FileSetting.AssociationFile, NKitSetting);
                     Items.Add(findItem);
                 }
 
