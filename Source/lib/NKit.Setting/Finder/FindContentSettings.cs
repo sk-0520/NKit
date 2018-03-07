@@ -6,22 +6,31 @@ using System.Threading.Tasks;
 
 namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
 {
-    /// <summary>
-    /// ファイル内容検索の専用検索処理。
-    /// </summary>
-    public abstract class FindContentSettingBase : SettingBase
+    public interface IReadOnlyFindContentSetting
     {
         #region property
 
         /// <summary>
         /// 専用検索を行うか。
         /// </summary>
+        bool IsEnabled { get; } 
+
+        #endregion
+    }
+
+    /// <summary>
+    /// ファイル内容検索の専用検索処理。
+    /// </summary>
+    public abstract class FindContentSettingBase : SettingBase, IReadOnlyFindContentSetting
+    {
+        #region IReadOnlyFindContentSetting
+
         public bool IsEnabled { get; set; } = true;
 
         #endregion
     }
 
-    public interface IReadOnlyFindMicrosoftOfficeCommonContentSetting
+    public interface IReadOnlyFindMicrosoftOfficeCommonContentSetting: IReadOnlyFindContentSetting
     {
         #region proeprty
 
@@ -82,7 +91,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         #endregion
     }
 
-    public interface IReadOnlyFindXmlHtmlContentSetting
+    public interface IReadOnlyFindXmlHtmlContentSetting: IReadOnlyFindContentSetting
     {
         #region property
 

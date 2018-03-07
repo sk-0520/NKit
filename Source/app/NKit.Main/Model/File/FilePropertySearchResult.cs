@@ -17,6 +17,12 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
         #endregion
 
         #region property
+
+        /// <summary>
+        /// ファイルサイズチェック結果。
+        /// </summary>
+        public bool IsEnabledFileSize { get; set; }
+
         #endregion
     }
 }

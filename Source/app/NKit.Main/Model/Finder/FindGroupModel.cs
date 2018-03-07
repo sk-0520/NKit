@@ -36,7 +36,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         /// <summary>
         /// 検索時に使用した設定。
         /// </summary>
-        public FindGroupSetting CurrentFindGroupSetting { get; private set; }
+        public IReadOnlyFindGroupSetting CurrentFindGroupSetting { get; private set; }
 
         string CachedUsingRootDirectoryPath { get; set; }
 
@@ -88,6 +88,9 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
         FilePropertySearchResult SearchProperty(FileSystemInfo fileSystemInfo)
         {
+            Debug.Assert(CurrentFindGroupSetting.FindFileProperty);
+
+            // ここにきてれば絶対ファイルっしょ
             var file = (FileInfo)fileSystemInfo;
 
             var disabledMaxSize = CurrentFindGroupSetting.FilePropertySizeLimit.Tail == 0;
@@ -95,6 +98,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             if(CurrentFindGroupSetting.FilePropertySizeLimit.Head == 0 && disabledMaxSize) {
                 return new FilePropertySearchResult() {
                     IsMatched = true,
+                    IsEnabledFileSize = true,
                 };
             }
 
@@ -106,6 +110,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             if(sizeRange.IsIn(file.Length)) {
                 return new FilePropertySearchResult() {
                     IsMatched = true,
+                    IsEnabledFileSize = true,
                 };
             }
 
@@ -291,7 +296,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
                     var fileContentSearchResult = FileContentSearchResult.NotFound;
                     if(CurrentFindGroupSetting.FindFileContent && !string.IsNullOrEmpty(CurrentFindGroupSetting.FileContentSearchPattern)) {
-                        fileContentSearchResult = SearchFlieContentPattern(file);
+                        // あんまりお行儀良くない気がしたのでファイルサイズチェックに該当したものだけファイル内検索するようにした
+                        if(filePropertySearchResult.IsEnabledFileSize) {
+                            fileContentSearchResult = SearchFlieContentPattern(file);
+                        }
                     }
 
                     var findItem = new FindItemModel(dirInfo, file, fileNameSearchResult, filePropertySearchResult, fileContentSearchResult, FileSetting.AssociationFile, NKitSetting);
