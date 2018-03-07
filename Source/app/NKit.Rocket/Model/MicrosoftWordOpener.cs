@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,7 +32,19 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
 
         public override bool Open()
         {
-            using(var word = ComModel.Create(new Word.Application())) {
+            ComModel<Word.Application> word = null;
+
+            try {
+                word = new ComModel<Word.Application>(new Word.Application());
+            } catch(InvalidCastException ex) {
+                Trace.WriteLine(ex);
+                // Word が入ってなさげなので通常のファイルオープンでさよなら。
+                // シェルから開けないんならこっちの責任じゃない
+                Process.Start(FilePath);
+                return false;
+            }
+
+            using(word) {
                 try {
                     word.Com.Visible = false;
 
@@ -66,8 +79,8 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
                     }
                 }
             }
-
-            #endregion
         }
+
+        #endregion
     }
 }

@@ -28,15 +28,15 @@ namespace NKit.Rocket
         {
             Trace.WriteLine("!!START!!");
 
-            var processModel = new ProcessModel(args);
-            var result =  processModel.Run(CancellationToken.None);
+            var rocket = new RocketModel(args);
+            var result =  rocket.Run(CancellationToken.None);
 
 
-            Trace.WriteLine($"{processModel.StartTimestamp}");
-            Trace.WriteLine($"{processModel.PreparationSpan}");
-            Trace.WriteLine($"{processModel.EndTimestamp}");
-            Trace.WriteLine($"{processModel.EndTimestamp - processModel.StartTimestamp}");
-            Trace.WriteLine($"{processModel.RunState}");
+            Trace.WriteLine($"{rocket.StartTimestamp}");
+            Trace.WriteLine($"{rocket.PreparationSpan}");
+            Trace.WriteLine($"{rocket.EndTimestamp}");
+            Trace.WriteLine($"{rocket.EndTimestamp - rocket.StartTimestamp}");
+            Trace.WriteLine($"{rocket.RunState}");
             Trace.WriteLine($"{result}");
 
             Trace.WriteLine("!!END!!");

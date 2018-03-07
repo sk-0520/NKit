@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,6 +29,7 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
         string SpreadSheetSheetName { get; }
         int SpreadSheetRowIndex { get; }
         int SpreadSheetColumnIndex { get; }
+        int SpreadSheetCellAddress { get; }
 
         #endregion
 
@@ -63,7 +66,20 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
 
         public override bool Open()
         {
-            using(var excel = ComModel.Create(new Excel.Application())) {
+            ComModel<Excel.Application> excel = null;
+            
+            try {
+                excel = new ComModel<Excel.Application>(new Excel.Application());
+            } catch(InvalidCastException ex) {
+                Trace.WriteLine(ex);
+                // Excel が入ってなさげなので通常のファイルオープンでさよなら。
+                // シェルから開けないんならこっちの責任じゃない
+                var command = $"{FilePath}#{SpreadSheetSheetName}!{SpreadSheetCellAddress}";
+                Process.Start(FilePath);
+                return false;
+            }
+
+            using(excel) {
                 try {
                     excel.Com.Visible = false;
 

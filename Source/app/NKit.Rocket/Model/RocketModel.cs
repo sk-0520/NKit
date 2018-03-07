@@ -11,9 +11,9 @@ using Microsoft.Extensions.CommandLineUtils;
 
 namespace ContentTypeTextNet.NKit.Rocket.Model
 {
-    public class ProcessModel : CliApplicationModelBase
+    public class RocketModel : CliApplicationModelBase
     {
-        public ProcessModel(string[] arguments)
+        public RocketModel(string[] arguments)
             : base(arguments)
         { }
 
@@ -28,6 +28,8 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
         string SpreadSheetSheetName { get; set; }
         int SpreadSheetRowIndex { get; set; }
         int SpreadSheetColumnIndex { get; set; }
+
+        string SpreadSheetCellAddress { get; set; }
 
         #endregion
 
@@ -70,6 +72,7 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
             var optionSpreadSheetName = CommandLineApplication.Option("--ss_sheet", $"sheet name", CommandOptionType.SingleValue);
             var optionSpreadSheetX = CommandLineApplication.Option("--ss_x", $"row index (0 base)", CommandOptionType.SingleValue);
             var optionSpreadSheetY = CommandLineApplication.Option("--ss_y", $"col index (0 base)", CommandOptionType.SingleValue);
+            var optionSpreadSheetCell = CommandLineApplication.Option("--ss_cell", "cell address", CommandOptionType.SingleValue);
 
             var optionDocumentLineNumber = CommandLineApplication.Option("--doc_line", "line number", CommandOptionType.SingleValue);
             var optionDocumentCharacterPosition = CommandLineApplication.Option("--doc_pos", "line number", CommandOptionType.SingleValue);
@@ -88,6 +91,7 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
                     SpreadSheetSheetName = optionSpreadSheetName.Value();
                     SpreadSheetColumnIndex = int.Parse(optionSpreadSheetX.Value());
                     SpreadSheetRowIndex = int.Parse(optionSpreadSheetY.Value());
+                    SpreadSheetCellAddress = optionSpreadSheetCell.Value();
                     break;
 
                 case AssociationFileKind.MicrosoftOfficeWord:

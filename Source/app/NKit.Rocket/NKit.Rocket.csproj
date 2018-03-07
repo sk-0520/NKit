@@ -83,7 +83,7 @@
     <Compile Include="Model\MicrosoftExcelOpener.cs" />
     <Compile Include="Model\MicrosoftWordOpener.cs" />
     <Compile Include="Model\OpenerBase.cs" />
-    <Compile Include="Model\ProcessModel.cs" />
+    <Compile Include="Model\RocketModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
