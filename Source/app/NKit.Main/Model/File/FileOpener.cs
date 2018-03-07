@@ -119,9 +119,8 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
                 // ------------------
                 ["DOC_PAGE"] = parameter.Document.Page.ToString(),
             };
-            var to = new TextOperator();
 
-            return to.ReplaceFromDictionary(argument, map);
+            return TextUtility.ReplaceFromDictionary(argument, map);
         }
 
         Process OpenCore(string path, string arguments)

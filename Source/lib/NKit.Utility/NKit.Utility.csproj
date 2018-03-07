@@ -103,7 +103,7 @@
     <Compile Include="Model\RunnableModel.cs" />
     <Compile Include="Model\Serializer.cs" />
     <Compile Include="Model\ShortcutFile.cs" />
-    <Compile Include="Model\TextOperator.cs" />
+    <Compile Include="Model\TextUtility.cs" />
     <Compile Include="Model\UIUtility.cs" />
     <Compile Include="Model\Unmanaged\Com.cs" />
     <Compile Include="Model\Unmanaged\Gdi.cs" />

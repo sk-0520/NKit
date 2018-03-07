@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ContentTypeTextNet.NKit.Utility.Model
 {
-    public class TextOperator
+    public static class TextUtility
     {
         #region function
 
@@ -21,7 +21,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         /// <param name="comparisonType">比較</param>
         /// <param name="dg">nullの場合はデフォルト動作</param>
         /// <returns></returns>
-        public string ToUnique(string target, IEnumerable<string> list, StringComparison comparisonType, Func<string, int, string> dg)
+        public static string ToUnique(string target, IEnumerable<string> list, StringComparison comparisonType, Func<string, int, string> dg)
         {
             Debug.Assert(dg != null);
 
@@ -46,7 +46,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         /// <param name="list"></param>
         /// <param name="comparisonType"></param>
         /// <returns>集合の中に同じものがなければtarget, 存在すればtarget(n)。</returns>
-        public string ToUniqueDefault(string target, IEnumerable<string> list, StringComparison comparisonType)
+        public static string ToUniqueDefault(string target, IEnumerable<string> list, StringComparison comparisonType)
         {
             return ToUnique(target, list, comparisonType, (string source, int index) => string.Format("{0}({1})", source, index));
         }
@@ -56,7 +56,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         /// </summary>
         /// <param name="seq"></param>
         /// <returns></returns>
-        public StringCollection ToStringCollection(IEnumerable<string> seq)
+        public static StringCollection ToStringCollection(IEnumerable<string> seq)
         {
             var sc = new StringCollection();
             sc.AddRange(seq.ToArray());
@@ -72,7 +72,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         /// <param name="tail">置き換え終了文字列。</param>
         /// <param name="dg">処理。</param>
         /// <returns></returns>
-        public string ReplaceRange(string src, string head, string tail, Func<string, string> dg)
+        public static string ReplaceRange(string src, string head, string tail, Func<string, string> dg)
         {
             var escHead = Regex.Escape(head);
             var escTail = Regex.Escape(tail);
@@ -89,7 +89,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         /// <param name="tail">置き換え終了文字列。</param>
         /// <param name="map">置き換え対象文字列と置き換え後文字列のペアであるコレクション。</param>
         /// <returns></returns>
-        public string ReplaceRangeFromDictionary(string src, string head, string tail, IDictionary<string, string> map)
+        public static string ReplaceRangeFromDictionary(string src, string head, string tail, IDictionary<string, string> map)
         {
             return ReplaceRange(src, head, tail, s => map.ContainsKey(s) ? map[s] : head + s + tail);
         }
@@ -99,7 +99,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         /// <param name="src"></param>
         /// <param name="map"></param>
         /// <returns></returns>
-        public string ReplaceFromDictionary(string src, IDictionary<string, string> map)
+        public static string ReplaceFromDictionary(string src, IDictionary<string, string> map)
         {
             return ReplaceRangeFromDictionary(src, "${", "}", map);
         }

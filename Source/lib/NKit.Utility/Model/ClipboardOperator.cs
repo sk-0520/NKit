@@ -29,9 +29,8 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                 var data = new DataObject();
 
                 var fileNames = fileSystemInfos.Select(f => f.FullName).ToList();
-
-                var fileNameCollection = new StringCollection();
-                fileNameCollection.AddRange(fileNames.ToArray());
+                
+                var fileNameCollection = TextUtility.ToStringCollection(fileNames);
                 data.SetFileDropList(fileNameCollection);
                 data.SetText(string.Join(Environment.NewLine, fileSystemInfos));
 
