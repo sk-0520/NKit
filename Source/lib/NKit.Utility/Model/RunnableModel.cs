@@ -34,11 +34,30 @@ namespace ContentTypeTextNet.NKit.Utility.Model
     {
         #region property
 
+        /// <summary>
+        /// 処理開始時間。
+        /// </summary>
         DateTime StartTimestamp { get; }
+        /// <summary>
+        /// 処理終了時間。
+        /// </summary>
         DateTime EndTimestamp { get; }
+        /// <summary>
+        /// 準備にかかった時間。
+        /// </summary>
         TimeSpan PreparationSpan { get; }
+        /// <summary>
+        /// 実行状態。
+        /// </summary>
         RunState RunState { get; }
+        /// <summary>
+        /// キャンセル処理が可能か。
+        /// </summary>
         bool Cancelable { get; }
+        /// <summary>
+        /// 非同期実行が可能か。
+        /// </summary>
+        bool CanAsync { get; }
 
         #endregion
     }
@@ -52,7 +71,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         TimeSpan _preparationSpan;
         RunState _runState;
         bool _cancelable = true;
-
+        bool _canAsync = true;
         #endregion
 
         #region property
@@ -77,7 +96,6 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             private set { SetProperty(ref this._preparationSpan, value); }
         }
 
-
         public virtual RunState RunState
         {
             get { return this._runState; }
@@ -90,23 +108,37 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             private set { SetProperty(ref this._cancelable, value); }
         }
 
+        public virtual bool CanAsync
+        {
+            get { return this._canAsync; }
+            private set { SetProperty(ref this._canAsync, value); }
+        }
+
         #endregion
 
         #region function
 
         protected PreparaResult<TRunResult> GetDefaultPreparaValue(bool value) => new PreparaResult<TRunResult>(value, default(TRunResult));
-        protected Task<PreparaResult<TRunResult>> GetDefaultPreparaValueTask(bool value) => Task.FromResult(GetDefaultPreparaValue(value));
+        protected Task<PreparaResult<TRunResult>> GetDefaultPreparaValueAsync(bool value) => Task.FromResult(GetDefaultPreparaValue(value));
 
         /// <summary>
         /// 準備処理。
         /// </summary>
         /// <typeparam name="TPreparaValue"></typeparam>
         /// <returns>真なら処理を継続、偽なら<see cref="TRunResult"/>を返して未処理とする。</returns>
-        protected virtual Task<PreparaResult<TRunResult>> PreparationCoreAsync(CancellationToken cancelToken) => GetDefaultPreparaValueTask(true);
+        protected virtual PreparaResult<TRunResult> PreparationCore(CancellationToken cancelToken) => GetDefaultPreparaValue(true);
 
+        /// <summary>
+        /// 準備処理。
+        /// </summary>
+        /// <typeparam name="TPreparaValue"></typeparam>
+        /// <returns>真なら処理を継続、偽なら<see cref="TRunResult"/>を返して未処理とする。</returns>
+        protected virtual Task<PreparaResult<TRunResult>> PreparationCoreAsync(CancellationToken cancelToken) => GetDefaultPreparaValueAsync(true);
+
+        protected abstract TRunResult RunCore(CancellationToken cancelToken);
         protected abstract Task<TRunResult> RunCoreAsync(CancellationToken cancelToken);
 
-        public async Task<TRunResult> RunAsync(CancellationToken cancelToken)
+        public TRunResult Run(CancellationToken cancelToken)
         {
             EndTimestamp = DateTime.MinValue;
             StartTimestamp = DateTime.Now;
@@ -114,16 +146,14 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             try {
                 RunState = RunState.Prepare;
 
-                var preTask = PreparationCoreAsync(cancelToken);
-                var preResult = await preTask;
+                var preResult = PreparationCore(cancelToken);
 
                 PreparationSpan = DateTime.Now - StartTimestamp;
 
                 if(preResult.Success) {
                     RunState = RunState.Running;
 
-                    var execTask = RunCoreAsync(cancelToken);
-                    var result = await execTask;
+                    var result = RunCore(cancelToken);
 
                     RunState = RunState.Finished;
                     return result;
@@ -143,7 +173,81 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             }
         }
 
+        public async Task<TRunResult> RunAsync(CancellationToken cancelToken)
+        {
+            EndTimestamp = DateTime.MinValue;
+            StartTimestamp = DateTime.Now;
+
+            try {
+                RunState = RunState.Prepare;
+
+                var preResult = await PreparationCoreAsync(cancelToken);
+
+                PreparationSpan = DateTime.Now - StartTimestamp;
+
+                if(preResult.Success) {
+                    RunState = RunState.Running;
+
+                    var result = await RunCoreAsync(cancelToken);
+
+                    RunState = RunState.Finished;
+                    return result;
+                } else {
+                    RunState = RunState.None;
+                    return preResult.Result;
+                }
+            } catch(OperationCanceledException) {
+                RunState = RunState.Cancel;
+                throw;
+            } catch(Exception ex) {
+                Debug.WriteLine(ex);
+                RunState = RunState.Error;
+                throw;
+            } finally {
+                EndTimestamp = DateTime.Now;
+            }
+        }
+
+
         #endregion
     }
 
+
+    public abstract class RunnableSyncModel<TRunResult>: RunnableModelBase<TRunResult>
+    {
+        #region RunnableModelBase
+
+        public override bool CanAsync => false;
+
+        protected override Task<PreparaResult<TRunResult>> PreparationCoreAsync(CancellationToken cancelToken)
+        {
+            throw new NotSupportedException();
+        }
+
+        protected override Task<TRunResult> RunCoreAsync(CancellationToken cancelToken)
+        {
+            throw new NotSupportedException();
+        }
+
+        #endregion
+    }
+
+    public abstract class RunnableAsyncModel<TRunResult> : RunnableModelBase<TRunResult>
+    {
+        #region RunnableModelBase
+
+        public override bool CanAsync => true;
+
+        protected override PreparaResult<TRunResult> PreparationCore(CancellationToken cancelToken)
+        {
+            throw new NotSupportedException();
+        }
+
+        protected override TRunResult RunCore(CancellationToken cancelToken)
+        {
+            throw new NotSupportedException();
+        }
+
+        #endregion
+    }
 }

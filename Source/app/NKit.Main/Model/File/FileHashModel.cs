@@ -10,7 +10,7 @@ using ContentTypeTextNet.NKit.Utility.Model;
 
 namespace ContentTypeTextNet.NKit.Main.Model.File
 {
-    public class FileHashModel : RunnableModelBase<byte[]>
+    public class FileHashModel : RunnableAsyncModel<byte[]>
     {
         #region define
         #endregion

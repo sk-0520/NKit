@@ -36,6 +36,7 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
             nameof(IRunnableItem.EndTimestamp),
             nameof(IRunnableItem.PreparationSpan),
             nameof(IRunnableItem.Cancelable),
+            nameof(IRunnableItem.CanAsync),
         };
 
         #endregion
@@ -45,7 +46,13 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
         {
             RunCommand = GetInvokeUI(() =>
                 new DelegateCommand(
-                    () => RunCore().ConfigureAwait(false),
+                    () => {
+                        if(CanAsync) {
+                            RunCoreAsync().ConfigureAwait(false);
+                        } else {
+                            RunCoreAsync();
+                        }
+                    },
                     () => CanRun
                 )
             );
@@ -65,6 +72,7 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
         public DateTime EndTimestamp => Model.EndTimestamp;
         public TimeSpan PreparationSpan => Model.PreparationSpan;
         public bool Cancelable => Model.Cancelable;
+        public bool CanAsync => Model.CanAsync;
 
         #endregion
 
@@ -106,7 +114,7 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
 
         #region function
 
-        protected virtual Task<TRunResult> RunCore()
+        protected virtual Task<TRunResult> RunCoreAsync()
         {
             if(RunningCancellationTokenSource != null) {
                 RunningCancellationTokenSource.Dispose();
@@ -120,6 +128,20 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModell
             var task = Model.RunAsync(token);
             task.ConfigureAwait(false);
             return task;
+        }
+
+        protected virtual TRunResult RunCore()
+        {
+            if(RunningCancellationTokenSource != null) {
+                RunningCancellationTokenSource.Dispose();
+            }
+
+            var token = CancellationToken.None;
+            if(Cancelable) {
+                RunningCancellationTokenSource = new CancellationTokenSource();
+                token = RunningCancellationTokenSource.Token;
+            }
+            return Model.Run(token);
         }
 
         protected virtual void CancelCore()

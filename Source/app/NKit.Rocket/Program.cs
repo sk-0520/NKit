@@ -29,14 +29,10 @@ namespace NKit.Rocket
             Trace.WriteLine("!!START!!");
 
             var processModel = new ProcessModel(args);
-            var task =  processModel.RunAsync(CancellationToken.None);
+            var result =  processModel.Run(CancellationToken.None);
+
 
             Trace.WriteLine($"{processModel.StartTimestamp}");
-
-            task.ConfigureAwait(false);
-            task.Wait();
-            var result = task.Result;
-
             Trace.WriteLine($"{processModel.PreparationSpan}");
             Trace.WriteLine($"{processModel.EndTimestamp}");
             Trace.WriteLine($"{processModel.EndTimestamp - processModel.StartTimestamp}");

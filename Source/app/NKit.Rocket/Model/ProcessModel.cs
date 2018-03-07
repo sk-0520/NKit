@@ -11,7 +11,7 @@ using Microsoft.Extensions.CommandLineUtils;
 
 namespace ContentTypeTextNet.NKit.Rocket.Model
 {
-    public class ProcessModel : ApplicationModelBase
+    public class ProcessModel : CliApplicationModelBase
     {
         public ProcessModel(string[] arguments)
             : base(arguments)
@@ -62,7 +62,7 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
 
         #region ApplicationModelBase
 
-        protected override Task<PreparaResult<int>> PreparationCoreAsync(CancellationToken cancelToken)
+        protected override PreparaResult<int> PreparationCore(CancellationToken cancelToken)
         {
             var optionKind = CommandLineApplication.Option("--kind", $"{nameof(AssociationFileKind)}", CommandOptionType.SingleValue);
             var optionPath = CommandLineApplication.Option("--path", $"file path", CommandOptionType.SingleValue);
@@ -77,7 +77,7 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
             var optionDocumentPageNumber = CommandLineApplication.Option("--doc_page", "page number", CommandOptionType.SingleValue);
 
             if(!BuildCommandLine()) {
-                return GetDefaultPreparaValueTask(false);
+                return GetDefaultPreparaValue(false);
             }
 
             AssociationFileKind = (AssociationFileKind)Enum.Parse(typeof(AssociationFileKind), optionKind.Value());
@@ -101,10 +101,10 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
                     break;
             }
 
-            return base.PreparationCoreAsync(cancelToken);
+            return base.PreparationCore(cancelToken);
         }
 
-        protected override Task<int> RunCoreAsync(CancellationToken cancelToken)
+        protected override int RunCore(CancellationToken cancelToken)
         {
             switch(AssociationFileKind) {
                 case AssociationFileKind.MicrosoftOfficeExcel:
@@ -118,7 +118,8 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
                 default:
                     break;
             }
-            return Task.FromResult(0);
+
+            return 0;
         }
 
         #endregion

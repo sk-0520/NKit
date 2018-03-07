@@ -11,7 +11,7 @@ using ContentTypeTextNet.NKit.Utility.Model;
 
 namespace ContentTypeTextNet.NKit.Main.Model.File
 {
-    public class FileTypeModel : RunnableModelBase<None>
+    public class FileTypeModel : RunnableAsyncModel<None>
     {
         #region variable
 

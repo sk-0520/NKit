@@ -17,7 +17,7 @@ using ContentTypeTextNet.NKit.Utility.Model;
 
 namespace ContentTypeTextNet.NKit.Main.Model.Finder
 {
-    public class FindGroupModel : RunnableModelBase<None>
+    public class FindGroupModel : RunnableAsyncModel<None>
     {
         public FindGroupModel(FindGroupSetting findGroupSetting, IReadOnlyFinderSetting finderSetting, IReadOnlyFileSetting fileSetting, IReadOnlyNKitSetting nkitSetting)
         {
@@ -180,13 +180,13 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         protected override Task<PreparaResult<None>> PreparationCoreAsync(CancellationToken cancelToken)
         {
             if(string.IsNullOrEmpty(FindGroupSetting.RootDirectoryPath)) {
-                return GetDefaultPreparaValueTask(false);
+                return GetDefaultPreparaValueAsync(false);
             }
 
             CachedUsingRootDirectoryPath = Environment.ExpandEnvironmentVariables(FindGroupSetting.RootDirectoryPath);
 
             if(!Directory.Exists(CachedUsingRootDirectoryPath)) {
-                return GetDefaultPreparaValueTask(false);
+                return GetDefaultPreparaValueAsync(false);
             }
 
             var patternCreator = new SearchPatternCreator();
@@ -195,7 +195,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                 CachedFileNamePattern = patternCreator.CreateRegex(FindGroupSetting.FileNameSearchPatternKind, FindGroupSetting.FileNameSearchPattern, FindGroupSetting.FileNameIgnoreCase);
             } catch(ArgumentException ex) {
                 Debug.WriteLine(ex);
-                return GetDefaultPreparaValueTask(false);
+                return GetDefaultPreparaValueAsync(false);
             }
 
 
@@ -218,7 +218,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
                 } catch(ArgumentException ex) {
                     Debug.WriteLine(ex);
-                    return GetDefaultPreparaValueTask(false);
+                    return GetDefaultPreparaValueAsync(false);
                 }
             }
 

@@ -4,9 +4,9 @@ using Microsoft.Extensions.CommandLineUtils;
 
 namespace ContentTypeTextNet.NKit.Common
 {
-    public abstract class ApplicationModelBase : RunnableModelBase<int>
+    public abstract class CliApplicationModelBase : RunnableSyncModel<int>
     {
-        public ApplicationModelBase(string[] arguments)
+        public CliApplicationModelBase(string[] arguments)
         {
             Arguments = arguments;
 

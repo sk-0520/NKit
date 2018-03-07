@@ -12,7 +12,7 @@ using ContentTypeTextNet.NKit.Utility.Model;
 namespace ContentTypeTextNet.NKit.Main.Model
 {
 
-    public class ApplicationExecutor : RunnableModelBase<int>
+    public class ApplicationExecutor : RunnableAsyncModel<int>
     {
         public ApplicationExecutor(string executeFilePath, string arguments)
         {
