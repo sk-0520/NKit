@@ -20,6 +20,12 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         /// 検索対象ディレクトリパス。
         /// </summary>
         string RootDirectoryPath { get; }
+        /// <summary>
+        /// 検索するディレクトリ階層上限。
+        /// <para>0で無制限</para>
+        /// </summary>
+        int DirectoryLimitLevel { get; }
+
 
         /// <summary>
         /// ファイル名検索パターン種別。
@@ -28,16 +34,11 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         /// <summary>
         /// ファイル名検索パターンにて大文字小文字を区別するか。
         /// </summary>
-        bool FileNameIgnoreCase { get; }
+        bool FileNameCase { get; }
         /// <summary>
         /// ファイル名検索内容。
         /// </summary>
         string FileNameSearchPattern { get; }
-        /// <summary>
-        /// 検索するディレクトリ階層上限。
-        /// <para>0で無制限</para>
-        /// </summary>
-        int DirectoryLimitLevel { get; }
         /// <summary>
         /// ファイル内まで検索するか。
         /// </summary>
@@ -49,7 +50,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         /// <summary>
         /// ファイル内検索パターンにて大文字小文字を区別するか。
         /// </summary>
-        bool FileContentIgnoreCase { get;  }
+        bool FileContentCase { get;  }
         /// <summary>
         /// ファイル内検索内容。
         /// </summary>
@@ -68,14 +69,14 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         public string GroupName { get; set; }
 
         public string RootDirectoryPath { get; set; }
+        public int DirectoryLimitLevel { get; set; }
 
         public SearchPatternKind FileNameSearchPatternKind { get; set; }
-        public bool FileNameIgnoreCase { get; set; }
+        public bool FileNameCase { get; set; }
         public string FileNameSearchPattern { get; set; }
-        public int DirectoryLimitLevel { get; set; }
         public bool FindFileContent { get; set; } = true;
         public SearchPatternKind FileContentSearchPatternKind { get; set; }
-        public bool FileContentIgnoreCase { get; set; }
+        public bool FileContentCase { get; set; }
         public string FileContentSearchPattern { get; set; }
 
         public FindMicrosoftOfficeContentSetting MicrosoftOfficeContent { get; } = new FindMicrosoftOfficeContentSetting();

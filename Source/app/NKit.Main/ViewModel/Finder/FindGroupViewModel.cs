@@ -75,9 +75,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { SetPropertyValue(Model.FindGroupSetting, value); }
         }
 
-        public bool FileNameIgnoreCase
+        public bool FileNameCase
         {
-            get { return Model.FindGroupSetting.FileNameIgnoreCase; }
+            get { return Model.FindGroupSetting.FileNameCase; }
             set { SetPropertyValue(Model.FindGroupSetting, value); }
         }
 
@@ -110,9 +110,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { SetPropertyValue(Model.FindGroupSetting, value); }
         }
 
-        public bool FileContentIgnoreCase
+        public bool FileContentCase
         {
-            get { return Model.FindGroupSetting.FileContentIgnoreCase; }
+            get { return Model.FindGroupSetting.FileContentCase; }
             set { SetPropertyValue(Model.FindGroupSetting, value); }
         }
 

@@ -192,7 +192,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             var patternCreator = new SearchPatternCreator();
 
             try {
-                CachedFileNamePattern = patternCreator.CreateRegex(FindGroupSetting.FileNameSearchPatternKind, FindGroupSetting.FileNameSearchPattern, FindGroupSetting.FileNameIgnoreCase);
+                CachedFileNamePattern = patternCreator.CreateRegex(FindGroupSetting.FileNameSearchPatternKind, FindGroupSetting.FileNameSearchPattern, !FindGroupSetting.FileNameCase);
             } catch(ArgumentException ex) {
                 Debug.WriteLine(ex);
                 return GetDefaultPreparaValueAsync(false);
@@ -201,7 +201,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
             if(FindGroupSetting.FindFileContent) {
                 try {
-                    CachedFileContentPattern = patternCreator.CreateRegex(FindGroupSetting.FileContentSearchPatternKind, FindGroupSetting.FileContentSearchPattern, FindGroupSetting.FileContentIgnoreCase);
+                    CachedFileContentPattern = patternCreator.CreateRegex(FindGroupSetting.FileContentSearchPatternKind, FindGroupSetting.FileContentSearchPattern, !FindGroupSetting.FileContentCase);
 
                     CachedFileNameKindPatterns = new[] {
                         new { Kind = FileNameKind.Text,  Pattern = FinderSetting.TextNamePattern, },

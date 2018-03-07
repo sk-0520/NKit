@@ -80,7 +80,7 @@
 
                   <Label>name:</Label>
                   <TextBox Text="{Binding FileNameSearchPattern, UpdateSourceTrigger=PropertyChanged}"/>
-                  <CheckBox IsChecked="{Binding FileNameIgnoreCase}">FileNameIgnoreCase</CheckBox>
+                  <CheckBox IsChecked="{Binding FileNameCase}">FileNameCase</CheckBox>
 
                   <Label>type:</Label>
                   <app_main_view_control:SearchPatternSelectControl SearchPatternKind="{Binding FileNameSearchPatternKind, Mode=TwoWay}" />
@@ -94,7 +94,7 @@
                     <StackPanel>
                       <Label>content:</Label>
                       <TextBox Text="{Binding FileContentSearchPattern}" />
-                      <CheckBox IsChecked="{Binding FileContentIgnoreCase}">FileContentIgnoreCase</CheckBox>
+                      <CheckBox IsChecked="{Binding FileContentCase}">FileContentCase</CheckBox>
 
                       <Label>type:</Label>
                       <app_main_view_control:SearchPatternSelectControl SearchPatternKind="{Binding FileContentSearchPatternKind, Mode=TwoWay}" />
