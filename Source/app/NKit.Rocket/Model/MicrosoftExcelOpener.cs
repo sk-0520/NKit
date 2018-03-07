@@ -71,7 +71,7 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
             try {
                 excel = new ComModel<Excel.Application>(new Excel.Application());
                 ApplicationQuitAction = () => excel.Com.Quit();
-            } catch(InvalidCastException ex) {
+            } catch(COMException ex) {
                 Trace.WriteLine(ex);
                 // Excel が入ってなさげなので通常のファイルオープンでさよなら。
                 // シェルから開けないんならこっちの責任じゃない

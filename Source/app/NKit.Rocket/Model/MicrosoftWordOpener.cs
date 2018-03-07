@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Utility.Model.Unmanaged;
@@ -37,7 +38,7 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
             try {
                 word = new ComModel<Word.Application>(new Word.Application());
                 ApplicationQuitAction = () => word.Com.Quit();
-            } catch(InvalidCastException ex) {
+            } catch(COMException ex) {
                 Trace.WriteLine(ex);
                 // Word が入ってなさげなので通常のファイルオープンでさよなら。
                 // シェルから開けないんならこっちの責任じゃない
