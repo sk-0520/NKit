@@ -14,7 +14,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ContentTypeTextNet.NKit.Rocket.Model
 {
-    public class MicrosoftExcelOpener : ComOpenerBase
+    public class MicrosoftExcelOpener : ComApplicationOpenerBase
     {
         public MicrosoftExcelOpener(string filePath, string spreadSheetSheetName, int spreadSheetRowIndex, int spreadSheetColumnIndex)
             :base(filePath)
@@ -49,7 +49,7 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
                             sheet.Com.Select();
                             range.Com.Select();
                             // 終了すると開いた意味ないのね
-                            ExcelQuit = false;
+                            CanApplicationQuit = false;
                             return true;
                         }
                     }
@@ -70,6 +70,7 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
             
             try {
                 excel = new ComModel<Excel.Application>(new Excel.Application());
+                ApplicationQuitAction = () => excel.Com.Quit();
             } catch(InvalidCastException ex) {
                 Trace.WriteLine(ex);
                 // Excel が入ってなさげなので通常のファイルオープンでさよなら。
@@ -94,7 +95,7 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
                                         try {
                                             return Show(excel, workbook);
                                         } finally {
-                                            if(ExcelQuit) {
+                                            if(CanApplicationQuit) {
                                                 workbook.Com.Close(false);
                                             }
                                         }
@@ -107,16 +108,14 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
                             try {
                                 return Show(excel, workbook);
                             } finally {
-                                if(ExcelQuit) {
+                                if(CanApplicationQuit) {
                                     workbook.Com.Close(false);
                                 }
                             }
                         }
                     }
                 } finally {
-                    if(ExcelQuit) {
-                        excel.Com.Quit();
-                    }
+                    QuitAppication();
                 }
             }
         }

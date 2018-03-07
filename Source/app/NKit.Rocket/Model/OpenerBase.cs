@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
+using ContentTypeTextNet.NKit.Utility.Model.Unmanaged;
 
 namespace ContentTypeTextNet.NKit.Rocket.Model
 {
@@ -27,16 +28,39 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
         #endregion
     }
 
-    public abstract class ComOpenerBase: OpenerBase
+    public abstract class ComApplicationOpenerBase: OpenerBase
     {
-        public ComOpenerBase(string filePath)
+        public ComApplicationOpenerBase(string filePath)
             : base(filePath)
         { }
 
         #region property
-        protected bool ExcelQuit { get; set; } = true;
+        protected bool CanApplicationQuit { get; set; } = true;
+        protected Action ApplicationQuitAction { get; set; }
+
+        #endregion
+
+        #region function
+
+        protected void QuitAppication()
+        {
+            // https://blogs.msdn.microsoft.com/office_client_development_support_blog/2012/02/09/office-5/
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+
+            if(CanApplicationQuit) {
+                ApplicationQuitAction();
+
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
+            }
+        }
 
         #endregion
 
     }
+
 }

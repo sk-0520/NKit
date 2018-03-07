@@ -9,7 +9,7 @@ using Word = Microsoft.Office.Interop.Word;
 
 namespace ContentTypeTextNet.NKit.Rocket.Model
 {
-    public class MicrosoftWordOpener : ComOpenerBase
+    public class MicrosoftWordOpener : ComApplicationOpenerBase
     {
         public MicrosoftWordOpener(string filePath, int documentLineNumber, int documentCharacterPosition, int documentLength, int documentPageNumber)
             : base(filePath)
@@ -36,10 +36,12 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
 
             try {
                 word = new ComModel<Word.Application>(new Word.Application());
+                ApplicationQuitAction = () => word.Com.Quit();
             } catch(InvalidCastException ex) {
                 Trace.WriteLine(ex);
                 // Word が入ってなさげなので通常のファイルオープンでさよなら。
                 // シェルから開けないんならこっちの責任じゃない
+                // まぁ行指定方法とか分からないんですけどね
                 Process.Start(FilePath);
                 return false;
             }
@@ -61,22 +63,20 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
                                             paraRange.Com.End = paraRange.Com.Start + DocumentLength;
                                             paraRange.Com.Select();
 
-                                            ExcelQuit = false;
+                                            CanApplicationQuit = false;
                                             return true;
                                         }
                                     }
                                 }
                             } finally {
-                                if(ExcelQuit) {
+                                if(CanApplicationQuit) {
                                     document.Com.Close(false);
                                 }
                             }
                         }
                     }
                 } finally {
-                    if(ExcelQuit) {
-                        word.Com.Quit();
-                    }
+                    QuitAppication();
                 }
             }
         }
