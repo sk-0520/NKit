@@ -19,11 +19,6 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
         #region property
 
         /// <summary>
-        /// ファイルサイズチェック結果。
-        /// </summary>
-        public bool IsEnabledFileSize { get; set; }
-
-        /// <summary>
         /// ファイル属性一致。
         /// <para>一致内容自体は指定された<see cref="ContentTypeTextNet.NKit.NKit.Setting.Define.FlagMatch"/>に依存。</para>
         /// </summary>

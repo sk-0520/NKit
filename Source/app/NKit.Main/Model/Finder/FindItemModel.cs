@@ -15,11 +15,12 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 {
     public class FindItemModel : ModelBase
     {
-        public FindItemModel(DirectoryInfo baseDirectory, FileSystemInfo fileSystemInfo, TextSearchResult fileNameSearchResult, FilePropertySearchResult filePropertySearchResult, FileContentSearchResult fileContentSearchResult, IReadOnlyAssociationFileSetting associationFileSetting, IReadOnlyNKitSetting nkitSetting)
+        public FindItemModel(DirectoryInfo baseDirectory, FileSystemInfo fileSystemInfo, TextSearchResult fileNameSearchResult, bool matchedFileSize, FilePropertySearchResult filePropertySearchResult, FileContentSearchResult fileContentSearchResult, IReadOnlyAssociationFileSetting associationFileSetting, IReadOnlyNKitSetting nkitSetting)
         {
             BaseDirectory = baseDirectory;
             FileSystemInfo = fileSystemInfo;
             FileNameSearchResult = fileNameSearchResult;
+            MatchedFileSize = matchedFileSize;
             FilePropertySearchResult = filePropertySearchResult;
             FileContentSearchResult = fileContentSearchResult;
             AssociationFileSetting = associationFileSetting;
@@ -31,6 +32,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         public DirectoryInfo BaseDirectory { get; }
         public FileSystemInfo FileSystemInfo { get; }
         public TextSearchResult FileNameSearchResult { get; }
+        public bool MatchedFileSize { get; }
         public FilePropertySearchResult FilePropertySearchResult { get; }
         public FileContentSearchResult FileContentSearchResult { get; }
 

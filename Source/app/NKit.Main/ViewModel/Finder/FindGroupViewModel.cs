@@ -33,6 +33,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         bool _isEnabledHiddenFileFiler = true;
         bool _isEnabledFileNameFilter = true;
+        bool _isEnabledFileSizeFilter = true;
         bool _isEnabledFilePropertyFilter = true;
         bool _isEnabledFileContentFilter = true;
 
@@ -99,16 +100,16 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { SetPropertyValue(Model.FindGroupSetting, value); }
         }
 
+        public long FileSizeLimitMaximum
+        {
+            get { return Model.FindGroupSetting.FileSizeLimit.Tail; }
+            set { SetPropertyValue(Model.FindGroupSetting, Range.Create(Model.FindGroupSetting.FileSizeLimit.Head, value), nameof(Model.FindGroupSetting.FileSizeLimit)); }
+        }
+
         public bool FindFileProperty
         {
             get { return Model.FindGroupSetting.FindFileProperty; }
             set { SetPropertyValue(Model.FindGroupSetting, value); }
-        }
-
-        public long FilePropertySizeLimitMaximum
-        {
-            get { return Model.FindGroupSetting.FilePropertySizeLimit.Tail; }
-            set { SetPropertyValue(Model.FindGroupSetting, Range.Create(Model.FindGroupSetting.FilePropertySizeLimit.Head, value), nameof(Model.FindGroupSetting.FilePropertySizeLimit)); }
         }
 
         #region attribute
@@ -349,6 +350,17 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             }
         }
 
+        public bool IsEnabledFileSizeFilter
+        {
+            get { return this._isEnabledFileSizeFilter; }
+            set
+            {
+                if(SetProperty(ref this._isEnabledFileSizeFilter, value)) {
+                    Items.Refresh();
+                }
+            }
+        }
+
         public bool IsEnabledFilePropertyFilter
         {
             get { return this._isEnabledFilePropertyFilter; }
@@ -446,6 +458,15 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
             if(IsEnabledFileNameFilter) {
                 if(!item.MatchedName) {
+                    if(item.IsSelected) {
+                        item.IsSelected = false;
+                    }
+                    return false;
+                }
+            }
+
+            if(IsEnabledFileSizeFilter && 0 < Model.CurrentFindGroupSetting.FileSizeLimit.Tail) { // Head はまぁいいっしょ...
+                if(!item.MatchedSize) {
                     if(item.IsSelected) {
                         item.IsSelected = false;
                     }

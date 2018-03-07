@@ -50,16 +50,17 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         string FileNameSearchPattern { get; }
 
         /// <summary>
-        /// ファイルの情報を検索対象とするか
-        /// </summary>
-        bool FindFileProperty { get; }
-
-        /// <summary>
         /// ファイル検索に用いるファイルサイズの上下限を指定する。
         /// <para>0は無制限。</para>
         /// <para>一応のUI運用としては上限のみの指定でいいと思ってる。下限 0 の 上限 n みたいな。</para>
         /// </summary>
-        IReadOnlyRange<long> FilePropertySizeLimit { get; }
+        IReadOnlyRange<long> FileSizeLimit { get; }
+
+        /// <summary>
+        /// ファイルの情報を検索対象とするか
+        /// </summary>
+        bool FindFileProperty { get; }
+
         /// <summary>
         /// 検索ファイル属性
         /// </summary>
@@ -108,10 +109,11 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         public bool FileNameCase { get; set; }
         public string FileNameSearchPattern { get; set; }
 
+        public Range<long> FileSizeLimit { get; set; }
+        IReadOnlyRange<long> IReadOnlyFindGroupSetting.FileSizeLimit => FileSizeLimit;
+
         public bool FindFileProperty { get; set; } = true;
 
-        public Range<long> FilePropertySizeLimit { get; set; }
-        IReadOnlyRange<long> IReadOnlyFindGroupSetting.FilePropertySizeLimit => FilePropertySizeLimit;
         public FileAttributes FilePropertyFileAttributes { get; set; }
         public FlagMatch FilePropertyFileAttributeFlagMatch { get; set; }
 
