@@ -21,7 +21,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         #endregion
     }
 
-    public interface IReadOnlyFindMicrosoftOfficeContentSetting
+    public interface IReadOnlyFindMicrosoftOfficeCommonContentSetting
     {
         #region proeprty
 
@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         #endregion
     }
 
-    public interface IReadOnlyFindMicrosoftOfficeExcelContentSetting : IReadOnlyFindMicrosoftOfficeContentSetting
+    public interface IReadOnlyFindMicrosoftOfficeExcelContentSetting : IReadOnlyFindMicrosoftOfficeCommonContentSetting
     {
         /// <summary>
         /// シート名を対象とするか。
@@ -50,7 +50,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         bool CommentInCell { get; }
     }
 
-    public interface IReadOnlyFindMicrosoftOfficeWordContentSetting : IReadOnlyFindMicrosoftOfficeContentSetting
+    public interface IReadOnlyFindMicrosoftOfficeWordContentSetting : IReadOnlyFindMicrosoftOfficeCommonContentSetting
     {
         #region property
 
@@ -59,9 +59,12 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         #endregion
     }
 
-    public class FindMicrosoftOfficeContentSetting : FindContentSettingBase, IReadOnlyFindMicrosoftOfficeExcelContentSetting, IReadOnlyFindMicrosoftOfficeContentSetting, IReadOnlyFindMicrosoftOfficeWordContentSetting
+    public interface IReadOnlyFindMicrosoftOfficeContentSetting: IReadOnlyFindMicrosoftOfficeCommonContentSetting, IReadOnlyFindMicrosoftOfficeExcelContentSetting, IReadOnlyFindMicrosoftOfficeWordContentSetting
+    { }
+
+    public class FindMicrosoftOfficeContentSetting : FindContentSettingBase, IReadOnlyFindMicrosoftOfficeContentSetting
     {
-        #region IReadOnlyFindMicrosoftOfficeContentSetting
+        #region IReadOnlyFindMicrosoftOfficeCommonContentSetting
 
         public bool TextInShape { get; set; } = true;
 

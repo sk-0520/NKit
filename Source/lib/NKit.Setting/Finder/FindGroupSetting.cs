@@ -7,59 +7,82 @@ using ContentTypeTextNet.NKit.NKit.Setting.Define;
 
 namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
 {
-    public class FindGroupSetting : SettingBase
+    public interface IReadOnlyFindGroupSetting
     {
         #region property
 
         /// <summary>
         /// 検索名。
         /// </summary>
-        public string GroupName { get; set; }
+        string GroupName { get; }
 
         /// <summary>
         /// 検索対象ディレクトリパス。
         /// </summary>
-        public string RootDirectoryPath { get; set; }
+        string RootDirectoryPath { get; }
 
         /// <summary>
         /// ファイル名検索パターン種別。
         /// </summary>
-        public SearchPatternKind FileNameSearchPatternKind { get; set; }
+        SearchPatternKind FileNameSearchPatternKind { get; }
         /// <summary>
         /// ファイル名検索パターンにて大文字小文字を区別するか。
         /// </summary>
-        public bool FileNameIgnoreCase { get; set; }
+        bool FileNameIgnoreCase { get; }
         /// <summary>
         /// ファイル名検索内容。
         /// </summary>
-        public string FileNameSearchPattern { get; set; }
+        string FileNameSearchPattern { get; }
         /// <summary>
         /// 検索するディレクトリ階層上限。
         /// <para>0で無制限</para>
         /// </summary>
-        public int DirectoryLimitLevel { get; set; }
-#if DEBUG
-            = 0;
-#endif
+        int DirectoryLimitLevel { get; }
         /// <summary>
         /// ファイル内まで検索するか。
         /// </summary>
-        public bool FindFileContent { get; set; } = true;
+        bool FindFileContent { get;  }
         /// <summary>
         /// ファイル内検索方法。
         /// </summary>
-        public SearchPatternKind FileContentSearchPatternKind { get; set; }
+        SearchPatternKind FileContentSearchPatternKind { get;  }
         /// <summary>
         /// ファイル内検索パターンにて大文字小文字を区別するか。
         /// </summary>
-        public bool FileContentIgnoreCase { get; set; }
+        bool FileContentIgnoreCase { get;  }
         /// <summary>
         /// ファイル内検索内容。
         /// </summary>
+        string FileContentSearchPattern { get;  }
+
+        IReadOnlyFindMicrosoftOfficeContentSetting MicrosoftOfficeContent { get; }
+        IReadOnlyFindXmlHtmlContentSetting XmlHtmlContent { get; } 
+
+        #endregion
+    }
+
+    public class FindGroupSetting : SettingBase, IReadOnlyFindGroupSetting
+    {
+        #region IReadOnlyFindGroupSetting
+
+        public string GroupName { get; set; }
+
+        public string RootDirectoryPath { get; set; }
+
+        public SearchPatternKind FileNameSearchPatternKind { get; set; }
+        public bool FileNameIgnoreCase { get; set; }
+        public string FileNameSearchPattern { get; set; }
+        public int DirectoryLimitLevel { get; set; }
+        public bool FindFileContent { get; set; } = true;
+        public SearchPatternKind FileContentSearchPatternKind { get; set; }
+        public bool FileContentIgnoreCase { get; set; }
         public string FileContentSearchPattern { get; set; }
 
         public FindMicrosoftOfficeContentSetting MicrosoftOfficeContent { get; } = new FindMicrosoftOfficeContentSetting();
+        IReadOnlyFindMicrosoftOfficeContentSetting IReadOnlyFindGroupSetting.MicrosoftOfficeContent => MicrosoftOfficeContent;
+
         public FindXmlHtmlContentSetting XmlHtmlContent { get; } = new FindXmlHtmlContentSetting();
+        IReadOnlyFindXmlHtmlContentSetting IReadOnlyFindGroupSetting.XmlHtmlContent => XmlHtmlContent;
 
         #endregion
     }

@@ -274,7 +274,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
             return shape is HSSFSimpleShape;
         }
 
-        IEnumerable<MicrosoftOfficeExcelShapeSearchResult> SearchShape1997(ExcelSheet sheet, HSSFPatriarch patriarch, Regex regex, IReadOnlyFindMicrosoftOfficeContentSetting setting)
+        IEnumerable<MicrosoftOfficeExcelShapeSearchResult> SearchShape1997(ExcelSheet sheet, HSSFPatriarch patriarch, Regex regex, IReadOnlyFindMicrosoftOfficeCommonContentSetting setting)
         {
             var shapes = patriarch
                 .GetShapes()
@@ -333,7 +333,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
             return shape is XSSFSimpleShape;
         }
 
-        IEnumerable<MicrosoftOfficeExcelShapeSearchResult> SearchShape2007(ExcelSheet sheet, XSSFDrawing drawing, Regex regex, IReadOnlyFindMicrosoftOfficeContentSetting setting)
+        IEnumerable<MicrosoftOfficeExcelShapeSearchResult> SearchShape2007(ExcelSheet sheet, XSSFDrawing drawing, Regex regex, IReadOnlyFindMicrosoftOfficeCommonContentSetting setting)
         {
             var shapes = drawing
                 .GetShapes()
@@ -369,7 +369,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
             }
         }
 
-        IEnumerable<MicrosoftOfficeExcelShapeSearchResult> SearchShape(ExcelSheet sheet, Regex regex, IReadOnlyFindMicrosoftOfficeContentSetting setting)
+        IEnumerable<MicrosoftOfficeExcelShapeSearchResult> SearchShape(ExcelSheet sheet, Regex regex, IReadOnlyFindMicrosoftOfficeCommonContentSetting setting)
         {
             var patriarchBase = sheet.Raw.CreateDrawingPatriarch();
 
