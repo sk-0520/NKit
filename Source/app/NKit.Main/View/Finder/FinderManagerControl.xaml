@@ -104,6 +104,20 @@
                         <Slider Grid.Column="0" Minimum="0" Maximum="9999999" Value="{Binding FilePropertySizeLimitMaximum}"  />
                         <TextBox Grid.Column="1" Text="{Binding FilePropertySizeLimitMaximum}" />
                       </Grid>
+
+                      <CheckBox IsChecked="{Binding FilePropertyAttributeIsArchive}">FilePropertyAttributeIsArchive</CheckBox>
+                      <CheckBox IsChecked="{Binding FilePropertyAttributeIsCompressed}">FilePropertyAttributeIsCompressed</CheckBox>
+                      <CheckBox IsChecked="{Binding FilePropertyAttributeIsEncrypted}">FilePropertyAttributeIsEncrypted</CheckBox>
+                      <CheckBox IsChecked="{Binding FilePropertyAttributeIsHidden}">FilePropertyAttributeIsHidden</CheckBox>
+                      <CheckBox IsChecked="{Binding FilePropertyAttributeIsIntegrityStream}">FilePropertyAttributeIsIntegrityStream</CheckBox>
+                      <CheckBox IsChecked="{Binding FilePropertyAttributeIsNoScrubData}">FilePropertyAttributeIsNoScrubData</CheckBox>
+                      <CheckBox IsChecked="{Binding FilePropertyAttributeIsNotContentIndexed}">FilePropertyAttributeIsNotContentIndexed</CheckBox>
+                      <CheckBox IsChecked="{Binding FilePropertyAttributeIsOffline}">FilePropertyAttributeIsOffline</CheckBox>
+                      <CheckBox IsChecked="{Binding FilePropertyAttributeIsReadOnly}">FilePropertyAttributeIsReadOnly</CheckBox>
+                      <CheckBox IsChecked="{Binding FilePropertyAttributeIsReparsePoint}">FilePropertyAttributeIsReparsePoint</CheckBox>
+                      <CheckBox IsChecked="{Binding FilePropertyAttributeIsSparseFile}">FilePropertyAttributeIsSparseFile</CheckBox>
+                      <CheckBox IsChecked="{Binding FilePropertyAttributeIsSystem}">FilePropertyAttributeIsSystem</CheckBox>
+                      <CheckBox IsChecked="{Binding FilePropertyAttributeIsTemporary}">FilePropertyAttributeIsTemporary</CheckBox>
                     </StackPanel>
                   </Expander>
 

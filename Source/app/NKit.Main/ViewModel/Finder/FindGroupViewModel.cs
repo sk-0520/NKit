@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -109,6 +111,75 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { SetPropertyValue(Model.FindGroupSetting, Range.Create(Model.FindGroupSetting.FilePropertySizeLimit.Head, value), nameof(Model.FindGroupSetting.FilePropertySizeLimit)); }
         }
 
+        #region attribute
+
+        public bool FilePropertyAttributeIsArchive
+        {
+            get { return Model.FindGroupSetting.FilePropertyFileAttributes.HasFlag(FileAttributes.Archive); }
+            set { SetPropertyAttribute(value, FileAttributes.Archive); }
+        }
+        public bool FilePropertyAttributeIsCompressed
+        {
+            get { return Model.FindGroupSetting.FilePropertyFileAttributes.HasFlag(FileAttributes.Compressed); }
+            set { SetPropertyAttribute(value, FileAttributes.Compressed); }
+        }
+        public bool FilePropertyAttributeIsEncrypted
+        {
+            get { return Model.FindGroupSetting.FilePropertyFileAttributes.HasFlag(FileAttributes.Encrypted); }
+            set { SetPropertyAttribute(value, FileAttributes.Encrypted); }
+        }
+        public bool FilePropertyAttributeIsHidden
+        {
+            get { return Model.FindGroupSetting.FilePropertyFileAttributes.HasFlag(FileAttributes.Hidden); }
+            set { SetPropertyAttribute(value, FileAttributes.Hidden); }
+        }
+        public bool FilePropertyAttributeIsIntegrityStream
+        {
+            get { return Model.FindGroupSetting.FilePropertyFileAttributes.HasFlag(FileAttributes.IntegrityStream); }
+            set { SetPropertyAttribute(value, FileAttributes.IntegrityStream); }
+        }
+        public bool FilePropertyAttributeIsNoScrubData
+        {
+            get { return Model.FindGroupSetting.FilePropertyFileAttributes.HasFlag(FileAttributes.NoScrubData); }
+            set { SetPropertyAttribute(value, FileAttributes.NoScrubData); }
+        }
+        public bool FilePropertyAttributeIsNotContentIndexed
+        {
+            get { return Model.FindGroupSetting.FilePropertyFileAttributes.HasFlag(FileAttributes.NotContentIndexed); }
+            set { SetPropertyAttribute(value, FileAttributes.NotContentIndexed); }
+        }
+        public bool FilePropertyAttributeIsOffline
+        {
+            get { return Model.FindGroupSetting.FilePropertyFileAttributes.HasFlag(FileAttributes.Offline); }
+            set { SetPropertyAttribute(value, FileAttributes.Offline); }
+        }
+        public bool FilePropertyAttributeIsReadOnly
+        {
+            get { return Model.FindGroupSetting.FilePropertyFileAttributes.HasFlag(FileAttributes.ReadOnly); }
+            set { SetPropertyAttribute(value, FileAttributes.ReadOnly); }
+        }
+        public bool FilePropertyAttributeIsReparsePoint
+        {
+            get { return Model.FindGroupSetting.FilePropertyFileAttributes.HasFlag(FileAttributes.ReparsePoint); }
+            set { SetPropertyAttribute(value, FileAttributes.ReparsePoint); }
+        }
+        public bool FilePropertyAttributeIsSparseFile
+        {
+            get { return Model.FindGroupSetting.FilePropertyFileAttributes.HasFlag(FileAttributes.SparseFile); }
+            set { SetPropertyAttribute(value, FileAttributes.SparseFile); }
+        }
+        public bool FilePropertyAttributeIsSystem
+        {
+            get { return Model.FindGroupSetting.FilePropertyFileAttributes.HasFlag(FileAttributes.System); }
+            set { SetPropertyAttribute(value, FileAttributes.System); }
+        }
+        public bool FilePropertyAttributeIsTemporary
+        {
+            get { return Model.FindGroupSetting.FilePropertyFileAttributes.HasFlag(FileAttributes.Temporary); }
+            set { SetPropertyAttribute(value, FileAttributes.Temporary); }
+        }
+
+        #endregion
 
         public bool FindFileContent
         {
@@ -438,6 +509,17 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             foreach(var item in addItems) {
                 MultiSelectedItem.Items.Add(item);
             }
+        }
+
+        void SetPropertyAttribute(bool flag, FileAttributes target, [CallerMemberName] string _callerMemberName = "")
+        {
+            var setValue = Model.FindGroupSetting.FilePropertyFileAttributes;
+            if(flag) {
+                setValue |= target;
+            } else {
+                setValue ^= target;
+            }
+            SetPropertyValue(Model.FindGroupSetting, setValue, nameof(Model.FindGroupSetting.FilePropertyFileAttributes), _callerMemberName);
         }
 
         #endregion
