@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model.File;
+using ContentTypeTextNet.NKit.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.NKit.Setting.File;
 using ContentTypeTextNet.NKit.NKit.Setting.Finder;
 using ContentTypeTextNet.NKit.NKit.Setting.NKit;
@@ -86,9 +87,32 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             return ts.Search(fileSystemInfo.Name, CachedFileNamePattern);
         }
 
+        bool IsMatchFileAttributes(FileAttributes fileAttributes)
+        {
+            var maskFlags = FileAttributes.Normal | FileAttributes.Directory;
+            var maskedValue = fileAttributes & ~maskFlags;
+            var maskedSetting = CurrentFindGroupSetting.FilePropertyFileAttributes & ~maskFlags;
+
+            switch(CurrentFindGroupSetting.FilePropertyFileAttributeFlagMatch) {
+                case FlagMatch.Has:
+                    return 0 != (maskedValue & maskedSetting);
+
+                case FlagMatch.Approximate:
+                    return (maskedValue & maskedSetting) == maskedSetting;
+
+                case FlagMatch.Full:
+                    return maskedValue == maskedSetting;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         FilePropertySearchResult SearchProperty(FileSystemInfo fileSystemInfo)
         {
             Debug.Assert(CurrentFindGroupSetting.FindFileProperty);
+
+            var result = new FilePropertySearchResult();
 
             // ここにきてれば絶対ファイルっしょ
             var file = (FileInfo)fileSystemInfo;
@@ -96,26 +120,26 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             var disabledMaxSize = CurrentFindGroupSetting.FilePropertySizeLimit.Tail == 0;
 
             if(CurrentFindGroupSetting.FilePropertySizeLimit.Head == 0 && disabledMaxSize) {
-                return new FilePropertySearchResult() {
-                    IsMatched = true,
-                    IsEnabledFileSize = true,
-                };
+                result.IsEnabledFileSize = true;
+            } else {
+                var sizeRange = Range.Create(
+                    CurrentFindGroupSetting.FilePropertySizeLimit.Head,
+                    disabledMaxSize ? file.Length : CurrentFindGroupSetting.FilePropertySizeLimit.Tail
+                );
+
+                if(sizeRange.IsIn(file.Length)) {
+                    result.IsEnabledFileSize = true;
+                }
             }
 
-            var sizeRange = Range.Create(
-                CurrentFindGroupSetting.FilePropertySizeLimit.Head,
-                disabledMaxSize ? file.Length: CurrentFindGroupSetting.FilePropertySizeLimit.Tail
-            );
+            result.IsEnabledAttributes = IsMatchFileAttributes(file.Attributes);
 
-            if(sizeRange.IsIn(file.Length)) {
-                return new FilePropertySearchResult() {
-                    IsMatched = true,
-                    IsEnabledFileSize = true,
-                };
-            }
 
-            return FilePropertySearchResult.NotFound;
+            result.IsMatched = result.IsEnabledFileSize || result.IsEnabledAttributes;
+
+            return result;
         }
+
 
         FileContentSearchResult SearchFlieContentPattern(FileSystemInfo fileSystemInfo)
         {

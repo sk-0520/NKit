@@ -7,6 +7,7 @@ using System.Windows.Input;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model;
 using ContentTypeTextNet.NKit.Main.Model.File;
+using ContentTypeTextNet.NKit.Utility.Model;
 using ContentTypeTextNet.NKit.Utility.ViewModell;
 using Prism.Commands;
 
@@ -39,7 +40,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.File
         }
         public HashType CurrentHashType { get; set; }
 
-        public IEnumerable<HashType> HashTypeItems => Enum.GetValues(typeof(HashType)).Cast<HashType>();
+        public IEnumerable<HashType> HashTypeItems => EnumUtility.GetMembers<HashType>();
 
 
         #endregion

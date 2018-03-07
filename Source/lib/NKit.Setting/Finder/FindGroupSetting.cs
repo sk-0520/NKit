@@ -67,7 +67,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         /// <summary>
         /// <see cref="FilePropertyFileAttributes"/> の選択内容全てを一致対象とするか。
         /// </summary>
-        bool FilePropertyFileAttributeAllEnable { get; }
+        FlagMatch FilePropertyFileAttributeFlagMatch { get; }
 
         /// <summary>
         /// ファイル内まで検索するか。
@@ -113,7 +113,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         public Range<long> FilePropertySizeLimit { get; set; }
         IReadOnlyRange<long> IReadOnlyFindGroupSetting.FilePropertySizeLimit => FilePropertySizeLimit;
         public FileAttributes FilePropertyFileAttributes { get; set; }
-        public bool FilePropertyFileAttributeAllEnable { get; set; }
+        public FlagMatch FilePropertyFileAttributeFlagMatch { get; set; }
 
         public bool FindFileContent { get; set; } = true;
         public SearchPatternKind FileContentSearchPatternKind { get; set; }
