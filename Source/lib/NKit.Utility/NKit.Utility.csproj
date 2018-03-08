@@ -91,6 +91,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\common\nkit.common.link\CommonUtility.cs">
+      <Link>Common\CommonUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\nkit.common.link\Disposer.cs">
+      <Link>Common\Disposer.cs</Link>
+    </Compile>
     <Compile Include="Attribute\PixelKindAttribute.cs" />
     <Compile Include="Compatible\Forms\CompatibleFormWindow.cs" />
     <Compile Include="Compatible\Forms\DrawingUtility.cs" />

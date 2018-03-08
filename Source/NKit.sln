@@ -29,18 +29,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Setting", "lib\NKit.Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Rocket", "app\NKit.Rocket\NKit.Rocket.csproj", "{4C796AFB-AA0C-4A6E-B85F-EBB07486EA0A}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NKit.Common.Simple", "common\NKit.Common.Simple\NKit.Common.Simple.shproj", "{6463FFD3-B89A-44EA-91F8-BB469D895638}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NKit.Common.Application", "common\NKit.Common.Application\NKit.Common.Application.shproj", "{9D4F8E27-8F0D-4745-B6D7-BC6997E97BAC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NKit.Common.Link", "NKit.Common.Link", "{75B61508-BAF3-4F46-A875-900DB01B95DE}"
+	ProjectSection(SolutionItems) = preProject
+		common\NKit.Common.Link\CommonUtility.cs = common\NKit.Common.Link\CommonUtility.cs
+		common\NKit.Common.Link\Disposer.cs = common\NKit.Common.Link\Disposer.cs
+		common\NKit.Common.Link\Setting.cs = common\NKit.Common.Link\Setting.cs
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		common\NKit.Common.Application\NKit.Common.Application.projitems*{248cd44d-7fa9-4e7f-94aa-e1507f527cc0}*SharedItemsImports = 4
-		common\NKit.Common.Simple\NKit.Common.Simple.projitems*{248cd44d-7fa9-4e7f-94aa-e1507f527cc0}*SharedItemsImports = 4
 		common\NKit.Common.Application\NKit.Common.Application.projitems*{4c796afb-aa0c-4a6e-b85f-ebb07486ea0a}*SharedItemsImports = 4
-		common\NKit.Common.Simple\NKit.Common.Simple.projitems*{4c796afb-aa0c-4a6e-b85f-ebb07486ea0a}*SharedItemsImports = 4
-		common\NKit.Common.Simple\NKit.Common.Simple.projitems*{6463ffd3-b89a-44ea-91f8-bb469d895638}*SharedItemsImports = 13
-		common\NKit.Common.Simple\NKit.Common.Simple.projitems*{9cae0ffa-9e3d-4c49-af99-2fb1454c8e1b}*SharedItemsImports = 4
 		common\NKit.Common.Application\NKit.Common.Application.projitems*{9d4f8e27-8f0d-4745-b6d7-bc6997e97bac}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,8 +95,8 @@ Global
 		{66D532B9-D238-4BFA-A493-7CE2FEA5EFA2} = {A3ECDBE3-5487-4635-AA05-597EB42AB395}
 		{76F8B393-7678-4183-8172-D74045686B13} = {A3ECDBE3-5487-4635-AA05-597EB42AB395}
 		{4C796AFB-AA0C-4A6E-B85F-EBB07486EA0A} = {BA7C2163-9D37-4D39-96AC-9DB9269B97D9}
-		{6463FFD3-B89A-44EA-91F8-BB469D895638} = {91FBCEEB-423A-4ACA-84B8-80970B97402B}
 		{9D4F8E27-8F0D-4745-B6D7-BC6997E97BAC} = {91FBCEEB-423A-4ACA-84B8-80970B97402B}
+		{75B61508-BAF3-4F46-A875-900DB01B95DE} = {91FBCEEB-423A-4ACA-84B8-80970B97402B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DCA37A7D-11B2-4BEF-BD2E-1441C71C69AB}

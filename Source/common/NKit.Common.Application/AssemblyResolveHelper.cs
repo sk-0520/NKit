@@ -36,10 +36,10 @@ namespace ContentTypeTextNet.NKit.Common
 
             if(disposing) {
                 AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
+                GC.SuppressFinalize(this);
             }
 
             IsDisposed = true;
-            GC.SuppressFinalize(this);
         }
 
         #endregion

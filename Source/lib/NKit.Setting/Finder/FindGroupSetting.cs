@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
 

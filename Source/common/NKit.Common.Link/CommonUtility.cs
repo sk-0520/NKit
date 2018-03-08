@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace ContentTypeTextNet.NKit.Common
 {
-    public static class CommonUtility
+    internal static class CommonUtility
     {
         #region property
 

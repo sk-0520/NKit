@@ -49,9 +49,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\common\NKit.Common.Link\CommonUtility.cs">
+      <Link>Common\CommonUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\common\NKit.Common.Link\Disposer.cs">
+      <Link>Common\Disposer.cs</Link>
+    </Compile>
+    <Compile Include="..\common\NKit.Common.Link\Setting.cs">
+      <Link>Common\Setting.cs</Link>
+    </Compile>
     <Compile Include="Model\Application\ApplicationManager.cs" />
+    <Compile Include="Model\Application\Setting\ApplicationSetting.cs" />
     <Compile Include="Model\Log\LogManager.cs" />
+    <Compile Include="Model\Log\Setting\LogSetting.cs" />
     <Compile Include="Model\ManagerBase.cs" />
+    <Compile Include="Model\ManagerSetting.cs" />
+    <Compile Include="Model\Workspace\Setting\WorkspaceItemSetting.cs" />
+    <Compile Include="Model\Workspace\Setting\WorkspaceSetting.cs" />
     <Compile Include="Model\Workspace\WorkspaceManager.cs" />
     <Compile Include="View\ManagerForm.cs">
       <SubType>Form</SubType>
@@ -83,6 +97,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <Import Project="..\common\NKit.Common.Simple\NKit.Common.Simple.projitems" Label="Shared" />
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

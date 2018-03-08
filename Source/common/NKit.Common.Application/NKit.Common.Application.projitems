@@ -6,7 +6,7 @@
     <SharedGUID>9d4f8e27-8f0d-4745-b6d7-bc6997e97bac</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>NKit.Common.Application</Import_RootNamespace>
+    <Import_RootNamespace>ContentTypeTextNet.NKit.Common</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationModel.cs" />
