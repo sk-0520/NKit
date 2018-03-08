@@ -29,7 +29,6 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         {
             ApplicationManager = new ApplicationManager();
             ApplicationManager.MainApplicationExited += ApplicationManager_MainApplicationExited;
-
         }
 
 
@@ -37,7 +36,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         ApplicationManager ApplicationManager { get; }
 
-        NKitApplicationTalkerHost NKitApplicationTaskerHost { get; } = new NKitApplicationTalkerHost();
+        NKitApplicationTalkerHost NKitApplicationTalkerHost { get; set; }
 
         public bool IsFirstExecute { get; private set; }
         public bool Accepted
@@ -308,15 +307,13 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         public void LoadSelectedWorkspace()
         {
+            NKitApplicationTalkerHost = new NKitApplicationTalkerHost();
+            NKitApplicationTalkerHost.TalkWakeupApplication += NKitApplicationTasker_TalkWakeupApplication;
+            NKitApplicationTalkerHost.Open();
+
             ApplicationManager.ExecuteMainApplication(SelectedWorkspaceItem);
 
             WorkspaceState = WorkspaceState.Running;
-        }
-
-        public void StartTaker()
-        {
-            NKitApplicationTaskerHost.Open();
-            NKitApplicationTaskerHost.TaskWakeupApplication += NKitApplicationTasker_TaskWakeupApplication;
         }
 
         #endregion
@@ -327,8 +324,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         {
             if(!IsDisposed) {
                 if(disposing) {
-                    NKitApplicationTaskerHost.TaskWakeupApplication -= NKitApplicationTasker_TaskWakeupApplication;
-                    NKitApplicationTaskerHost.Dispose();
+                    NKitApplicationTalkerHost.TalkWakeupApplication -= NKitApplicationTasker_TalkWakeupApplication;
+                    NKitApplicationTalkerHost.Dispose();
                 }
             }
 
@@ -339,15 +336,18 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         private void ApplicationManager_MainApplicationExited(object sender, EventArgs e)
         {
+            NKitApplicationTalkerHost.TalkWakeupApplication -= NKitApplicationTasker_TalkWakeupApplication;
+            NKitApplicationTalkerHost.Dispose();
+
             WorkspaceState = WorkspaceState.Selecting;
             if(WorkspaceExited != null) {
                 WorkspaceExited(sender, e);
             }
         }
 
-        private void NKitApplicationTasker_TaskWakeupApplication(object sender, TaskWakeupApplicationEventArgs e)
+        private void NKitApplicationTasker_TalkWakeupApplication(object sender, TaskWakeupApplicationEventArgs e)
         {
-            ApplicationManager.ExecuteNKitApplication(e.Message);
+            ApplicationManager.ExecuteNKitApplication(e.SenderApplication, e.TargetApplication, e.Arguments, e.WorkingDirectoryPath);
         }
 
     }

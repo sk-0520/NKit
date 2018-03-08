@@ -32,10 +32,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         public void SetWorker(ManagerWorker worker)
         {
             Worker = worker;
-
             Worker.WorkspaceExited += Worker_WorkspaceExited;
-
-            Worker.StartTaker();
         }
 
         void SetInputControl(string name, string directoryPath)

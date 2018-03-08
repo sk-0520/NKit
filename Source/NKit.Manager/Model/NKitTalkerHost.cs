@@ -11,9 +11,15 @@ using ContentTypeTextNet.NKit.Common;
 namespace ContentTypeTextNet.NKit.Manager.Model
 {
     public abstract class TaskEventArgs : EventArgs
-    { }
+    {
+        #region property
 
-    public abstract class NKitTalkerHostBase : DisposerBase
+        public NKitApplicationKind SenderApplication { get; set; }
+
+        #endregion
+    }
+
+    public abstract class NKitTalkerHostBase<TChannel> : DisposerBase
     {
         #region property
 
@@ -22,7 +28,6 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         protected Uri ServiceUri { get; set; }
         protected string Address { get; set; }
-        protected Type ImplementedContract { get; set; }
 
         #endregion
 
@@ -30,7 +35,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         public void Open()
         {
-            ServiceHost = new ServiceHost(GetType(), ServiceUri);
+            ServiceHost = new ServiceHost(this, ServiceUri);
 
             Binding mexBinding;
             Binding processLinkBinding;
@@ -51,7 +56,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             }
 
             ServiceHost.AddServiceEndpoint(ServiceMetadataBehavior.MexContractName, mexBinding, "mex");
-            ServiceHost.AddServiceEndpoint(ImplementedContract, processLinkBinding, Address);
+            ServiceHost.AddServiceEndpoint(typeof(TChannel), processLinkBinding, Address);
 
             ServiceHost.Open();
             IsOpend = true;
@@ -87,16 +92,19 @@ namespace ContentTypeTextNet.NKit.Manager.Model
     {
         #region property
 
-        public INKitApplicationTalkWakeupMessage Message { get; set; }
+        public NKitApplicationKind TargetApplication { get; set; }
+        public string Arguments { get; set; }
+        public string WorkingDirectoryPath { get; set; }
 
         #endregion
     }
 
-    public class NKitApplicationTalkerHost : NKitTalkerHostBase, INKitApplicationTalker
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    public class NKitApplicationTalkerHost : NKitTalkerHostBase<INKitApplicationTalker>, INKitApplicationTalker
     {
         #region event
 
-        public event EventHandler<TaskWakeupApplicationEventArgs> TaskWakeupApplication;
+        public event EventHandler<TaskWakeupApplicationEventArgs> TalkWakeupApplication;
 
         #endregion
 
@@ -104,19 +112,21 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         {
             ServiceUri = new Uri("net.pipe://localhost/cttn-nkit");
             Address = "app";
-            ImplementedContract = typeof(INKitApplicationTalker);
         }
 
         #region function
 
 
-        void OnWakeupApplication(INKitApplicationTalkWakeupMessage message)
+        void OnWakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
         {
-            if(TaskWakeupApplication != null) {
+            if(TalkWakeupApplication != null) {
                 var e = new TaskWakeupApplicationEventArgs() {
-                    Message = message,
+                    SenderApplication = sender,
+                    TargetApplication = target,
+                    Arguments = arguments,
+                    WorkingDirectoryPath = workingDirectoryPath,
                 };
-                TaskWakeupApplication(this, e);
+                TalkWakeupApplication(this, e);
             }
         }
 
@@ -124,9 +134,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         #region INKitApplicationTasker
 
-        public void WakeupApplication(INKitApplicationTalkWakeupMessage message)
+        public void WakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
         {
-            OnWakeupApplication(message);
+            OnWakeupApplication(sender, target, arguments, workingDirectoryPath);
         }
 
         #endregion

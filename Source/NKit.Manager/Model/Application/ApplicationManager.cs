@@ -42,17 +42,17 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             MainApplication.Execute();
         }
 
-        public void ExecuteNKitApplication(INKitApplicationTalkWakeupMessage message)
+        public void ExecuteNKitApplication(NKitApplicationKind senderApplication, NKitApplicationKind targetApplication, string arguments, string workingDirectoryPath)
         {
             ApplicationItem item = null;
 
-            switch(message.TargetApplication) {
+            switch(targetApplication) {
                 case NKitApplicationKind.Main:
                     throw new ArgumentException();
 
                 case NKitApplicationKind.Rocket:
                     item = new ApplicationItem(CommonUtility.GetRocketApplication(CommonUtility.GetApplicationDirectory()).FullName) {
-                        Arguments = message.Arguments,
+                        Arguments = arguments,
                     };
                     break;
 
@@ -92,6 +92,5 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 Items.Remove(item);
             }
         }
-
     }
 }

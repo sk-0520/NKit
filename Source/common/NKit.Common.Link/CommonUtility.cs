@@ -112,7 +112,7 @@ namespace ContentTypeTextNet.NKit.Common
 
         public static DirectoryInfo GetRootDirectoryForApplication()
         {
-            return GetRootDirectory("..", "..");
+            return GetRootDirectory("..");
         }
 
         public static DirectoryInfo GetLibraryDirectory(params string[] args)

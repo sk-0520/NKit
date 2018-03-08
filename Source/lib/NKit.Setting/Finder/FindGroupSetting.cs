@@ -113,7 +113,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         public Range<long> FileSizeLimit { get; set; }
         IReadOnlyRange<long> IReadOnlyFindGroupSetting.FileSizeLimit => FileSizeLimit;
 
-        public bool FindFileProperty { get; set; } = true;
+        public bool FindFileProperty { get; set; } = !true;
 
         public FileAttributes FilePropertyFileAttributes { get; set; }
         public FlagMatch FilePropertyFileAttributeFlagMatch { get; set; }

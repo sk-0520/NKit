@@ -12,33 +12,13 @@ namespace ContentTypeTextNet.NKit.Common
         Rocket,
     }
 
-    public interface INKitTalkMessage
-    {
-        #region property
-
-        NKitApplicationKind SenderApplication { get; }
-
-        #endregion
-    }
-
-    public interface INKitApplicationTalkWakeupMessage : INKitTalkMessage
-    {
-        #region property
-
-        NKitApplicationKind TargetApplication { get; }
-        string Arguments { get; }
-        string WorkingDirectoryPath { get; }
-
-        #endregion
-    }
-
     [ServiceContract]
     public interface INKitApplicationTalker
     {
         #region function
 
         [OperationContract]
-        void WakeupApplication(INKitApplicationTalkWakeupMessage message);
+        void WakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath);
 
         #endregion
     }

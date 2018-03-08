@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
@@ -33,7 +35,8 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         public void Open()
         {
-            var targetUri = new Uri(ServiceUri, Address);
+            var baseUri = ServiceUri.ToString();
+            var targetUri = new Uri(baseUri + "/" + Address); // Path.Combine 的なことしたいんだけどなぁ
             var endpointAddr = new EndpointAddress(targetUri);
             Binding binding;
             switch(targetUri.Scheme) {
@@ -52,7 +55,12 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         public void Close()
         {
-            Channel.Close();
+            try {
+                Channel.Close();
+            } catch(Exception ex) {
+                Debug.WriteLine(ex);
+                Channel.Abort();
+            }
             IsOpend = false;
         }
 
@@ -76,31 +84,14 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         #endregion
     }
 
-    public class NKitApplicationTaskWakeupMessage : INKitApplicationTalkWakeupMessage
-    {
-        public NKitApplicationTaskWakeupMessage(NKitApplicationKind senderApplication)
-        {
-            SenderApplication = senderApplication;
-        }
-
-        #region INKitApplicationTaskWakeupMessage
-
-        public NKitApplicationKind SenderApplication { get; }
-
-        public NKitApplicationKind TargetApplication { get; set; }
-
-        public string Arguments { get; set; }
-
-        public string WorkingDirectoryPath { get; set; }
-
-        #endregion
-    }
-
     public class NKitApplicationTalkerClient : NKitTalkerClientBase<INKitApplicationTalker>
     {
         public NKitApplicationTalkerClient(NKitApplicationKind senderApplication)
             : base(senderApplication)
-        { }
+        {
+            ServiceUri = new Uri("net.pipe://localhost/cttn-nkit");
+            Address = "app";
+        }
 
         #region property
 
@@ -112,11 +103,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         public void WakeupApplication(NKitApplicationKind targetApplication, string arguments, string workingDirectoryPath)
         {
-            var message = new NKitApplicationTaskWakeupMessage(SenderApplication) {
-                Arguments = arguments,
-                WorkingDirectoryPath = workingDirectoryPath,
-            };
-            Host.WakeupApplication(message);
+            Host.WakeupApplication(SenderApplication, targetApplication, arguments, workingDirectoryPath);
         }
 
         #endregion

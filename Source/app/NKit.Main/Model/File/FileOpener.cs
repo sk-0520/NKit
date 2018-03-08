@@ -167,20 +167,32 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             return OpenTextFile(file, parameter);
         }
 
-        Process OpenMicrosoftOfficeWordFile(FileInfo file, AssociationOpenParameter parameter)
+        void OpenMicrosoftOfficeWordFile(FileInfo file, AssociationOpenParameter parameter)
         {
             var argument = $"--kind {AssociationFileKind.MicrosoftOfficeWord} --path \"{file.FullName}\" --doc_line {parameter.LineNumber} --doc_pos {parameter.CharacterPostion} --doc_len {parameter.CharacterLength} --doc_page {parameter.Document.Page}";
+            /*
             var executor = new NKitCliApplicationExecutor(CommonUtility.GetRocketApplication, argument);
             executor.RunAsync(CancellationToken.None).ConfigureAwait(false);
             return executor.ExecuteProcess;
+            */
+            using(var client = new NKitApplicationTalkerClient(NKitApplicationKind.Main)) {
+                client.Open();
+                client.WakeupApplication(NKitApplicationKind.Rocket, argument, string.Empty);
+            }
         }
 
-        Process OpenMicrosoftOfficeExcelFile(FileInfo file, AssociationOpenParameter parameter)
+        void OpenMicrosoftOfficeExcelFile(FileInfo file, AssociationOpenParameter parameter)
         {
             var argument = $"--kind {AssociationFileKind.MicrosoftOfficeExcel} --path \"{file.FullName}\" --ss_sheet {parameter.SpreadSeet.SheetName} --ss_y {parameter.SpreadSeet.RowIndex} --ss_x {parameter.SpreadSeet.ColumnIndex}";
+            /*
             var executor = new NKitCliApplicationExecutor(CommonUtility.GetRocketApplication, argument);
             executor.RunAsync(CancellationToken.None).ConfigureAwait(false);
             return executor.ExecuteProcess;
+            */
+            using(var client = new NKitApplicationTalkerClient(NKitApplicationKind.Main)) {
+                client.Open();
+                client.WakeupApplication(NKitApplicationKind.Rocket, argument, string.Empty);
+            }
         }
 
 
@@ -203,10 +215,12 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
                     return OpenXmlHtmlFile((FileInfo)fileSystemInfo, parameter);
 
                 case AssociationFileKind.MicrosoftOfficeExcel:
-                    return OpenMicrosoftOfficeExcelFile((FileInfo)fileSystemInfo, parameter);
+                    OpenMicrosoftOfficeExcelFile((FileInfo)fileSystemInfo, parameter);
+                    return null;
 
                 case AssociationFileKind.MicrosoftOfficeWord:
-                    return OpenMicrosoftOfficeWordFile((FileInfo)fileSystemInfo, parameter);
+                    OpenMicrosoftOfficeWordFile((FileInfo)fileSystemInfo, parameter);
+                    return null;
 
                 default:
                     throw new NotSupportedException();
