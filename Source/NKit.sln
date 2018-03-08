@@ -11,13 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Manager", "NKit.Manage
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Main", "app\NKit.Main\NKit.Main.csproj", "{248CD44D-7FA9-4E7F-94AA-E1507F527CC0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{91FBCEEB-423A-4ACA-84B8-80970B97402B}"
-	ProjectSection(SolutionItems) = preProject
-		Common\ApplicationModel.cs = Common\ApplicationModel.cs
-		common\AssemblyResolveHelper.cs = common\AssemblyResolveHelper.cs
-		common\CommonUtility.cs = common\CommonUtility.cs
-		common\Disposer.cs = common\Disposer.cs
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{91FBCEEB-423A-4ACA-84B8-80970B97402B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Package", "lib\NKit.Package\NKit.Package.csproj", "{AFA0C4AD-38A8-416D-922D-F66F976F8106}"
 EndProject
@@ -35,9 +29,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Setting", "lib\NKit.Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Rocket", "app\NKit.Rocket\NKit.Rocket.csproj", "{4C796AFB-AA0C-4A6E-B85F-EBB07486EA0A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setting", "Setting", "{206B7315-1540-403B-B912-7E5E10C3ADE1}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NKit.Common.Simple", "common\NKit.Common.Simple\NKit.Common.Simple.shproj", "{6463FFD3-B89A-44EA-91F8-BB469D895638}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NKit.Common.Application", "common\NKit.Common.Application\NKit.Common.Application.shproj", "{9D4F8E27-8F0D-4745-B6D7-BC6997E97BAC}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		common\NKit.Common.Application\NKit.Common.Application.projitems*{248cd44d-7fa9-4e7f-94aa-e1507f527cc0}*SharedItemsImports = 4
+		common\NKit.Common.Simple\NKit.Common.Simple.projitems*{248cd44d-7fa9-4e7f-94aa-e1507f527cc0}*SharedItemsImports = 4
+		common\NKit.Common.Application\NKit.Common.Application.projitems*{4c796afb-aa0c-4a6e-b85f-ebb07486ea0a}*SharedItemsImports = 4
+		common\NKit.Common.Simple\NKit.Common.Simple.projitems*{4c796afb-aa0c-4a6e-b85f-ebb07486ea0a}*SharedItemsImports = 4
+		common\NKit.Common.Simple\NKit.Common.Simple.projitems*{6463ffd3-b89a-44ea-91f8-bb469d895638}*SharedItemsImports = 13
+		common\NKit.Common.Simple\NKit.Common.Simple.projitems*{9cae0ffa-9e3d-4c49-af99-2fb1454c8e1b}*SharedItemsImports = 4
+		common\NKit.Common.Application\NKit.Common.Application.projitems*{9d4f8e27-8f0d-4745-b6d7-bc6997e97bac}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -89,7 +94,8 @@ Global
 		{66D532B9-D238-4BFA-A493-7CE2FEA5EFA2} = {A3ECDBE3-5487-4635-AA05-597EB42AB395}
 		{76F8B393-7678-4183-8172-D74045686B13} = {A3ECDBE3-5487-4635-AA05-597EB42AB395}
 		{4C796AFB-AA0C-4A6E-B85F-EBB07486EA0A} = {BA7C2163-9D37-4D39-96AC-9DB9269B97D9}
-		{206B7315-1540-403B-B912-7E5E10C3ADE1} = {91FBCEEB-423A-4ACA-84B8-80970B97402B}
+		{6463FFD3-B89A-44EA-91F8-BB469D895638} = {91FBCEEB-423A-4ACA-84B8-80970B97402B}
+		{9D4F8E27-8F0D-4745-B6D7-BC6997E97BAC} = {91FBCEEB-423A-4ACA-84B8-80970B97402B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DCA37A7D-11B2-4BEF-BD2E-1441C71C69AB}

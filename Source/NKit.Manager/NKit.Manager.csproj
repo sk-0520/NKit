@@ -49,12 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Common\CommonUtility.cs">
-      <Link>Common\CommonUtility.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\Disposer.cs">
-      <Link>Common\Disposer.cs</Link>
-    </Compile>
     <Compile Include="Model\Application\ApplicationManager.cs" />
     <Compile Include="Model\Log\LogManager.cs" />
     <Compile Include="Model\ManagerBase.cs" />
@@ -89,5 +83,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <Import Project="..\common\NKit.Common.Simple\NKit.Common.Simple.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -150,15 +150,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="..\..\Common\AssemblyResolveHelper.cs">
-      <Link>Common\AssemblyResolveHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Common\CommonUtility.cs">
-      <Link>Common\CommonUtility.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Common\Disposer.cs">
-      <Link>Common\Disposer.cs</Link>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -288,6 +279,8 @@
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\..\common\NKit.Common.Application\NKit.Common.Application.projitems" Label="Shared" />
+  <Import Project="..\..\common\NKit.Common.Simple\NKit.Common.Simple.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\Microsoft.VisualStudio.SlowCheetah.3.0.61\build\Microsoft.VisualStudio.SlowCheetah.targets" Condition="Exists('..\..\packages\Microsoft.VisualStudio.SlowCheetah.3.0.61\build\Microsoft.VisualStudio.SlowCheetah.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
