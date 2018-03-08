@@ -7,9 +7,11 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
 using ContentTypeTextNet.NKit.Common;
+using ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting;
 
 namespace ContentTypeTextNet.NKit.Manager.Model
 {
@@ -18,9 +20,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         #region property
 
         public bool IsFirstExecute { get; private set; }
-        public bool NeedSave { get; private set; }
-        ManagerSetting ManagerSetting { get; set; }
         public bool Accepted { get; set; }
+
+        public bool NeedSave { get; private set; } = true;
+        ManagerSetting ManagerSetting { get; set; }
+
+        public bool HasItems { get; private set; }
 
         #endregion
 
@@ -137,6 +142,33 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             var version = GetAcceptVersion();
 
             return ManagerSetting.LastExecuteVersion <= version.MinimumVersion;
+        }
+
+        public void ListupWorkspace(ComboBox targetControl)
+        {
+            targetControl.Items.Clear();
+
+            if(ManagerSetting.Workspace.Items == null) {
+                HasItems = false;
+            }
+
+            var items = ManagerSetting.Workspace.Items
+                .Select(i => new CustomDisplayItem<WorkspaceItemSetting>(i) {
+                    CustomDisplayText = v => v.Name
+                })
+                .ToArray()
+            ;
+
+            targetControl.Items.Add(items);
+
+            var lastUseItem = items.SingleOrDefault(i => i.Value.Id == ManagerSetting.Workspace.LastUseWorkspaceId);
+            if(lastUseItem != null) {
+                targetControl.SelectedItem = lastUseItem;
+            } else if(items.Any()) {
+                targetControl.SelectedItem = 0;
+            }
+
+            HasItems = items.Any();
         }
 
         #endregion

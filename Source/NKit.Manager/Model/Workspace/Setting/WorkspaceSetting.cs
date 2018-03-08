@@ -11,6 +11,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting
     public interface IReadOnlyWorkspaceSetting
     {
         #region property
+
+        /// <summary>
+        /// 最後に使用したワークスペースID。
+        /// </summary>
+        Guid LastUseWorkspaceId { get; }
+
         IReadOnlyWorkspaceItemSetting[] Items { get; }
 
         #endregion
@@ -20,6 +26,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting
     public class WorkspaceSetting: SettingBase, IReadOnlyWorkspaceSetting
     {
         #region IReadOnlyWorkspaceSetting
+
+        [DataMember]
+        public Guid LastUseWorkspaceId { get; set; }
+
         [DataMember]
         public WorkspaceItemSetting[] Items { get; set; } = new WorkspaceItemSetting[0];
 

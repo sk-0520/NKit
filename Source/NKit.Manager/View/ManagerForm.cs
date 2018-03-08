@@ -33,8 +33,19 @@ namespace ContentTypeTextNet.NKit.Manager.View
             Worker = worker;
         }
 
+        void RefreshControls()
+        {
+            this.commandLoad.Enabled = Worker.HasItems;
+            this.commandClose.Enabled = Worker.HasItems;
+            this.selectWorkspace.Enabled = Worker.HasItems;
+        }
+
         #endregion
 
-
+        private void ManagerForm_Load(object sender, EventArgs e)
+        {
+            Worker.ListupWorkspace(this.selectWorkspace);
+            RefreshControls();
+        }
     }
 }

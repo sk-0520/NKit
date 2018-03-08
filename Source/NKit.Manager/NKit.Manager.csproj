@@ -64,6 +64,7 @@
     <Compile Include="Model\Application\ApplicationManager.cs" />
     <Compile Include="Model\Application\Setting\ApplicationSetting.cs" />
     <Compile Include="Model\CommandLine.cs" />
+    <Compile Include="Model\DisplayItem.cs" />
     <Compile Include="Model\Log\LogManager.cs" />
     <Compile Include="Model\Log\Setting\LogSetting.cs" />
     <Compile Include="Model\ManagerBase.cs" />
