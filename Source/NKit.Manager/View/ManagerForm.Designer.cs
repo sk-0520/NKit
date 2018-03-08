@@ -27,59 +27,169 @@ namespace ContentTypeTextNet.NKit.Manager.View
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.selectWorkspace = new System.Windows.Forms.ComboBox();
-            this.commandLoad = new System.Windows.Forms.Button();
-            this.commandClose = new System.Windows.Forms.Button();
-            this.commandEdit = new System.Windows.Forms.Button();
+            this.commandWorkspaceLoad = new System.Windows.Forms.Button();
+            this.commandWorkspaceClose = new System.Windows.Forms.Button();
+            this.commandWorkspaceCreate = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.commandWorkspaceSave = new System.Windows.Forms.Button();
+            this.commandWorkspaceDirectorySelect = new System.Windows.Forms.Button();
+            this.inputWorkspaceName = new System.Windows.Forms.TextBox();
+            this.inputWorkspaceDirectoryPath = new System.Windows.Forms.TextBox();
+            this.commandWorkspaceCopy = new System.Windows.Forms.Button();
+            this.commandWorkspaceDelete = new System.Windows.Forms.Button();
+            this.panelWorkspace = new System.Windows.Forms.Panel();
+            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.panelWorkspace.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // selectWorkspace
             // 
+            this.selectWorkspace.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.selectWorkspace.FormattingEnabled = true;
-            this.selectWorkspace.Location = new System.Drawing.Point(103, 12);
+            this.selectWorkspace.Location = new System.Drawing.Point(93, 12);
             this.selectWorkspace.Name = "selectWorkspace";
-            this.selectWorkspace.Size = new System.Drawing.Size(205, 20);
+            this.selectWorkspace.Size = new System.Drawing.Size(215, 20);
             this.selectWorkspace.TabIndex = 0;
+            this.selectWorkspace.SelectedIndexChanged += new System.EventHandler(this.selectWorkspace_SelectedIndexChanged);
             // 
-            // commandLoad
+            // commandWorkspaceLoad
             // 
-            this.commandLoad.Location = new System.Drawing.Point(314, 12);
-            this.commandLoad.Name = "commandLoad";
-            this.commandLoad.Size = new System.Drawing.Size(75, 23);
-            this.commandLoad.TabIndex = 1;
-            this.commandLoad.Text = "load";
-            this.commandLoad.UseVisualStyleBackColor = true;
+            this.commandWorkspaceLoad.Location = new System.Drawing.Point(314, 12);
+            this.commandWorkspaceLoad.Name = "commandWorkspaceLoad";
+            this.commandWorkspaceLoad.Size = new System.Drawing.Size(75, 23);
+            this.commandWorkspaceLoad.TabIndex = 1;
+            this.commandWorkspaceLoad.Text = "load";
+            this.commandWorkspaceLoad.UseVisualStyleBackColor = true;
             // 
-            // commandClose
+            // commandWorkspaceClose
             // 
-            this.commandClose.Location = new System.Drawing.Point(395, 12);
-            this.commandClose.Name = "commandClose";
-            this.commandClose.Size = new System.Drawing.Size(75, 23);
-            this.commandClose.TabIndex = 1;
-            this.commandClose.Text = "close";
-            this.commandClose.UseVisualStyleBackColor = true;
+            this.commandWorkspaceClose.Location = new System.Drawing.Point(395, 12);
+            this.commandWorkspaceClose.Name = "commandWorkspaceClose";
+            this.commandWorkspaceClose.Size = new System.Drawing.Size(75, 23);
+            this.commandWorkspaceClose.TabIndex = 1;
+            this.commandWorkspaceClose.Text = "close";
+            this.commandWorkspaceClose.UseVisualStyleBackColor = true;
             // 
-            // commandEdit
+            // commandWorkspaceCreate
             // 
-            this.commandEdit.Location = new System.Drawing.Point(12, 12);
-            this.commandEdit.Name = "commandEdit";
-            this.commandEdit.Size = new System.Drawing.Size(75, 23);
-            this.commandEdit.TabIndex = 1;
-            this.commandEdit.Text = "edit";
-            this.commandEdit.UseVisualStyleBackColor = true;
+            this.commandWorkspaceCreate.Location = new System.Drawing.Point(12, 38);
+            this.commandWorkspaceCreate.Name = "commandWorkspaceCreate";
+            this.commandWorkspaceCreate.Size = new System.Drawing.Size(75, 23);
+            this.commandWorkspaceCreate.TabIndex = 1;
+            this.commandWorkspaceCreate.Text = "create";
+            this.commandWorkspaceCreate.UseVisualStyleBackColor = true;
+            this.commandWorkspaceCreate.Click += new System.EventHandler(this.commandWorkspaceCreate_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(13, 26);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(32, 12);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "name";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(13, 51);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(18, 12);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "dir";
+            // 
+            // commandWorkspaceSave
+            // 
+            this.commandWorkspaceSave.Location = new System.Drawing.Point(257, 74);
+            this.commandWorkspaceSave.Name = "commandWorkspaceSave";
+            this.commandWorkspaceSave.Size = new System.Drawing.Size(75, 23);
+            this.commandWorkspaceSave.TabIndex = 1;
+            this.commandWorkspaceSave.Text = "save";
+            this.commandWorkspaceSave.UseVisualStyleBackColor = true;
+            this.commandWorkspaceSave.Click += new System.EventHandler(this.commandWorkspaceSave_Click);
+            // 
+            // commandWorkspaceDirectorySelect
+            // 
+            this.commandWorkspaceDirectorySelect.Location = new System.Drawing.Point(157, 51);
+            this.commandWorkspaceDirectorySelect.Name = "commandWorkspaceDirectorySelect";
+            this.commandWorkspaceDirectorySelect.Size = new System.Drawing.Size(75, 23);
+            this.commandWorkspaceDirectorySelect.TabIndex = 3;
+            this.commandWorkspaceDirectorySelect.Text = "dir";
+            this.commandWorkspaceDirectorySelect.UseVisualStyleBackColor = true;
+            // 
+            // inputWorkspaceName
+            // 
+            this.inputWorkspaceName.Location = new System.Drawing.Point(51, 23);
+            this.inputWorkspaceName.Name = "inputWorkspaceName";
+            this.inputWorkspaceName.Size = new System.Drawing.Size(100, 19);
+            this.inputWorkspaceName.TabIndex = 4;
+            // 
+            // inputWorkspaceDirectoryPath
+            // 
+            this.inputWorkspaceDirectoryPath.Location = new System.Drawing.Point(51, 51);
+            this.inputWorkspaceDirectoryPath.Name = "inputWorkspaceDirectoryPath";
+            this.inputWorkspaceDirectoryPath.Size = new System.Drawing.Size(100, 19);
+            this.inputWorkspaceDirectoryPath.TabIndex = 4;
+            // 
+            // commandWorkspaceCopy
+            // 
+            this.commandWorkspaceCopy.Location = new System.Drawing.Point(12, 9);
+            this.commandWorkspaceCopy.Name = "commandWorkspaceCopy";
+            this.commandWorkspaceCopy.Size = new System.Drawing.Size(75, 23);
+            this.commandWorkspaceCopy.TabIndex = 1;
+            this.commandWorkspaceCopy.Text = "copy";
+            this.commandWorkspaceCopy.UseVisualStyleBackColor = true;
+            this.commandWorkspaceCopy.Click += new System.EventHandler(this.commandWorkspaceCopy_Click);
+            // 
+            // commandWorkspaceDelete
+            // 
+            this.commandWorkspaceDelete.Location = new System.Drawing.Point(15, 91);
+            this.commandWorkspaceDelete.Name = "commandWorkspaceDelete";
+            this.commandWorkspaceDelete.Size = new System.Drawing.Size(75, 23);
+            this.commandWorkspaceDelete.TabIndex = 1;
+            this.commandWorkspaceDelete.Text = "delete";
+            this.commandWorkspaceDelete.UseVisualStyleBackColor = true;
+            this.commandWorkspaceDelete.Click += new System.EventHandler(this.commandWorkspaceDelete_Click);
+            // 
+            // panelWorkspace
+            // 
+            this.panelWorkspace.Controls.Add(this.inputWorkspaceName);
+            this.panelWorkspace.Controls.Add(this.inputWorkspaceDirectoryPath);
+            this.panelWorkspace.Controls.Add(this.commandWorkspaceDelete);
+            this.panelWorkspace.Controls.Add(this.commandWorkspaceSave);
+            this.panelWorkspace.Controls.Add(this.label1);
+            this.panelWorkspace.Controls.Add(this.label2);
+            this.panelWorkspace.Controls.Add(this.commandWorkspaceDirectorySelect);
+            this.panelWorkspace.Location = new System.Drawing.Point(93, 76);
+            this.panelWorkspace.Name = "panelWorkspace";
+            this.panelWorkspace.Size = new System.Drawing.Size(335, 117);
+            this.panelWorkspace.TabIndex = 5;
+            // 
+            // errorProvider
+            // 
+            this.errorProvider.ContainerControl = this;
             // 
             // ManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 228);
-            this.Controls.Add(this.commandClose);
-            this.Controls.Add(this.commandEdit);
-            this.Controls.Add(this.commandLoad);
+            this.Controls.Add(this.panelWorkspace);
+            this.Controls.Add(this.commandWorkspaceClose);
+            this.Controls.Add(this.commandWorkspaceCopy);
+            this.Controls.Add(this.commandWorkspaceCreate);
+            this.Controls.Add(this.commandWorkspaceLoad);
             this.Controls.Add(this.selectWorkspace);
             this.Name = "ManagerForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.ManagerForm_Load);
+            this.panelWorkspace.ResumeLayout(false);
+            this.panelWorkspace.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -87,9 +197,19 @@ namespace ContentTypeTextNet.NKit.Manager.View
         #endregion
 
         private System.Windows.Forms.ComboBox selectWorkspace;
-        private System.Windows.Forms.Button commandLoad;
-        private System.Windows.Forms.Button commandClose;
-        private System.Windows.Forms.Button commandEdit;
+        private System.Windows.Forms.Button commandWorkspaceLoad;
+        private System.Windows.Forms.Button commandWorkspaceClose;
+        private System.Windows.Forms.Button commandWorkspaceCreate;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button commandWorkspaceSave;
+        private System.Windows.Forms.Button commandWorkspaceDirectorySelect;
+        private System.Windows.Forms.TextBox inputWorkspaceName;
+        private System.Windows.Forms.TextBox inputWorkspaceDirectoryPath;
+        private System.Windows.Forms.Button commandWorkspaceCopy;
+        private System.Windows.Forms.Button commandWorkspaceDelete;
+        private System.Windows.Forms.Panel panelWorkspace;
+        private System.Windows.Forms.ErrorProvider errorProvider;
     }
 }
 

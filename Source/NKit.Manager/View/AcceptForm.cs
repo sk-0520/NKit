@@ -121,14 +121,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 return;
             }
 
-            Worker.Accepted = true;
             DialogResult = DialogResult.OK;
             Close();
         }
 
         private void commandCancel_Click(object sender, EventArgs e)
         {
-            Worker.Accepted = false;
             DialogResult = DialogResult.Cancel;
             Close();
         }

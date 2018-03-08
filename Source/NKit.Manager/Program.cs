@@ -28,10 +28,11 @@ namespace ContentTypeTextNet.NKit.Manager
 
                     Application.Run(acceptForm);
 
-                    worker.Accepted = acceptForm.DialogResult == DialogResult.OK;
-                }
-                if(!worker.Accepted) {
-                    return;
+                    var accepted = acceptForm.DialogResult == DialogResult.OK;
+                    worker.Accepted = accepted;
+                    if(!worker.Accepted) {
+                        return;
+                    }
                 }
             }
 

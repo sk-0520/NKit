@@ -33,11 +33,52 @@ namespace ContentTypeTextNet.NKit.Manager.View
             Worker = worker;
         }
 
+        void SetInputControl(string name, string directoryPath)
+        {
+            this.inputWorkspaceName.Text = name;
+            this.inputWorkspaceDirectoryPath.Text = directoryPath;
+        }
+
+        void SetInputControlFromSelectedWorkspaceItem()
+        {
+            if(Worker.SelectedWorkspaceItem != null) {
+                SetInputControl(Worker.SelectedWorkspaceItem.Name, Worker.SelectedWorkspaceItem.DirectoryPath);
+            } else {
+                SetInputControl(string.Empty, string.Empty);
+            }
+        }
+
         void RefreshControls()
         {
-            this.commandLoad.Enabled = Worker.HasItems;
-            this.commandClose.Enabled = Worker.HasItems;
-            this.selectWorkspace.Enabled = Worker.HasItems;
+            switch(Worker.WorkspaceState) {
+                case Define.WorkspaceState.None:
+                case Define.WorkspaceState.Creating:
+                case Define.WorkspaceState.Copy:
+                    this.commandWorkspaceLoad.Enabled = false;
+                    this.commandWorkspaceClose.Enabled = false;
+                    this.selectWorkspace.Enabled = false;
+                    this.commandWorkspaceCopy.Enabled = false;
+                    this.commandWorkspaceCreate.Enabled = false;
+                    this.panelWorkspace.Enabled = true;
+                    // 明示的に作成している場合は削除(キャンセル可能)
+                    this.commandWorkspaceDelete.Enabled = Worker.WorkspaceState != Define.WorkspaceState.None;
+                    break;
+
+                case Define.WorkspaceState.Selecting:
+                    this.commandWorkspaceLoad.Enabled = true;
+                    this.commandWorkspaceClose.Enabled = false;
+                    this.selectWorkspace.Enabled = true;
+                    this.commandWorkspaceCopy.Enabled = true;
+                    this.commandWorkspaceCreate.Enabled = true;
+                    this.panelWorkspace.Enabled = true;
+                    break;
+
+                case Define.WorkspaceState.Running:
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         #endregion
@@ -46,6 +87,56 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             Worker.ListupWorkspace(this.selectWorkspace);
             RefreshControls();
+        }
+
+        private void commandWorkspaceSave_Click(object sender, EventArgs e)
+        {
+            if(Worker.SaveWorkspace(this.errorProvider, this.inputWorkspaceName, this.inputWorkspaceDirectoryPath)) {
+                Worker.ListupWorkspace(this.selectWorkspace);
+                SetInputControlFromSelectedWorkspaceItem();
+                RefreshControls();
+            }
+        }
+
+        private void commandWorkspaceCreate_Click(object sender, EventArgs e)
+        {
+            Worker.ClearSelectedWorkspace();
+            this.selectWorkspace.SelectedIndex = -1;
+            SetInputControl(string.Empty, string.Empty);
+            RefreshControls();
+        }
+
+        private void commandWorkspaceDelete_Click(object sender, EventArgs e)
+        {
+            Worker.DeleteSelectedWorkspace();
+            Worker.ListupWorkspace(this.selectWorkspace);
+            if(Worker.SelectedWorkspaceItem != null) {
+                SetInputControlFromSelectedWorkspaceItem();
+            } else {
+                SetInputControl(string.Empty, string.Empty);
+            }
+            RefreshControls();
+        }
+
+        private void selectWorkspace_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Worker.ChangeSelectedItem(this.selectWorkspace);
+            if(Worker.WorkspaceState == Define.WorkspaceState.Selecting) {
+                SetInputControlFromSelectedWorkspaceItem();
+            } else {
+                SetInputControl(string.Empty, string.Empty);
+            }
+        }
+
+        private void commandWorkspaceCopy_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("TODO: not impl");
+            var __TODO__ = false;
+            if(__TODO__) {
+                Worker.CopySelectedWorkspace();
+                SetInputControlFromSelectedWorkspaceItem();
+                RefreshControls();
+            }
         }
     }
 }
