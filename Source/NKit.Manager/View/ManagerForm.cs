@@ -31,6 +31,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         public void SetWorker(ManagerWorker worker)
         {
             Worker = worker;
+            Worker.WorkspaceExited += Worker_WorkspaceExited;
         }
 
         void SetInputControl(string name, string directoryPath)
@@ -60,8 +61,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.commandWorkspaceCopy.Enabled = false;
                     this.commandWorkspaceCreate.Enabled = false;
                     this.panelWorkspace.Enabled = true;
+                    this.inputWorkspaceName.ReadOnly = false;
+                    this.inputWorkspaceDirectoryPath.ReadOnly = false;
                     // 明示的に作成している場合は削除(キャンセル可能)
                     this.commandWorkspaceDelete.Enabled = Worker.WorkspaceState != Define.WorkspaceState.None;
+                    this.commandWorkspaceDirectorySelect.Enabled = true;
+                    this.commandWorkspaceSave.Enabled = true;
                     break;
 
                 case Define.WorkspaceState.Selecting:
@@ -71,9 +76,25 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.commandWorkspaceCopy.Enabled = true;
                     this.commandWorkspaceCreate.Enabled = true;
                     this.panelWorkspace.Enabled = true;
+                    this.inputWorkspaceName.ReadOnly = false;
+                    this.inputWorkspaceDirectoryPath.ReadOnly = false;
+                    this.commandWorkspaceDelete.Enabled = true;
+                    this.commandWorkspaceDirectorySelect.Enabled = true;
+                    this.commandWorkspaceSave.Enabled = true;
                     break;
 
                 case Define.WorkspaceState.Running:
+                    this.commandWorkspaceLoad.Enabled = false;
+                    this.commandWorkspaceClose.Enabled = true;
+                    this.selectWorkspace.Enabled = false;
+                    this.commandWorkspaceCopy.Enabled = false;
+                    this.commandWorkspaceCreate.Enabled = false;
+                    this.panelWorkspace.Enabled = true;
+                    this.inputWorkspaceName.ReadOnly = true;
+                    this.inputWorkspaceDirectoryPath.ReadOnly = true;
+                    this.commandWorkspaceDelete.Enabled = false;
+                    this.commandWorkspaceDirectorySelect.Enabled = false;
+                    this.commandWorkspaceSave.Enabled = false;
                     break;
 
                 default:
@@ -137,6 +158,19 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 SetInputControlFromSelectedWorkspaceItem();
                 RefreshControls();
             }
+        }
+
+        private void commandWorkspaceLoad_Click(object sender, EventArgs e)
+        {
+            Worker.LoadSelectedWorkspace();
+            RefreshControls();
+        }
+
+        private void Worker_WorkspaceExited(object sender, EventArgs e)
+        {
+            Invoke(new Action(() => {
+                RefreshControls();
+            }));
         }
     }
 }

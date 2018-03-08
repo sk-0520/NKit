@@ -12,12 +12,19 @@ using System.Xml;
 using System.Xml.Serialization;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Manager.Define;
+using ContentTypeTextNet.NKit.Manager.Model.Application;
 using ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting;
 
 namespace ContentTypeTextNet.NKit.Manager.Model
 {
     public class ManagerWorker : DisposerBase
     {
+        #region event
+
+        public event EventHandler<EventArgs> WorkspaceExited;
+
+        #endregion
+
         #region property
 
         public bool IsFirstExecute { get; private set; }
@@ -34,6 +41,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         public WorkspaceItemSetting SelectedWorkspaceItem { get; private set; }
 
+        ApplicationManager ApplicationManager { get; } = new ApplicationManager();
 
         #endregion
 
@@ -218,7 +226,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
             var currentTimestamp = DateTime.UtcNow;
 
-            if(WorkspaceState == WorkspaceState.Creating) {
+            if(WorkspaceState == WorkspaceState.None || WorkspaceState == WorkspaceState.Creating) {
                 Debug.Assert(SelectedWorkspaceItem == null);
                 // 新規作成
                 var item = new WorkspaceItemSetting() {
@@ -287,6 +295,24 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             }
         }
 
+        public void LoadSelectedWorkspace()
+        {
+            ApplicationManager.MainProcessExited -= ApplicationManager_MainProcessExited;
+            ApplicationManager.ExecuteMainApplication(SelectedWorkspaceItem);
+            ApplicationManager.MainProcessExited += ApplicationManager_MainProcessExited;
+
+            WorkspaceState = WorkspaceState.Running;
+        }
+
         #endregion
+
+        private void ApplicationManager_MainProcessExited(object sender, EventArgs e)
+        {
+            WorkspaceState = WorkspaceState.Selecting;
+            if(WorkspaceExited != null) {
+                WorkspaceExited(sender, e);
+            }
+        }
+
     }
 }

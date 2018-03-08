@@ -64,6 +64,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandWorkspaceLoad.TabIndex = 1;
             this.commandWorkspaceLoad.Text = "load";
             this.commandWorkspaceLoad.UseVisualStyleBackColor = true;
+            this.commandWorkspaceLoad.Click += new System.EventHandler(this.commandWorkspaceLoad_Click);
             // 
             // commandWorkspaceClose
             // 
