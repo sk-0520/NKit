@@ -25,7 +25,17 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         #endregion
 
+        public ManagerWorker()
+        {
+            ApplicationManager = new ApplicationManager();
+            ApplicationManager.MainApplicationExited += ApplicationManager_MainApplicationExited;
+        }
+
+
         #region property
+
+        ApplicationManager ApplicationManager { get; }
+
 
         public bool IsFirstExecute { get; private set; }
         public bool Accepted
@@ -41,7 +51,6 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         public WorkspaceItemSetting SelectedWorkspaceItem { get; private set; }
 
-        ApplicationManager ApplicationManager { get; } = new ApplicationManager();
 
         #endregion
 
@@ -297,16 +306,14 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         public void LoadSelectedWorkspace()
         {
-            ApplicationManager.MainProcessExited -= ApplicationManager_MainProcessExited;
             ApplicationManager.ExecuteMainApplication(SelectedWorkspaceItem);
-            ApplicationManager.MainProcessExited += ApplicationManager_MainProcessExited;
 
             WorkspaceState = WorkspaceState.Running;
         }
 
         #endregion
 
-        private void ApplicationManager_MainProcessExited(object sender, EventArgs e)
+        private void ApplicationManager_MainApplicationExited(object sender, EventArgs e)
         {
             WorkspaceState = WorkspaceState.Selecting;
             if(WorkspaceExited != null) {

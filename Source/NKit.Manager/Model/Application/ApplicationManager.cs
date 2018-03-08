@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,13 +15,16 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
     {
         #region event
 
-        public event EventHandler<EventArgs> MainProcessExited;
+        public event EventHandler<EventArgs> MainApplicationExited;
 
         #endregion
 
         #region property
 
-        Process MainProcess { get; set; }
+        MainApplicationItem MainApplication { get; set; }
+
+        object _itemsLocker = new object();
+        IList<ApplicationItem> Items { get; } = new List<ApplicationItem>();
 
         #endregion
 
@@ -28,24 +32,52 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         public void ExecuteMainApplication(IReadOnlyWorkspaceItemSetting workspace)
         {
-            // TODO: 名称変更のあれ
-            var mainExecPath = Path.Combine(CommonUtility.GetApplicationDirectory().FullName, "NKit.Main.exe");
-            var arguments = $"--workspace \"{workspace.DirectoryPath}\" --その他なんか いっぱい";
-            MainProcess = new Process();
-            MainProcess.StartInfo.FileName = mainExecPath;
-            MainProcess.StartInfo.Arguments = arguments;
-            MainProcess.EnableRaisingEvents = true;
-            MainProcess.Exited += MainProcess_Exited;
+            if(MainApplication != null) {
+                MainApplication.ApplicationItem_Exited -= MainApplication_ApplicationItem_Exited;
+            }
 
-            MainProcess.Start();
+            MainApplication = new MainApplicationItem(workspace.DirectoryPath);
+            MainApplication.ApplicationItem_Exited += MainApplication_ApplicationItem_Exited;
+
+            MainApplication.Execute();
+        }
+
+        public void ExecuteNKitApplication(string path, string arguments)
+        {
+            var item = new ApplicationItem(path) {
+                Arguments = arguments,
+            };
+            item.ApplicationItem_Exited += Item_ApplicationItem_Exited;
+            lock(this._itemsLocker) {
+                Items.Add(item);
+            }
+            item.Execute();
+        }
+
+        public void ShutdownOthersApplications()
+        {
+
         }
 
         #endregion
-        private void MainProcess_Exited(object sender, EventArgs e)
+        private void MainApplication_ApplicationItem_Exited(object sender, EventArgs e)
         {
-            if(MainProcessExited != null) {
-                MainProcessExited(sender, e);
+            ShutdownOthersApplications();
+
+            if(MainApplicationExited != null) {
+                MainApplicationExited(sender, e);
             }
         }
+
+        private void Item_ApplicationItem_Exited(object sender, EventArgs e)
+        {
+            var item = (ApplicationItem)sender;
+            item.ApplicationItem_Exited -= Item_ApplicationItem_Exited;
+
+            lock(this._itemsLocker) {
+                Items.Remove(item);
+            }
+        }
+
     }
 }

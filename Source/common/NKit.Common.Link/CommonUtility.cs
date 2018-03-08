@@ -173,6 +173,12 @@ namespace ContentTypeTextNet.NKit.Common
             return new FileInfo(path);
         }
 
+        public static FileInfo GetMainApplication(DirectoryInfo applicationDirectory)
+        {
+            var path = Path.Combine(applicationDirectory.FullName, "NKit.Main.exe");
+            return new FileInfo(path);
+        }
+
         public static FileInfo GetRocketApplication(DirectoryInfo applicationDirectory)
         {
             var path = Path.Combine(applicationDirectory.FullName, "NKit.Rocket.exe");
