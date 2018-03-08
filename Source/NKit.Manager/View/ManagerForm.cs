@@ -16,6 +16,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
         public ManagerForm()
         {
             InitializeComponent();
+
+            Font = SystemFonts.MessageBoxFont;
         }
 
         #region property
