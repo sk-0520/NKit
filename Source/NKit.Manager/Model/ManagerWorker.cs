@@ -17,7 +17,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
     {
         #region property
 
-        bool IsFirstExecute { get; set; }
+        public bool IsFirstExecute { get; private set; }
         public bool NeedSave { get; private set; }
         ManagerSetting ManagerSetting { get; set; }
         public bool Accepted { get; set; }

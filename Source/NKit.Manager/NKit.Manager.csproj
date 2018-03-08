@@ -107,6 +107,10 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Properties\app.manifest" />
+    <Content Include="etc\license\NKit.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\File\AcceptMessage.rtf" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\busybox\busybox.exe">

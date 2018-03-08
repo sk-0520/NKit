@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<version min="1.0.0.0">
+<!--
+	min 以下なら使用許諾表示
+-->
+<version min="0.0.0.0">
+	<item version="0.1.2.1">
+		<value>🐁</value>
+		<value>🐂</value>
+		<value>🐅</value>
+	</item>
+	<item version="0.0.1.3">
+		<value>あ</value>
+		<value>い</value>
+		<value>う</value>
+	</item>
 	<item version="0.1.1.1">
 		<value>1</value>
 		<value>2</value>
