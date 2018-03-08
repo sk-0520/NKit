@@ -21,10 +21,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         #region property
 
-        MainApplicationItem MainApplication { get; set; }
+        NKitMainApplicationItem MainApplication { get; set; }
 
         object _itemsLocker = new object();
-        IList<ApplicationItem> Items { get; } = new List<ApplicationItem>();
+        IList<NKitApplicationItem> Items { get; } = new List<NKitApplicationItem>();
 
         #endregion
 
@@ -33,25 +33,27 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         public void ExecuteMainApplication(IReadOnlyWorkspaceItemSetting workspace)
         {
             if(MainApplication != null) {
-                MainApplication.ApplicationItem_Exited -= MainApplication_ApplicationItem_Exited;
+                MainApplication.Exited -= MainApplication_Exited;
             }
 
-            MainApplication = new MainApplicationItem(workspace.DirectoryPath);
-            MainApplication.ApplicationItem_Exited += MainApplication_ApplicationItem_Exited;
+            MainApplication = new NKitMainApplicationItem(workspace.DirectoryPath);
+            MainApplication.Exited += MainApplication_Exited;
+            MainApplication.OutputDataReceived += Item_Application_OutputDataReceived;
+            MainApplication.ErrorDataReceived += Item_Application_ErrorDataReceived;
 
             MainApplication.Execute();
         }
 
         public void ExecuteNKitApplication(NKitApplicationKind senderApplication, NKitApplicationKind targetApplication, string arguments, string workingDirectoryPath)
         {
-            ApplicationItem item = null;
+            NKitApplicationItem item = null;
 
             switch(targetApplication) {
                 case NKitApplicationKind.Main:
                     throw new ArgumentException();
 
                 case NKitApplicationKind.Rocket:
-                    item = new ApplicationItem(CommonUtility.GetRocketApplication(CommonUtility.GetApplicationDirectory()).FullName) {
+                    item = new NKitApplicationItem(targetApplication) {
                         Arguments = arguments,
                     };
                     break;
@@ -60,7 +62,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                     throw new NotImplementedException();
             }
 
-            item.ApplicationItem_Exited += Item_ApplicationItem_Exited;
+            item.Exited += Item_Exited;
+            item.OutputDataReceived += Item_Application_OutputDataReceived;
+            item.ErrorDataReceived += Item_Application_ErrorDataReceived;
             lock(this._itemsLocker) {
                 Items.Add(item);
             }
@@ -72,10 +76,21 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         }
 
+        private void ReceivedData(NKitApplicationItem item, bool isError, string s)
+        {
+            if(s != null){
+                var type = isError ? "E" : "I";
+                Debug.WriteLine($"[{type}] {item.Kind}, {s}");
+            }
+        }
+
         #endregion
 
-        private void MainApplication_ApplicationItem_Exited(object sender, EventArgs e)
+        private void MainApplication_Exited(object sender, EventArgs e)
         {
+            MainApplication.OutputDataReceived -= Item_Application_OutputDataReceived;
+            MainApplication.ErrorDataReceived -= Item_Application_ErrorDataReceived;
+
             ShutdownOthersApplications();
 
             if(MainApplicationExited != null) {
@@ -83,14 +98,30 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             }
         }
 
-        private void Item_ApplicationItem_Exited(object sender, EventArgs e)
+        private void Item_Exited(object sender, EventArgs e)
         {
-            var item = (ApplicationItem)sender;
-            item.ApplicationItem_Exited -= Item_ApplicationItem_Exited;
+            var item = (NKitApplicationItem)sender;
+            item.Exited -= Item_Exited;
+
+            item.OutputDataReceived -= Item_Application_OutputDataReceived;
+            item.ErrorDataReceived -= Item_Application_OutputDataReceived;
 
             lock(this._itemsLocker) {
                 Items.Remove(item);
             }
         }
+
+        private void Item_Application_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            var item = (NKitApplicationItem)sender;
+            ReceivedData(item, true, e.Data);
+        }
+
+        private void Item_Application_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            var item = (NKitApplicationItem)sender;
+            ReceivedData(item, false, e.Data);
+        }
+
     }
 }

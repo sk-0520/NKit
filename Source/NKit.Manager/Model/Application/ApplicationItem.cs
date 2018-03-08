@@ -8,11 +8,13 @@ using ContentTypeTextNet.NKit.Common;
 
 namespace ContentTypeTextNet.NKit.Manager.Model.Application
 {
-    public class ApplicationItem: DisposerBase
+    public class ApplicationItem : DisposerBase
     {
         #region event
 
-        public event EventHandler<EventArgs> ApplicationItem_Exited;
+        public event EventHandler<EventArgs> Exited;
+        public event DataReceivedEventHandler OutputDataReceived;
+        public event DataReceivedEventHandler ErrorDataReceived;
 
         #endregion
 
@@ -20,26 +22,19 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         {
             Process = new Process();
             Process.StartInfo.FileName = path;
+
             Process.EnableRaisingEvents = true;
             Process.Exited += Process_Exited;
-        }
-
-        private void Process_Exited(object sender, EventArgs e)
-        {
-            if(ApplicationItem_Exited != null) {
-                ApplicationItem_Exited(this, e);
-            }
         }
 
         #region proeprty
 
         protected Process Process { get; }
 
-        public string Arguments
-        {
-            get { return Process.StartInfo.Arguments; }
-            set { Process.StartInfo.Arguments = value; }
-        }
+        public string Arguments { get; set; }
+        public string WorkingDirectoryPath { get; set; }
+        public bool RedirectOutput { get; set; }
+        public bool CreateWindow { get; set; }
 
         #endregion
 
@@ -47,7 +42,25 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         public void Execute()
         {
+            Process.StartInfo.Arguments = Arguments;
+            Process.StartInfo.WorkingDirectory = WorkingDirectoryPath;
+
+            Process.StartInfo.CreateNoWindow = !CreateWindow;
+            Process.StartInfo.UseShellExecute = !RedirectOutput;
+
+            Process.StartInfo.RedirectStandardOutput = RedirectOutput;
+            Process.StartInfo.RedirectStandardError = RedirectOutput;
+            if(RedirectOutput) {
+                Process.OutputDataReceived += Process_OutputDataReceived;
+                Process.ErrorDataReceived += Process_ErrorDataReceived;
+            }
+
             Process.Start();
+
+            if(RedirectOutput) {
+                Process.BeginErrorReadLine();
+                Process.BeginOutputReadLine();
+            }
         }
 
         #endregion
@@ -58,7 +71,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         {
             if(!IsDisposed) {
                 if(disposing) {
+                    if(RedirectOutput) {
+                        Process.OutputDataReceived -= OutputDataReceived;
+                        Process.ErrorDataReceived -= Process_ErrorDataReceived;
+                    }
                     Process.Exited -= Process_Exited;
+
                     Process.Dispose();
                 }
             }
@@ -67,15 +85,82 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         }
 
         #endregion
+
+        private void Process_Exited(object sender, EventArgs e)
+        {
+            if(RedirectOutput) {
+                Process.OutputDataReceived -= OutputDataReceived;
+                Process.ErrorDataReceived -= Process_ErrorDataReceived;
+            }
+
+            if(Exited != null) {
+                Exited(this, e);
+            }
+        }
+
+        private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            if(OutputDataReceived != null) {
+                OutputDataReceived(this, e);
+            }
+        }
+
+        private void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            if(ErrorDataReceived != null) {
+                ErrorDataReceived(this, e);
+            }
+        }
+    }
+
+    public class NKitApplicationItem : ApplicationItem
+    {
+        public NKitApplicationItem(NKitApplicationKind kind)
+            : base(GetApplicationPath(kind))
+        {
+            Kind = kind;
+
+            if(kind == NKitApplicationKind.Main) {
+                RedirectOutput = true;
+                CreateWindow = true;
+            } else {
+                RedirectOutput = true;
+                CreateWindow = false;
+            }
+        }
+
+        #region property
+
+        public NKitApplicationKind Kind { get; }
+
+        #endregion
+
+        #region function
+
+        static string GetApplicationPath(NKitApplicationKind kind)
+        {
+            switch(kind) {
+                case NKitApplicationKind.Main:
+                    return CommonUtility.GetMainApplication(CommonUtility.GetApplicationDirectory()).FullName;
+
+                case NKitApplicationKind.Rocket:
+                    return CommonUtility.GetRocketApplication(CommonUtility.GetApplicationDirectory()).FullName;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        #endregion
     }
 
     /// <summary>
     /// この子だけ特別扱い。
     /// </summary>
-    public class MainApplicationItem: ApplicationItem
+    public class NKitMainApplicationItem : NKitApplicationItem
     {
-        public MainApplicationItem(string workspaceDirectoryPath)
-            : base(CommonUtility.GetMainApplication(CommonUtility.GetApplicationDirectory()).FullName)
+        public NKitMainApplicationItem(string workspaceDirectoryPath)
+            : base(NKitApplicationKind.Main)
         {
             Arguments = $"--workspace \"{workspaceDirectoryPath}\" --その他なんか いっぱい";
         }
