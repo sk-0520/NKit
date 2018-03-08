@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<version min="1.0.0.0">
+	<item version="0.1.1.1">
+		<value>1</value>
+		<value>2</value>
+		<value>3</value>
+	</item>
+	<item version="0.0.1.1">
+		<value>A</value>
+		<value>B</value>
+		<value>C</value>
+	</item>
+	<item version="0.0.0.1">
+		<value>a</value>
+		<value>b</value>
+		<value>c</value>
+	</item>
+</version>

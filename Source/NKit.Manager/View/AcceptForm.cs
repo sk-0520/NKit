@@ -11,14 +11,14 @@ using ContentTypeTextNet.NKit.Manager.Model;
 
 namespace ContentTypeTextNet.NKit.Manager.View
 {
-    public partial class ManagerForm : Form
+    public partial class AcceptForm : Form
     {
-        public ManagerForm()
+        public AcceptForm()
         {
             InitializeComponent();
         }
 
-        #region property
+        #region function
 
         ManagerWorker Worker { get; set; }
 
@@ -32,7 +32,5 @@ namespace ContentTypeTextNet.NKit.Manager.View
         }
 
         #endregion
-
-
     }
 }

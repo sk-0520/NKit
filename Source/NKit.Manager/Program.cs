@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ContentTypeTextNet.NKit.Manager.Model;
 
 namespace ContentTypeTextNet.NKit.Manager
 {
@@ -16,7 +17,32 @@ namespace ContentTypeTextNet.NKit.Manager
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new View.ManagerForm());
+
+            var worker = new ManagerWorker();
+            worker.Initialize();
+            worker.LoadSetting();
+
+            if(worker.CheckNeedAccept()) {
+                using(var acceptForm = new View.AcceptForm()) {
+                    acceptForm.SetWorker(worker);
+
+                    Application.Run(acceptForm);
+
+                    worker.Accepted = acceptForm.DialogResult == DialogResult.OK;
+                }
+                if(!worker.Accepted) {
+                    return;
+                }
+            }
+
+            var managerForm = new View.ManagerForm();
+            managerForm.SetWorker(worker);
+
+            Application.Run(managerForm);
+
+            if(worker.NeedSave) {
+                worker.SaveSetting();
+            }
         }
     }
 }

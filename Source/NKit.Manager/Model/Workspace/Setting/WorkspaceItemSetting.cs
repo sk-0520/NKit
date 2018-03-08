@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
@@ -34,15 +35,20 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting
         #endregion
     }
 
-    public class WorkspaceItemSetting : GuidIdSettingBase, IReadOnlyGuidIdSetting
+    [Serializable, DataContract]
+    public class WorkspaceItemSetting : GuidIdSettingBase, IReadOnlyWorkspaceItemSetting
     {
         #region IReadOnlyWorkspaceItemSetting
 
+        [DataMember]
         public string Name { get; set; }
 
+        [DataMember]
         public string DirectoryPath { get; set; }
 
+        [DataMember]
         public DateTime CreatedTimestamp { get; set; }
+        [DataMember]
         public DateTime UpdatedTimestamp { get; set; }
 
         #endregion

@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace ContentTypeTextNet.NKit.Common
 {
-    [Serializable]
+    [Serializable, DataContract]
     public abstract class SettingBase : ICloneable
     {
         #region ICloneable
@@ -25,16 +26,19 @@ namespace ContentTypeTextNet.NKit.Common
     public interface IReadOnlyGuidIdSetting : IReadOnlyIdSetting<Guid>
     { }
 
+    [Serializable, DataContract]
     public abstract class IdSettingBase<TId> : SettingBase, IReadOnlyIdSetting<TId>
     {
         #region IReadOnlyIdSetting
 
+        [DataMember]
         public TId Id { get; set; }
 
 
         #endregion
     }
 
+    [Serializable, DataContract]
     public abstract class GuidIdSettingBase : IdSettingBase<Guid>, IReadOnlyGuidIdSetting
     {
         public GuidIdSettingBase()
