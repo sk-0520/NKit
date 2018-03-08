@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9CAE0FFA-9E3D-4C49-AF99-2FB1454C8E1B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ContentTypeTextNet.NKit.Boot</RootNamespace>
-    <AssemblyName>NKit.Boot</AssemblyName>
+    <RootNamespace>ContentTypeTextNet.NKit.Manager</RootNamespace>
+    <AssemblyName>NKit</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

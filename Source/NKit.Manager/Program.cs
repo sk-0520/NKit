@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ContentTypeTextNet.NKit.Boot
+namespace ContentTypeTextNet.NKit.Manager
 {
     static class Program
     {

@@ -1,4 +1,4 @@
-namespace ContentTypeTextNet.NKit.Boot
+namespace ContentTypeTextNet.NKit.Manager
 {
     partial class Form1
     {
