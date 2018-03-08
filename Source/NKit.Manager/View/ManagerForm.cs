@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ContentTypeTextNet.NKit.Manager
+namespace ContentTypeTextNet.NKit.Manager.View
 {
-    public partial class Form1 : Form
+    public partial class ManagerForm : Form
     {
-        public Form1()
+        public ManagerForm()
         {
             InitializeComponent();
         }

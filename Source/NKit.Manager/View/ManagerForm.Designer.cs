@@ -1,6 +1,6 @@
-namespace ContentTypeTextNet.NKit.Manager
+namespace ContentTypeTextNet.NKit.Manager.View
 {
-    partial class Form1
+    partial class ManagerForm
     {
         /// <summary>
         /// 必要なデザイナー変数です。

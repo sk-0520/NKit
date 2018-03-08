@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,11 +49,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="..\Common\CommonUtility.cs">
+      <Link>Common\CommonUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\Disposer.cs">
+      <Link>Common\Disposer.cs</Link>
+    </Compile>
+    <Compile Include="Model\Application\ApplicationManager.cs" />
+    <Compile Include="Model\Log\LogManager.cs" />
+    <Compile Include="Model\ManagerBase.cs" />
+    <Compile Include="Model\Workspace\WorkspaceManager.cs" />
+    <Compile Include="View\ManagerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="View\ManagerForm.Designer.cs">
+      <DependentUpon>ManagerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
