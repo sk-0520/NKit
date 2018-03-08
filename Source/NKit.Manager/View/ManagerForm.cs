@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -31,7 +32,10 @@ namespace ContentTypeTextNet.NKit.Manager.View
         public void SetWorker(ManagerWorker worker)
         {
             Worker = worker;
+
             Worker.WorkspaceExited += Worker_WorkspaceExited;
+
+            Worker.StartTaker();
         }
 
         void SetInputControl(string name, string directoryPath)

@@ -42,11 +42,24 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             MainApplication.Execute();
         }
 
-        public void ExecuteNKitApplication(string path, string arguments)
+        public void ExecuteNKitApplication(INKitApplicationTalkWakeupMessage message)
         {
-            var item = new ApplicationItem(path) {
-                Arguments = arguments,
-            };
+            ApplicationItem item = null;
+
+            switch(message.TargetApplication) {
+                case NKitApplicationKind.Main:
+                    throw new ArgumentException();
+
+                case NKitApplicationKind.Rocket:
+                    item = new ApplicationItem(CommonUtility.GetRocketApplication(CommonUtility.GetApplicationDirectory()).FullName) {
+                        Arguments = message.Arguments,
+                    };
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
+
             item.ApplicationItem_Exited += Item_ApplicationItem_Exited;
             lock(this._itemsLocker) {
                 Items.Add(item);
@@ -60,6 +73,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         }
 
         #endregion
+
         private void MainApplication_ApplicationItem_Exited(object sender, EventArgs e)
         {
             ShutdownOthersApplications();

@@ -29,6 +29,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         {
             ApplicationManager = new ApplicationManager();
             ApplicationManager.MainApplicationExited += ApplicationManager_MainApplicationExited;
+
         }
 
 
@@ -36,6 +37,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         ApplicationManager ApplicationManager { get; }
 
+        NKitApplicationTalkerHost NKitApplicationTaskerHost { get; } = new NKitApplicationTalkerHost();
 
         public bool IsFirstExecute { get; private set; }
         public bool Accepted
@@ -311,6 +313,28 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             WorkspaceState = WorkspaceState.Running;
         }
 
+        public void StartTaker()
+        {
+            NKitApplicationTaskerHost.Open();
+            NKitApplicationTaskerHost.TaskWakeupApplication += NKitApplicationTasker_TaskWakeupApplication;
+        }
+
+        #endregion
+
+        #region DisposerBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if(!IsDisposed) {
+                if(disposing) {
+                    NKitApplicationTaskerHost.TaskWakeupApplication -= NKitApplicationTasker_TaskWakeupApplication;
+                    NKitApplicationTaskerHost.Dispose();
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
         #endregion
 
         private void ApplicationManager_MainApplicationExited(object sender, EventArgs e)
@@ -319,6 +343,11 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             if(WorkspaceExited != null) {
                 WorkspaceExited(sender, e);
             }
+        }
+
+        private void NKitApplicationTasker_TaskWakeupApplication(object sender, TaskWakeupApplicationEventArgs e)
+        {
+            ApplicationManager.ExecuteNKitApplication(e.Message);
         }
 
     }

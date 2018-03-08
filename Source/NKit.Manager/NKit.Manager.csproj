@@ -41,6 +41,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -76,6 +77,7 @@
     <Compile Include="Model\ManagerSetting.cs" />
     <Compile Include="Model\ManagerWorker.cs" />
     <Compile Include="Model\AcceptVersion.cs" />
+    <Compile Include="Model\NKitTalkerHost.cs" />
     <Compile Include="Model\Workspace\Setting\WorkspaceItemSetting.cs" />
     <Compile Include="Model\Workspace\Setting\WorkspaceSetting.cs" />
     <Compile Include="Model\Workspace\WorkspaceManager.cs" />
