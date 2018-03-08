@@ -9,6 +9,7 @@ using ContentTypeTextNet.NKit.Common;
 
 namespace ContentTypeTextNet.NKit.Main.Model.NKit
 {
+    //TODO: たぶんこいつはいなくなる
     public class NKitCliApplicationExecutor: CliApplicationExecutor
     {
         public NKitCliApplicationExecutor(Func<DirectoryInfo, FileInfo> applicationFileGetter, string arguments)

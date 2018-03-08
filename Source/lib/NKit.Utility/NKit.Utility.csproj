@@ -97,6 +97,9 @@
     <Compile Include="..\..\common\nkit.common.link\Disposer.cs">
       <Link>Common\Disposer.cs</Link>
     </Compile>
+    <Compile Include="..\..\common\NKit.Common.Link\Talk.cs">
+      <Link>Common\Talk.cs</Link>
+    </Compile>
     <Compile Include="Attribute\PixelKindAttribute.cs" />
     <Compile Include="Compatible\Forms\CompatibleFormWindow.cs" />
     <Compile Include="Compatible\Forms\DrawingUtility.cs" />

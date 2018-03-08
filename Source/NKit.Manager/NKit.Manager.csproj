@@ -61,6 +61,9 @@
     <Compile Include="..\common\NKit.Common.Link\Setting.cs">
       <Link>Common\Setting.cs</Link>
     </Compile>
+    <Compile Include="..\common\NKit.Common.Link\Talk.cs">
+      <Link>Common\Talk.cs</Link>
+    </Compile>
     <Compile Include="Define\WorkspaceState.cs" />
     <Compile Include="Model\Application\ApplicationItem.cs" />
     <Compile Include="Model\Application\ApplicationManager.cs" />
