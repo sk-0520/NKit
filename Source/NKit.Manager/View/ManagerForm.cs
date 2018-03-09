@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ContentTypeTextNet.NKit.Manager.Model;
+using ContentTypeTextNet.NKit.Manager.Model.Log;
 
 namespace ContentTypeTextNet.NKit.Manager.View
 {
@@ -33,6 +34,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             Worker = worker;
             Worker.WorkspaceExited += Worker_WorkspaceExited;
+            Worker.OutputLog += Worker_OutputLog;
         }
 
         void SetInputControl(string name, string directoryPath)
@@ -173,5 +175,10 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 RefreshControls();
             }));
         }
+        private void Worker_OutputLog(object sender, LogEventArgs e)
+        {
+            //TODO: ログ表示
+        }
+
     }
 }

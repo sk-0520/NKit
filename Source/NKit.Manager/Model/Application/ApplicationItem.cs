@@ -8,13 +8,27 @@ using ContentTypeTextNet.NKit.Common;
 
 namespace ContentTypeTextNet.NKit.Manager.Model.Application
 {
+    public struct ApplicationOutput
+    {
+        public ApplicationOutput(bool isError, string line)
+        {
+            IsError = isError;
+            Line = line;
+        }
+
+        #region property
+
+        public string Line { get; }
+        public bool IsError { get; }
+
+        #endregion
+    }
+
     public class ApplicationItem : DisposerBase
     {
         #region event
 
         public event EventHandler<EventArgs> Exited;
-        public event DataReceivedEventHandler OutputDataReceived;
-        public event DataReceivedEventHandler ErrorDataReceived;
 
         #endregion
 
@@ -33,8 +47,14 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         public string Arguments { get; set; }
         public string WorkingDirectoryPath { get; set; }
-        public bool RedirectOutput { get; set; }
+        public bool IsOutputReceive { get; set; }
         public bool CreateWindow { get; set; }
+
+        public bool IsRunning { get; private set; }
+
+        protected List<ApplicationOutput> _outputMessages;
+
+        public IReadOnlyList<ApplicationOutput> OutputMessages => this._outputMessages;
 
         #endregion
 
@@ -46,18 +66,21 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             Process.StartInfo.WorkingDirectory = WorkingDirectoryPath;
 
             Process.StartInfo.CreateNoWindow = !CreateWindow;
-            Process.StartInfo.UseShellExecute = !RedirectOutput;
+            Process.StartInfo.UseShellExecute = !IsOutputReceive;
 
-            Process.StartInfo.RedirectStandardOutput = RedirectOutput;
-            Process.StartInfo.RedirectStandardError = RedirectOutput;
-            if(RedirectOutput) {
+            Process.StartInfo.RedirectStandardOutput = IsOutputReceive;
+            Process.StartInfo.RedirectStandardError = IsOutputReceive;
+            if(IsOutputReceive) {
+                this._outputMessages = new List<ApplicationOutput>();
                 Process.OutputDataReceived += Process_OutputDataReceived;
                 Process.ErrorDataReceived += Process_ErrorDataReceived;
             }
 
             Process.Start();
 
-            if(RedirectOutput) {
+            IsRunning = true;
+
+            if(IsOutputReceive) {
                 Process.BeginErrorReadLine();
                 Process.BeginOutputReadLine();
             }
@@ -71,11 +94,11 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         {
             if(!IsDisposed) {
                 if(disposing) {
-                    if(RedirectOutput) {
-                        Process.OutputDataReceived -= OutputDataReceived;
+                    Process.Exited -= Process_Exited;
+                    if(IsOutputReceive) {
+                        Process.OutputDataReceived -= Process_ErrorDataReceived;
                         Process.ErrorDataReceived -= Process_ErrorDataReceived;
                     }
-                    Process.Exited -= Process_Exited;
 
                     Process.Dispose();
                 }
@@ -84,14 +107,21 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             base.Dispose(disposing);
         }
 
+        protected virtual void ReceiveOutputData(ApplicationOutput output)
+        {
+            this._outputMessages.Add(output);
+
+        }
+
         #endregion
 
         private void Process_Exited(object sender, EventArgs e)
         {
-            if(RedirectOutput) {
-                Process.OutputDataReceived -= OutputDataReceived;
-                Process.ErrorDataReceived -= Process_ErrorDataReceived;
-            }
+            Process.Exited -= Process_Exited;
+            Process.OutputDataReceived -= Process_ErrorDataReceived;
+            Process.ErrorDataReceived -= Process_ErrorDataReceived;
+
+            IsRunning = false;
 
             if(Exited != null) {
                 Exited(this, e);
@@ -100,31 +130,33 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
-            if(OutputDataReceived != null) {
-                OutputDataReceived(this, e);
+            if(e.Data != null) {
+                ReceiveOutputData(new ApplicationOutput(false, e.Data));
             }
         }
 
         private void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
-            if(ErrorDataReceived != null) {
-                ErrorDataReceived(this, e);
+            if(e.Data!= null) {
+                ReceiveOutputData(new ApplicationOutput(true, e.Data));
             }
         }
     }
 
     public class NKitApplicationItem : ApplicationItem
     {
-        public NKitApplicationItem(NKitApplicationKind kind)
+        public NKitApplicationItem(NKitApplicationKind kind, ILogCreator logCreator)
             : base(GetApplicationPath(kind))
         {
             Kind = kind;
 
+            Logger = logCreator.CreateLogger(Kind);
+
             if(kind == NKitApplicationKind.Main) {
-                RedirectOutput = true;
+                IsOutputReceive = true;
                 CreateWindow = true;
             } else {
-                RedirectOutput = true;
+                IsOutputReceive = true;
                 CreateWindow = false;
             }
         }
@@ -132,6 +164,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         #region property
 
         public NKitApplicationKind Kind { get; }
+
+        ILogger Logger { get; }
 
         #endregion
 
@@ -152,17 +186,20 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         }
 
         #endregion
-    }
 
-    /// <summary>
-    /// この子だけ特別扱い。
-    /// </summary>
-    public class NKitMainApplicationItem : NKitApplicationItem
-    {
-        public NKitMainApplicationItem(string workspaceDirectoryPath)
-            : base(NKitApplicationKind.Main)
+        #region ApplicationItem
+
+        protected override void ReceiveOutputData(ApplicationOutput output)
         {
-            Arguments = $"--workspace \"{workspaceDirectoryPath}\" --その他なんか いっぱい";
+            base.ReceiveOutputData(output);
+
+            if(output.IsError) {
+                Logger.Error(output.Line);
+            } else {
+                Logger.Information(output.Line);
+            }
         }
+
+        #endregion
     }
 }

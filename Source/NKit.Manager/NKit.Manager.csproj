@@ -59,6 +59,9 @@
     <Compile Include="..\common\NKit.Common.Link\Disposer.cs">
       <Link>Common\Disposer.cs</Link>
     </Compile>
+    <Compile Include="..\common\NKit.Common.Link\Logging.cs">
+      <Link>Common\Logging.cs</Link>
+    </Compile>
     <Compile Include="..\common\NKit.Common.Link\Setting.cs">
       <Link>Common\Setting.cs</Link>
     </Compile>
@@ -71,6 +74,7 @@
     <Compile Include="Model\Application\Setting\ApplicationSetting.cs" />
     <Compile Include="Model\CommandLine.cs" />
     <Compile Include="Model\DisplayItem.cs" />
+    <Compile Include="Model\Log\Logger.cs" />
     <Compile Include="Model\Log\LogManager.cs" />
     <Compile Include="Model\Log\Setting\LogSetting.cs" />
     <Compile Include="Model\ManagerBase.cs" />

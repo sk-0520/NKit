@@ -13,6 +13,7 @@ using System.Xml.Serialization;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Manager.Define;
 using ContentTypeTextNet.NKit.Manager.Model.Application;
+using ContentTypeTextNet.NKit.Manager.Model.Log;
 using ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting;
 
 namespace ContentTypeTextNet.NKit.Manager.Model
@@ -22,21 +23,29 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         #region event
 
         public event EventHandler<EventArgs> WorkspaceExited;
+        public event EventHandler<LogEventArgs> OutputLog;
 
         #endregion
 
         public ManagerWorker()
         {
-            ApplicationManager = new ApplicationManager();
+            LogManager = new LogManager();
+            LogManager.LogWrite += LogManager_LogWrite;
+
+            ApplicationManager = new ApplicationManager(LogManager);
             ApplicationManager.MainApplicationExited += ApplicationManager_MainApplicationExited;
         }
 
 
         #region property
 
+        LogManager LogManager { get; }
+        ILogger Logger { get; set; }
+
         ApplicationManager ApplicationManager { get; }
 
         NKitApplicationTalkerHost NKitApplicationTalkerHost { get; set; }
+        NKitLoggingTalkerHost NKitLoggingTalkerHost { get; set; }
 
         public bool IsFirstExecute { get; private set; }
         public bool Accepted
@@ -90,6 +99,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         public void Initialize()
         {
+            Logger = LogManager.CreateLogger(NKitApplicationKind.Manager);
+            Logger.Information("Initialize!");
+
             InitializeEnvironmentVariableByCommandLine();
         }
 
@@ -308,8 +320,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         public void LoadSelectedWorkspace()
         {
             NKitApplicationTalkerHost = new NKitApplicationTalkerHost(new Uri("net.pipe://localhost/cttn-nkit"), "app");
-            NKitApplicationTalkerHost.TalkWakeupApplication += NKitApplicationTasker_TalkWakeupApplication;
+            NKitApplicationTalkerHost.ApplicationWakeup += NKitApplicationTasker_ApplicationWakeup;
             NKitApplicationTalkerHost.Open();
+
+            NKitLoggingTalkerHost = new NKitLoggingTalkerHost(new Uri("net.pipe://localhost/cttn-nkit"), "log");
+            NKitLoggingTalkerHost.LoggingWrite += NKitLoggingTalkerHost_LoggingWrite;
+            NKitLoggingTalkerHost.Open();
 
             ApplicationManager.ExecuteMainApplication(SelectedWorkspaceItem);
 
@@ -324,8 +340,14 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         {
             if(!IsDisposed) {
                 if(disposing) {
-                    NKitApplicationTalkerHost.TalkWakeupApplication -= NKitApplicationTasker_TalkWakeupApplication;
+                    NKitApplicationTalkerHost.ApplicationWakeup -= NKitApplicationTasker_ApplicationWakeup;
                     NKitApplicationTalkerHost.Dispose();
+
+                    NKitLoggingTalkerHost.LoggingWrite -= NKitLoggingTalkerHost_LoggingWrite;
+                    NKitLoggingTalkerHost.Dispose();
+
+                    ApplicationManager.MainApplicationExited -= ApplicationManager_MainApplicationExited;
+                    LogManager.LogWrite -= LogManager_LogWrite;
                 }
             }
 
@@ -336,8 +358,11 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         private void ApplicationManager_MainApplicationExited(object sender, EventArgs e)
         {
-            NKitApplicationTalkerHost.TalkWakeupApplication -= NKitApplicationTasker_TalkWakeupApplication;
+            NKitApplicationTalkerHost.ApplicationWakeup -= NKitApplicationTasker_ApplicationWakeup;
             NKitApplicationTalkerHost.Dispose();
+
+            NKitLoggingTalkerHost.LoggingWrite -= NKitLoggingTalkerHost_LoggingWrite;
+            NKitLoggingTalkerHost.Dispose();
 
             WorkspaceState = WorkspaceState.Selecting;
             if(WorkspaceExited != null) {
@@ -345,10 +370,23 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             }
         }
 
-        private void NKitApplicationTasker_TalkWakeupApplication(object sender, TaskWakeupApplicationEventArgs e)
+        private void NKitApplicationTasker_ApplicationWakeup(object sender, TalkApplicationWakeupEventArgs e)
         {
             ApplicationManager.ExecuteNKitApplication(e.SenderApplication, e.TargetApplication, e.Arguments, e.WorkingDirectoryPath);
         }
+
+        private void NKitLoggingTalkerHost_LoggingWrite(object sender, TalkLoggingWriteEventArgs e)
+        {
+            LogManager.WriteTalkLog(e);
+        }
+
+        private void LogManager_LogWrite(object sender, LogEventArgs e)
+        {
+            if(OutputLog != null) {
+                OutputLog(this, e);
+            }
+        }
+
 
     }
 }

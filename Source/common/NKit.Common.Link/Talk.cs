@@ -8,6 +8,7 @@ namespace ContentTypeTextNet.NKit.Common
 {
     public enum NKitApplicationKind
     {
+        Manager,
         Main,
         Rocket,
     }
@@ -30,6 +31,7 @@ namespace ContentTypeTextNet.NKit.Common
         Information,
         Warning,
         Error,
+        Fatal,
     }
 
     public interface INKitLoggingTalker
@@ -37,7 +39,7 @@ namespace ContentTypeTextNet.NKit.Common
         #region function
 
 
-        void Write(NKitApplicationKind senderApplication, NKitLogKind logKind, string message, string detail, int theadId, int callerLineNumber, string callerMemberName, string callerFileName);
+        void Write(NKitApplicationKind senderApplication, NKitLogKind logKind, string message, string detail, int theadId, string callerMemberName, string callerFileName, int callerLineNumber);
 
         #endregion
     }

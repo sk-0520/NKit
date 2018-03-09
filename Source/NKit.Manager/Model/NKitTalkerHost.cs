@@ -10,11 +10,16 @@ using ContentTypeTextNet.NKit.Common;
 
 namespace ContentTypeTextNet.NKit.Manager.Model
 {
-    public abstract class TaskEventArgs : EventArgs
+    public abstract class TalkEventArgs : EventArgs
     {
+        public TalkEventArgs(NKitApplicationKind senderApplication)
+        {
+            SenderApplication = senderApplication;
+        }
+
         #region property
 
-        public NKitApplicationKind SenderApplication { get; set; }
+        public NKitApplicationKind SenderApplication { get; }
 
         #endregion
     }
@@ -94,8 +99,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         #endregion
     }
 
-    public class TaskWakeupApplicationEventArgs : TaskEventArgs
+    public class TalkApplicationWakeupEventArgs : TalkEventArgs
     {
+        public TalkApplicationWakeupEventArgs(NKitApplicationKind senderApplication)
+            : base(senderApplication)
+        { }
+
         #region property
 
         public NKitApplicationKind TargetApplication { get; set; }
@@ -110,12 +119,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model
     {
         #region event
 
-        public event EventHandler<TaskWakeupApplicationEventArgs> TalkWakeupApplication;
+        public event EventHandler<TalkApplicationWakeupEventArgs> ApplicationWakeup;
 
         #endregion
 
         public NKitApplicationTalkerHost(Uri serviceUri, string address)
-            :base(serviceUri, address)
+            : base(serviceUri, address)
         { }
 
         #region function
@@ -123,20 +132,19 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         void OnWakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
         {
-            if(TalkWakeupApplication != null) {
-                var e = new TaskWakeupApplicationEventArgs() {
-                    SenderApplication = sender,
+            if(ApplicationWakeup != null) {
+                var e = new TalkApplicationWakeupEventArgs(sender) {
                     TargetApplication = target,
                     Arguments = arguments,
                     WorkingDirectoryPath = workingDirectoryPath,
                 };
-                TalkWakeupApplication(this, e);
+                ApplicationWakeup(this, e);
             }
         }
 
         #endregion
 
-        #region INKitApplicationTasker
+        #region INKitApplicationTalker
 
         public void WakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
         {
@@ -144,20 +152,68 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         }
 
         #endregion
+    }
 
-        #region NKitTalkerHost
+    public class TalkLoggingWriteEventArgs : TalkEventArgs
+    {
+        public TalkLoggingWriteEventArgs(NKitApplicationKind senderApplication)
+            : base(senderApplication)
+        { }
 
+        #region property
+
+        public NKitLogKind LogKind { get; set; }
+        public string Message { get; set; }
+        public string Detail { get; set; }
+        public int TheadId { get; set; }
+        public string CallerMemberName { get; set; }
+        public string CallerFilePath { get; set; }
+        public int CallerLineNumber { get; set; }
 
         #endregion
-
     }
 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class NKitLoggingTalkerHost: INKitLoggingTalker:  NKitTalkerHostBase<INKitLoggingTalker>, INKitLoggingTalker
+    public class NKitLoggingTalkerHost : NKitTalkerHostBase<INKitLoggingTalker>, INKitLoggingTalker
     {
+        #region event
+
+        public event EventHandler<TalkLoggingWriteEventArgs> LoggingWrite;
+
+        #endregion
+
         public NKitLoggingTalkerHost(Uri serviceUri, string address)
             : base(serviceUri, address)
         { }
+
+        #region function
+
+        private void OnWrite(NKitApplicationKind senderApplication, NKitLogKind logKind, string message, string detail, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
+        {
+            if(LoggingWrite != null) {
+                var e = new TalkLoggingWriteEventArgs(senderApplication) {
+                    LogKind = logKind,
+                    Message = message,
+                    Detail = detail,
+                    TheadId = threadId,
+                    CallerMemberName = callerMemberName,
+                    CallerFilePath = callerFilePath,
+                    CallerLineNumber = callerLineNumber,
+                };
+                LoggingWrite(this, e);
+            }
+        }
+
+        #endregion
+
+        #region INKitLoggingTalker
+
+        public void Write(NKitApplicationKind senderApplication, NKitLogKind logKind, string message, string detail, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
+        {
+            OnWrite(senderApplication, logKind, message, detail, threadId, callerMemberName, callerFilePath, callerLineNumber);
+        }
+
+        #endregion
     }
 
 

@@ -98,6 +98,9 @@
     <Compile Include="..\..\common\nkit.common.link\Disposer.cs">
       <Link>Common\Disposer.cs</Link>
     </Compile>
+    <Compile Include="..\..\common\NKit.Common.Link\Logging.cs">
+      <Link>Common\Logging.cs</Link>
+    </Compile>
     <Compile Include="..\..\common\NKit.Common.Link\Talk.cs">
       <Link>Common\Talk.cs</Link>
     </Compile>

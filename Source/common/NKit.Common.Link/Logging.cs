@@ -6,29 +6,41 @@ using System.Text;
 
 namespace ContentTypeTextNet.NKit.Common
 {
-    public enum Log
+    public interface ILogger
     {
-        Main,
-        Rocket,
+        void Trace(string message, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
+        void Trace(string message, string detail, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
+        void Trace(Exception ex, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
+
+        void Debug(string message, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
+        void Debug(string message, string detail, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
+        void Debug(Exception ex, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
+
+        void Information(string message, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
+        void Information(string message, string detail, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
+        void Information(Exception ex, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
+
+        void Warning(string message, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
+        void Warning(string message, string detail, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
+        void Warning(Exception ex, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
+
+        void Error(string message, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
+        void Error(string message, string detail, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
+        void Error(Exception ex, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
+
+        void Fatal(string message, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
+        void Fatal(string message, string detail, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
+        void Fatal(Exception ex, int threadId = 0, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
     }
 
-    [ServiceContract]
-    public interface INKitApplicationTalker
+    public interface ILogCreator
     {
         #region function
 
-        [OperationContract]
-        void WakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath);
+        ILogger CreateLogger(NKitApplicationKind senderApplication);
+        ILogger CreateLogger(NKitApplicationKind senderApplication, string subject);
 
         #endregion
     }
 
-    public interface INKitLoggingTalker
-    {
-        #region function
-
-        void Write(NKitApplicationKind senderApplication, string message, string detail, int theadId, int callerLineNumber, string callerMemberName, string callerFileName);
-
-        #endregion
-    }
 }
