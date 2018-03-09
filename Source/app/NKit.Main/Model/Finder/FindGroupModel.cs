@@ -31,8 +31,6 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
         #region proeprty
 
-        ILogCreator LogCreator { get; }
-
         public FindGroupSetting FindGroupSetting { get; }
         public IReadOnlyFinderSetting FinderSetting { get; }
         public IReadOnlyFileSetting FileSetting { get; }

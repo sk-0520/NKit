@@ -113,7 +113,7 @@
     <Compile Include="Define\Px.cs" />
     <Compile Include="Model\EnumUtility.cs" />
     <Compile Include="Model\Icon.cs" />
-    <Compile Include="Model\SwitchLog.cs" />
+    <Compile Include="Model\Logging.cs" />
     <Compile Include="Model\NKitTalkerClient.cs" />
     <Compile Include="Model\Range.cs" />
     <Compile Include="Model\RunnableModel.cs" />

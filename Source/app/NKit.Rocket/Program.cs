@@ -13,17 +13,22 @@ namespace NKit.Rocket
 {
     class Program
     {
-        static Program()
-        {
-            InitializeApplicationLibraryDirectory();
-        }
+        #region
 
         static AssemblyResolveHelper AssemblyResolveHelper { get; set; }
+
         static void InitializeApplicationLibraryDirectory()
         {
             var libDir = CommonUtility.GetLibraryDirectoryForApplication();
             AssemblyResolveHelper = new AssemblyResolveHelper(libDir);
         }
+
+        static Program()
+        {
+            InitializeApplicationLibraryDirectory();
+        }
+
+        #endregion
 
         static int Main(string[] args)
         {
