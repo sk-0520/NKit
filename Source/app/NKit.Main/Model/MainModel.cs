@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Main.Model.Capture;
 using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
@@ -29,6 +31,8 @@ namespace ContentTypeTextNet.NKit.Main.Model
         public CaptureManagerModel CaptureManager { get; private set; }
         public SystemManagerModel SystemManager { get; private set; }
 
+        LogSwitcher LogSwitcher { get; set; }
+
         #endregion
 
         #region function
@@ -41,6 +45,9 @@ namespace ContentTypeTextNet.NKit.Main.Model
                 throw new InvalidOperationException();
             }
 #endif
+            LogSwitcher = new LogSwitcher(Common.NKitApplicationKind.Main, new Uri("net.pipe://localhost/cttn-nkit"), "log");
+            Log.Initialize(LogSwitcher);
+
             Setting = new MainSetting();
 
             NKitManager = new NKitManagerModel(Setting);
@@ -48,6 +55,13 @@ namespace ContentTypeTextNet.NKit.Main.Model
             FileManager = new FileManagerModel(Setting);
             CaptureManager = new CaptureManagerModel(Setting);
             SystemManager = new SystemManagerModel(Setting);
+
+            LogSwitcher.Initialize();
+
+            // 構造上この子の Logger はおバカのまんまなので直してやる必要あり
+            ResetLogger(Log.CreateLogger(this));
+
+            Logger.Information("!!START!!");
 
 #if DEBUG
             IsInitialized = true;

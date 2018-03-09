@@ -192,10 +192,10 @@ namespace ContentTypeTextNet.NKit.Main.Model
                             return SearchCore(reader, regex, encodingCheckResult);
                         }
                     } catch(DecoderFallbackException ex) {
-                        Debug.WriteLine(ex);
+                        Log.Out.Warning(ex);
                         // どう頑張ってもエンコーディング判断が不十分なので死ぬ
                         if(checkLength == streamLength || counter.IsLast) {
-                            Debug.WriteLine("unknown encoding");
+                            Log.Out.Warning("unknown encoding");
                             return new TextSearchResult() {
                                 IsMatched = false,
                                 EncodingCheck = encodingCheckResult,

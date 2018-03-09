@@ -62,7 +62,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Microsoft.Office
             try {
                 return Raw.DateCellValue.ToString(format);
             } catch(FormatException ex) {
-                Debug.WriteLine(ex);
+                Logger.Warning(ex);
                 return Raw.DateCellValue.ToString("u");
             }
         }

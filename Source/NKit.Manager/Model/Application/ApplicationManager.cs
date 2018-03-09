@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
+using ContentTypeTextNet.NKit.Manager.Model.Log;
 using ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting;
 
 namespace ContentTypeTextNet.NKit.Manager.Model.Application
@@ -19,17 +20,17 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         #endregion
 
-        public ApplicationManager(ILogCreator logCreator)
+        public ApplicationManager(IApplicationLogCreator logCreator)
         {
             LogCreator = logCreator;
-            Logger = LogCreator.CreateLogger(NKitApplicationKind.Manager, "AP");
+            Logger = LogCreator.CreateLogger("AP");
         }
 
         #region property
 
         NKitApplicationItem MainApplication { get; set; }
 
-        ILogCreator LogCreator { get; }
+        IApplicationLogCreator LogCreator { get; }
         ILogger Logger { get; }
 
         object _itemsLocker = new object();

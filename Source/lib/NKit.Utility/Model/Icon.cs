@@ -92,10 +92,10 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                     return result;
                 }
             } catch(COMException ex) {
-                Debug.WriteLine(ex);
+                Log.Out.Warning(ex);
                 return null;
             } catch(ArgumentException ex) {
-                Debug.WriteLine(ex);
+                Log.Out.Error(ex);
                 return null;
             }
         }
@@ -242,7 +242,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                         return thumbnailImage;
                     }
                 } catch(Exception ex) {
-                    Debug.WriteLine(ex);
+                    Log.Out.Warning(ex);
                 }
             }
 
@@ -289,7 +289,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                         return image;
                     }
                 } catch(Exception ex) {
-                    Debug.WriteLine(ex);
+                    Log.Out.Warning(ex);
                 }
             }
 
@@ -326,7 +326,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                     }
                 }
             } catch(InvalidCastException ex) {
-                Debug.WriteLine(ex);
+                Log.Out.Warning(ex);
             }
 
             return null;

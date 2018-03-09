@@ -66,7 +66,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                 ServiceHost.Description.Behaviors.Add(serviceMetadata);
             }
 
-            ServiceHost.AddServiceEndpoint(ServiceMetadataBehavior.MexContractName, mexBinding, "mex");
+            ServiceHost.AddServiceEndpoint(ServiceMetadataBehavior.MexContractName, mexBinding, Address + "/" + "mex");
             ServiceHost.AddServiceEndpoint(typeof(TChannel), processLinkBinding, Address);
 
             ServiceHost.Open();
@@ -162,7 +162,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         #region property
 
+        public DateTime Timestamp { get; set; }
+
         public NKitLogKind LogKind { get; set; }
+        public string Subject { get; set; }
         public string Message { get; set; }
         public string Detail { get; set; }
         public int TheadId { get; set; }
@@ -173,7 +176,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         #endregion
     }
 
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode =ConcurrencyMode.Multiple)]
     public class NKitLoggingTalkerHost : NKitTalkerHostBase<INKitLoggingTalker>, INKitLoggingTalker
     {
         #region event
@@ -188,11 +191,13 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         #region function
 
-        private void OnWrite(NKitApplicationKind senderApplication, NKitLogKind logKind, string message, string detail, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
+        private void OnWrite(DateTime timestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
             if(LoggingWrite != null) {
                 var e = new TalkLoggingWriteEventArgs(senderApplication) {
+                    Timestamp = timestamp,
                     LogKind = logKind,
+                    Subject = subject,
                     Message = message,
                     Detail = detail,
                     TheadId = threadId,
@@ -208,9 +213,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         #region INKitLoggingTalker
 
-        public void Write(NKitApplicationKind senderApplication, NKitLogKind logKind, string message, string detail, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
+        public void Write(DateTime timestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
-            OnWrite(senderApplication, logKind, message, detail, threadId, callerMemberName, callerFilePath, callerLineNumber);
+            OnWrite(timestamp, senderApplication, logKind, subject, message, detail, threadId, callerMemberName, callerFilePath, callerLineNumber);
         }
 
         #endregion

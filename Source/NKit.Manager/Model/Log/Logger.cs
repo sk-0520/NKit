@@ -49,84 +49,84 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
 
         #region ILogger
 
-        public void Trace(string message, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void Trace(string message, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            MessageWriter(SenderApplication, NKitLogKind.Trace, Subject, message, threadId, callerMemberName, callerFilePath, callerLineNumber);
+            MessageWriter(SenderApplication, NKitLogKind.Trace, Subject, message, callerMemberName, callerFilePath, callerLineNumber);
         }
-        public void Trace(string message, string detail, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void Trace(string message, string detail, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            DetailWriter(SenderApplication, NKitLogKind.Trace, Subject, message, detail, threadId, callerMemberName, callerFilePath, callerLineNumber);
+            DetailWriter(SenderApplication, NKitLogKind.Trace, Subject, message, detail, callerMemberName, callerFilePath, callerLineNumber);
         }
-        public void Trace(Exception ex, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void Trace(Exception ex, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            ExceptionWriter(SenderApplication, NKitLogKind.Trace, Subject, ex, threadId, callerMemberName, callerFilePath, callerLineNumber);
-        }
-
-        public void Debug(string message, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
-        {
-            MessageWriter(SenderApplication, NKitLogKind.Debug, Subject, message, threadId, callerMemberName, callerFilePath, callerLineNumber);
-        }
-        public void Debug(string message, string detail, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
-        {
-            DetailWriter(SenderApplication, NKitLogKind.Debug, Subject, message, detail, threadId, callerMemberName, callerFilePath, callerLineNumber);
-        }
-        public void Debug(Exception ex, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
-        {
-            ExceptionWriter(SenderApplication, NKitLogKind.Debug, Subject, ex, threadId, callerMemberName, callerFilePath, callerLineNumber);
+            ExceptionWriter(SenderApplication, NKitLogKind.Trace, Subject, ex, callerMemberName, callerFilePath, callerLineNumber);
         }
 
-        public void Information(string message, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void Debug(string message, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            MessageWriter(SenderApplication, NKitLogKind.Information, Subject, message, threadId, callerMemberName, callerFilePath, callerLineNumber);
+            MessageWriter(SenderApplication, NKitLogKind.Debug, Subject, message, callerMemberName, callerFilePath, callerLineNumber);
         }
-        public void Information(string message, string detail, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void Debug(string message, string detail, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            DetailWriter(SenderApplication, NKitLogKind.Information, Subject, message, detail, threadId, callerMemberName, callerFilePath, callerLineNumber);
+            DetailWriter(SenderApplication, NKitLogKind.Debug, Subject, message, detail, callerMemberName, callerFilePath, callerLineNumber);
         }
-        public void Information(Exception ex, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void Debug(Exception ex, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            ExceptionWriter(SenderApplication, NKitLogKind.Information, Subject, ex, threadId, callerMemberName, callerFilePath, callerLineNumber);
-        }
-
-        public void Warning(string message, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
-        {
-            MessageWriter(SenderApplication, NKitLogKind.Warning, Subject, message, threadId, callerMemberName, callerFilePath, callerLineNumber);
-        }
-        public void Warning(string message, string detail, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
-        {
-            DetailWriter(SenderApplication, NKitLogKind.Warning, Subject, message, detail, threadId, callerMemberName, callerFilePath, callerLineNumber);
-        }
-        public void Warning(Exception ex, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
-        {
-            ExceptionWriter(SenderApplication, NKitLogKind.Warning, Subject, ex, threadId, callerMemberName, callerFilePath, callerLineNumber);
+            ExceptionWriter(SenderApplication, NKitLogKind.Debug, Subject, ex, callerMemberName, callerFilePath, callerLineNumber);
         }
 
-        public void Error(string message, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void Information(string message, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            MessageWriter(SenderApplication, NKitLogKind.Error, Subject, message, threadId, callerMemberName, callerFilePath, callerLineNumber);
+            MessageWriter(SenderApplication, NKitLogKind.Information, Subject, message, callerMemberName, callerFilePath, callerLineNumber);
         }
-        public void Error(string message, string detail, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void Information(string message, string detail, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            DetailWriter(SenderApplication, NKitLogKind.Error, Subject, message, detail, threadId, callerMemberName, callerFilePath, callerLineNumber);
+            DetailWriter(SenderApplication, NKitLogKind.Information, Subject, message, detail, callerMemberName, callerFilePath, callerLineNumber);
+        }
+        public void Information(Exception ex, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        {
+            ExceptionWriter(SenderApplication, NKitLogKind.Information, Subject, ex, callerMemberName, callerFilePath, callerLineNumber);
         }
 
-        public void Error(Exception ex, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void Warning(string message, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            ExceptionWriter(SenderApplication, NKitLogKind.Error, Subject, ex, threadId, callerMemberName, callerFilePath, callerLineNumber);
+            MessageWriter(SenderApplication, NKitLogKind.Warning, Subject, message, callerMemberName, callerFilePath, callerLineNumber);
+        }
+        public void Warning(string message, string detail, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        {
+            DetailWriter(SenderApplication, NKitLogKind.Warning, Subject, message, detail, callerMemberName, callerFilePath, callerLineNumber);
+        }
+        public void Warning(Exception ex, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        {
+            ExceptionWriter(SenderApplication, NKitLogKind.Warning, Subject, ex, callerMemberName, callerFilePath, callerLineNumber);
+        }
+
+        public void Error(string message, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        {
+            MessageWriter(SenderApplication, NKitLogKind.Error, Subject, message, callerMemberName, callerFilePath, callerLineNumber);
+        }
+        public void Error(string message, string detail, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        {
+            DetailWriter(SenderApplication, NKitLogKind.Error, Subject, message, detail, callerMemberName, callerFilePath, callerLineNumber);
+        }
+
+        public void Error(Exception ex, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        {
+            ExceptionWriter(SenderApplication, NKitLogKind.Error, Subject, ex, callerMemberName, callerFilePath, callerLineNumber);
         }
 
 
-        public void Fatal(string message, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void Fatal(string message, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            MessageWriter(SenderApplication, NKitLogKind.Fatal, Subject, message, threadId, callerMemberName, callerFilePath, callerLineNumber);
+            MessageWriter(SenderApplication, NKitLogKind.Fatal, Subject, message, callerMemberName, callerFilePath, callerLineNumber);
         }
-        public void Fatal(string message, string detail, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void Fatal(string message, string detail, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            DetailWriter(SenderApplication, NKitLogKind.Fatal, Subject, message, detail, threadId, callerMemberName, callerFilePath, callerLineNumber);
+            DetailWriter(SenderApplication, NKitLogKind.Fatal, Subject, message, detail, callerMemberName, callerFilePath, callerLineNumber);
         }
-        public void Fatal(Exception ex, int threadId = 0, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void Fatal(Exception ex, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            ExceptionWriter(SenderApplication, NKitLogKind.Fatal, Subject, ex, threadId, callerMemberName, callerFilePath, callerLineNumber);
+            ExceptionWriter(SenderApplication, NKitLogKind.Fatal, Subject, ex, callerMemberName, callerFilePath, callerLineNumber);
         }
 
         #endregion

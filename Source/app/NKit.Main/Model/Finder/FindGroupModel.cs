@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.NKit.Setting.Define;
@@ -29,6 +30,8 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         }
 
         #region proeprty
+
+        ILogCreator LogCreator { get; }
 
         public FindGroupSetting FindGroupSetting { get; }
         public IReadOnlyFinderSetting FinderSetting { get; }
@@ -155,7 +158,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             try {
                 searcher = new FileContentSearcher(file);
             } catch(IOException ex) {
-                Debug.WriteLine(ex);
+                Logger.Warning(ex);
                 // ファイルアクセスできないとかそんなん。諦めよう
                 return FileContentSearchResult.NotFound;
             }
@@ -169,7 +172,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                     try {
                         result.Text = searcher.SearchText(CachedFileContentPattern);
                     } catch(Exception ex) {
-                        Debug.WriteLine(ex);
+                        Logger.Warning(ex);
                     }
                 }
                 if(CurrentFindGroupSetting.MicrosoftOfficeContent.IsEnabled && CachedFileNameKindPatterns[FileNameKind.MicrosoftOffice].IsMatch(file.Name)) {
@@ -180,7 +183,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
                         result.MicrosoftOffice = searcher.SearchMicrosoftOffice(CachedFileContentPattern, parameter);
                     } catch(Exception ex) {
-                        Debug.WriteLine(ex);
+                        Logger.Warning(ex);
                     }
                 }
                 if(CurrentFindGroupSetting.XmlHtmlContent.IsEnabled && CachedFileNameKindPatterns[FileNameKind.XmlHtml].IsMatch(file.Name)) {
@@ -188,7 +191,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                         // XMLとか検索した記憶あんまねぇなぁ
                         result.XmlHtml = searcher.SearchXmlHtml(CachedFileContentPattern, CurrentFindGroupSetting.XmlHtmlContent);
                     } catch(Exception ex) {
-                        Debug.WriteLine(ex);
+                        Logger.Warning(ex);
                     }
                 }
             }
@@ -218,7 +221,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                     try {
                         dir.EnumerateFileSystemInfos("*", SearchOption.TopDirectoryOnly);
                     } catch(Exception ex) {
-                        Debug.WriteLine(ex);
+                        Logger.Warning(ex);
                         continue;
                     }
 
@@ -267,7 +270,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             try {
                 CachedFileNamePattern = patternCreator.CreateRegex(FindGroupSetting.FileNameSearchPatternKind, FindGroupSetting.FileNameSearchPattern, !FindGroupSetting.FileNameCase);
             } catch(ArgumentException ex) {
-                Debug.WriteLine(ex);
+                Logger.Error(ex);
                 return GetDefaultPreparaValueAsync(false);
             }
 
@@ -290,7 +293,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                     ;
 
                 } catch(ArgumentException ex) {
-                    Debug.WriteLine(ex);
+                    Logger.Error(ex);
                     return GetDefaultPreparaValueAsync(false);
                 }
             }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Utility.Model;
 using ContentTypeTextNet.NKit.NKit.Setting;
+using ContentTypeTextNet.NKit.Common;
 
 namespace ContentTypeTextNet.NKit.Main.Model
 {

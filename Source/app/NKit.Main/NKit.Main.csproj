@@ -170,7 +170,6 @@
     <Compile Include="Define\FileNameKind.cs" />
     <Compile Include="Define\HashType.cs" />
     <Compile Include="Define\MicrosoftOfficeFileType.cs" />
-    <Compile Include="Global.cs" />
     <Compile Include="Model\ApplicationExecutor.cs" />
     <Compile Include="Model\NKit\NKitManagerModel.cs" />
     <Compile Include="Model\Capture\CaptureManagerModel.cs" />

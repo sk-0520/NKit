@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
+using ContentTypeTextNet.NKit.Manager.Model.Log;
 
 namespace ContentTypeTextNet.NKit.Manager.Model.Application
 {
@@ -145,7 +146,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
     public class NKitApplicationItem : ApplicationItem
     {
-        public NKitApplicationItem(NKitApplicationKind kind, ILogCreator logCreator)
+        public NKitApplicationItem(NKitApplicationKind kind, IApplicationLogCreator logCreator)
             : base(GetApplicationPath(kind))
         {
             Kind = kind;

@@ -11,6 +11,7 @@ using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
 using ContentTypeTextNet.NKit.Main.Model.Microsoft.Office;
 using ContentTypeTextNet.NKit.NKit.Setting.Finder;
+using ContentTypeTextNet.NKit.Utility.Model;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
@@ -289,7 +290,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
                         // NPOIからぬるり来るけど事前に確かめる方法がない(と思う)
                         shapeText = textShape.String.String;
                     } catch(NullReferenceException ex) {
-                        Debug.WriteLine(ex);
+                        Log.Out.Debug(ex);
                         continue;
                     }
 
@@ -575,7 +576,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
         {
             switch(element.ElementType) {
                 case BodyElementType.CONTENTCONTROL:
-                    Debug.WriteLine(element.ElementType);
+                    Log.Out.Information($"{element.ElementType}");
                     goto default;
 
                 case BodyElementType.PARAGRAPH:

@@ -19,7 +19,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             try {
                 Clipboard.SetText(text);
             } catch(Exception ex) {
-                Debug.WriteLine(ex);
+                Log.Out.Warning(ex);
             }
         }
 
@@ -36,7 +36,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
                 Clipboard.SetDataObject(data);
             } catch(Exception ex) {
-                Debug.WriteLine(ex);
+                Log.Out.Warning(ex);
             }
         }
 

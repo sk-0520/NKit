@@ -12,7 +12,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace
         public WorkspaceManager(ILogCreator logCreator)
         {
             LogCreator = logCreator;
-            Logger = LogCreator.CreateLogger(NKitApplicationKind.Manager, "WS");
+            Logger = LogCreator.CreateLogger("WS");
         }
 
         #region property

@@ -4,14 +4,25 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 
 namespace ContentTypeTextNet.NKit.Manager.Model.Log
 {
-    public delegate void WriteDetailDelegate(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber);
-    public delegate void WriteMessageDelegate(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber);
-    public delegate void WriteExceptionDelegate(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, Exception ex, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber);
+    public delegate void WriteDetailDelegate(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, string callerMemberName, string callerFilePath, int callerLineNumber);
+    public delegate void WriteMessageDelegate(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string callerMemberName, string callerFilePath, int callerLineNumber);
+    public delegate void WriteExceptionDelegate(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, Exception ex, string callerMemberName, string callerFilePath, int callerLineNumber);
+
+    public interface IApplicationLogCreator : ILogCreator
+    {
+        #region function
+
+        ILogger CreateLogger(NKitApplicationKind senderApplication);
+        ILogger CreateLogger(NKitApplicationKind senderApplication, string subject);
+
+        #endregion
+    }
 
 
     public class LogEventArgs : EventArgs
@@ -41,7 +52,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
         #endregion
     }
 
-    public class LogManager : ManagerBase, ILogCreator
+    public class LogManager : ManagerBase, IApplicationLogCreator
     {
         #region define
 
@@ -94,10 +105,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
             }
         }
 
-        void Write(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
+        void Write(DateTime timestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
-            var timestamp = DateTime.Now;
-
             var writeValue = $"{timestamp} {senderApplication} {logKind} {subject} {message} {detail}";
             foreach(var data in Writers) {
                 data.Writer.WriteLine(writeValue);
@@ -106,24 +115,24 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
             OnLogWrite(writeValue, timestamp, senderApplication, logKind, subject, message, detail, threadId, callerFilePath, callerFilePath, callerLineNumber);
         }
 
-        void WriteDetail(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
+        void WriteDetail(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
-            Write(senderApplication, logKind, subject, message, detail, threadId, callerFilePath, callerFilePath, callerLineNumber);
+            Write(DateTime.Now, senderApplication, logKind, subject, message, detail, Thread.CurrentThread.ManagedThreadId, callerFilePath, callerFilePath, callerLineNumber);
         }
 
-        void WriteMessage(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
+        void WriteMessage(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
-            Write(senderApplication, logKind, subject, message, null, threadId, callerFilePath, callerFilePath, callerLineNumber);
+            Write(DateTime.Now, senderApplication, logKind, subject, message, null, Thread.CurrentThread.ManagedThreadId, callerFilePath, callerFilePath, callerLineNumber);
         }
 
-        void WriteException(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, Exception ex, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
+        void WriteException(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, Exception ex, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
-            Write(senderApplication, logKind, subject, ex.Message, ex.ToString(), threadId, callerFilePath, callerFilePath, callerLineNumber);
+            Write(DateTime.Now, senderApplication, logKind, subject, ex.Message, ex.ToString(), Thread.CurrentThread.ManagedThreadId, callerFilePath, callerFilePath, callerLineNumber);
         }
 
         public void WriteTalkLog(TalkLoggingWriteEventArgs e)
         {
-            Write(e.SenderApplication, e.LogKind, "Talk", e.Message, e.Detail, e.TheadId, e.CallerMemberName, e.CallerFilePath, e.CallerLineNumber);
+            Write(e.Timestamp, e.SenderApplication, e.LogKind, e.Subject, e.Message, e.Detail, e.TheadId, e.CallerMemberName, e.CallerFilePath, e.CallerLineNumber);
         }
 
         /// <summary>
@@ -144,7 +153,17 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
 
         #endregion
 
-        #region ILogCreator
+        #region IApplicationLogCreator
+
+        public ILogger CreateLogger()
+        {
+            return CreateLogger(null);
+        }
+
+        public ILogger CreateLogger(string subject)
+        {
+            return CreateLogger(NKitApplicationKind.Manager, subject);
+        }
 
         public ILogger CreateLogger(NKitApplicationKind senderApplication)
         {
@@ -153,9 +172,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
 
         public ILogger CreateLogger(NKitApplicationKind senderApplication, string subject)
         {
-            var logger = new Logger(senderApplication, subject, WriteMessage, WriteDetail, WriteException);
-
-            return logger;
+            return new Logger(senderApplication, subject, WriteMessage, WriteDetail, WriteException);
         }
 
         #endregion

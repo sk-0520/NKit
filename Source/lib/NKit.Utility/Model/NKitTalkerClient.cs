@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 
@@ -22,14 +23,23 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         #region property
 
-        public bool IsOpend { get; private set; }
-        NKitApplicationKind SenderApplication { get; }
+        public bool IsOpend
+        {
+            get
+            {
+                if(Channel == null) {
+                    return false;
+                }
+                return Channel.State == CommunicationState.Opened;
+            }
+        }
+        protected NKitApplicationKind SenderApplication { get; }
 
         public Uri ServiceUri { get; }
         public string Address { get; }
 
-        ChannelFactory<INKitApplicationTalker> Channel { get; set; }
-        protected INKitApplicationTalker Host { get; private set; }
+        ChannelFactory<TChannel> Channel { get; set; }
+        protected TChannel Host { get; private set; }
 
         #endregion
 
@@ -50,9 +60,8 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                     throw new NotImplementedException();
             }
 
-            Channel = new ChannelFactory<INKitApplicationTalker>(binding, endpointAddr);
+            Channel = new ChannelFactory<TChannel>(binding, endpointAddr);
             Host = Channel.CreateChannel();
-            IsOpend = true;
         }
 
         public void Close()
@@ -60,10 +69,10 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             try {
                 Channel.Close();
             } catch(Exception ex) {
-                Debug.WriteLine(ex);
+                // ログ出力通そうと思ったけどなんかクッソおかしなことになりそうだったのでやめた
+                Console.Error.WriteLine(ex);
                 Channel.Abort();
             }
-            IsOpend = false;
         }
 
         #endregion
@@ -94,8 +103,6 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         #region property
 
-        NKitApplicationKind SenderApplication { get; }
-
         #endregion
 
         #region function
@@ -104,6 +111,26 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         {
             Host.WakeupApplication(SenderApplication, targetApplication, arguments, workingDirectoryPath);
         }
+
+        #endregion
+    }
+
+    public class NKitLoggingtalkerClient : NKitTalkerClientBase<INKitLoggingTalker>
+    {
+        public NKitLoggingtalkerClient(NKitApplicationKind senderApplication, Uri serviceUri, string address)
+            : base(senderApplication, serviceUri, address)
+        { }
+
+        #region property
+
+        public void Write(NKitLogKind logKind, string subject, string message, string detail, string callerMemberName, string callerFilePath, int callerLineNumber)
+        {
+            var timestamp = DateTime.Now;
+            var threadid = Thread.CurrentThread.ManagedThreadId;
+
+            Host.Write(timestamp, SenderApplication, logKind, subject, message, detail, threadid, callerMemberName, callerFilePath, callerLineNumber);
+        }
+
 
         #endregion
     }

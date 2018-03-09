@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
 using ContentTypeTextNet.NKit.Main.Model.Microsoft.Office;
@@ -39,6 +40,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
         public FileContentSearcher(FileInfo file)
         {
             File = file;
+
             FileStream = file.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
             Debug.Assert(FileStream.CanSeek);
         }
@@ -46,6 +48,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
         #region property
 
         FileInfo File { get; }
+        ILogCreator LogCreator { get; }
 
         Stream FileStream { get; }
 

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Utility.Define;
 using Prism.Mvvm;
 
@@ -15,10 +16,34 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 {
     public abstract class ModelBase : BindableBase, IDisposable
     {
+        public ModelBase()
+        {
+            Logger = Log.CreateLogger(GetType().Name);
+        }
+
         ~ModelBase()
         {
             Dispose(false);
         }
+
+        #region property
+
+        protected ILogger Logger { get; private set; }
+
+        #endregion
+
+        #region property
+
+        /// <summary>
+        /// あんまり作りたかなかったけどしゃあない。
+        /// </summary>
+        /// <param name="logger"></param>
+        protected void ResetLogger(ILogger logger)
+        {
+            Logger = logger;
+        }
+
+        #endregion
 
         #region IDisposable
 
@@ -59,6 +84,10 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             }
 
             if(disposing) {
+                if(Logger is IDisposable disposer) {
+                    disposer.Dispose();
+                }
+
                 GC.SuppressFinalize(this);
             }
 

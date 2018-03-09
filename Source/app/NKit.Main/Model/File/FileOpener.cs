@@ -22,7 +22,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             try {
                 return Process.Start(path);
             } catch(Exception ex) {
-                Debug.WriteLine(ex);
+                Log.Out.Error(ex);
             }
 
             return null;
@@ -43,7 +43,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             try {
                 return Process.Start("explorer", $"/e, /select,{fileSystemInfo.FullName}");
             } catch(Exception ex) {
-                Debug.WriteLine(ex);
+                Log.Out.Warning(ex);
             }
 
             return null;
@@ -128,7 +128,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             try {
                 return Process.Start(path, arguments);
             } catch(Exception ex) {
-                Debug.WriteLine(ex);
+                Log.Out.Error(ex);
             }
 
             return null;

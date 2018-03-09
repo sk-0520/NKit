@@ -38,12 +38,13 @@ namespace ContentTypeTextNet.NKit.Common
         Fatal,
     }
 
+    [ServiceContract]
     public interface INKitLoggingTalker
     {
         #region function
 
-
-        void Write(NKitApplicationKind senderApplication, NKitLogKind logKind, string message, string detail, int theadId, string callerMemberName, string callerFileName, int callerLineNumber);
+        [OperationContract]
+        void Write(DateTime timestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int theadId, string callerMemberName, string callerFileName, int callerLineNumber);
 
         #endregion
     }

@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Rocket.Model;
+using ContentTypeTextNet.NKit.Utility.Model;
 
 namespace NKit.Rocket
 {
@@ -26,22 +27,28 @@ namespace NKit.Rocket
 
         static int Main(string[] args)
         {
-            Trace.WriteLine("!!START!!");
+            using(var logSwitcher = new LogSwitcher(NKitApplicationKind.Rocket, new Uri("net.pipe://localhost/cttn-nkit"), "log")) {
+                logSwitcher.Initialize();
+                Log.Initialize(logSwitcher);
+                var logger = Log.CreateLogger();
 
-            var rocket = new RocketModel(args);
-            var result =  rocket.Run(CancellationToken.None);
+                logger.Information("!!START!!");
+
+                var rocket = new RocketModel(args);
+                var result = rocket.Run(CancellationToken.None);
 
 
-            Trace.WriteLine($"{rocket.StartTimestamp}");
-            Trace.WriteLine($"{rocket.PreparationSpan}");
-            Trace.WriteLine($"{rocket.EndTimestamp}");
-            Trace.WriteLine($"{rocket.EndTimestamp - rocket.StartTimestamp}");
-            Trace.WriteLine($"{rocket.RunState}");
-            Trace.WriteLine($"{result}");
+                logger.Information($"{rocket.StartTimestamp}");
+                logger.Information($"{rocket.PreparationSpan}");
+                logger.Information($"{rocket.EndTimestamp}");
+                logger.Information($"{rocket.EndTimestamp - rocket.StartTimestamp}");
+                logger.Information($"{rocket.RunState}");
+                logger.Information($"{result}");
 
-            Trace.WriteLine("!!END!!");
+                logger.Information("!!END!!");
 
-            return result;
+                return result;
+            }
         }
     }
 }

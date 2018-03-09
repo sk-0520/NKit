@@ -165,7 +165,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                 RunState = RunState.Cancel;
                 throw;
             } catch(Exception ex) {
-                Debug.WriteLine(ex);
+                Logger.Error(ex);
                 RunState = RunState.Error;
                 throw;
             } finally {
@@ -200,7 +200,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                 RunState = RunState.Cancel;
                 throw;
             } catch(Exception ex) {
-                Debug.WriteLine(ex);
+                Logger.Error(ex);
                 RunState = RunState.Error;
                 throw;
             } finally {
