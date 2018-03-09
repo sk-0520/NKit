@@ -20,6 +20,7 @@ namespace ContentTypeTextNet.NKit.Manager
 
             var worker = new ManagerWorker();
             worker.Initialize();
+            var logger = worker.CreateLogger("ENTRY");
             worker.LoadSetting();
 
             if(worker.CheckNeedAccept()) {
@@ -44,6 +45,8 @@ namespace ContentTypeTextNet.NKit.Manager
             if(worker.NeedSave) {
                 worker.SaveSetting();
             }
+
+            worker.Dispose();
         }
     }
 }

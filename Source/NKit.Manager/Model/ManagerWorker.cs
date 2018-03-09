@@ -66,11 +66,33 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         #region function
 
-        void InitializeEnvironmentVariableByCommandLine()
+        public ILogger CreateLogger(string subject)
         {
-            // コマンドラインから環境変数設定
-            var commandLine = new CommandLine();
+            return LogManager.CreateLogger(NKitApplicationKind.Manager, subject);
+        }
 
+        void InitializeLogger(CommandLine commandLine)
+        {
+            Logger = LogManager.CreateLogger(NKitApplicationKind.Manager, "WORKER");
+
+            // こいつは環境変数を展開しない。というか InitializeEnvironmentVariable と合わなくなるんでしたくない
+            if(commandLine.HasOption("log-dir")) {
+                var path = commandLine.GetValue("log-dir");
+                if(!string.IsNullOrWhiteSpace(path)) {
+                    var dir = Directory.CreateDirectory(path);
+                    var filePath = Path.Combine(dir.FullName, DateTime.Now.ToString("yyyy-MM-dd_hhmmss") + ".log");
+                    var writer = File.CreateText(filePath);
+                    writer.AutoFlush = true;
+                    LogManager.AttachOutputWriter(writer, false);
+                }
+            }
+
+
+            Logger.Information("Initialize!");
+        }
+
+        void InitializeEnvironmentVariable(CommandLine commandLine)
+        {
             void Set(string commandlineKey, string environmentVariableKey)
             {
                 if(commandLine.HasOption(commandlineKey)) {
@@ -99,10 +121,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         public void Initialize()
         {
-            Logger = LogManager.CreateLogger(NKitApplicationKind.Manager);
-            Logger.Information("Initialize!");
+            var commandLine = new CommandLine();
 
-            InitializeEnvironmentVariableByCommandLine();
+            InitializeLogger(commandLine);
+            InitializeEnvironmentVariable(commandLine);
         }
 
         public void LoadSetting()
@@ -340,14 +362,20 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         {
             if(!IsDisposed) {
                 if(disposing) {
-                    NKitApplicationTalkerHost.ApplicationWakeup -= NKitApplicationTasker_ApplicationWakeup;
-                    NKitApplicationTalkerHost.Dispose();
-
-                    NKitLoggingTalkerHost.LoggingWrite -= NKitLoggingTalkerHost_LoggingWrite;
-                    NKitLoggingTalkerHost.Dispose();
+                    if(NKitApplicationTalkerHost != null) {
+                        NKitApplicationTalkerHost.ApplicationWakeup -= NKitApplicationTasker_ApplicationWakeup;
+                        NKitApplicationTalkerHost.Dispose();
+                    }
+                    if(NKitLoggingTalkerHost != null) {
+                        NKitLoggingTalkerHost.LoggingWrite -= NKitLoggingTalkerHost_LoggingWrite;
+                        NKitLoggingTalkerHost.Dispose();
+                    }
 
                     ApplicationManager.MainApplicationExited -= ApplicationManager_MainApplicationExited;
+                    ApplicationManager.Dispose();
+
                     LogManager.LogWrite -= LogManager_LogWrite;
+                    LogManager.Dispose();
                 }
             }
 

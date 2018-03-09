@@ -22,6 +22,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         public ApplicationManager(ILogCreator logCreator)
         {
             LogCreator = logCreator;
+            Logger = LogCreator.CreateLogger(NKitApplicationKind.Manager, "AP");
         }
 
         #region property
@@ -29,6 +30,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         NKitApplicationItem MainApplication { get; set; }
 
         ILogCreator LogCreator { get; }
+        ILogger Logger { get; }
 
         object _itemsLocker = new object();
         IList<ApplicationItem> Items { get; } = new List<ApplicationItem>();

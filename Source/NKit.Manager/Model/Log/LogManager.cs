@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
         #region property
 
         /// <summary>
+        /// 実際にログ出力として使用されたデータ。
+        /// </summary>
+        public string WriteValue { get; set; }
+        /// <summary>
         /// ローカル。
         /// </summary>
         public DateTime Timestamp { get; set; }
@@ -32,11 +37,30 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
         public string CallerFilePath { get; set; }
         public int CallerLineNumber { get; set; }
 
+
         #endregion
     }
 
     public class LogManager : ManagerBase, ILogCreator
     {
+        #region define
+
+        struct WriterData
+        {
+            public WriterData(TextWriter writer, bool leaveOpen)
+            {
+                Writer = writer;
+                LeaveOpen = leaveOpen;
+            }
+
+            #region property
+            public TextWriter Writer { get; }
+            public bool LeaveOpen { get; }
+            #endregion
+        }
+
+        #endregion
+
         #region event
 
         public event EventHandler<LogEventArgs> LogWrite;
@@ -44,14 +68,19 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
         #endregion
 
         #region property
+
+        HashSet<WriterData> Writers { get; } = new HashSet<WriterData>();
+
         #endregion
 
         #region function
 
-        void OnLogWrite(DateTime timestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
+        void OnLogWrite(string writeValue, DateTime timestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
             if(LogWrite != null) {
                 var e = new LogEventArgs() {
+                    WriteValue = writeValue,
+                    Timestamp = timestamp,
                     SenderApplication = senderApplication,
                     LogKind = logKind,
                     Message = message,
@@ -68,8 +97,14 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
         void Write(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
             var timestamp = DateTime.Now;
-            Debug.WriteLine($"{timestamp} {senderApplication} {logKind} {subject} {message} {detail}");
-            OnLogWrite(timestamp, senderApplication, logKind, subject, message, detail, threadId, callerFilePath, callerFilePath, callerLineNumber);
+
+            var writeValue = $"{timestamp} {senderApplication} {logKind} {subject} {message} {detail}";
+            Debug.WriteLine(writeValue);
+            foreach(var data in Writers) {
+                data.Writer.WriteLine(writeValue);
+            }
+
+            OnLogWrite(writeValue, timestamp, senderApplication, logKind, subject, message, detail, threadId, callerFilePath, callerFilePath, callerLineNumber);
         }
 
         void WriteDetail(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
@@ -92,6 +127,22 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
             Write(e.SenderApplication, e.LogKind, "Talk", e.Message, e.Detail, e.TheadId, e.CallerMemberName, e.CallerFilePath, e.CallerLineNumber);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="leaveOpen">偽の場合は自動的に解放される。真なら渡し主が解放すること。</param>
+        public void AttachOutputWriter(TextWriter writer, bool leaveOpen)
+        {
+            var data = new WriterData(writer, leaveOpen);
+            Writers.Add(data);
+        }
+
+        public void DetachOutputWriter(TextWriter writer)
+        {
+            Writers.RemoveWhere(d => d.Writer == writer);
+        }
+
         #endregion
 
         #region ILogCreator
@@ -106,6 +157,23 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
             var logger = new Logger(senderApplication, subject, WriteMessage, WriteDetail, WriteException);
 
             return logger;
+        }
+
+        #endregion
+
+        #region ManagerBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if(!IsDisposed) {
+                if(disposing) {
+                    foreach(var data in Writers.Where(d => !d.LeaveOpen)) {
+                        data.Writer.Dispose();
+                    }
+                }
+            }
+
+            base.Dispose(disposing);
         }
 
         #endregion
