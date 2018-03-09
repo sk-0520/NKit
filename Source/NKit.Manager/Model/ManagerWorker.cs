@@ -75,20 +75,33 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         {
             Logger = LogManager.CreateLogger(NKitApplicationKind.Manager, "WORKER");
 
+            string outputLogPath = null;
             // こいつは環境変数を展開しない。というか InitializeEnvironmentVariable と合わなくなるんでしたくない
             if(commandLine.HasOption("log-dir")) {
                 var path = commandLine.GetValue("log-dir");
                 if(!string.IsNullOrWhiteSpace(path)) {
                     var dir = Directory.CreateDirectory(path);
-                    var filePath = Path.Combine(dir.FullName, DateTime.Now.ToString("yyyy-MM-dd_hhmmss") + ".log");
-                    var writer = File.CreateText(filePath);
+                    outputLogPath = Path.Combine(dir.FullName, DateTime.Now.ToString("yyyy-MM-dd_hhmmss") + ".log");
+                    var writer = File.CreateText(outputLogPath);
                     writer.AutoFlush = true;
                     LogManager.AttachOutputWriter(writer, false);
                 }
             }
 
+#if DEBUG
+            // 通常の Debug をラップ
+            // このためだけにわざわざ Debug.WriteLine を LogManager に書きたくないのですよ
+            LogManager.AttachOutputWriter(System.Console.Out, true);
+            // べつに消さんでもいいとおもいました
+            //Debug.Listeners.Remove("Default");
+#endif
+            Logger.Information($"initialized logger");
 
-            Logger.Information("Initialize!");
+            if(outputLogPath != null) {
+                Logger.Information($"output log: {outputLogPath}");
+            } else {
+                Logger.Debug($"output log: nothing");
+            }
         }
 
         void InitializeEnvironmentVariable(CommandLine commandLine)
@@ -106,6 +119,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             Set("user_root", CommonUtility.EnvironmentKeyUserDirectory);
             Set("data_root", CommonUtility.EnvironmentKeyDataDirectory);
 
+            Logger.Information($"user dir: {CommonUtility.GetUserDirectory().FullName}");
+            Logger.Information($"data dir: {CommonUtility.GetDataDirectory().FullName}");
         }
 
         FileInfo GetSettingFile()
@@ -148,9 +163,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                         }
                     }
                 } catch(SerializationException ex) {
-                    Debug.WriteLine(ex);
+                    Logger.Error(ex);
                 } catch(IOException ex) {
-                    Debug.WriteLine(ex);
+                    Logger.Error(ex);
                 }
             }
 
@@ -198,14 +213,17 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         public bool CheckNeedAccept()
         {
             if(IsFirstExecute) {
+                Logger.Debug("first");
                 return true;
             }
             if(!Accepted) {
+                Logger.Debug("not accepted");
                 return true;
             }
 
             var version = GetAcceptVersion();
 
+            Logger.Debug($"{ManagerSetting.LastExecuteVersion} <= {version.MinimumVersion}");
             return ManagerSetting.LastExecuteVersion <= version.MinimumVersion;
         }
 

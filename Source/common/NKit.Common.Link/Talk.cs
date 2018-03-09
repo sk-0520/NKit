@@ -8,6 +8,10 @@ namespace ContentTypeTextNet.NKit.Common
 {
     public enum NKitApplicationKind
     {
+        /// <summary>
+        /// よその子。
+        /// </summary>
+        Unknown,
         Manager,
         Main,
         Rocket,

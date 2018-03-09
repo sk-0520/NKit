@@ -99,7 +99,6 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
             var timestamp = DateTime.Now;
 
             var writeValue = $"{timestamp} {senderApplication} {logKind} {subject} {message} {detail}";
-            Debug.WriteLine(writeValue);
             foreach(var data in Writers) {
                 data.Writer.WriteLine(writeValue);
             }

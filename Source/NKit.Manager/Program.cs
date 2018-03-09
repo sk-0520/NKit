@@ -24,6 +24,7 @@ namespace ContentTypeTextNet.NKit.Manager
             worker.LoadSetting();
 
             if(worker.CheckNeedAccept()) {
+                logger.Debug("show accept window");
                 using(var acceptForm = new View.AcceptForm()) {
                     acceptForm.SetWorker(worker);
 
@@ -32,6 +33,7 @@ namespace ContentTypeTextNet.NKit.Manager
                     var accepted = acceptForm.DialogResult == DialogResult.OK;
                     worker.Accepted = accepted;
                     if(!worker.Accepted) {
+                        logger.Debug("not accept");
                         return;
                     }
                 }
@@ -40,8 +42,10 @@ namespace ContentTypeTextNet.NKit.Manager
             var managerForm = new View.ManagerForm();
             managerForm.SetWorker(worker);
 
+            logger.Debug("show manager window");
             Application.Run(managerForm);
 
+            logger.Debug($"save?: {worker.NeedSave}");
             if(worker.NeedSave) {
                 worker.SaveSetting();
             }
