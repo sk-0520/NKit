@@ -40,6 +40,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NKit.Common.Link", "NKit.Co
 		common\NKit.Common.Link\Talk.cs = common\NKit.Common.Link\Talk.cs
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "T4", "T4", "{99EBEF4A-19B0-4663-BD4F-36CEC1779D37}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NKitApplication", "NKitApplication", "{27D60F2A-A517-4371-8A87-17F0B9B9EF37}"
+	ProjectSection(SolutionItems) = preProject
+		common\T4\NKitApplication\CliApplication.tt = common\T4\NKitApplication\CliApplication.tt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		common\NKit.Common.Application\NKit.Common.Application.projitems*{248cd44d-7fa9-4e7f-94aa-e1507f527cc0}*SharedItemsImports = 4
@@ -99,6 +106,8 @@ Global
 		{4C796AFB-AA0C-4A6E-B85F-EBB07486EA0A} = {BA7C2163-9D37-4D39-96AC-9DB9269B97D9}
 		{9D4F8E27-8F0D-4745-B6D7-BC6997E97BAC} = {91FBCEEB-423A-4ACA-84B8-80970B97402B}
 		{75B61508-BAF3-4F46-A875-900DB01B95DE} = {91FBCEEB-423A-4ACA-84B8-80970B97402B}
+		{99EBEF4A-19B0-4663-BD4F-36CEC1779D37} = {91FBCEEB-423A-4ACA-84B8-80970B97402B}
+		{27D60F2A-A517-4371-8A87-17F0B9B9EF37} = {99EBEF4A-19B0-4663-BD4F-36CEC1779D37}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DCA37A7D-11B2-4BEF-BD2E-1441C71C69AB}
