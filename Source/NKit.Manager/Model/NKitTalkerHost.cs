@@ -168,6 +168,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         public string Subject { get; set; }
         public string Message { get; set; }
         public string Detail { get; set; }
+        public int ProcessId { get; set; }
         public int TheadId { get; set; }
         public string CallerMemberName { get; set; }
         public string CallerFilePath { get; set; }
@@ -191,7 +192,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         #region function
 
-        private void OnWrite(DateTime timestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
+        private void OnWrite(DateTime timestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int processId, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
             if(LoggingWrite != null) {
                 var e = new TalkLoggingWriteEventArgs(senderApplication) {
@@ -200,6 +201,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                     Subject = subject,
                     Message = message,
                     Detail = detail,
+                    ProcessId = processId,
                     TheadId = threadId,
                     CallerMemberName = callerMemberName,
                     CallerFilePath = callerFilePath,
@@ -213,9 +215,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         #region INKitLoggingTalker
 
-        public void Write(DateTime timestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
+        public void Write(DateTime timestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int processId, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
-            OnWrite(timestamp, senderApplication, logKind, subject, message, detail, threadId, callerMemberName, callerFilePath, callerLineNumber);
+            OnWrite(timestamp, senderApplication, logKind, subject, message, detail, processId, threadId, callerMemberName, callerFilePath, callerLineNumber);
         }
 
         #endregion

@@ -121,14 +121,15 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             : base(senderApplication, serviceUri, address)
         { }
 
-        #region property
+        #region function
 
         public void Write(NKitLogKind logKind, string subject, string message, string detail, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
             var timestamp = DateTime.Now;
             var threadid = Thread.CurrentThread.ManagedThreadId;
+            var processId = Process.GetCurrentProcess().Id;
 
-            Host.Write(timestamp, SenderApplication, logKind, subject, message, detail, threadid, callerMemberName, callerFilePath, callerLineNumber);
+            Host.Write(timestamp, SenderApplication, logKind, subject, message, detail, processId, threadid, callerMemberName, callerFilePath, callerLineNumber);
         }
 
 
