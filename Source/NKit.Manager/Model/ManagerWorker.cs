@@ -307,7 +307,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         public void LoadSelectedWorkspace()
         {
-            NKitApplicationTalkerHost = new NKitApplicationTalkerHost();
+            NKitApplicationTalkerHost = new NKitApplicationTalkerHost(new Uri("net.pipe://localhost/cttn-nkit"), "app");
             NKitApplicationTalkerHost.TalkWakeupApplication += NKitApplicationTasker_TalkWakeupApplication;
             NKitApplicationTalkerHost.Open();
 

@@ -21,13 +21,19 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
     public abstract class NKitTalkerHostBase<TChannel> : DisposerBase
     {
+        public NKitTalkerHostBase(Uri serviceUri, string address)
+        {
+            ServiceUri = serviceUri;
+            Address = address;
+        }
+
         #region property
 
         ServiceHost ServiceHost { get; set; }
         public bool IsOpend { get; private set; }
 
-        protected Uri ServiceUri { get; set; }
-        protected string Address { get; set; }
+        protected Uri ServiceUri { get; }
+        protected string Address { get; }
 
         #endregion
 
@@ -108,11 +114,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         #endregion
 
-        public NKitApplicationTalkerHost()
-        {
-            ServiceUri = new Uri("net.pipe://localhost/cttn-nkit");
-            Address = "app";
-        }
+        public NKitApplicationTalkerHost(Uri serviceUri, string address)
+            :base(serviceUri, address)
+        { }
 
         #region function
 
@@ -147,4 +151,14 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         #endregion
 
     }
+
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    public class NKitLoggingTalkerHost: INKitLoggingTalker:  NKitTalkerHostBase<INKitLoggingTalker>, INKitLoggingTalker
+    {
+        public NKitLoggingTalkerHost(Uri serviceUri, string address)
+            : base(serviceUri, address)
+        { }
+    }
+
+
 }

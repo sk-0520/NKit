@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ContentTypeTextNet.NKit.Common
 {
-    public enum NKitApplicationKind
+    public enum Log
     {
         Main,
         Rocket,
@@ -23,21 +23,11 @@ namespace ContentTypeTextNet.NKit.Common
         #endregion
     }
 
-    public enum NKitLogKind
-    {
-        Trace,
-        Debug,
-        Information,
-        Warning,
-        Error,
-    }
-
     public interface INKitLoggingTalker
     {
         #region function
 
-
-        void Write(NKitApplicationKind senderApplication, NKitLogKind logKind, string message, string detail, int theadId, int callerLineNumber, string callerMemberName, string callerFileName);
+        void Write(NKitApplicationKind senderApplication, string message, string detail, int theadId, int callerLineNumber, string callerMemberName, string callerFileName);
 
         #endregion
     }

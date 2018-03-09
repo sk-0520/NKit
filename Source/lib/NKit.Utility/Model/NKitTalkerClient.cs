@@ -13,9 +13,11 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 {
     public abstract class NKitTalkerClientBase<TChannel> : DisposerBase
     {
-        public NKitTalkerClientBase(NKitApplicationKind senderApplication)
+        public NKitTalkerClientBase(NKitApplicationKind senderApplication, Uri serviceUri, string address)
         {
             SenderApplication = senderApplication;
+            ServiceUri = serviceUri;
+            Address = address;
         }
 
         #region property
@@ -23,8 +25,8 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         public bool IsOpend { get; private set; }
         NKitApplicationKind SenderApplication { get; }
 
-        protected Uri ServiceUri { get; set; }
-        protected string Address { get; set; }
+        public Uri ServiceUri { get; }
+        public string Address { get; }
 
         ChannelFactory<INKitApplicationTalker> Channel { get; set; }
         protected INKitApplicationTalker Host { get; private set; }
@@ -86,12 +88,9 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
     public class NKitApplicationTalkerClient : NKitTalkerClientBase<INKitApplicationTalker>
     {
-        public NKitApplicationTalkerClient(NKitApplicationKind senderApplication)
-            : base(senderApplication)
-        {
-            ServiceUri = new Uri("net.pipe://localhost/cttn-nkit");
-            Address = "app";
-        }
+        public NKitApplicationTalkerClient(NKitApplicationKind senderApplication, Uri serviceUri, string address)
+            : base(senderApplication, serviceUri, address)
+        { }
 
         #region property
 
