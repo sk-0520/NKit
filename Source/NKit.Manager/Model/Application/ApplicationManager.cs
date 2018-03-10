@@ -46,10 +46,17 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             //TODO: 重複は未考慮
             //      エスケープシーケンスも知らない問題にしておく
             var list = new[] {
-                $"--nkit_service_uri {workspaceVolatilityItem.ServiceUri}",
-                $"--nkit_workspace {workspaceItemSetting.DirectoryPath}",
-                $"--nkit_application_id {workspaceVolatilityItem.ApplicationId}",
-                $"--nkit_exit_event_name {workspaceVolatilityItem.ExitEventName}",
+                $"--nkit_service_uri",
+                ProgramRelationUtility.EscapesequenceToArgument(workspaceVolatilityItem.ServiceUri.ToString()),
+
+                $"--nkit_workspace",
+                ProgramRelationUtility.EscapesequenceToArgument(workspaceItemSetting.DirectoryPath),
+
+                $"--nkit_application_id",
+                ProgramRelationUtility.EscapesequenceToArgument(workspaceVolatilityItem.ApplicationId),
+
+                $"--nkit_exit_event_name",
+                ProgramRelationUtility.EscapesequenceToArgument(workspaceVolatilityItem.ExitEventName),
             };
             var headArgs = string.Join(" ", list);
 

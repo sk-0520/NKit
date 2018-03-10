@@ -36,6 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NKit.Common.Link", "NKit.Co
 		common\NKit.Common.Link\CommonUtility.cs = common\NKit.Common.Link\CommonUtility.cs
 		common\NKit.Common.Link\Disposer.cs = common\NKit.Common.Link\Disposer.cs
 		common\NKit.Common.Link\Logging.cs = common\NKit.Common.Link\Logging.cs
+		common\NKit.Common.Link\ProgramRelationUtility.cs = common\NKit.Common.Link\ProgramRelationUtility.cs
 		common\NKit.Common.Link\Setting.cs = common\NKit.Common.Link\Setting.cs
 		common\NKit.Common.Link\Talk.cs = common\NKit.Common.Link\Talk.cs
 	EndProjectSection

@@ -69,15 +69,15 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
             var optionKind = CommandLineApplication.Option("--kind", $"{nameof(AssociationFileKind)}", CommandOptionType.SingleValue);
             var optionPath = CommandLineApplication.Option("--path", $"file path", CommandOptionType.SingleValue);
 
-            var optionSpreadSheetName = CommandLineApplication.Option("--ss_sheet", $"sheet name", CommandOptionType.SingleValue);
-            var optionSpreadSheetX = CommandLineApplication.Option("--ss_x", $"row index (0 base)", CommandOptionType.SingleValue);
-            var optionSpreadSheetY = CommandLineApplication.Option("--ss_y", $"col index (0 base)", CommandOptionType.SingleValue);
-            var optionSpreadSheetCell = CommandLineApplication.Option("--ss_cell", "cell address", CommandOptionType.SingleValue);
+            var optionSpreadSheetName = CommandLineApplication.Option("--spreadsheet_name", $"sheet name", CommandOptionType.SingleValue);
+            var optionSpreadSheetX = CommandLineApplication.Option("--spreadsheet_x", $"row index (0 base)", CommandOptionType.SingleValue);
+            var optionSpreadSheetY = CommandLineApplication.Option("--spreadsheet_y", $"col index (0 base)", CommandOptionType.SingleValue);
+            var optionSpreadSheetCell = CommandLineApplication.Option("--spreadsheet_cell", "cell address", CommandOptionType.SingleValue);
 
-            var optionDocumentLineNumber = CommandLineApplication.Option("--doc_line", "line number", CommandOptionType.SingleValue);
-            var optionDocumentCharacterPosition = CommandLineApplication.Option("--doc_pos", "line number", CommandOptionType.SingleValue);
-            var optionDocumentLength = CommandLineApplication.Option("--doc_len", "line number", CommandOptionType.SingleValue);
-            var optionDocumentPageNumber = CommandLineApplication.Option("--doc_page", "page number", CommandOptionType.SingleValue);
+            var optionDocumentLineNumber = CommandLineApplication.Option("--document_line", "line number", CommandOptionType.SingleValue);
+            var optionDocumentCharacterPosition = CommandLineApplication.Option("--document_position", "line number", CommandOptionType.SingleValue);
+            var optionDocumentLength = CommandLineApplication.Option("--document_length", "line number", CommandOptionType.SingleValue);
+            var optionDocumentPageNumber = CommandLineApplication.Option("--document_page", "page number", CommandOptionType.SingleValue);
 
             if(!BuildCommandLine()) {
                 return GetDefaultPreparaValue(false);

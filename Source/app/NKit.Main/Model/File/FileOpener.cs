@@ -12,6 +12,7 @@ using ContentTypeTextNet.NKit.Main.Model.NKit;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Setting.File;
 using ContentTypeTextNet.NKit.Utility.Model;
+using NPOI.SS.Util;
 
 namespace ContentTypeTextNet.NKit.Main.Model.File
 {
@@ -113,7 +114,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
                 ["LINE"] = parameter.LineNumber.ToString(),
                 ["POS"] = parameter.CharacterPostion.ToString(),
                 // ------------------
-                ["SS_SHEET"] = parameter.SpreadSeet.SheetName,
+                ["SS_NAME"] = parameter.SpreadSeet.SheetName,
                 ["SS_CELL_X"] = parameter.SpreadSeet.RowIndex.ToString(),
                 ["SS_CELL_Y"] = parameter.SpreadSeet.ColumnIndex.ToString(),
                 // ------------------
@@ -169,29 +170,61 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         void OpenMicrosoftOfficeWordFile(FileInfo file, AssociationOpenParameter parameter)
         {
-            var argument = $"--kind {AssociationFileKind.MicrosoftOfficeWord} --path \"{file.FullName}\" --doc_line {parameter.LineNumber} --doc_pos {parameter.CharacterPostion} --doc_len {parameter.CharacterLength} --doc_page {parameter.Document.Page}";
-            /*
-            var executor = new NKitCliApplicationExecutor(CommonUtility.GetRocketApplication, argument);
-            executor.RunAsync(CancellationToken.None).ConfigureAwait(false);
-            return executor.ExecuteProcess;
-            */
+            var args = new[] {
+                "--kind",
+                ProgramRelationUtility.EscapesequenceToArgument(AssociationFileKind.MicrosoftOfficeWord.ToString()),
+
+                "--path",
+                ProgramRelationUtility.EscapesequenceToArgument(file.FullName),
+
+                "--document_line",
+                ProgramRelationUtility.EscapesequenceToArgument(parameter.LineNumber.ToString()),
+
+                "--document_position",
+                ProgramRelationUtility.EscapesequenceToArgument(parameter.CharacterPostion.ToString()),
+
+                "--document_length",
+                ProgramRelationUtility.EscapesequenceToArgument(parameter.CharacterLength.ToString()),
+
+                "--document_page",
+                ProgramRelationUtility.EscapesequenceToArgument(parameter.Document.Page.ToString()),
+            };
+            var arguments = string.Join(" ", args);
             using(var client = new NKitApplicationTalkerClient(NKitApplicationKind.Main, StartupOptions.ServiceUri)) {
                 client.Open();
-                client.WakeupApplication(NKitApplicationKind.Rocket, argument, string.Empty);
+                client.WakeupApplication(NKitApplicationKind.Rocket, arguments, string.Empty);
             }
         }
 
         void OpenMicrosoftOfficeExcelFile(FileInfo file, AssociationOpenParameter parameter)
         {
-            var argument = $"--kind {AssociationFileKind.MicrosoftOfficeExcel} --path \"{file.FullName}\" --ss_sheet {parameter.SpreadSeet.SheetName} --ss_y {parameter.SpreadSeet.RowIndex} --ss_x {parameter.SpreadSeet.ColumnIndex}";
-            /*
-            var executor = new NKitCliApplicationExecutor(CommonUtility.GetRocketApplication, argument);
-            executor.RunAsync(CancellationToken.None).ConfigureAwait(false);
-            return executor.ExecuteProcess;
-            */
+            var args = new[] {
+                "--kind",
+                ProgramRelationUtility.EscapesequenceToArgument(AssociationFileKind.MicrosoftOfficeExcel.ToString()),
+
+                "--path",
+                ProgramRelationUtility.EscapesequenceToArgument(file.FullName),
+
+                "--spreadsheet_name",
+                ProgramRelationUtility.EscapesequenceToArgument(parameter.SpreadSeet.SheetName),
+
+                "--spreadsheet_y",
+                ProgramRelationUtility.EscapesequenceToArgument(parameter.SpreadSeet.RowIndex.ToString()),
+
+                "--spreadsheet_x",
+                ProgramRelationUtility.EscapesequenceToArgument(parameter.SpreadSeet.ColumnIndex.ToString()),
+
+                "--spreadsheet_x",
+                ProgramRelationUtility.EscapesequenceToArgument(parameter.SpreadSeet.ColumnIndex.ToString()),
+
+                "--spreadsheet_cell",
+                ProgramRelationUtility.EscapesequenceToArgument(new CellReference(parameter.SpreadSeet.RowIndex, parameter.SpreadSeet.ColumnIndex).FormatAsString()),
+            };
+            var arguments = string.Join(" ", args);
+
             using(var client = new NKitApplicationTalkerClient(NKitApplicationKind.Main, StartupOptions.ServiceUri)) {
                 client.Open();
-                client.WakeupApplication(NKitApplicationKind.Rocket, argument, string.Empty);
+                client.WakeupApplication(NKitApplicationKind.Rocket, arguments, string.Empty);
             }
         }
 
