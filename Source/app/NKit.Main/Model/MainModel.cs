@@ -45,7 +45,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
                 throw new InvalidOperationException();
             }
 #endif
-            LogSwitcher = new LogSwitcher(Common.NKitApplicationKind.Main, new Uri("net.pipe://localhost/cttn-nkit"), "log");
+            LogSwitcher = new LogSwitcher(Common.NKitApplicationKind.Main, StartupOptions.ServiceUri);
             Log.Initialize(LogSwitcher);
 
             Setting = new MainSetting();

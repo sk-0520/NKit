@@ -27,8 +27,8 @@ namespace <#= defaultNamespace #>
 
         static int Main(string[] args)
         {
-            var startupOptions = new StartupOptions(args);
-            using(var logSwitcher = new LogSwitcher(NKitApplicationKind.<#= applicationKind #>, new Uri("net.pipe://localhost/cttn-nkit"), "log")) {
+            StartupOptions.Initialize(args);
+            using(var logSwitcher = new LogSwitcher(NKitApplicationKind.<#= applicationKind #>, StartupOptions.ServiceUri)) {
                 logSwitcher.Initialize();
                 Log.Initialize(logSwitcher);
                 var logger = Log.CreateLogger();

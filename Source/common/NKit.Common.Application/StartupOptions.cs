@@ -11,7 +11,6 @@ namespace ContentTypeTextNet.NKit.Common
 
         public static Uri ServiceUri { get; private set; }
         public static string LogAddress { get; private set; }
-        public static string AppAddress { get; private set; }
         public static string WorkspacePath { get; private set; }
         public static string ApplicationId { get; private set; }
         public static string ExitEventName { get; private set; }
@@ -30,11 +29,10 @@ namespace ContentTypeTextNet.NKit.Common
                 throw new InvalidOperationException();
             }
 #endif
-            var cl = new CommandLineApplication();
+            var cl = new CommandLineApplication(false);
 
             var serviceUriOption = cl.Option("--nkit_service_uri", "service uri", CommandOptionType.SingleValue);
             var logAddressOption = cl.Option("--nkit_log_address", "log address", CommandOptionType.SingleValue);
-            var appAddressOption = cl.Option("--nkit_app_address", "app address", CommandOptionType.SingleValue);
             var workspacePathOption = cl.Option("--nkit_workspace", "workspace path", CommandOptionType.SingleValue);
             var applicationIdOption = cl.Option("--nkit_application_id", "application id", CommandOptionType.SingleValue);
             var exitEventNameOption = cl.Option("--nkit_exit_event_name", "exit event name", CommandOptionType.SingleValue);
@@ -45,7 +43,6 @@ namespace ContentTypeTextNet.NKit.Common
                 ServiceUri = new Uri(serviceUriOption.Value());
             }
             LogAddress = logAddressOption.Value();
-            AppAddress = appAddressOption.Value();
             WorkspacePath = workspacePathOption.Value();
             ApplicationId = applicationIdOption.Value();
             ExitEventName = exitEventNameOption.Value();

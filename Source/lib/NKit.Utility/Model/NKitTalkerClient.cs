@@ -97,8 +97,8 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
     public class NKitApplicationTalkerClient : NKitTalkerClientBase<INKitApplicationTalker>
     {
-        public NKitApplicationTalkerClient(NKitApplicationKind senderApplication, Uri serviceUri, string address)
-            : base(senderApplication, serviceUri, address)
+        public NKitApplicationTalkerClient(NKitApplicationKind senderApplication, Uri serviceUri)
+            : base(senderApplication, serviceUri, CommonUtility.AppAddress)
         { }
 
         #region property
@@ -117,8 +117,8 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
     public class NKitLoggingtalkerClient : NKitTalkerClientBase<INKitLoggingTalker>
     {
-        public NKitLoggingtalkerClient(NKitApplicationKind senderApplication, Uri serviceUri, string address)
-            : base(senderApplication, serviceUri, address)
+        public NKitLoggingtalkerClient(NKitApplicationKind senderApplication, Uri serviceUri)
+            : base(senderApplication, serviceUri, CommonUtility.LogAddress)
         { }
 
         #region function

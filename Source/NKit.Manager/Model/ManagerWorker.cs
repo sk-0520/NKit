@@ -364,11 +364,17 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         public void LoadSelectedWorkspace()
         {
-            NKitApplicationTalkerHost = new NKitApplicationTalkerHost(new Uri("net.pipe://localhost/cttn-nkit"), "app");
+            var aboutId = DateTime.Now.ToFileTime().ToString();
+            WorkspaceVolatilityItem.ServiceUri = new Uri($"net.pipe://localhost/cttn-nkit-{aboutId}");
+            WorkspaceVolatilityItem.AppAddress = "app";
+            WorkspaceVolatilityItem.LogAddress = "log";
+            WorkspaceVolatilityItem.ExitEventName = $"exit-{aboutId}";
+
+            NKitApplicationTalkerHost = new NKitApplicationTalkerHost(WorkspaceVolatilityItem.ServiceUri, WorkspaceVolatilityItem.AppAddress);
             NKitApplicationTalkerHost.ApplicationWakeup += NKitApplicationTasker_ApplicationWakeup;
             NKitApplicationTalkerHost.Open();
 
-            NKitLoggingTalkerHost = new NKitLoggingTalkerHost(new Uri("net.pipe://localhost/cttn-nkit"), "log");
+            NKitLoggingTalkerHost = new NKitLoggingTalkerHost(WorkspaceVolatilityItem.ServiceUri, WorkspaceVolatilityItem.LogAddress);
             NKitLoggingTalkerHost.LoggingWrite += NKitLoggingTalkerHost_LoggingWrite;
             NKitLoggingTalkerHost.Open();
 

@@ -119,11 +119,11 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
     public class LogSwitcher: DisposerBase, ILogCreator
     {
-        public LogSwitcher(NKitApplicationKind senderApplication, Uri serviceUri, string address)
+        public LogSwitcher(NKitApplicationKind senderApplication, Uri serviceUri)
         {
             SenderApplication = senderApplication;
-            if(serviceUri != null && !string.IsNullOrWhiteSpace(address)) {
-                LoggingClient = new NKitLoggingtalkerClient(SenderApplication, serviceUri, address);
+            if(serviceUri != null) {
+                LoggingClient = new NKitLoggingtalkerClient(SenderApplication, serviceUri);
             }
         }
 
@@ -232,7 +232,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
     {
         static Log()
         {
-            LogCreator = new LogSwitcher(NKitApplicationKind.Unknown, null, null) {
+            LogCreator = new LogSwitcher(NKitApplicationKind.Unknown, null) {
                 LastErrorTimestamp = DateTime.MaxValue,
                 RetrySpan = TimeSpan.Zero,
             };

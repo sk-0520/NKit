@@ -19,7 +19,7 @@ namespace ContentTypeTextNet.NKit.Common
 
         protected CommandOption OptionHelp { get; }
 
-        protected CommandLineApplication CommandLineApplication { get; } = new CommandLineApplication(true);
+        protected CommandLineApplication CommandLineApplication { get; } = new CommandLineApplication(false);
 
         #endregion
 

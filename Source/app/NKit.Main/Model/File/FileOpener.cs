@@ -175,7 +175,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             executor.RunAsync(CancellationToken.None).ConfigureAwait(false);
             return executor.ExecuteProcess;
             */
-            using(var client = new NKitApplicationTalkerClient(NKitApplicationKind.Main, new Uri("net.pipe://localhost/cttn-nkit"), "app")) {
+            using(var client = new NKitApplicationTalkerClient(NKitApplicationKind.Main, StartupOptions.ServiceUri)) {
                 client.Open();
                 client.WakeupApplication(NKitApplicationKind.Rocket, argument, string.Empty);
             }
@@ -189,7 +189,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             executor.RunAsync(CancellationToken.None).ConfigureAwait(false);
             return executor.ExecuteProcess;
             */
-            using(var client = new NKitApplicationTalkerClient(NKitApplicationKind.Main, new Uri("net.pipe://localhost/cttn-nkit"), "app")) {
+            using(var client = new NKitApplicationTalkerClient(NKitApplicationKind.Main, StartupOptions.ServiceUri)) {
                 client.Open();
                 client.WakeupApplication(NKitApplicationKind.Rocket, argument, string.Empty);
             }

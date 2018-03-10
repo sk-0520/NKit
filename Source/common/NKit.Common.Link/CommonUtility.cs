@@ -69,6 +69,9 @@ namespace ContentTypeTextNet.NKit.Common
         public static string EnvironmentKeyUserDirectory => "NKIT_USER_DIR";
         public static string EnvironmentKeyDataDirectory => "NKIT_DATA_DIR";
 
+        public static string AppAddress => "app";
+        public static string LogAddress => "log";
+
         #endregion
 
         #region function
