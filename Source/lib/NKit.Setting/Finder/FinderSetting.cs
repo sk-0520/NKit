@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
@@ -9,23 +10,48 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
 {
     public interface IReadOnlyFinderSetting
     {
+        /// <summary>
+        /// 保存済み検索条件。
+        /// </summary>
         IReadOnlyFindGroupSetting[] Groups { get; }
+        /// <summary>
+        /// デフォルト検索条件。
+        /// </summary>
+        IReadOnlyFindGroupSetting DefaultGroupSetting { get; }
 
-        string TextNamePattern { get; }
-        string MicrosoftOfficeNamePattern { get; }
-        string XmlHtmlNamePattern { get; }
+        /// <summary>
+        /// テキストファイルとしてのファイル名パターン。
+        /// </summary>
+        string TextFileNamePattern { get; }
+        /// <summary>
+        /// MS Officeファイルとしてのファイル名パターン。
+        /// </summary>
+        string MicrosoftOfficeFileNamePattern { get; }
+        /// <summary>
+        /// Xml/HTMLファイルとしてのファイル名パターン。
+        /// </summary>
+        string XmlHtmlFileNamePattern { get; }
     }
 
+    [Serializable, DataContract]
     public class FinderSetting : SettingBase, IReadOnlyFinderSetting
     {
         #region IReadOnlyFinderSetting
 
+        [DataMember]
         public FindGroupSetting[] Groups { get; set; } = new FindGroupSetting[0];
         IReadOnlyFindGroupSetting[] IReadOnlyFinderSetting.Groups => Groups;
 
-        public string TextNamePattern { get; set; } = "*.txt|*.csv";
-        public string MicrosoftOfficeNamePattern { get; set; } = "*.xls|*.xlsx|*.xlsm|*.docx";
-        public string XmlHtmlNamePattern { get; set; } = "*.xml|*.html|*.htm|*.xaml";
+        [DataMember]
+        public FindGroupSetting DefaultGroupSetting { get; set; } = new FindGroupSetting();
+        IReadOnlyFindGroupSetting IReadOnlyFinderSetting.DefaultGroupSetting => DefaultGroupSetting;
+
+        [DataMember]
+        public string TextFileNamePattern { get; set; } = "*.txt|*.csv";
+        [DataMember]
+        public string MicrosoftOfficeFileNamePattern { get; set; } = "*.xls|*.xlsx|*.xlsm|*.docx";
+        [DataMember]
+        public string XmlHtmlFileNamePattern { get; set; } = "*.xml|*.html|*.htm|*.xaml";
 
         #endregion
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
@@ -22,10 +23,12 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
     /// <summary>
     /// ファイル内容検索の専用検索処理。
     /// </summary>
+    [Serializable, DataContract]
     public abstract class FindContentSettingBase : SettingBase, IReadOnlyFindContentSetting
     {
         #region IReadOnlyFindContentSetting
 
+        [DataMember]
         public bool IsEnabled { get; set; } = true;
 
         #endregion
@@ -72,18 +75,23 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
     public interface IReadOnlyFindMicrosoftOfficeContentSetting: IReadOnlyFindMicrosoftOfficeCommonContentSetting, IReadOnlyFindMicrosoftOfficeExcelContentSetting, IReadOnlyFindMicrosoftOfficeWordContentSetting
     { }
 
+    [Serializable, DataContract]
     public class FindMicrosoftOfficeContentSetting : FindContentSettingBase, IReadOnlyFindMicrosoftOfficeContentSetting
     {
         #region IReadOnlyFindMicrosoftOfficeCommonContentSetting
 
+        [DataMember]
         public bool TextInShape { get; set; } = true;
 
         #endregion
 
         #region IReadOnlyFindMicrosoftOfficeExcelContentSetting
 
+        [DataMember]
         public bool SheetName { get; set; } = true;
+        [DataMember]
         public bool PriorityFormula { get; set; } = false;
+        [DataMember]
         public bool CommentInCell { get; set; }
 
         #endregion
@@ -129,15 +137,22 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
     /// Xml とか Html の検索処理。
     /// <para>xml ≠ html とかいいから別に。</para>
     /// </summary>
+    [Serializable, DataContract]
     public class FindXmlHtmlContentSetting : FindContentSettingBase, IReadOnlyFindXmlHtmlContentSetting
     {
         #region IReadOnlyFindXmlHtmlContentSetting
 
+        [DataMember]
         public bool Element { get; set; } = true;
+        [DataMember]
         public bool Text { get; set; } = true;
+        [DataMember]
         public bool AttributeKey { get; set; } = true;
+        [DataMember]
         public bool AttributeValue { get; set; } = true;
+        [DataMember]
         public bool Comment { get; set; } = true;
+        [DataMember]
         public bool IgnoreHtmlLinkValue { get; set; }
 
         #endregion

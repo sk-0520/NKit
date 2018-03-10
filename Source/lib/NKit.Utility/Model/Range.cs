@@ -22,7 +22,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
     /// 範囲持ちアイテム。
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [Serializable]
+    [Serializable, DataContract]
     public struct Range<T> : IReadOnlyRange<T>
         where T : IComparable
     {

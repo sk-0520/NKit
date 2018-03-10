@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -72,11 +73,35 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         #endregion
     }
 
-    public class XmlSerializer : SerializerBase
+    public abstract class XmlSerializerBase : SerializerBase
     {
+        #region function
+
+        protected XmlReaderSettings CreateXmlReaderSettings()
+        {
+            return new XmlReaderSettings() {
+                CloseInput = false,
+            };
+        }
+
+        protected XmlWriterSettings CreateXmlWriterSettings()
+        {
+            return new XmlWriterSettings() {
+                CloseOutput = false,
+                NewLineHandling = NewLineHandling.Entitize,
+            };
+        }
+
+        #endregion
+    }
+
+    public class XmlSerializer : XmlSerializerBase
+    {
+        #region XmlSerializerBase
+
         public override TResult Load<TResult>(Stream stream)
         {
-            using(var reader = GetReader(stream)) {
+            using(var reader = XmlReader.Create(stream, CreateXmlReaderSettings())) {
                 var serializer = new System.Xml.Serialization.XmlSerializer(typeof(TResult));
                 return (TResult)serializer.Deserialize(reader);
             }
@@ -84,22 +109,70 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         public override void Save(object value, Stream stream)
         {
-            var setting = new XmlWriterSettings() {
-                CloseOutput = false,
-                NewLineHandling = NewLineHandling.Entitize,
-            };
-
-            using(var writer = GetWriter(stream))
-            using(var xmlWriter = XmlWriter.Create(writer, setting)) {
+            using(var writer = XmlWriter.Create(stream, CreateXmlWriterSettings())) {
                 var serializer = new System.Xml.Serialization.XmlSerializer(value.GetType());
-                serializer.Serialize(xmlWriter, value);
+                serializer.Serialize(writer, value);
             }
         }
+
+        #endregion
     }
 
+    public abstract class DataContractSerializerBase : XmlSerializerBase
+    { }
+
+    public class XmlDataContractSerializer : DataContractSerializerBase
+    {
+        #region DataContractSerializerBase
+
+        public override TResult Load<TResult>(Stream stream)
+        {
+            using(var reader = XmlReader.Create(stream, CreateXmlReaderSettings())) {
+                var serializer = new DataContractSerializer(typeof(TResult));
+                return (TResult)serializer.ReadObject(reader);
+            }
+        }
+
+        public override void Save(object value, Stream stream)
+        {
+            using(var writer = XmlWriter.Create(stream, CreateXmlWriterSettings())) {
+                var serializer = new DataContractSerializer(value.GetType());
+                serializer.WriteObject(writer, value);
+            }
+        }
+
+        #endregion
+    }
+
+    public class BinaryDataContractSerializer : DataContractSerializerBase
+    {
+        #region DataContractSerializerBase
+
+        public override TResult Load<TResult>(Stream stream)
+        {
+            // 閉じない方法がわっからん
+            var quotas = new XmlDictionaryReaderQuotas();
+            using(var reader = XmlDictionaryReader.CreateBinaryReader(stream, quotas)) {
+                var serializer = new DataContractSerializer(typeof(TResult));
+                return (TResult)serializer.ReadObject(reader);
+            }
+        }
+
+        public override void Save(object value, Stream stream)
+        {
+            using(var writer = XmlDictionaryWriter.CreateBinaryWriter(stream, null, null, false)) {
+                var serializer = new DataContractSerializer(value.GetType());
+                serializer.WriteObject(writer, value);
+            }
+        }
+
+        #endregion
+    }
+
+#if ENABLED_MessagePack
     public class MessagePackSerializer : SerializerBase
     {
-        #region SerializerBase
+    #region SerializerBase
 
         public override TResult Load<TResult>(Stream stream)
         {
@@ -111,6 +184,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             MessagePack.MessagePackSerializer.Serialize(stream, value);
         }
 
-        #endregion
+    #endregion
     }
+#endif
 }

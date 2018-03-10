@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
@@ -98,39 +99,59 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         #endregion
     }
 
+    [Serializable, DataContract]
     public class FindGroupSetting : GuidIdSettingBase, IReadOnlyFindGroupSetting
     {
         #region IReadOnlyFindGroupSetting
 
+        [DataMember]
         public string GroupName { get; set; }
 
+        [DataMember]
         public string RootDirectoryPath { get; set; }
+        [DataMember]
         public int DirectoryLimitLevel { get; set; }
+        [DataMember]
         public bool FindHiddenDirectory { get; set; }
+        [DataMember]
         public bool FindDotDirectory { get; set; }
 
+        [DataMember]
         public SearchPatternKind FileNameSearchPatternKind { get; set; }
+        [DataMember]
         public bool FileNameCase { get; set; }
+        [DataMember]
         public string FileNameSearchPattern { get; set; }
 
+        [DataMember]
         public Range<long> FileSizeLimit { get; set; }
         IReadOnlyRange<long> IReadOnlyFindGroupSetting.FileSizeLimit => FileSizeLimit;
 
-        public bool FindFileProperty { get; set; } = !true;
+        [DataMember]
+        public bool FindFileProperty { get; set; }
 
+        [DataMember]
         public FileAttributes FilePropertyFileAttributes { get; set; }
+        [DataMember]
         public FlagMatchKind FilePropertyFileAttributeFlagMatchKind { get; set; }
 
-        public bool FindFileContent { get; set; } = true;
+        [DataMember]
+        public bool FindFileContent { get; set; }
+        [DataMember]
         public SearchPatternKind FileContentSearchPatternKind { get; set; }
+        [DataMember]
         public bool FileContentCase { get; set; }
+        [DataMember]
         public string FileContentSearchPattern { get; set; }
+        [DataMember]
         public bool IsEnabledFileContentSizeLimit { get; set; } = true;
 
-        public FindMicrosoftOfficeContentSetting MicrosoftOfficeContent { get; } = new FindMicrosoftOfficeContentSetting();
+        [DataMember]
+        public FindMicrosoftOfficeContentSetting MicrosoftOfficeContent { get; set; } = new FindMicrosoftOfficeContentSetting();
         IReadOnlyFindMicrosoftOfficeContentSetting IReadOnlyFindGroupSetting.MicrosoftOfficeContent => MicrosoftOfficeContent;
 
-        public FindXmlHtmlContentSetting XmlHtmlContent { get; } = new FindXmlHtmlContentSetting();
+        [DataMember]
+        public FindXmlHtmlContentSetting XmlHtmlContent { get; set; } = new FindXmlHtmlContentSetting();
         IReadOnlyFindXmlHtmlContentSetting IReadOnlyFindGroupSetting.XmlHtmlContent => XmlHtmlContent;
 
         #endregion

@@ -278,9 +278,9 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                     CachedFileContentPattern = patternCreator.CreateRegex(FindGroupSetting.FileContentSearchPatternKind, FindGroupSetting.FileContentSearchPattern, !FindGroupSetting.FileContentCase);
 
                     CachedFileNameKindPatterns = new[] {
-                        new { Kind = FileNameKind.Text,  Pattern = FinderSetting.TextNamePattern, },
-                        new { Kind = FileNameKind.MicrosoftOffice,  Pattern = FinderSetting.MicrosoftOfficeNamePattern, },
-                        new { Kind = FileNameKind.XmlHtml,  Pattern = FinderSetting.XmlHtmlNamePattern, },
+                        new { Kind = FileNameKind.Text,  Pattern = FinderSetting.TextFileNamePattern, },
+                        new { Kind = FileNameKind.MicrosoftOffice,  Pattern = FinderSetting.MicrosoftOfficeFileNamePattern, },
+                        new { Kind = FileNameKind.XmlHtml,  Pattern = FinderSetting.XmlHtmlFileNamePattern, },
                     }.Select(i => new {
                         Kind = i.Kind,
                         Regex = patternCreator.CreateFileNameFilterRegex(i.Pattern)
@@ -296,7 +296,8 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                 }
             }
 
-            CurrentFindGroupSetting = (FindGroupSetting)FindGroupSetting.Clone();
+            var serializer = new BinaryDataContractSerializer();
+            CurrentFindGroupSetting = serializer.Clone(FindGroupSetting);
 
             var oldItems = Items;
             Items.Clear();
