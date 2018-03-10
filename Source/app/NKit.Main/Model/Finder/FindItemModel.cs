@@ -15,10 +15,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 {
     public class FindItemModel : ModelBase
     {
-        public FindItemModel(DirectoryInfo baseDirectory, FileSystemInfo fileSystemInfo, TextSearchResult fileNameSearchResult, bool matchedFileSize, FilePropertySearchResult filePropertySearchResult, FileContentSearchResult fileContentSearchResult, IReadOnlyAssociationFileSetting associationFileSetting, IReadOnlyNKitSetting nkitSetting)
+        public FindItemModel(DirectoryInfo baseDirectory, FileInfo fileInfo, TextSearchResult fileNameSearchResult, bool matchedFileSize, FilePropertySearchResult filePropertySearchResult, FileContentSearchResult fileContentSearchResult, IReadOnlyAssociationFileSetting associationFileSetting, IReadOnlyNKitSetting nkitSetting)
         {
             BaseDirectory = baseDirectory;
-            FileSystemInfo = fileSystemInfo;
+            FileInfo = fileInfo;
             FileNameSearchResult = fileNameSearchResult;
             MatchedFileSize = matchedFileSize;
             FilePropertySearchResult = filePropertySearchResult;
@@ -30,7 +30,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         #region property
 
         public DirectoryInfo BaseDirectory { get; }
-        public FileSystemInfo FileSystemInfo { get; }
+        public FileInfo FileInfo { get; }
         public TextSearchResult FileNameSearchResult { get; }
         public bool MatchedFileSize { get; }
         public FilePropertySearchResult FilePropertySearchResult { get; }
@@ -44,15 +44,15 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             get
             {
                 var baseUri = new Uri(BaseDirectory.FullName);
-                var parentDirectoryUri = new Uri(Path.GetDirectoryName(FileSystemInfo.FullName));
+                var parentDirectoryUri = new Uri(Path.GetDirectoryName(FileInfo.FullName));
                 var relativeUri = baseUri.MakeRelativeUri(parentDirectoryUri);
                 return relativeUri.ToString();
             }
         }
 
-        public FileTypeModel FileType => new FileTypeModel((FileInfo)FileSystemInfo, NKitSetting);
+        public FileTypeModel FileType => new FileTypeModel((FileInfo)FileInfo, NKitSetting);
 
-        public FileHashModel FileHash => new FileHashModel((FileInfo)FileSystemInfo);
+        public FileHashModel FileHash => new FileHashModel((FileInfo)FileInfo);
 
         #endregion
 
@@ -60,51 +60,51 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         public void OpenFile()
         {
             var opener = new FileOpener();
-            opener.Open((FileInfo)FileSystemInfo);
+            opener.Open((FileInfo)FileInfo);
         }
 
         public void OpenDirectory()
         {
             var opener = new FileOpener();
-            opener.OpenParentDirectory(FileSystemInfo);
+            opener.OpenParentDirectory(FileInfo);
         }
 
         public void ShowProperty()
         {
             var opener = new FileOpener();
-            opener.ShowProperty(FileSystemInfo, IntPtr.Zero/*TODO: どうすんのよこれ*/);
+            opener.ShowProperty(FileInfo, IntPtr.Zero/*TODO: どうすんのよこれ*/);
         }
 
         public void CopyFileSize()
         {
             var co = new ClipboardOperator();
-            var file = (FileInfo)FileSystemInfo;
+            var file = (FileInfo)FileInfo;
             co.CopyText(file.Length.ToString());
         }
 
         public void CopyFile()
         {
             var co = new ClipboardOperator();
-            co.CopyFile(FileSystemInfo);
+            co.CopyFile(FileInfo);
         }
 
         public void CopyNameWithExtension()
         {
             var co = new ClipboardOperator();
-            co.CopyText(FileSystemInfo.Name);
+            co.CopyText(FileInfo.Name);
         }
 
         public void CopyNameWithoutExtension()
         {
             var co = new ClipboardOperator();
-            var s = Path.GetFileNameWithoutExtension(FileSystemInfo.Name);
+            var s = Path.GetFileNameWithoutExtension(FileInfo.Name);
             co.CopyText(s);
         }
 
         public void CopyDirectory()
         {
             var co = new ClipboardOperator();
-            var baseDirPath = Path.GetDirectoryName(FileSystemInfo.FullName);
+            var baseDirPath = Path.GetDirectoryName(FileInfo.FullName);
             co.CopyText(baseDirPath);
         }
 
@@ -112,7 +112,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         {
             var ao = new AssociationFileOpener(AssociationFileSetting);
 
-            return ao.Open(associationFileKind, FileSystemInfo, parameter);
+            return ao.Open(associationFileKind, FileInfo, parameter);
         }
 
         #endregion

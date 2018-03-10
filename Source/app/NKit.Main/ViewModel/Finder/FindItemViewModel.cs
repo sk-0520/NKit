@@ -31,7 +31,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public FindItemViewModel(FindItemModel model)
             : base(model)
         {
-            FileInfo = (FileInfo)model.FileSystemInfo;
+            FileInfo = Model.FileInfo;
 
             // だっせぇ
             if(Model.FileContentSearchResult.IsMatched) {
@@ -60,8 +60,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public bool MatchedContent => Model.FileContentSearchResult.IsMatched;
 
         public string RelativeDirectoryPath => Model.RelativeDirectoryPath;
-        public string FilePath => Model.FileSystemInfo.FullName;
-        public string FileName => Model.FileSystemInfo.Name;
+        public string FilePath => Model.FileInfo.FullName;
+        public string FileName => Model.FileInfo.Name;
         public string FileNameWithoutExtension => Path.GetFileNameWithoutExtension(FileName);
         public string Extension => Path.GetExtension(FilePath).Replace(".", string.Empty);
         public string DirectoryPath => Path.GetDirectoryName(FilePath);

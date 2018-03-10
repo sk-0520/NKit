@@ -88,11 +88,8 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             return ts.Search(fileSystemInfo.Name, CachedFileNamePattern);
         }
 
-        bool SearchFileSize(FileSystemInfo fileSystemInfo)
+        bool SearchFileSize(FileInfo fileInfo)
         {
-            // ここにきてれば絶対ファイルっしょ
-            var file = (FileInfo)fileSystemInfo;
-
             var disabledMaxSize = CurrentFindGroupSetting.FileSizeLimit.Tail == 0;
 
             if(CurrentFindGroupSetting.FileSizeLimit.Head == 0 && disabledMaxSize) {
@@ -101,10 +98,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
             var sizeRange = Range.Create(
                 CurrentFindGroupSetting.FileSizeLimit.Head,
-                disabledMaxSize ? file.Length : CurrentFindGroupSetting.FileSizeLimit.Tail
+                disabledMaxSize ? fileInfo.Length : CurrentFindGroupSetting.FileSizeLimit.Tail
             );
 
-            return sizeRange.IsIn(file.Length);
+            return sizeRange.IsIn(fileInfo.Length);
         }
 
         bool IsMatchFileAttributes(FileAttributes fileAttributes)
@@ -134,10 +131,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
             var result = new FilePropertySearchResult();
 
-            // ここにきてれば絶対ファイルっしょ
-            var file = (FileInfo)fileSystemInfo;
-
-            result.IsEnabledAttributes = IsMatchFileAttributes(file.Attributes);
+            result.IsEnabledAttributes = IsMatchFileAttributes(fileSystemInfo.Attributes);
 
 
             result.IsMatched = result.IsEnabledAttributes;
@@ -145,16 +139,14 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             return result;
         }
 
-        FileContentSearchResult SearchFlieContentPattern(FileSystemInfo fileSystemInfo)
+        FileContentSearchResult SearchFlieContentPattern(FileInfo fileInfo)
         {
             Debug.Assert(CurrentFindGroupSetting.FindFileContent);
             Debug.Assert(CachedFileNameKindPatterns.Any());
 
-            // ここにきてれば絶対ファイルっしょ
-            var file = (FileInfo)fileSystemInfo;
             FileContentSearcher searcher;
             try {
-                searcher = new FileContentSearcher(file);
+                searcher = new FileContentSearcher(fileInfo);
             } catch(IOException ex) {
                 Logger.Warning(ex);
                 // ファイルアクセスできないとかそんなん。諦めよう
@@ -166,14 +158,14 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
             // ファイルアクセス読み込み系は往々にしてよく落ちる
             using(searcher) {
-                if(CachedFileNameKindPatterns[FileNameKind.Text].IsMatch(file.Name)) {
+                if(CachedFileNameKindPatterns[FileNameKind.Text].IsMatch(fileInfo.Name)) {
                     try {
                         result.Text = searcher.SearchText(CachedFileContentPattern);
                     } catch(Exception ex) {
                         Logger.Warning(ex);
                     }
                 }
-                if(CurrentFindGroupSetting.MicrosoftOfficeContent.IsEnabled && CachedFileNameKindPatterns[FileNameKind.MicrosoftOffice].IsMatch(file.Name)) {
+                if(CurrentFindGroupSetting.MicrosoftOfficeContent.IsEnabled && CachedFileNameKindPatterns[FileNameKind.MicrosoftOffice].IsMatch(fileInfo.Name)) {
                     try {
                         var parameter = new MicrosoftOfficeSearchParameter();
                         parameter.Excel = CurrentFindGroupSetting.MicrosoftOfficeContent;
@@ -184,7 +176,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                         Logger.Warning(ex);
                     }
                 }
-                if(CurrentFindGroupSetting.XmlHtmlContent.IsEnabled && CachedFileNameKindPatterns[FileNameKind.XmlHtml].IsMatch(file.Name)) {
+                if(CurrentFindGroupSetting.XmlHtmlContent.IsEnabled && CachedFileNameKindPatterns[FileNameKind.XmlHtml].IsMatch(fileInfo.Name)) {
                     try {
                         // XMLとか検索した記憶あんまねぇなぁ
                         result.XmlHtml = searcher.SearchXmlHtml(CachedFileContentPattern, CurrentFindGroupSetting.XmlHtmlContent);
@@ -205,7 +197,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             return result;
         }
 
-        IEnumerable<FileSystemInfo> GetFiles(DirectoryInfo targetDirectory, string searchPattern, int limitLevel, CancellationToken cancelToken)
+        IEnumerable<FileInfo> GetFiles(DirectoryInfo targetDirectory, string searchPattern, int limitLevel, CancellationToken cancelToken)
         {
             var files = targetDirectory.EnumerateFiles(searchPattern, SearchOption.TopDirectoryOnly);
             foreach(var file in files) {
@@ -316,30 +308,30 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             return Task.Run(() => {
                 var files = GetFiles(dirInfo, "*", limitLevel, cancelToken);
 
-                foreach(var file in files) {
+                foreach(var fileInfo in files) {
                     cancelToken.ThrowIfCancellationRequested();
 
-                    var fileNameSearchResult = SearchNamePattern(file);
+                    var fileNameSearchResult = SearchNamePattern(fileInfo);
 
-                    var matchedFileSize = SearchFileSize(file);
+                    var matchedFileSize = SearchFileSize(fileInfo);
 
                     var filePropertySearchResult = FilePropertySearchResult.NotFound;
                     if(CurrentFindGroupSetting.FindFileProperty) {
-                        filePropertySearchResult = SearchProperty(file);
+                        filePropertySearchResult = SearchProperty(fileInfo);
                     }
 
                     var fileContentSearchResult = FileContentSearchResult.NotFound;
                     if(CurrentFindGroupSetting.FindFileContent && !string.IsNullOrEmpty(CurrentFindGroupSetting.FileContentSearchPattern)) {
                         if(CurrentFindGroupSetting.IsEnabledFileContentSizeLimit && matchedFileSize) {
                             // ファイルサイズ制限による読み込み抑制が有効であればサイズもチェックしたうえで検索
-                            fileContentSearchResult = SearchFlieContentPattern(file);
+                            fileContentSearchResult = SearchFlieContentPattern(fileInfo);
                         } else if(!CurrentFindGroupSetting.IsEnabledFileContentSizeLimit) {
                             // ファイルサイズ制限による読み込み抑制が無効なら問答無用で検索
-                            fileContentSearchResult = SearchFlieContentPattern(file);
+                            fileContentSearchResult = SearchFlieContentPattern(fileInfo);
                         }
                     }
 
-                    var findItem = new FindItemModel(dirInfo, file, fileNameSearchResult, matchedFileSize, filePropertySearchResult, fileContentSearchResult, FileSetting.AssociationFile, NKitSetting);
+                    var findItem = new FindItemModel(dirInfo, fileInfo, fileNameSearchResult, matchedFileSize, filePropertySearchResult, fileContentSearchResult, FileSetting.AssociationFile, NKitSetting);
                     Items.Add(findItem);
                 }
 
