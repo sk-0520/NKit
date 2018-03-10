@@ -28,13 +28,14 @@ namespace ContentTypeTextNet.NKit.Rocket
 
         static int Main(string[] args)
         {
+            StartupOptions.Initialize(args);
             using(var logSwitcher = new LogSwitcher(NKitApplicationKind.Rocket, new Uri("net.pipe://localhost/cttn-nkit"), "log")) {
                 logSwitcher.Initialize();
                 Log.Initialize(logSwitcher);
                 var logger = Log.CreateLogger();
 
                 logger.Information("!!START!!");
-                logger.Information($"this template compiled: 2018-03-09 15:29:47Z");
+                logger.Information($"this template compiled: 2018-03-10 10:01:53Z UTC");
 
                 var model = new ContentTypeTextNet.NKit.Rocket.Model.RocketModel(args);
                 var result = model.Run(CancellationToken.None);

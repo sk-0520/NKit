@@ -54,6 +54,8 @@ namespace ContentTypeTextNet.NKit.Main
 
             base.OnStartup(e);
 
+            StartupOptions.Initialize(e.Args);
+
             MainWindow = StartApplication();
 
             MainWindow.Show();

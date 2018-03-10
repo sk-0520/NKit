@@ -11,5 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyResolveHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StartupOptions.cs" />
   </ItemGroup>
 </Project>

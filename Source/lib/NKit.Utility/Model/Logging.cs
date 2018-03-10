@@ -122,7 +122,9 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         public LogSwitcher(NKitApplicationKind senderApplication, Uri serviceUri, string address)
         {
             SenderApplication = senderApplication;
-            LoggingClient = new NKitLoggingtalkerClient(SenderApplication, serviceUri, address);
+            if(serviceUri != null && !string.IsNullOrWhiteSpace(address)) {
+                LoggingClient = new NKitLoggingtalkerClient(SenderApplication, serviceUri, address);
+            }
         }
 
         #region property
@@ -139,7 +141,9 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         public void Initialize()
         {
-            LoggingClient.Open();
+            if(LoggingClient != null) {
+                LoggingClient.Open();
+            }
         }
 
         void Write(NKitLogKind logKind, string subject, string message, string detail, string callerMemberName, string callerFilePath, int callerLineNumber)
@@ -147,14 +151,16 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             var timestamp = DateTime.Now;
 
             Exception writeException = null;
-            if(LastErrorTimestamp + RetrySpan < timestamp) {
-                try {
-                    LoggingClient.Write(logKind, subject, message, detail, callerMemberName, callerFilePath, callerLineNumber);
-                    return;
-                } catch(CommunicationException ex) {
-                    writeException = ex;
+            if(LoggingClient != null) {
+                if(LastErrorTimestamp + RetrySpan < timestamp) {
+                    try {
+                        LoggingClient.Write(logKind, subject, message, detail, callerMemberName, callerFilePath, callerLineNumber);
+                        return;
+                    } catch(CommunicationException ex) {
+                        writeException = ex;
+                    }
+                    LastErrorTimestamp = timestamp;
                 }
-                LastErrorTimestamp = timestamp;
             }
 
             var writeValue = $"{timestamp} {SenderApplication} {logKind} {subject} {message} {detail}";
@@ -196,7 +202,9 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         {
             if(!IsDisposed) {
                 if(disposing) {
-                    LoggingClient.Dispose();
+                    if(LoggingClient != null) {
+                        LoggingClient.Dispose();
+                    }
                 }
             }
 

@@ -14,6 +14,7 @@ using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Manager.Define;
 using ContentTypeTextNet.NKit.Manager.Model.Application;
 using ContentTypeTextNet.NKit.Manager.Model.Log;
+using ContentTypeTextNet.NKit.Manager.Model.Workspace;
 using ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting;
 
 namespace ContentTypeTextNet.NKit.Manager.Model
@@ -60,6 +61,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         public WorkspaceState WorkspaceState { get; private set; }
 
         public WorkspaceItemSetting SelectedWorkspaceItem { get; private set; }
+
+        WorkspaceVolatilityItem WorkspaceVolatilityItem { get; } = new WorkspaceVolatilityItem();
 
 
         #endregion
@@ -140,6 +143,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
             InitializeLogger(commandLine);
             InitializeEnvironmentVariable(commandLine);
+
+            WorkspaceVolatilityItem.ApplicationId = $"NKIT_{DateTime.Now.ToFileTime()}_ID";
         }
 
         public void LoadSetting()
@@ -367,7 +372,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             NKitLoggingTalkerHost.LoggingWrite += NKitLoggingTalkerHost_LoggingWrite;
             NKitLoggingTalkerHost.Open();
 
-            ApplicationManager.ExecuteMainApplication(SelectedWorkspaceItem);
+            ApplicationManager.ExecuteMainApplication(WorkspaceVolatilityItem, SelectedWorkspaceItem);
 
             WorkspaceState = WorkspaceState.Running;
         }
@@ -418,7 +423,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         private void NKitApplicationTasker_ApplicationWakeup(object sender, TalkApplicationWakeupEventArgs e)
         {
-            ApplicationManager.ExecuteNKitApplication(e.SenderApplication, e.TargetApplication, e.Arguments, e.WorkingDirectoryPath);
+            ApplicationManager.ExecuteNKitApplication(e.SenderApplication, e.TargetApplication, WorkspaceVolatilityItem, SelectedWorkspaceItem, e.Arguments, e.WorkingDirectoryPath);
         }
 
         private void NKitLoggingTalkerHost_LoggingWrite(object sender, TalkLoggingWriteEventArgs e)

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Manager.Model.Log;
+using ContentTypeTextNet.NKit.Manager.Model.Workspace;
 using ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting;
 
 namespace ContentTypeTextNet.NKit.Manager.Model.Application
@@ -40,22 +41,28 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         #region function
 
-        public void ExecuteMainApplication(IReadOnlyWorkspaceItemSetting workspace)
+        string AddNKitArguments(IReadOnlyWorkspaceVolatilityItem workspaceVolatilityItem, IReadOnlyWorkspaceItemSetting workspaceItemSetting, string sourceArguments)
+        {
+            //TODO
+            return sourceArguments;
+        }
+
+        public void ExecuteMainApplication(IReadOnlyWorkspaceVolatilityItem workspaceVolatilityItem, IReadOnlyWorkspaceItemSetting workspaceItemSetting)
         {
             if(MainApplication != null) {
                 MainApplication.Exited -= MainApplication_Exited;
             }
 
             MainApplication = new NKitApplicationItem(NKitApplicationKind.Main, LogCreator) {
-                Arguments = $"--workspace {workspace.DirectoryPath}"
+                Arguments = AddNKitArguments(workspaceVolatilityItem, workspaceItemSetting, string.Empty)
             };
-            
+
             MainApplication.Exited += MainApplication_Exited;
 
             MainApplication.Execute();
         }
 
-        public void ExecuteNKitApplication(NKitApplicationKind senderApplication, NKitApplicationKind targetApplication, string arguments, string workingDirectoryPath)
+        public void ExecuteNKitApplication(NKitApplicationKind senderApplication, NKitApplicationKind targetApplication, IReadOnlyWorkspaceVolatilityItem workspaceVolatilityItem, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
         {
             ApplicationItem item = null;
 
@@ -65,7 +72,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
                 case NKitApplicationKind.Rocket:
                     item = new NKitApplicationItem(targetApplication, LogCreator) {
-                        Arguments = arguments,
+                        Arguments = AddNKitArguments(workspaceVolatilityItem, workspace, arguments),
                     };
                     break;
 

@@ -85,6 +85,7 @@
     <Compile Include="Model\Workspace\Setting\WorkspaceItemSetting.cs" />
     <Compile Include="Model\Workspace\Setting\WorkspaceSetting.cs" />
     <Compile Include="Model\Workspace\WorkspaceManager.cs" />
+    <Compile Include="Model\Workspace\WorkspaceVolatilityItem.cs" />
     <Compile Include="View\AcceptForm.cs">
       <SubType>Form</SubType>
     </Compile>
