@@ -9,5 +9,8 @@
     var defaultNamespace  = "ContentTypeTextNet.NKit.Rocket";
     var applicationKind   = "Rocket";
     var executeModelClass = "ContentTypeTextNet.NKit.Rocket.Model.RocketModel";
+//    var arguments         = new [] {
+//        new {  }
+//    };
 #>
 <#@ include file="$(ProjectDir)\..\..\common\T4\NKitApplication\CliApplication.tt" #>

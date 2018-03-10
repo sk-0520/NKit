@@ -19,14 +19,6 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace
         /// サービスURI。
         /// </summary>
         Uri ServiceUri { get; }
-        /// <summary>
-        /// アプリケーションアドレス。
-        /// </summary>
-        string AppAddress { get; }
-        /// <summary>
-        /// ログアドレス。
-        /// </summary>
-        string LogAddress { get; }
 
         /// <summary>
         /// 終了イベント名。

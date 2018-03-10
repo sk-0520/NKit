@@ -9,15 +9,11 @@ namespace ContentTypeTextNet.NKit.Common
         public CliApplicationModelBase(string[] arguments)
         {
             Arguments = arguments;
-
-            OptionHelp = CommandLineApplication.Option("--help", "help", CommandOptionType.NoValue);
         }
 
         #region property
 
         public string[] Arguments { get; }
-
-        protected CommandOption OptionHelp { get; }
 
         protected CommandLineApplication CommandLineApplication { get; } = new CommandLineApplication(false);
 

@@ -35,7 +35,12 @@ namespace ContentTypeTextNet.NKit.Rocket
                 var logger = Log.CreateLogger();
 
                 logger.Information("!!START!!");
-                logger.Information($"this template compiled: 2018-03-10 12:13:08Z UTC");
+                logger.Information($"this template compiled: 2018-03-10 21:24:34Z UTC");
+
+                if(StartupOptions.LetsDeath) {
+                    logger.Information("let's death");
+                    return 0;
+                }
 
                 var model = new ContentTypeTextNet.NKit.Rocket.Model.RocketModel(args);
                 var result = model.Run(CancellationToken.None);

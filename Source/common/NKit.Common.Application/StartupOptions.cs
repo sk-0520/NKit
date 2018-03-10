@@ -9,8 +9,9 @@ namespace ContentTypeTextNet.NKit.Common
     {
         #region property
 
+        public static bool LetsDeath { get; private set; }
+
         public static Uri ServiceUri { get; private set; }
-        public static string LogAddress { get; private set; }
         public static string WorkspacePath { get; private set; }
         public static string ApplicationId { get; private set; }
         public static string ExitEventName { get; private set; }
@@ -31,18 +32,19 @@ namespace ContentTypeTextNet.NKit.Common
 #endif
             var cl = new CommandLineApplication(false);
 
+            var letsDeathOption = cl.Option("--nkit_lets_death", "exit event name", CommandOptionType.NoValue);
             var serviceUriOption = cl.Option("--nkit_service_uri", "service uri", CommandOptionType.SingleValue);
-            var logAddressOption = cl.Option("--nkit_log_address", "log address", CommandOptionType.SingleValue);
-            var workspacePathOption = cl.Option("--nkit_workspace", "workspace path", CommandOptionType.SingleValue);
             var applicationIdOption = cl.Option("--nkit_application_id", "application id", CommandOptionType.SingleValue);
+            var workspacePathOption = cl.Option("--nkit_workspace", "workspace path", CommandOptionType.SingleValue);
             var exitEventNameOption = cl.Option("--nkit_exit_event_name", "exit event name", CommandOptionType.SingleValue);
 
             cl.Execute(args);
 
+            LetsDeath = letsDeathOption.HasValue();
+
             if(serviceUriOption.HasValue()) {
                 ServiceUri = new Uri(serviceUriOption.Value());
             }
-            LogAddress = logAddressOption.Value();
             WorkspacePath = workspacePathOption.Value();
             ApplicationId = applicationIdOption.Value();
             ExitEventName = exitEventNameOption.Value();

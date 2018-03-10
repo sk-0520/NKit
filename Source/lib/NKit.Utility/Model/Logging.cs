@@ -163,7 +163,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                 }
             }
 
-            var writeValue = $"{timestamp} {SenderApplication} {logKind} {subject} {message} {detail}";
+            var writeValue = $"@ {timestamp} {SenderApplication} {logKind} {subject} {message} {detail}";
             switch(logKind) {
                 case NKitLogKind.Trace:
                 case NKitLogKind.Debug:
