@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Extensions.CommandLineUtils;
+using Microsoft.WindowsAPICodePack.Taskbar;
 
 namespace ContentTypeTextNet.NKit.Common
 {
@@ -48,6 +49,11 @@ namespace ContentTypeTextNet.NKit.Common
             WorkspacePath = workspacePathOption.Value();
             ApplicationId = applicationIdOption.Value();
             ExitEventName = exitEventNameOption.Value();
+
+            if(!string.IsNullOrWhiteSpace(ApplicationId)) {
+                TaskbarManager.Instance.ApplicationId = ApplicationId;
+            }
+
 
 #if DEBUG
             IsInitialized = true;

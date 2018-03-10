@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,13 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 {
     public class ManagerWorker : DisposerBase
     {
+        #region define
+
+        [DllImport("shell32.dll", SetLastError = true)]
+        static extern void SetCurrentProcessExplicitAppUserModelID([MarshalAs(UnmanagedType.LPWStr)] string AppID);
+
+        #endregion
+
         #region event
 
         public event EventHandler<EventArgs> WorkspaceExited;
@@ -144,7 +152,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             InitializeLogger(commandLine);
             InitializeEnvironmentVariable(commandLine);
 
-            WorkspaceVolatilityItem.ApplicationId = $"NKIT_{DateTime.Now.ToFileTime()}_ID";
+            var baseId = DateTime.Now.ToFileTime();
+            WorkspaceVolatilityItem.ApplicationId = $"NKIT_{baseId}_ID";
+            SetCurrentProcessExplicitAppUserModelID(WorkspaceVolatilityItem.ApplicationId);
         }
 
         public void LoadSetting()
