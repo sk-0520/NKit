@@ -366,15 +366,13 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         {
             var aboutId = DateTime.Now.ToFileTime().ToString();
             WorkspaceVolatilityItem.ServiceUri = new Uri($"net.pipe://localhost/cttn-nkit-{aboutId}");
-            WorkspaceVolatilityItem.AppAddress = "app";
-            WorkspaceVolatilityItem.LogAddress = "log";
             WorkspaceVolatilityItem.ExitEventName = $"exit-{aboutId}";
 
-            NKitApplicationTalkerHost = new NKitApplicationTalkerHost(WorkspaceVolatilityItem.ServiceUri, WorkspaceVolatilityItem.AppAddress);
+            NKitApplicationTalkerHost = new NKitApplicationTalkerHost(WorkspaceVolatilityItem.ServiceUri, CommonUtility.AppAddress);
             NKitApplicationTalkerHost.ApplicationWakeup += NKitApplicationTasker_ApplicationWakeup;
             NKitApplicationTalkerHost.Open();
 
-            NKitLoggingTalkerHost = new NKitLoggingTalkerHost(WorkspaceVolatilityItem.ServiceUri, WorkspaceVolatilityItem.LogAddress);
+            NKitLoggingTalkerHost = new NKitLoggingTalkerHost(WorkspaceVolatilityItem.ServiceUri, CommonUtility.LogAddress);
             NKitLoggingTalkerHost.LoggingWrite += NKitLoggingTalkerHost_LoggingWrite;
             NKitLoggingTalkerHost.Open();
 

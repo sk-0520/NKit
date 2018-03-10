@@ -38,14 +38,6 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace
         /// サービスURI。
         /// </summary>
         public Uri ServiceUri { get; set; }
-        /// <summary>
-        /// アプリケーションアドレス。
-        /// </summary>
-        public string AppAddress { get; set; }
-        /// <summary>
-        /// ログアドレス。
-        /// </summary>
-        public string LogAddress { get; set; }
 
         /// <summary>
         /// 終了イベント名。
