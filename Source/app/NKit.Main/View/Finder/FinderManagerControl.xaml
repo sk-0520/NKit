@@ -137,6 +137,8 @@
                       <Label>type:</Label>
                       <app_main_view_control:SearchPatternSelectControl SearchPatternKind="{Binding FileContentSearchPatternKind, Mode=TwoWay}" />
 
+                      <CheckBox IsChecked="{Binding IsEnabledFileContentSizeLimit}">IsEnabledFileContentSizeLimit</CheckBox>
+
                       <GroupBox>
                         <GroupBox.Header>
                           <CheckBox IsChecked="{Binding MicrosoftOfficeContentIsEnabled}">office</CheckBox>

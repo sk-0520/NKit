@@ -329,8 +329,11 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
                     var fileContentSearchResult = FileContentSearchResult.NotFound;
                     if(CurrentFindGroupSetting.FindFileContent && !string.IsNullOrEmpty(CurrentFindGroupSetting.FileContentSearchPattern)) {
-                        // あんまりお行儀良くない気がしたのでファイルサイズチェックに該当したものだけファイル内検索するようにした
-                        if(matchedFileSize) {
+                        if(CurrentFindGroupSetting.IsEnabledFileContentSizeLimit && matchedFileSize) {
+                            // ファイルサイズ制限による読み込み抑制が有効であればサイズもチェックしたうえで検索
+                            fileContentSearchResult = SearchFlieContentPattern(file);
+                        } else if(!CurrentFindGroupSetting.IsEnabledFileContentSizeLimit) {
+                            // ファイルサイズ制限による読み込み抑制が無効なら問答無用で検索
                             fileContentSearchResult = SearchFlieContentPattern(file);
                         }
                     }

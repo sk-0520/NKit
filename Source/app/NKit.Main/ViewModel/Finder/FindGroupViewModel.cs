@@ -219,6 +219,12 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { SetPropertyValue(Model.FindGroupSetting, value); }
         }
 
+        public bool IsEnabledFileContentSizeLimit
+        {
+            get { return Model.FindGroupSetting.IsEnabledFileContentSizeLimit; }
+            set { SetPropertyValue(Model.FindGroupSetting, value); }
+        }
+
         #region office
 
         public bool MicrosoftOfficeContentIsEnabled

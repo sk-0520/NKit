@@ -87,7 +87,10 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         /// ファイル内検索内容。
         /// </summary>
         string FileContentSearchPattern { get; }
-
+        /// <summary>
+        /// ファイル内容検索においてファイルサイズ制限以内のものに限定する。
+        /// </summary>
+        bool IsEnabledFileContentSizeLimit { get; }
 
         IReadOnlyFindMicrosoftOfficeContentSetting MicrosoftOfficeContent { get; }
         IReadOnlyFindXmlHtmlContentSetting XmlHtmlContent { get; }
@@ -122,6 +125,7 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         public SearchPatternKind FileContentSearchPatternKind { get; set; }
         public bool FileContentCase { get; set; }
         public string FileContentSearchPattern { get; set; }
+        public bool IsEnabledFileContentSizeLimit { get; set; } = true;
 
         public FindMicrosoftOfficeContentSetting MicrosoftOfficeContent { get; } = new FindMicrosoftOfficeContentSetting();
         IReadOnlyFindMicrosoftOfficeContentSetting IReadOnlyFindGroupSetting.MicrosoftOfficeContent => MicrosoftOfficeContent;
