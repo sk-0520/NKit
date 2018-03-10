@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
-using ContentTypeTextNet.NKit.NKit.Setting.Define;
+using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
 
-namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
+namespace ContentTypeTextNet.NKit.Setting.Finder
 {
     public interface IReadOnlyFindGroupSetting : IReadOnlyGuidIdSetting
     {
@@ -69,7 +69,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         /// <summary>
         /// <see cref="FilePropertyFileAttributes"/> の選択内容全てを一致対象とするか。
         /// </summary>
-        FlagMatch FilePropertyFileAttributeFlagMatch { get; }
+        FlagMatchKind FilePropertyFileAttributeFlagMatchKind { get; }
 
         /// <summary>
         /// ファイル内まで検索するか。
@@ -116,7 +116,7 @@ namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
         public bool FindFileProperty { get; set; } = !true;
 
         public FileAttributes FilePropertyFileAttributes { get; set; }
-        public FlagMatch FilePropertyFileAttributeFlagMatch { get; set; }
+        public FlagMatchKind FilePropertyFileAttributeFlagMatchKind { get; set; }
 
         public bool FindFileContent { get; set; } = true;
         public SearchPatternKind FileContentSearchPatternKind { get; set; }

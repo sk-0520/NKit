@@ -16,7 +16,7 @@ using System.Windows.Threading;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
-using ContentTypeTextNet.NKit.NKit.Setting.Define;
+using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
 using ContentTypeTextNet.NKit.Utility.ViewModell;
 using Prism.Commands;
@@ -109,6 +109,12 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public bool FindFileProperty
         {
             get { return Model.FindGroupSetting.FindFileProperty; }
+            set { SetPropertyValue(Model.FindGroupSetting, value); }
+        }
+
+        public FlagMatchKind FilePropertyFileAttributeFlagMatchKind
+        {
+            get { return Model.FindGroupSetting.FilePropertyFileAttributeFlagMatchKind; }
             set { SetPropertyValue(Model.FindGroupSetting, value); }
         }
 

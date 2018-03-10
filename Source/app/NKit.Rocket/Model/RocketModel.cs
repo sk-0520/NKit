@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
-using ContentTypeTextNet.NKit.NKit.Setting.Define;
+using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
 using Microsoft.Extensions.CommandLineUtils;
 

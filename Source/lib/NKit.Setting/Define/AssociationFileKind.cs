@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContentTypeTextNet.NKit.NKit.Setting.Define
+namespace ContentTypeTextNet.NKit.Setting.Define
 {
     /// <summary>
     /// 関連付けファイル種別。

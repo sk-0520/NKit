@@ -20,7 +20,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         /// <summary>
         /// ファイル属性一致。
-        /// <para>一致内容自体は指定された<see cref="ContentTypeTextNet.NKit.NKit.Setting.Define.FlagMatch"/>に依存。</para>
+        /// <para>一致内容自体は指定された<see cref="ContentTypeTextNet.NKit.Setting.Define.FlagMatchKind"/>に依存。</para>
         /// </summary>
         public bool IsEnabledAttributes { get; set; }
 

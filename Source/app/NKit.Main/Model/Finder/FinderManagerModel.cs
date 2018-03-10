@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
-using ContentTypeTextNet.NKit.NKit.Setting;
-using ContentTypeTextNet.NKit.NKit.Setting.Finder;
+using ContentTypeTextNet.NKit.Setting;
+using ContentTypeTextNet.NKit.Setting.Finder;
 
 namespace ContentTypeTextNet.NKit.Main.Model.Finder
 {

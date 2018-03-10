@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Main.Model.File;
-using ContentTypeTextNet.NKit.NKit.Setting.Define;
-using ContentTypeTextNet.NKit.NKit.Setting.File;
-using ContentTypeTextNet.NKit.NKit.Setting.NKit;
+using ContentTypeTextNet.NKit.Setting.Define;
+using ContentTypeTextNet.NKit.Setting.File;
+using ContentTypeTextNet.NKit.Setting.NKit;
 using ContentTypeTextNet.NKit.Utility.Model;
 
 namespace ContentTypeTextNet.NKit.Main.Model.Finder

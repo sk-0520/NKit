@@ -4,7 +4,7 @@
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 
-  xmlns:app_setting_define="clr-namespace:ContentTypeTextNet.NKit.NKit.Setting.Define;assembly=NKit.Setting"
+  xmlns:app_setting_define="clr-namespace:ContentTypeTextNet.NKit.Setting.Define;assembly=NKit.Setting"
   xmlns:app_utility_view_converter="clr-namespace:ContentTypeTextNet.NKit.Utility.View.Converter;assembly=NKit.Utility"
 
   xmlns:app_main_define="clr-namespace:ContentTypeTextNet.NKit.Main.Define"

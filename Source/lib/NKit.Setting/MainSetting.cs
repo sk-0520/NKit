@@ -5,11 +5,11 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
-using ContentTypeTextNet.NKit.NKit.Setting.File;
-using ContentTypeTextNet.NKit.NKit.Setting.Finder;
-using ContentTypeTextNet.NKit.NKit.Setting.NKit;
+using ContentTypeTextNet.NKit.Setting.File;
+using ContentTypeTextNet.NKit.Setting.Finder;
+using ContentTypeTextNet.NKit.Setting.NKit;
 
-namespace ContentTypeTextNet.NKit.NKit.Setting
+namespace ContentTypeTextNet.NKit.Setting
 {
     [Serializable, DataContract]
     public class MainSetting: SettingBase

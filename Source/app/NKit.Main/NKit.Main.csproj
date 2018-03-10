@@ -129,9 +129,16 @@
     <Compile Include="Model\File\FilePropertySearchResult.cs" />
     <Compile Include="Model\NKit\NKitApplicationExecutor.cs" />
     <Compile Include="Model\XmlHtmlSearcher.cs" />
+    <Compile Include="View\Control\FlagMatchSelectControl.xaml.cs">
+      <DependentUpon>FlagMatchSelectControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Control\RunnableControl.xaml.cs">
       <DependentUpon>RunnableControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\Control\FlagMatchSelectControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Finder\FinderManagerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

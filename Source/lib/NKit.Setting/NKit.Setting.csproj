@@ -7,7 +7,7 @@
     <ProjectGuid>{76F8B393-7678-4183-8172-D74045686B13}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ContentTypeTextNet.NKit.NKit.Setting</RootNamespace>
+    <RootNamespace>ContentTypeTextNet.NKit.Setting</RootNamespace>
     <AssemblyName>NKit.Setting</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -45,7 +45,7 @@
       <Link>Common\Setting.cs</Link>
     </Compile>
     <Compile Include="Define\AssociationFileKind.cs" />
-    <Compile Include="Define\FlagMatch.cs" />
+    <Compile Include="Define\FlagMatchKind.cs" />
     <Compile Include="Define\SearchPatternKind.cs" />
     <Compile Include="File\AssociationFileSetting.cs" />
     <Compile Include="File\FileSetting.cs" />

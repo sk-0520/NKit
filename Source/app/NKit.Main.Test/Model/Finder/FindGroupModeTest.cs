@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
-using ContentTypeTextNet.NKit.NKit.Setting.Finder;
+using ContentTypeTextNet.NKit.Setting.Finder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ContentTypeTextNet.NKit.Main.Test.Model.Finder
@@ -31,7 +31,7 @@ namespace ContentTypeTextNet.NKit.Main.Test.Model.Finder
                 | FileAttributes.SparseFile
             ;
 
-            setting.FilePropertyFileAttributeFlagMatch = NKit.Setting.Define.FlagMatch.Has;
+            setting.FilePropertyFileAttributeFlagMatchKind = NKit.Setting.Define.FlagMatchKind.Has;
             Assert.IsTrue((bool)model.Invoke(method, FileAttributes.Archive));
             Assert.IsTrue((bool)model.Invoke(method, FileAttributes.SparseFile));
             Assert.IsFalse((bool)model.Invoke(method, FileAttributes.Normal));
@@ -42,7 +42,7 @@ namespace ContentTypeTextNet.NKit.Main.Test.Model.Finder
             Assert.IsTrue((bool)model.Invoke(method, FileAttributes.Offline | FileAttributes.Archive | FileAttributes.Normal | FileAttributes.Directory));
             Assert.IsFalse((bool)model.Invoke(method, FileAttributes.Offline | FileAttributes.Normal | FileAttributes.Directory));
 
-            setting.FilePropertyFileAttributeFlagMatch = NKit.Setting.Define.FlagMatch.Approximate;
+            setting.FilePropertyFileAttributeFlagMatchKind = NKit.Setting.Define.FlagMatchKind.Approximate;
             Assert.IsFalse((bool)model.Invoke(method, FileAttributes.Archive));
             Assert.IsFalse((bool)model.Invoke(method, FileAttributes.SparseFile));
             Assert.IsFalse((bool)model.Invoke(method, FileAttributes.Normal));
@@ -53,7 +53,7 @@ namespace ContentTypeTextNet.NKit.Main.Test.Model.Finder
             Assert.IsTrue((bool)model.Invoke(method, FileAttributes.Archive | FileAttributes.Directory | FileAttributes.SparseFile));
             Assert.IsTrue((bool)model.Invoke(method, FileAttributes.Offline | FileAttributes.Archive | FileAttributes.SparseFile));
 
-            setting.FilePropertyFileAttributeFlagMatch = NKit.Setting.Define.FlagMatch.Full;
+            setting.FilePropertyFileAttributeFlagMatchKind = NKit.Setting.Define.FlagMatchKind.Full;
             Assert.IsTrue((bool)model.Invoke(method, FileAttributes.Archive | FileAttributes.Normal | FileAttributes.Directory | FileAttributes.SparseFile));
             Assert.IsTrue((bool)model.Invoke(method, FileAttributes.Archive | FileAttributes.Normal | FileAttributes.SparseFile));
             Assert.IsTrue((bool)model.Invoke(method, FileAttributes.Archive | FileAttributes.Directory | FileAttributes.SparseFile));

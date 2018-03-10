@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using ContentTypeTextNet.Library.PInvoke.Windows;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Main.Model.NKit;
-using ContentTypeTextNet.NKit.NKit.Setting.Define;
-using ContentTypeTextNet.NKit.NKit.Setting.File;
+using ContentTypeTextNet.NKit.Setting.Define;
+using ContentTypeTextNet.NKit.Setting.File;
 using ContentTypeTextNet.NKit.Utility.Model;
 
 namespace ContentTypeTextNet.NKit.Main.Model.File

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContentTypeTextNet.NKit.NKit.Setting.Define
+namespace ContentTypeTextNet.NKit.Setting.Define
 {
-    public enum FlagMatch
+    public enum FlagMatchKind
     {
         /// <summary>
         /// どれかのフラグが立っている。

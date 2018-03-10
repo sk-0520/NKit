@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using ContentTypeTextNet.NKit.NKit.Setting.Finder;
+using ContentTypeTextNet.NKit.Setting.Finder;
 using ContentTypeTextNet.NKit.Utility.Model;
 using Hnx8.ReadJEnc;
 using HtmlAgilityPack;

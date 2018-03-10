@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 
-namespace ContentTypeTextNet.NKit.NKit.Setting.NKit
+namespace ContentTypeTextNet.NKit.Setting.NKit
 {
     public interface IReadOnlyNKitSetting
     {

@@ -105,6 +105,8 @@
                       <CheckBox IsChecked="{Binding FindFileProperty}">FindFileProperty</CheckBox>
                     </Expander.Header>
                     <StackPanel>
+                      <app_main_view_control:FlagMatchSelectControl FlagMatchKind="{Binding FilePropertyFileAttributeFlagMatchKind, Mode=TwoWay}" />
+
                       <CheckBox IsChecked="{Binding FilePropertyAttributeIsArchive}">FilePropertyAttributeIsArchive</CheckBox>
                       <CheckBox IsChecked="{Binding FilePropertyAttributeIsCompressed}">FilePropertyAttributeIsCompressed</CheckBox>
                       <CheckBox IsChecked="{Binding FilePropertyAttributeIsEncrypted}">FilePropertyAttributeIsEncrypted</CheckBox>

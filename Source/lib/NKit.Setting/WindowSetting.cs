@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 
-namespace ContentTypeTextNet.NKit.NKit.Setting
+namespace ContentTypeTextNet.NKit.Setting
 {
     public class WindowSetting : SettingBase
     {

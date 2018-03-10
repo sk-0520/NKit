@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ContentTypeTextNet.NKit.Main.Define;
-using ContentTypeTextNet.NKit.NKit.Setting.Define;
+using ContentTypeTextNet.NKit.Setting.Define;
 
 namespace ContentTypeTextNet.NKit.Main.View.Control
 {

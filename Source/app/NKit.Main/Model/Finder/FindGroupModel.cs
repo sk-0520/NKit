@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model.File;
-using ContentTypeTextNet.NKit.NKit.Setting.Define;
-using ContentTypeTextNet.NKit.NKit.Setting.File;
-using ContentTypeTextNet.NKit.NKit.Setting.Finder;
-using ContentTypeTextNet.NKit.NKit.Setting.NKit;
+using ContentTypeTextNet.NKit.Setting.Define;
+using ContentTypeTextNet.NKit.Setting.File;
+using ContentTypeTextNet.NKit.Setting.Finder;
+using ContentTypeTextNet.NKit.Setting.NKit;
 using ContentTypeTextNet.NKit.Utility.Model;
 
 namespace ContentTypeTextNet.NKit.Main.Model.Finder
@@ -113,14 +113,14 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             var maskedValue = fileAttributes & ~maskFlags;
             var maskedSetting = CurrentFindGroupSetting.FilePropertyFileAttributes & ~maskFlags;
 
-            switch(CurrentFindGroupSetting.FilePropertyFileAttributeFlagMatch) {
-                case FlagMatch.Has:
+            switch(CurrentFindGroupSetting.FilePropertyFileAttributeFlagMatchKind) {
+                case FlagMatchKind.Has:
                     return 0 != (maskedValue & maskedSetting);
 
-                case FlagMatch.Approximate:
+                case FlagMatchKind.Approximate:
                     return (maskedValue & maskedSetting) == maskedSetting;
 
-                case FlagMatch.Full:
+                case FlagMatchKind.Full:
                     return maskedValue == maskedSetting;
 
                 default:

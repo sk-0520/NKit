@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Main.Define;
-using ContentTypeTextNet.NKit.NKit.Setting.Define;
+using ContentTypeTextNet.NKit.Setting.Define;
 
 namespace ContentTypeTextNet.NKit.Main.Model
 {

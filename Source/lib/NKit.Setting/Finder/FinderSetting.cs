@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 
-namespace ContentTypeTextNet.NKit.NKit.Setting.Finder
+namespace ContentTypeTextNet.NKit.Setting.Finder
 {
     public interface IReadOnlyFinderSetting
     {
