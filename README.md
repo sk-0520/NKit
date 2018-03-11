@@ -12,7 +12,7 @@
 
 # フォーラム
 
-ねーよ。
+[Google Groups](https://groups.google.com/d/forum/nkit-forum)を参照。
 
 
 # 課題管理
