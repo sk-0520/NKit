@@ -464,6 +464,16 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             () => SelectedItem != null
         );
 
+        //TODO: シェルメニュー表示
+        //public ICommand OpenSelectedFilesContextMenuCommand => new DelegateCommand(
+        //    () => {
+        //        if(MultiSelectedItem.IsEnabled) {
+        //        } else {
+        //        }
+        //    },
+        //    () => SelectedItem != null || MultiSelectedItem.IsEnabled
+        //);
+
         #endregion
 
         #region function

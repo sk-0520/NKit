@@ -214,6 +214,11 @@
             <i:EventTrigger EventName="MouseDoubleClick">
               <i:InvokeCommandAction Command="{Binding OpenSelectedFileCommand}" />
             </i:EventTrigger>
+            <!-- TODO: シェルメニュー表示
+            <i:EventTrigger EventName="MouseRightButtonUp">
+              <i:InvokeCommandAction Command="{Binding OpenSelectedFilesContextMenuCommand}" />
+            </i:EventTrigger>
+            -->
           </i:Interaction.Triggers>
           <ListView.ItemsPanel>
             <ItemsPanelTemplate>
