@@ -49,7 +49,7 @@
               <Label>group:</Label>
               <TextBox Text="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}" />
 
-              <Button Command="{Binding SaveDefaultSettingCommand}">save default</Button>
+              <Button Command="{Binding SetDefaultSettingCommand}">set default</Button>
             </StackPanel>
           </Expander>
 

@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace ContentTypeTextNet.NKit.Setting.Finder
 {
@@ -117,6 +119,7 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         public bool FindDotDirectory { get; set; }
 
         [DataMember]
+        [JsonConverter(typeof(StringEnumConverter))]
         public SearchPatternKind FileNameSearchPatternKind { get; set; }
         [DataMember]
         public bool FileNameCase { get; set; }
@@ -131,13 +134,16 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         public bool FindFileProperty { get; set; }
 
         [DataMember]
+        [JsonConverter(typeof(StringEnumConverter))]
         public FileAttributes FilePropertyFileAttributes { get; set; }
         [DataMember]
+        [JsonConverter(typeof(StringEnumConverter))]
         public FlagMatchKind FilePropertyFileAttributeFlagMatchKind { get; set; }
 
         [DataMember]
         public bool FindFileContent { get; set; }
         [DataMember]
+        [JsonConverter(typeof(StringEnumConverter))]
         public SearchPatternKind FileContentSearchPatternKind { get; set; }
         [DataMember]
         public bool FileContentCase { get; set; }

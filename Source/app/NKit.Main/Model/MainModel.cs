@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -47,8 +48,12 @@ namespace ContentTypeTextNet.NKit.Main.Model
 #endif
             LogSwitcher = new LogSwitcher(Common.NKitApplicationKind.Main, StartupOptions.ServiceUri);
             Log.Initialize(LogSwitcher);
+            LogSwitcher.Initialize();
+            // 構造上この子の Logger はおバカのまんまなので直してやる必要あり
+            ResetLogger(Log.CreateLogger(this));
+            Logger.Information("!!START!!");
 
-            Setting = new MainSetting();
+            Setting = LoadSetting();
 
             NKitManager = new NKitManagerModel(Setting);
             FinderManager = new FinderManagerModel(Setting);
@@ -56,17 +61,60 @@ namespace ContentTypeTextNet.NKit.Main.Model
             CaptureManager = new CaptureManagerModel(Setting);
             SystemManager = new SystemManagerModel(Setting);
 
-            LogSwitcher.Initialize();
-
-            // 構造上この子の Logger はおバカのまんまなので直してやる必要あり
-            ResetLogger(Log.CreateLogger(this));
-
-            Logger.Information("!!START!!");
 
 #if DEBUG
             IsInitialized = true;
 #endif
         }
+
+        public void Uninitialize()
+        {
+            SaveSetting(Setting);
+        }
+
+
+        FileInfo GetSettingFile()
+        {
+            var path = Path.Combine(StartupOptions.WorkspacePath, CommonUtility.WorkspaceSettingDirectoryName, "main.json");
+
+            var result = new FileInfo(path);
+            result.Refresh();
+
+            return result;
+        }
+
+        MainSetting LoadSetting()
+        {
+            var file = GetSettingFile();
+            if(file.Exists) {
+                try {
+                    using(var stream = file.OpenRead()) {
+                        var serializer = new JsonSerializer();
+                        return serializer.Load<MainSetting>(stream);
+                    }
+                } catch(Exception ex) {
+                    Logger.Error(ex);
+                }
+            }
+
+            Logger.Information("create main setting");
+
+            return new MainSetting();
+        }
+
+        void SaveSetting(MainSetting setting)
+        {
+            var file = GetSettingFile();
+            // ディレクトリ確認してる時点でワークスペースぶっ壊れてると思うのね
+            //if(!file.Directory.Exists) {
+            //    file.Directory.Create();
+            //}
+            using(var stream = file.Create()) {
+                var serializer = new JsonSerializer();
+                serializer.Save(setting, stream);
+            }
+        }
+
 
         #endregion
     }

@@ -61,6 +61,15 @@ namespace ContentTypeTextNet.NKit.Main.Properties {
         }
         
         /// <summary>
+        ///   new group に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_Finder_FindGroup_NewGroupName {
+            get {
+                return ResourceManager.GetString("String_Finder_FindGroup_NewGroupName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   cancel に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string String_View_Control_RunnableControl_CancelContent_Text {

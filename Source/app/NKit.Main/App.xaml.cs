@@ -21,6 +21,8 @@ namespace ContentTypeTextNet.NKit.Main
 
         AssemblyResolveHelper AssemblyResolveHelper { get; set; }
 
+        MainModel MainModel { get; set; }
+
         #endregion
 
         #region function
@@ -33,10 +35,10 @@ namespace ContentTypeTextNet.NKit.Main
 
         Window StartApplication()
         {
-            var model = new MainModel();
-            model.Initialize();
+            MainModel = new MainModel();
+            MainModel.Initialize();
 
-            var viewModel = new MainViewModel(model);
+            var viewModel = new MainViewModel(MainModel);
             var view = new MainWindow() {
                 DataContext = viewModel,
             };
@@ -59,6 +61,13 @@ namespace ContentTypeTextNet.NKit.Main
             MainWindow = StartApplication();
 
             MainWindow.Show();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            MainModel.Uninitialize();
+
+            base.OnExit(e);
         }
 
         #endregion

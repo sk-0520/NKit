@@ -44,6 +44,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public ICommand AddNewGroupCommand => new DelegateCommand(() => {
             var model = Model.AddNewGroup();
             var viewModel = new FindGroupViewModel(model);
+
             GroupViewModels.Add(viewModel);
             SelectedGroupItem = viewModel;
         });
@@ -57,7 +58,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             var index = GroupViewModels.IndexOf(vm);
             GroupViewModels.RemoveAt(index);
             vm.Dispose();
-            Model.RemoveAtInGroups(index);
+            Model.RemoveGroupAt(index);
         });
 
 

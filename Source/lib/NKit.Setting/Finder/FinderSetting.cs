@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -13,7 +14,7 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         /// <summary>
         /// 保存済み検索条件。
         /// </summary>
-        IReadOnlyFindGroupSetting[] Groups { get; }
+        IReadOnlyCollection<IReadOnlyFindGroupSetting> Groups { get; }
         /// <summary>
         /// デフォルト検索条件。
         /// </summary>
@@ -39,8 +40,8 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         #region IReadOnlyFinderSetting
 
         [DataMember]
-        public FindGroupSetting[] Groups { get; set; } = new FindGroupSetting[0];
-        IReadOnlyFindGroupSetting[] IReadOnlyFinderSetting.Groups => Groups;
+        public Collection<FindGroupSetting> Groups { get; set; } = new Collection<FindGroupSetting>();
+        IReadOnlyCollection<IReadOnlyFindGroupSetting> IReadOnlyFinderSetting.Groups => Groups;
 
         [DataMember]
         public FindGroupSetting DefaultGroupSetting { get; set; } = new FindGroupSetting();

@@ -15,11 +15,15 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
     {
         public FinderManagerModel(MainSetting setting)
             : base(setting)
-        { }
+        {
+            Groups = new ObservableCollection<FindGroupModel>(
+                Setting.Finder.Groups.Select(g => new FindGroupModel(this, g, Setting.Finder, Setting.File, Setting.NKit))
+            );
+        }
 
         #region property
 
-        public ObservableCollection<FindGroupModel> Groups { get; } = new ObservableCollection<FindGroupModel>();
+        public ObservableCollection<FindGroupModel> Groups { get; }
 
         #endregion
 
@@ -27,7 +31,15 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
         FindGroupModel CreateGroupModel()
         {
-            var setting = new FindGroupSetting();
+            var setting = SerializeUtility.Clone(Setting.Finder.DefaultGroupSetting);
+
+            setting.Id = Guid.NewGuid();
+            setting.GroupName = TextUtility.ToUniqueDefault(
+                Properties.Resources.String_Finder_FindGroup_NewGroupName,
+                Setting.Finder.Groups.Select(g => g.GroupName),
+                StringComparison.InvariantCultureIgnoreCase
+            );
+
             var model = new FindGroupModel(this, setting, Setting.Finder, Setting.File, Setting.NKit);
 
             return model;
@@ -36,15 +48,23 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         public FindGroupModel AddNewGroup()
         {
             var model = CreateGroupModel();
+
+            Setting.Finder.Groups.Add(model.FindGroupSetting);
             Groups.Add(model);
 
             return model;
         }
 
-        public void RemoveAtInGroups(int index)
+        public void RemoveGroupAt(int index)
         {
             var model = Groups[index];
             Groups.RemoveAt(index);
+
+            var groupSetting = Setting.Finder.Groups.FirstOrDefault(g => g.Id == model.FindGroupSetting.Id);
+            if(groupSetting != null) {
+                Setting.Finder.Groups.Remove(groupSetting);
+            }
+
             model.Dispose();
         }
 

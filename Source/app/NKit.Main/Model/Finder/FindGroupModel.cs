@@ -80,7 +80,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             return false;
         }
 
-        public void SaveDefaultSetting()
+        public void SetDefaultSetting()
         {
             Manager.SetDefaultSetting(FindGroupSetting);
         }

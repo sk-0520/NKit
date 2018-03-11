@@ -72,6 +72,10 @@ namespace ContentTypeTextNet.NKit.Common
         public static string AppAddress => "app";
         public static string LogAddress => "log";
 
+        public static string WorkspaceSettingDirectoryName => "settings";
+        public static string WorkspaceLogDirectoryName => "logs";
+        public static string WorkspaceTemporaryDirectoryName => "temporary";
+
         #endregion
 
         #region function

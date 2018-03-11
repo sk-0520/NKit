@@ -453,8 +453,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             }
         });
 
-        public ICommand SaveDefaultSettingCommand => new DelegateCommand(() => {
-            Model.SaveDefaultSetting();
+        public ICommand SetDefaultSettingCommand => new DelegateCommand(() => {
+            Model.SetDefaultSetting();
         });
 
         #endregion
