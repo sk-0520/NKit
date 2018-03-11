@@ -42,6 +42,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandWorkspaceDelete = new System.Windows.Forms.Button();
             this.panelWorkspace = new System.Windows.Forms.Panel();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.viewLog = new System.Windows.Forms.RichTextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.panelWorkspace.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
@@ -58,7 +60,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             // commandWorkspaceLoad
             // 
-            this.commandWorkspaceLoad.Location = new System.Drawing.Point(314, 12);
+            this.commandWorkspaceLoad.Location = new System.Drawing.Point(249, 38);
             this.commandWorkspaceLoad.Name = "commandWorkspaceLoad";
             this.commandWorkspaceLoad.Size = new System.Drawing.Size(75, 23);
             this.commandWorkspaceLoad.TabIndex = 1;
@@ -68,7 +70,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             // commandWorkspaceClose
             // 
-            this.commandWorkspaceClose.Location = new System.Drawing.Point(395, 12);
+            this.commandWorkspaceClose.Location = new System.Drawing.Point(233, 79);
             this.commandWorkspaceClose.Name = "commandWorkspaceClose";
             this.commandWorkspaceClose.Size = new System.Drawing.Size(75, 23);
             this.commandWorkspaceClose.TabIndex = 1;
@@ -78,7 +80,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             // commandWorkspaceCreate
             // 
-            this.commandWorkspaceCreate.Location = new System.Drawing.Point(12, 38);
+            this.commandWorkspaceCreate.Location = new System.Drawing.Point(49, 38);
             this.commandWorkspaceCreate.Name = "commandWorkspaceCreate";
             this.commandWorkspaceCreate.Size = new System.Drawing.Size(75, 23);
             this.commandWorkspaceCreate.TabIndex = 1;
@@ -89,7 +91,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 26);
+            this.label1.Location = new System.Drawing.Point(9, 10);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 12);
             this.label1.TabIndex = 2;
@@ -98,7 +100,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 51);
+            this.label2.Location = new System.Drawing.Point(9, 35);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(18, 12);
             this.label2.TabIndex = 2;
@@ -106,7 +108,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             // commandWorkspaceSave
             // 
-            this.commandWorkspaceSave.Location = new System.Drawing.Point(257, 74);
+            this.commandWorkspaceSave.Location = new System.Drawing.Point(153, 35);
             this.commandWorkspaceSave.Name = "commandWorkspaceSave";
             this.commandWorkspaceSave.Size = new System.Drawing.Size(75, 23);
             this.commandWorkspaceSave.TabIndex = 1;
@@ -116,7 +118,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             // commandWorkspaceDirectorySelect
             // 
-            this.commandWorkspaceDirectorySelect.Location = new System.Drawing.Point(157, 51);
+            this.commandWorkspaceDirectorySelect.Location = new System.Drawing.Point(101, 60);
             this.commandWorkspaceDirectorySelect.Name = "commandWorkspaceDirectorySelect";
             this.commandWorkspaceDirectorySelect.Size = new System.Drawing.Size(75, 23);
             this.commandWorkspaceDirectorySelect.TabIndex = 3;
@@ -125,14 +127,14 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             // inputWorkspaceName
             // 
-            this.inputWorkspaceName.Location = new System.Drawing.Point(51, 23);
+            this.inputWorkspaceName.Location = new System.Drawing.Point(47, 7);
             this.inputWorkspaceName.Name = "inputWorkspaceName";
             this.inputWorkspaceName.Size = new System.Drawing.Size(100, 19);
             this.inputWorkspaceName.TabIndex = 4;
             // 
             // inputWorkspaceDirectoryPath
             // 
-            this.inputWorkspaceDirectoryPath.Location = new System.Drawing.Point(51, 51);
+            this.inputWorkspaceDirectoryPath.Location = new System.Drawing.Point(47, 35);
             this.inputWorkspaceDirectoryPath.Name = "inputWorkspaceDirectoryPath";
             this.inputWorkspaceDirectoryPath.Size = new System.Drawing.Size(100, 19);
             this.inputWorkspaceDirectoryPath.TabIndex = 4;
@@ -149,7 +151,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             // commandWorkspaceDelete
             // 
-            this.commandWorkspaceDelete.Location = new System.Drawing.Point(15, 91);
+            this.commandWorkspaceDelete.Location = new System.Drawing.Point(167, 3);
             this.commandWorkspaceDelete.Name = "commandWorkspaceDelete";
             this.commandWorkspaceDelete.Size = new System.Drawing.Size(75, 23);
             this.commandWorkspaceDelete.TabIndex = 1;
@@ -166,33 +168,54 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.panelWorkspace.Controls.Add(this.label1);
             this.panelWorkspace.Controls.Add(this.label2);
             this.panelWorkspace.Controls.Add(this.commandWorkspaceDirectorySelect);
-            this.panelWorkspace.Location = new System.Drawing.Point(93, 76);
+            this.panelWorkspace.Location = new System.Drawing.Point(354, 0);
             this.panelWorkspace.Name = "panelWorkspace";
-            this.panelWorkspace.Size = new System.Drawing.Size(335, 117);
+            this.panelWorkspace.Size = new System.Drawing.Size(246, 92);
             this.panelWorkspace.TabIndex = 5;
             // 
             // errorProvider
             // 
             this.errorProvider.ContainerControl = this;
             // 
+            // viewLog
+            // 
+            this.viewLog.Location = new System.Drawing.Point(57, 108);
+            this.viewLog.Name = "viewLog";
+            this.viewLog.Size = new System.Drawing.Size(525, 134);
+            this.viewLog.TabIndex = 6;
+            this.viewLog.Text = "";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(116, 71);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(56, 12);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "こーじちゅう";
+            // 
             // ManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 228);
+            this.ClientSize = new System.Drawing.Size(612, 270);
+            this.Controls.Add(this.viewLog);
             this.Controls.Add(this.panelWorkspace);
             this.Controls.Add(this.commandWorkspaceClose);
             this.Controls.Add(this.commandWorkspaceCopy);
             this.Controls.Add(this.commandWorkspaceCreate);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.commandWorkspaceLoad);
             this.Controls.Add(this.selectWorkspace);
             this.Name = "ManagerForm";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ManagerForm_FormClosing);
             this.Load += new System.EventHandler(this.ManagerForm_Load);
             this.panelWorkspace.ResumeLayout(false);
             this.panelWorkspace.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -212,6 +235,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.Button commandWorkspaceDelete;
         private System.Windows.Forms.Panel panelWorkspace;
         private System.Windows.Forms.ErrorProvider errorProvider;
+        private System.Windows.Forms.RichTextBox viewLog;
+        private System.Windows.Forms.Label label3;
     }
 }
 

@@ -412,6 +412,15 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             WorkspaceState = WorkspaceState.Running;
         }
 
+        public bool CheckCanExit()
+        {
+            var result = SelectedWorkspaceItem == null || WorkspaceState != WorkspaceState.Running;
+
+            Logger.Information($"can exit: {result}");
+
+            return result;
+        }
+
         #endregion
 
         #region DisposerBase

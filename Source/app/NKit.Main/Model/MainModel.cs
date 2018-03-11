@@ -69,7 +69,10 @@ namespace ContentTypeTextNet.NKit.Main.Model
 
         public void Uninitialize()
         {
+            Logger.Debug("save setting");
             SaveSetting(Setting);
+
+            Logger.Information("!!END!!");
         }
 
 

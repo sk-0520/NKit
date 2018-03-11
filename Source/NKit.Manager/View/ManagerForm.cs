@@ -177,12 +177,33 @@ namespace ContentTypeTextNet.NKit.Manager.View
         }
         private void Worker_OutputLog(object sender, LogEventArgs e)
         {
-            //TODO: ログ表示
+            if(!this.viewLog.IsDisposed) {
+                var write = new Action(() => {
+                    this.viewLog.Focus();
+                    this.viewLog.AppendText(e.WriteValue);
+                    this.viewLog.AppendText(Environment.NewLine);
+                });
+
+                if(!this.viewLog.Created) {
+                    write();
+                } else {
+                    if(InvokeRequired) {
+                        this.viewLog.BeginInvoke(write);
+                    } else {
+                        write();
+                    }
+                }
+            }
         }
 
         private void commandWorkspaceClose_Click(object sender, EventArgs e)
         {
             MessageBox.Show("TODO: not impl");
+        }
+
+        private void ManagerForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = !Worker.CheckCanExit();
         }
     }
 }
