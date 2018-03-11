@@ -70,8 +70,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         public WorkspaceItemSetting SelectedWorkspaceItem { get; private set; }
 
-        WorkspaceVolatilityItem WorkspaceVolatilityItem { get; } = new WorkspaceVolatilityItem();
-
+        ActiveWorkspace ActiveWorkspace { get; } = new ActiveWorkspace();
 
         #endregion
 
@@ -153,8 +152,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             InitializeEnvironmentVariable(commandLine);
 
             var baseId = DateTime.Now.ToFileTime();
-            WorkspaceVolatilityItem.ApplicationId = $"NKIT_{baseId}_ID";
-            SetCurrentProcessExplicitAppUserModelID(WorkspaceVolatilityItem.ApplicationId);
+            ActiveWorkspace.ApplicationId = $"NKIT_{baseId}_ID";
+            SetCurrentProcessExplicitAppUserModelID(ActiveWorkspace.ApplicationId);
         }
 
         public void LoadSetting()
@@ -241,7 +240,6 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             Logger.Debug($"{ManagerSetting.LastExecuteVersion} <= {version.MinimumVersion}");
             return ManagerSetting.LastExecuteVersion <= version.MinimumVersion;
         }
-
 
         public void ListupWorkspace(ComboBox targetControl)
         {
@@ -374,19 +372,42 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         public void LoadSelectedWorkspace()
         {
-            var aboutId = DateTime.Now.ToFileTime().ToString();
-            WorkspaceVolatilityItem.ServiceUri = new Uri($"net.pipe://localhost/cttn-nkit-{aboutId}");
-            WorkspaceVolatilityItem.ExitEventName = $"exit-{aboutId}";
+            if(string.IsNullOrWhiteSpace(SelectedWorkspaceItem.DirectoryPath)) {
+                Logger.Warning("workspace dir path is empry");
+                return;
+            }
+            var workspaceDirPath = Environment.ExpandEnvironmentVariables(SelectedWorkspaceItem.DirectoryPath);
+            if(Directory.Exists(workspaceDirPath)) {
+                //TODO: ワークスペースチェック
+            } else {
+                // 何やってるか忘れないために冗長に書いとく
+                Directory.CreateDirectory(workspaceDirPath);
+                Directory.CreateDirectory(Path.Combine(workspaceDirPath, CommonUtility.WorkspaceSettingDirectoryName));
+                Directory.CreateDirectory(Path.Combine(workspaceDirPath, CommonUtility.WorkspaceLogDirectoryName));
+                Directory.CreateDirectory(Path.Combine(workspaceDirPath, CommonUtility.WorkspaceTemporaryDirectoryName));
+            }
 
-            NKitApplicationTalkerHost = new NKitApplicationTalkerHost(WorkspaceVolatilityItem.ServiceUri, CommonUtility.AppAddress);
+            // ワークスペースにログ出力開始
+            ActiveWorkspace.LogFilePath = Path.Combine(workspaceDirPath, CommonUtility.WorkspaceLogDirectoryName, DateTime.Now.ToString("yyyy-MM-dd_hhmmss") + ".log");
+            ActiveWorkspace.LogWriter = File.CreateText(ActiveWorkspace.LogFilePath);
+            LogManager.AttachOutputWriter(ActiveWorkspace.LogWriter, true);
+
+            Logger.Information($"work space log: {ActiveWorkspace.LogFilePath}");
+
+            // 起動処理
+            var aboutId = DateTime.Now.ToFileTime().ToString();
+            ActiveWorkspace.ServiceUri = new Uri($"net.pipe://localhost/cttn-nkit-{aboutId}");
+            ActiveWorkspace.ExitEventName = $"exit-{aboutId}";
+
+            NKitApplicationTalkerHost = new NKitApplicationTalkerHost(ActiveWorkspace.ServiceUri, CommonUtility.AppAddress);
             NKitApplicationTalkerHost.ApplicationWakeup += NKitApplicationTasker_ApplicationWakeup;
             NKitApplicationTalkerHost.Open();
 
-            NKitLoggingTalkerHost = new NKitLoggingTalkerHost(WorkspaceVolatilityItem.ServiceUri, CommonUtility.LogAddress);
+            NKitLoggingTalkerHost = new NKitLoggingTalkerHost(ActiveWorkspace.ServiceUri, CommonUtility.LogAddress);
             NKitLoggingTalkerHost.LoggingWrite += NKitLoggingTalkerHost_LoggingWrite;
             NKitLoggingTalkerHost.Open();
 
-            ApplicationManager.ExecuteMainApplication(WorkspaceVolatilityItem, SelectedWorkspaceItem);
+            ApplicationManager.ExecuteMainApplication(ActiveWorkspace, SelectedWorkspaceItem);
 
             WorkspaceState = WorkspaceState.Running;
         }
@@ -433,11 +454,14 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             if(WorkspaceExited != null) {
                 WorkspaceExited(sender, e);
             }
+
+            LogManager.DetachOutputWriter(ActiveWorkspace.LogWriter);
+            ActiveWorkspace.LogWriter.Dispose();
         }
 
         private void NKitApplicationTasker_ApplicationWakeup(object sender, TalkApplicationWakeupEventArgs e)
         {
-            ApplicationManager.ExecuteNKitApplication(e.SenderApplication, e.TargetApplication, WorkspaceVolatilityItem, SelectedWorkspaceItem, e.Arguments, e.WorkingDirectoryPath);
+            ApplicationManager.ExecuteNKitApplication(e.SenderApplication, e.TargetApplication, ActiveWorkspace, SelectedWorkspaceItem, e.Arguments, e.WorkingDirectoryPath);
         }
 
         private void NKitLoggingTalkerHost_LoggingWrite(object sender, TalkLoggingWriteEventArgs e)

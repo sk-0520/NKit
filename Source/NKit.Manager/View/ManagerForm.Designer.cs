@@ -74,6 +74,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandWorkspaceClose.TabIndex = 1;
             this.commandWorkspaceClose.Text = "close";
             this.commandWorkspaceClose.UseVisualStyleBackColor = true;
+            this.commandWorkspaceClose.Click += new System.EventHandler(this.commandWorkspaceClose_Click);
             // 
             // commandWorkspaceCreate
             // 

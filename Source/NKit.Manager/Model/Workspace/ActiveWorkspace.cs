@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ContentTypeTextNet.NKit.Manager.Model.Workspace
 {
-    public interface IReadOnlyWorkspaceVolatilityItem
+    public interface IReadOnlyActiveWorkspace
     {
         #region property
 
@@ -29,9 +30,19 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace
         #endregion
     }
 
-    public class WorkspaceVolatilityItem : IReadOnlyWorkspaceVolatilityItem
+    /// <summary>
+    ///
+    /// </summary>
+    public class ActiveWorkspace : IReadOnlyActiveWorkspace
     {
-        #region IReadOnlyWorkspaceVolatilityItem
+        #region property
+
+        public string LogFilePath { get; set; }
+        public TextWriter LogWriter { get; set; }
+
+        #endregion
+
+        #region IReadOnlyActiveWorkspace
 
         public string ApplicationId { get; set; }
         /// <summary>

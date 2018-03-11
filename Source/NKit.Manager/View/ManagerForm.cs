@@ -180,5 +180,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
             //TODO: ログ表示
         }
 
+        private void commandWorkspaceClose_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("TODO: not impl");
+        }
     }
 }

@@ -41,36 +41,36 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         #region function
 
-        string AddNKitArguments(IReadOnlyWorkspaceVolatilityItem workspaceVolatilityItem, IReadOnlyWorkspaceItemSetting workspaceItemSetting, string sourceArguments)
+        string AddNKitArguments(IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspaceItemSetting, string sourceArguments)
         {
             //TODO: 重複は未考慮
             //      エスケープシーケンスも知らない問題にしておく
             var list = new[] {
                 $"--nkit_service_uri",
-                ProgramRelationUtility.EscapesequenceToArgument(workspaceVolatilityItem.ServiceUri.ToString()),
+                ProgramRelationUtility.EscapesequenceToArgument(activeWorkspace.ServiceUri.ToString()),
 
                 $"--nkit_workspace",
                 ProgramRelationUtility.EscapesequenceToArgument(workspaceItemSetting.DirectoryPath),
 
                 $"--nkit_application_id",
-                ProgramRelationUtility.EscapesequenceToArgument(workspaceVolatilityItem.ApplicationId),
+                ProgramRelationUtility.EscapesequenceToArgument(activeWorkspace.ApplicationId),
 
                 $"--nkit_exit_event_name",
-                ProgramRelationUtility.EscapesequenceToArgument(workspaceVolatilityItem.ExitEventName),
+                ProgramRelationUtility.EscapesequenceToArgument(activeWorkspace.ExitEventName),
             };
             var headArgs = string.Join(" ", list);
 
             return  sourceArguments + " " + headArgs;
         }
 
-        public void ExecuteMainApplication(IReadOnlyWorkspaceVolatilityItem workspaceVolatilityItem, IReadOnlyWorkspaceItemSetting workspaceItemSetting)
+        public void ExecuteMainApplication(IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspaceItemSetting)
         {
             if(MainApplication != null) {
                 MainApplication.Exited -= MainApplication_Exited;
             }
 
             MainApplication = new NKitApplicationItem(NKitApplicationKind.Main, LogCreator) {
-                Arguments = AddNKitArguments(workspaceVolatilityItem, workspaceItemSetting, string.Empty)
+                Arguments = AddNKitArguments(activeWorkspace, workspaceItemSetting, string.Empty)
             };
 
             MainApplication.Exited += MainApplication_Exited;
@@ -78,7 +78,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             MainApplication.Execute();
         }
 
-        public void ExecuteNKitApplication(NKitApplicationKind senderApplication, NKitApplicationKind targetApplication, IReadOnlyWorkspaceVolatilityItem workspaceVolatilityItem, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
+        public void ExecuteNKitApplication(NKitApplicationKind senderApplication, NKitApplicationKind targetApplication, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
         {
             ApplicationItem item = null;
 
@@ -88,7 +88,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
                 case NKitApplicationKind.Rocket:
                     item = new NKitApplicationItem(targetApplication, LogCreator) {
-                        Arguments = AddNKitArguments(workspaceVolatilityItem, workspace, arguments),
+                        Arguments = AddNKitArguments(activeWorkspace, workspace, arguments),
                     };
                     break;
 
