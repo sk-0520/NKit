@@ -1,16 +1,17 @@
-﻿<Window 
+<Window
   x:Class="ContentTypeTextNet.NKit.Main.View.MainWindow"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  
+
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d"
-  
+
   xmlns:app_main_view_finder="clr-namespace:ContentTypeTextNet.NKit.Main.View.Finder"
-  
-  Title="MainWindow" 
+  xmlns:app_main_view_nkit="clr-namespace:ContentTypeTextNet.NKit.Main.View.NKit"
+
+  Title="MainWindow"
   Width="640"
-  Height="480" 
+  Height="480"
   ResizeMode="CanResizeWithGrip"
 >
   <Grid>
@@ -18,7 +19,7 @@
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
-    
+
     <TabControl Grid.Row="0">
       <TabItem Header="finder" DataContext="{Binding FinderManager}">
         <app_main_view_finder:FinderManagerControl />
@@ -36,8 +37,8 @@
 
       </TabItem>
 
-      <TabItem Header="app" DataContext="{Binding AppManager}">
-
+      <TabItem Header="nkit" DataContext="{Binding NKitManager}">
+        <app_main_view_nkit:NKitManagerControl />
       </TabItem>
 
     </TabControl>

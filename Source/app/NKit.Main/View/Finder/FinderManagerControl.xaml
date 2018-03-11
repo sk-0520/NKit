@@ -1,3 +1,6 @@
+<!--
+  上位から DataContext を設定して使用。
+-->
 <UserControl
   x:Class="ContentTypeTextNet.NKit.Main.View.Finder.FinderManagerControl"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
