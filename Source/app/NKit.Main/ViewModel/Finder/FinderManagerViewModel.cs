@@ -23,7 +23,10 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public FinderManagerViewModel(FinderManagerModel model)
             : base(model)
         {
-            GroupViewModels = new ObservableCollection<FindGroupViewModel>(model.Groups.Select(g => new FindGroupViewModel(g)));
+            GroupViewModels = new ObservableCollection<FindGroupViewModel>(Model.Groups.Select(g => new FindGroupViewModel(g)));
+            if(GroupViewModels.Any()) {
+                SelectedGroupItem = GroupViewModels[0];
+            }
             Groups = CollectionViewSource.GetDefaultView(GroupViewModels);
         }
 
