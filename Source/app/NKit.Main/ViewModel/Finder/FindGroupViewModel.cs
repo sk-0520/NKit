@@ -457,6 +457,13 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             Model.SetDefaultSetting();
         });
 
+        public ICommand OpenSelectedFileCommand => new DelegateCommand(
+            () => {
+                SelectedItem.OpenFileCommand.Execute(null);
+            },
+            () => SelectedItem != null
+        );
+
         #endregion
 
         #region function

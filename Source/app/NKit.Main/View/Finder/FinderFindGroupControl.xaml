@@ -6,6 +6,8 @@
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 
+  xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+
   xmlns:app_utility_view_converter="clr-namespace:ContentTypeTextNet.NKit.Utility.View.Converter;assembly=NKit.Utility"
 
   xmlns:app_main_define="clr-namespace:ContentTypeTextNet.NKit.Main.Define"
@@ -208,6 +210,11 @@
           ItemsSource="{Binding Items}"
           SelectedItem="{Binding SelectedItem}"
         >
+          <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseDoubleClick">
+              <i:InvokeCommandAction Command="{Binding OpenSelectedFileCommand}" />
+            </i:EventTrigger>
+          </i:Interaction.Triggers>
           <ListView.ItemsPanel>
             <ItemsPanelTemplate>
               <VirtualizingStackPanel Orientation="Vertical" />
