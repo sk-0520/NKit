@@ -9,7 +9,7 @@ using ContentTypeTextNet.NKit.Common;
 
 namespace ContentTypeTextNet.NKit.Setting.Finder
 {
-    public interface IReadOnlyFinderSetting: IReadOnlySetting
+    public interface IReadOnlyFinderSetting : IReadOnlySetting
     {
         /// <summary>
         /// 保存済み検索条件。
@@ -48,11 +48,49 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         IReadOnlyFindGroupSetting IReadOnlyFinderSetting.DefaultGroupSetting => DefaultGroupSetting;
 
         [DataMember]
-        public string TextFileNamePattern { get; set; } = "*.txt|*.csv";
+        public string TextFileNamePattern { get; set; } = CreateExtensions(
+            "txt", "log",
+            "bat", "cmd", "bin",
+            "ini", "conf", "inf",
+            "csv", "tsv",
+            "css", // お前結局 XSLT 以外に仲間できたんか、スタイルシートがカスケード一択ってどうなん？
+            "xml", "setting", "xsl",
+            "html", "htm", "asp", "cshtml",
+            "md", "yaml",
+            "js", "json", "ts", "vbs",
+            "c", "cpp", "h",
+            "d", "ddoc",
+            "sln", "",
+            "cs", "csproj", "xaml", "config", "csproj.user", "manifest", "resx", "xsd", "tt", // VB? しらんなぁ
+            "sh",
+            "pl", "pm", "cgi",
+            "php",
+            "py",
+            "sql",
+            // Java は最後な！
+            "java", "jsp", "properties"
+        );
         [DataMember]
-        public string MicrosoftOfficeFileNamePattern { get; set; } = "*.xls|*.xlsx|*.xlsm|*.docx";
+        public string MicrosoftOfficeFileNamePattern { get; set; } = CreateExtensions(
+            "xls",
+            "xlsx",
+            "xlsm",
+            "docx"
+        );
         [DataMember]
-        public string XmlHtmlFileNamePattern { get; set; } = "*.xml|*.html|*.htm|*.xaml";
+        public string XmlHtmlFileNamePattern { get; set; } = CreateExtensions(
+            "xml", "setting", "xaml", "config",
+            "manifest", "resx",
+            "html", "htm",
+            "csproj", "csproj.user",
+            "svg"
+        );
+
+        #endregion
+
+        #region function
+
+        static string CreateExtensions(params string[] args) => string.Join("|", args.Select(s => "*." + s));
 
         #endregion
     }

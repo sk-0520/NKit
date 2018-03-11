@@ -12,6 +12,44 @@
   d:DesignWidth="800"
 >
   <Grid>
+    <ScrollViewer>
+      <StackPanel>
+        <Label>**finder**</Label>
+        <TextBlock>
+          <Run FontWeight="Bold">*</Run>: 0 文字以上の合致
+          <LineBreak />
+          <Run FontWeight="Bold">|</Run>: 区切り
+        </TextBlock>
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
 
+          <Label Grid.Row="0" Grid.Column="0">text</Label>
+          <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding FinderTextFilePattern}" />
+
+          <Label Grid.Row="1" Grid.Column="0">ms office</Label>
+          <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FinderMicrosoftOfficeFileNamePattern}" />
+
+          <Label Grid.Row="2" Grid.Column="0">text</Label>
+          <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding FinderXmlHtmlFileNamePattern}" />
+        </Grid>
+
+        <Separator />
+
+        <Label>**file**</Label>
+
+        <Separator />
+
+        <Label>**capture**</Label>
+
+      </StackPanel>
+    </ScrollViewer>
   </Grid>
 </UserControl>

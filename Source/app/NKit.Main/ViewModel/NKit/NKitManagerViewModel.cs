@@ -12,5 +12,27 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.App
         public NKitManagerViewModel(NKitManagerModel model)
             : base(model)
         { }
+
+        #region property
+
+        public string FinderTextFilePattern
+        {
+            get { return Model.Finder.TextFileNamePattern; }
+            set { SetPropertyValue(Model.Finder, value, nameof(Model.Finder.TextFileNamePattern)); }
+        }
+
+        public string FinderMicrosoftOfficeFileNamePattern
+        {
+            get { return Model.Finder.MicrosoftOfficeFileNamePattern; }
+            set { SetPropertyValue(Model.Finder, value, nameof(Model.Finder.MicrosoftOfficeFileNamePattern)); }
+        }
+
+        public string FinderXmlHtmlFileNamePattern
+        {
+            get { return Model.Finder.XmlHtmlFileNamePattern; }
+            set { SetPropertyValue(Model.Finder, value, nameof(Model.Finder.XmlHtmlFileNamePattern)); }
+        }
+
+        #endregion
     }
 }
