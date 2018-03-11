@@ -21,6 +21,10 @@
     </Grid.RowDefinitions>
 
     <TabControl Grid.Row="0">
+      <TabControl.LayoutTransform>
+        <ScaleTransform ScaleX="{Binding Value, ElementName=tuneScale}" ScaleY="{Binding Value, ElementName=tuneScale}" />
+      </TabControl.LayoutTransform>
+
       <TabItem Header="finder" DataContext="{Binding FinderManager}">
         <app_main_view_finder:FinderManagerControl />
       </TabItem>
@@ -46,6 +50,13 @@
     <StatusBar Grid.Row="1">
       <StatusBarItem>
         すてーたすばーーーーーーーーーーーーーーーーーーーーー
+      </StatusBarItem>
+      <StatusBarItem>
+        <StackPanel Orientation="Horizontal">
+          <TextBlock>保存されない拡縮</TextBlock>
+          <Slider x:Name="tuneScale" Minimum="0.5" Maximum="2" Value="1" Width="100" IsMoveToPointEnabled="True" />
+          <TextBlock Text="{Binding Value, ElementName=tuneScale}" />
+        </StackPanel>
       </StatusBarItem>
     </StatusBar>
   </Grid>
