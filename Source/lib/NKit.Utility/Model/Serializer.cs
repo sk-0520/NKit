@@ -29,7 +29,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         /// <typeparam name="T"></typeparam>
         /// <param name="source">複製したいオブジェクト。</param>
         /// <returns></returns>
-        public T Clone<T>(T source)
+        public T Clone<T>(object source)
         {
             if(source == null) {
                 throw new ArgumentNullException(nameof(source));
@@ -164,6 +164,34 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                 var serializer = new DataContractSerializer(value.GetType());
                 serializer.WriteObject(writer, value);
             }
+        }
+
+        #endregion
+    }
+
+    public static class SerializeUtility
+    {
+        #region function
+
+        public static TResult Clone<TResult>(object value)
+        {
+            if(!(value is TResult)) {
+                throw new ArgumentException($"cast error: {nameof(value)} is not ${typeof(TResult).FullName}");
+            }
+
+            var serializer = new BinaryDataContractSerializer();
+            return serializer.Clone<TResult>(value);
+        }
+
+        public static TResult Clone<TResult>(TResult value)
+            where TResult: new()
+        {
+            if(!(value is TResult)) {
+                throw new ArgumentException($"cast error: {nameof(value)} is not ${typeof(TResult).FullName}");
+            }
+
+            var serializer = new BinaryDataContractSerializer();
+            return serializer.Clone<TResult>(value);
         }
 
         #endregion

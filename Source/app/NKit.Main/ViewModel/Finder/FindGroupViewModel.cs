@@ -17,6 +17,7 @@ using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
 using ContentTypeTextNet.NKit.Setting.Define;
+using ContentTypeTextNet.NKit.Setting.Finder;
 using ContentTypeTextNet.NKit.Utility.Model;
 using ContentTypeTextNet.NKit.Utility.ViewModell;
 using Prism.Commands;
@@ -55,6 +56,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         }
 
         #region property
+
+        public IReadOnlyFindGroupSetting CurrentFindGroupSetting => Model.CurrentFindGroupSetting;
+
         public string GroupName
         {
             get { return Model.FindGroupSetting.GroupName; }
@@ -449,6 +453,10 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             }
         });
 
+        public ICommand SaveDefaultSettingCommand => new DelegateCommand(() => {
+            Model.SaveDefaultSetting();
+        });
+
         #endregion
 
         #region function
@@ -457,6 +465,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         {
             RaisePropertyChanged(nameof(EnabledItemsCount));
             RaisePropertyChanged(nameof(TotalItemsCount));
+            RaisePropertyChanged(nameof(CurrentFindGroupSetting));
         }
         private bool FilterFileList(object obj)
         {

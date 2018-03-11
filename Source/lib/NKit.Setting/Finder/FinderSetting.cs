@@ -8,7 +8,7 @@ using ContentTypeTextNet.NKit.Common;
 
 namespace ContentTypeTextNet.NKit.Setting.Finder
 {
-    public interface IReadOnlyFinderSetting
+    public interface IReadOnlyFinderSetting: IReadOnlySetting
     {
         /// <summary>
         /// 保存済み検索条件。

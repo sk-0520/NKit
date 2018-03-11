@@ -60,6 +60,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             Model.RemoveAtInGroups(index);
         });
 
+
         #endregion
     }
 }

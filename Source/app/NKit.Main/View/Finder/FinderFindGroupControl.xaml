@@ -1,0 +1,353 @@
+<!--
+  上位から DataContext を設定して使用。
+-->
+<UserControl
+  x:Class="ContentTypeTextNet.NKit.Main.View.Finder.FinderFindGroupControl"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+  xmlns:app_utility_view_converter="clr-namespace:ContentTypeTextNet.NKit.Utility.View.Converter;assembly=NKit.Utility"
+
+  xmlns:app_main_define="clr-namespace:ContentTypeTextNet.NKit.Main.Define"
+  xmlns:app_main_view_converter="clr-namespace:ContentTypeTextNet.NKit.Main.View.Converter"
+  xmlns:app_main_view_control="clr-namespace:ContentTypeTextNet.NKit.Main.View.Control"
+  xmlns:app_main_view_finder="clr-namespace:ContentTypeTextNet.NKit.Main.View.Finder"
+
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  mc:Ignorable="d"
+  d:DesignHeight="450"
+  d:DesignWidth="800"
+>
+  <UserControl.Resources>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <app_utility_view_converter:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+    <app_utility_view_converter:NotNullToBooleanConverter x:Key="NotNullToBooleanConverter" />
+    <app_utility_view_converter:BinaryToTextConverter x:Key="BinaryToTextConverter" />
+    <app_utility_view_converter:HumanLikeByteConverter x:Key="HumanLikeByteConverterSize" SizeFormat="{}{0:###0}" />
+    <app_utility_view_converter:HumanLikeByteConverter x:Key="HumanLikeByteConverterUnit" SizeFormat="{}{1}" />
+    <app_utility_view_converter:DoubleToParameterPercentConverter x:Key="DoubleToParameterPercentConverter" />
+    <app_utility_view_converter:DoubleToPercentConverter x:Key="DoubleToPercentConverter" />
+    <app_main_view_converter:FilePathToIconConverter x:Key="FilePathToIconConverter" />
+  </UserControl.Resources>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="3*" />
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="7*" />
+    </Grid.ColumnDefinitions>
+
+    <Grid Grid.Column="0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+
+      <ScrollViewer Grid.Row="0">
+        <StackPanel>
+          <Expander Header="group">
+            <StackPanel>
+              <Label>group:</Label>
+              <TextBox Text="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}" />
+
+              <Button Command="{Binding SaveDefaultSettingCommand}">save default</Button>
+            </StackPanel>
+          </Expander>
+
+          <Label>dir:</Label>
+          <TextBox Text="{Binding RootDirectoryPath, UpdateSourceTrigger=PropertyChanged}" />
+          <Button Command="{Binding UpRootDirectoryPathCommand}">up</Button>
+          <Button Command="{Binding SelectRootDirectoryPathCommand}">open</Button>
+          <Label>limit:</Label>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Slider Grid.Column="0" Minimum="0" Maximum="10" Value="{Binding DirectoryLimitLevel}"  />
+            <TextBox Grid.Column="1" Text="{Binding DirectoryLimitLevel}" />
+          </Grid>
+          <CheckBox IsChecked="{Binding FindHiddenDirectory}">FindHiddenDirectory</CheckBox>
+          <CheckBox IsChecked="{Binding FindDotDirectory}">FindDotDirectory</CheckBox>
+
+          <Label>name:</Label>
+          <TextBox Text="{Binding FileNameSearchPattern, UpdateSourceTrigger=PropertyChanged}"/>
+          <CheckBox IsChecked="{Binding FileNameCase}">FileNameCase</CheckBox>
+
+          <Label>type:</Label>
+          <app_main_view_control:SearchPatternSelectControl SearchPatternKind="{Binding FileNameSearchPatternKind, Mode=TwoWay}" />
+
+          <Label>size max:</Label>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Slider Grid.Column="0" Minimum="0" Maximum="9999999" Value="{Binding FileSizeLimitMaximum}"  />
+            <TextBox Grid.Column="1" Text="{Binding FileSizeLimitMaximum}" />
+          </Grid>
+
+          <Separator />
+
+          <Expander IsExpanded="{Binding FindFileProperty}">
+            <Expander.Header>
+              <CheckBox IsChecked="{Binding FindFileProperty}">FindFileProperty</CheckBox>
+            </Expander.Header>
+            <StackPanel>
+              <app_main_view_control:FlagMatchSelectControl FlagMatchKind="{Binding FilePropertyFileAttributeFlagMatchKind, Mode=TwoWay}" />
+
+              <CheckBox IsChecked="{Binding FilePropertyAttributeIsArchive}">FilePropertyAttributeIsArchive</CheckBox>
+              <CheckBox IsChecked="{Binding FilePropertyAttributeIsCompressed}">FilePropertyAttributeIsCompressed</CheckBox>
+              <CheckBox IsChecked="{Binding FilePropertyAttributeIsEncrypted}">FilePropertyAttributeIsEncrypted</CheckBox>
+              <CheckBox IsChecked="{Binding FilePropertyAttributeIsHidden}">FilePropertyAttributeIsHidden</CheckBox>
+              <CheckBox IsChecked="{Binding FilePropertyAttributeIsIntegrityStream}">FilePropertyAttributeIsIntegrityStream</CheckBox>
+              <CheckBox IsChecked="{Binding FilePropertyAttributeIsNoScrubData}">FilePropertyAttributeIsNoScrubData</CheckBox>
+              <CheckBox IsChecked="{Binding FilePropertyAttributeIsNotContentIndexed}">FilePropertyAttributeIsNotContentIndexed</CheckBox>
+              <CheckBox IsChecked="{Binding FilePropertyAttributeIsOffline}">FilePropertyAttributeIsOffline</CheckBox>
+              <CheckBox IsChecked="{Binding FilePropertyAttributeIsReadOnly}">FilePropertyAttributeIsReadOnly</CheckBox>
+              <CheckBox IsChecked="{Binding FilePropertyAttributeIsReparsePoint}">FilePropertyAttributeIsReparsePoint</CheckBox>
+              <CheckBox IsChecked="{Binding FilePropertyAttributeIsSparseFile}">FilePropertyAttributeIsSparseFile</CheckBox>
+              <CheckBox IsChecked="{Binding FilePropertyAttributeIsSystem}">FilePropertyAttributeIsSystem</CheckBox>
+              <CheckBox IsChecked="{Binding FilePropertyAttributeIsTemporary}">FilePropertyAttributeIsTemporary</CheckBox>
+            </StackPanel>
+          </Expander>
+
+          <Separator />
+
+          <Expander IsExpanded="{Binding FindFileContent}">
+            <Expander.Header>
+              <CheckBox IsChecked="{Binding FindFileContent}">FindFileContent</CheckBox>
+            </Expander.Header>
+            <StackPanel>
+              <Label>content:</Label>
+              <TextBox Text="{Binding FileContentSearchPattern}" />
+              <CheckBox IsChecked="{Binding FileContentCase}">FileContentCase</CheckBox>
+
+              <Label>type:</Label>
+              <app_main_view_control:SearchPatternSelectControl SearchPatternKind="{Binding FileContentSearchPatternKind, Mode=TwoWay}" />
+
+              <CheckBox IsChecked="{Binding IsEnabledFileContentSizeLimit}">IsEnabledFileContentSizeLimit</CheckBox>
+
+              <GroupBox>
+                <GroupBox.Header>
+                  <CheckBox IsChecked="{Binding MicrosoftOfficeContentIsEnabled}">office</CheckBox>
+                </GroupBox.Header>
+                <StackPanel>
+                  <CheckBox IsChecked="{Binding MicrosoftOfficeContentSheetName}">SheetName</CheckBox>
+                  <CheckBox IsChecked="{Binding MicrosoftOfficeContentPriorityFormula}">PriorityFormula</CheckBox>
+                  <CheckBox IsChecked="{Binding MicrosoftOfficeContentCommentInCell}" ToolTip="どんだけ頑張っても null なんですが！ あと xls 形式だとシェイプでコメント取れるってどういう事なんすか！">CommentInCell(TODO)</CheckBox>
+                  <CheckBox IsChecked="{Binding MicrosoftOfficeContentTextInShape}">TextInShape</CheckBox>
+                </StackPanel>
+              </GroupBox>
+
+              <GroupBox>
+                <GroupBox.Header>
+                  <CheckBox IsChecked="{Binding XmlHtmlContentIsEnabled}">xml/html</CheckBox>
+                </GroupBox.Header>
+                <StackPanel>
+                  <CheckBox IsChecked="{Binding XmlContentElement}">Element</CheckBox>
+                  <CheckBox IsChecked="{Binding XmlContentText}">Text</CheckBox>
+                  <CheckBox IsChecked="{Binding XmlContentAttributeKey}">AttributeKey</CheckBox>
+                  <CheckBox IsChecked="{Binding XmlContentAttributeValue}">AttributeValue</CheckBox>
+                  <CheckBox IsChecked="{Binding XmlContentComment}">Comment</CheckBox>
+                  <CheckBox IsChecked="{Binding XmlContentIgnoreHtmlLinkValue}">IgnoreHtmlLinkValue</CheckBox>
+                </StackPanel>
+              </GroupBox>
+
+            </StackPanel>
+          </Expander>
+        </StackPanel>
+      </ScrollViewer>
+
+      <!--<Button Grid.Row="1" Command="{Binding RunCommand}">find!</Button>-->
+      <app_main_view_control:RunnableControl Grid.Row="1" RunnableItem="{Binding}" />
+    </Grid>
+
+    <Grid Grid.Column="2">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <ToolBar Grid.Row="0">
+        <CheckBox IsChecked="{Binding IsEnabledHiddenFileFiler}">hidden</CheckBox>
+        <CheckBox IsChecked="{Binding IsEnabledFileNameFilter}">name</CheckBox>
+        <CheckBox IsChecked="{Binding IsEnabledFileSizeFilter}">size</CheckBox>
+        <CheckBox IsChecked="{Binding IsEnabledFilePropertyFilter}">prop</CheckBox>
+        <CheckBox IsChecked="{Binding IsEnabledFileContentFilter}">content</CheckBox>
+
+        <Separator />
+
+        <TextBlock>
+          <Run>current:</Run>
+          <Run Text="{Binding Items.Count, Mode=OneWay}" />
+          <Run>/</Run>
+          <Run>find:</Run>
+          <Run Text="{Binding EnabledItemsCount, Mode=OneWay}" />
+          <Run>/</Run>
+          <Run>total:</Run>
+          <Run Text="{Binding TotalItemsCount, Mode=OneWay}" />
+        </TextBlock>
+
+      </ToolBar>
+
+      <Grid x:Name="fileListPanel" Grid.Row="1">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ListView
+          Grid.Row="0"
+          ScrollViewer.CanContentScroll="True"
+          VirtualizingPanel.ScrollUnit="Pixel"
+          VirtualizingPanel.IsVirtualizing="True"
+          VirtualizingPanel.VirtualizationMode="Standard"
+          SelectionMode="Extended"
+          ItemsSource="{Binding Items}"
+          SelectedItem="{Binding SelectedItem}"
+        >
+          <ListView.ItemsPanel>
+            <ItemsPanelTemplate>
+              <VirtualizingStackPanel Orientation="Vertical" />
+            </ItemsPanelTemplate>
+          </ListView.ItemsPanel>
+          <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+              <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+              <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            </Style>
+          </ListView.ItemContainerStyle>
+          <ListView.View>
+            <GridView>
+              <GridViewColumn Header="RelativeDirectoryPath" DisplayMemberBinding="{Binding RelativeDirectoryPath}" />
+              <GridViewColumn>
+                <GridViewColumn.Header>
+                  <Grid HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock  Grid.Column="0">上下</TextBlock>
+                    <TextBlock Grid.Column="1">FileName</TextBlock>
+                    <TextBox Grid.Column="2" MinWidth="50" Text="{Binding EasyFileNameFilterPattern, UpdateSourceTrigger=PropertyChanged, Delay=300}" />
+                  </Grid>
+                </GridViewColumn.Header>
+                <GridViewColumn.CellTemplate>
+                  <DataTemplate>
+                    <!-- 暫定。 背景色変えるとかそんなので対応したい -->
+                    <Grid>
+                      <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                      </Grid.RowDefinitions>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                      </Grid.ColumnDefinitions>
+                      <ToggleButton Grid.Row="0" FontSize="3" IsChecked="{Binding MatchedName, Mode=OneTime}">name</ToggleButton>
+                      <ToggleButton Grid.Row="1" FontSize="3" IsChecked="{Binding MatchedSize, Mode=OneTime}">size</ToggleButton>
+                      <ToggleButton Grid.Row="2" FontSize="3" IsChecked="{Binding MatchedProperty, Mode=OneTime}">prop</ToggleButton>
+                      <ToggleButton Grid.Row="3" FontSize="3" IsChecked="{Binding MatchedContent, Mode=OneTime}">body</ToggleButton>
+
+                      <Image Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" Source="{Binding FilePath, Converter={StaticResource FilePathToIconConverter}}">
+                        <Image.Style>
+                          <Style TargetType="Image">
+                            <Style.Triggers>
+                              <DataTrigger Binding="{Binding IsHiddenFile}" Value="True">
+                                <Setter Property="Opacity" Value="0.6" />
+                              </DataTrigger>
+                            </Style.Triggers>
+                          </Style>
+                        </Image.Style>
+                      </Image>
+
+                      <app_main_view_control:TextSearchMatchControl
+                        Grid.Row="0"
+                        Grid.RowSpan="4"
+                        Grid.Column="2"
+                        IsSelectable="False"
+                        Background="Transparent"
+                        ShowSingleLine="True"
+                        ShowSingleUnmatchText="{Binding FileName}"
+                        ItemsSource="{Binding FileNameMatches}"
+                      />
+                    </Grid>
+                  </DataTemplate>
+                </GridViewColumn.CellTemplate>
+              </GridViewColumn>
+              <GridViewColumn DisplayMemberBinding="{Binding Extension}">
+                <GridViewColumn.Header>
+                  <Grid HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock  Grid.Column="0">上下</TextBlock>
+                    <TextBlock Grid.Column="1">Extension</TextBlock>
+                    <ComboBox Grid.Column="2" MinWidth="40" IsEditable="True" Text="{Binding EasyExtensionFilterPattern, UpdateSourceTrigger=PropertyChanged, Delay=300}" ItemsSource="{Binding ExtensionItems}" />
+                  </Grid>
+                </GridViewColumn.Header>
+              </GridViewColumn>
+
+              <GridViewColumn Header="size" DisplayMemberBinding="{Binding FileSize, Converter={StaticResource HumanLikeByteConverterSize}, Mode=OneWay}" />
+              <GridViewColumn Header="unit" DisplayMemberBinding="{Binding FileSize, Converter={StaticResource HumanLikeByteConverterUnit}, Mode=OneWay}" />
+            </GridView>
+          </ListView.View>
+          <ListView.ContextMenu>
+            <ContextMenu>
+              <ContextMenu.Resources>
+                <Style TargetType="MenuItem">
+                  <Setter Property="IsEnabled" Value="{Binding SelectedItem, Converter={StaticResource NotNullToBooleanConverter}}" />
+                </Style>
+              </ContextMenu.Resources>
+              <MenuItem Header="open: file" Command="{Binding SelectedItem.OpenFileCommand}" />
+              <MenuItem Header="open: directory" Command="{Binding SelectedItem.OpenDirectoryCommand}"/>
+              <MenuItem Header="show: property" Command="{Binding SelectedItem.ShowPropertyCommand}" />
+              <Separator />
+              <MenuItem Header="copy: file"  Command="{Binding SelectedItem.CopyFileCommand}"/>
+              <MenuItem Header="copy: name(with ext)"  Command="{Binding SelectedItem.CopyNameWithExtensionCommand}"/>
+              <MenuItem Header="copy: name(without ext)"  Command="{Binding SelectedItem.CopyNameWithoutExtensionCommand}"/>
+              <MenuItem Header="copy: directory"  Command="{Binding SelectedItem.CopyDirectoryCommand}"/>
+            </ContextMenu>
+          </ListView.ContextMenu>
+        </ListView>
+
+        <ContentControl Grid.Row="1" Visibility="{Binding ShowSelectedFileDetail, Converter={StaticResource BooleanToVisibilityConverter}}" Height="{Binding ActualHeight, ElementName=fileListPanel, Converter={StaticResource DoubleToParameterPercentConverter}, ConverterParameter=0.5}">
+          <ContentControl.Style>
+            <Style TargetType="ContentControl">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding MultiSelectedItem.IsEnabled}" Value="True">
+                  <Setter Property="Content">
+                    <Setter.Value>
+                      <app_main_view_finder:FinderMultiFileControl MultiItem="{Binding MultiSelectedItem}" />
+                    </Setter.Value>
+                  </Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding MultiSelectedItem.IsEnabled}" Value="False">
+                  <Setter Property="Content">
+                    <Setter.Value>
+                      <app_main_view_finder:FinderSingleFileControl SingleItem="{Binding SelectedItem, Mode=TwoWay}" />
+                    </Setter.Value>
+                  </Setter>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </ContentControl.Style>
+        </ContentControl>
+
+      </Grid>
+    </Grid>
+
+    <GridSplitter Grid.Column="1" Style="{StaticResource DefaultVericalGridSplitter}" />
+
+  </Grid>
+</UserControl>

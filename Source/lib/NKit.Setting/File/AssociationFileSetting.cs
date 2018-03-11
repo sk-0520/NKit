@@ -7,7 +7,7 @@ using ContentTypeTextNet.NKit.Common;
 
 namespace ContentTypeTextNet.NKit.Setting.File
 {
-    public interface IReadOnlyAssociationFileSetting
+    public interface IReadOnlyAssociationFileSetting: IReadOnlySetting
     {
         #region property
 

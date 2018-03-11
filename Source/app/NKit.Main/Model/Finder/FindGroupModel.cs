@@ -21,8 +21,9 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 {
     public class FindGroupModel : RunnableAsyncModel<None>
     {
-        public FindGroupModel(FindGroupSetting findGroupSetting, IReadOnlyFinderSetting finderSetting, IReadOnlyFileSetting fileSetting, IReadOnlyNKitSetting nkitSetting)
+        public FindGroupModel(FinderManagerModel manager, FindGroupSetting findGroupSetting, IReadOnlyFinderSetting finderSetting, IReadOnlyFileSetting fileSetting, IReadOnlyNKitSetting nkitSetting)
         {
+            Manager = manager;
             FindGroupSetting = findGroupSetting;
             FinderSetting = finderSetting;
             FileSetting = fileSetting;
@@ -31,6 +32,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
         #region proeprty
 
+        FinderManagerModel Manager { get; }
         public FindGroupSetting FindGroupSetting { get; }
         public IReadOnlyFinderSetting FinderSetting { get; }
         public IReadOnlyFileSetting FileSetting { get; }
@@ -76,6 +78,11 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             }
 
             return false;
+        }
+
+        public void SaveDefaultSetting()
+        {
+            Manager.SetDefaultSetting(FindGroupSetting);
         }
 
         TextSearchResult SearchNamePattern(FileSystemInfo fileSystemInfo)
@@ -288,8 +295,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                 }
             }
 
-            var serializer = new BinaryDataContractSerializer();
-            CurrentFindGroupSetting = serializer.Clone(FindGroupSetting);
+            CurrentFindGroupSetting = SerializeUtility.Clone(FindGroupSetting);
 
             var oldItems = Items;
             Items.Clear();

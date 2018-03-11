@@ -17,7 +17,7 @@ namespace ContentTypeTextNet.NKit.Main.Test.Model.Finder
         [TestMethod]
         public void IsMatchFileAttributesTest()
         {
-            var model = new PrivateObject(new FindGroupModel(null, null, null, null));
+            var model = new PrivateObject(new FindGroupModel(null, null, null, null, null));
 
             var setting = new FindGroupSetting();
             model.SetProperty(nameof(FindGroupModel.CurrentFindGroupSetting), setting);

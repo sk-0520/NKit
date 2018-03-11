@@ -8,7 +8,7 @@ using ContentTypeTextNet.NKit.Common;
 
 namespace ContentTypeTextNet.NKit.Setting.Finder
 {
-    public interface IReadOnlyFindContentSetting
+    public interface IReadOnlyFindContentSetting: IReadOnlySetting
     {
         #region property
 

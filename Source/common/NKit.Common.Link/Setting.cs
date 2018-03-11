@@ -5,8 +5,11 @@ using System.Text;
 
 namespace ContentTypeTextNet.NKit.Common
 {
+    public interface IReadOnlySetting: ICloneable
+    { }
+
     [Serializable, DataContract]
-    public abstract class SettingBase : ICloneable
+    public abstract class SettingBase : IReadOnlySetting
     {
         #region ICloneable
 
@@ -18,7 +21,7 @@ namespace ContentTypeTextNet.NKit.Common
         #endregion
     }
 
-    public interface IReadOnlyIdSetting<TId>
+    public interface IReadOnlyIdSetting<TId>: IReadOnlySetting
     {
         TId Id { get; }
     }
