@@ -89,32 +89,36 @@ namespace ContentTypeTextNet.NKit.Manager.View
             Break();
 
             // シンプルな Markdown を書くようにすれば自力でパースできると思うのでセルフ優しさが必要
-            var lines = ReadLines(releaseNoteValue);
-            var uriRegex = new Regex(@"(<URI>http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?)");
-            var issueRegex = new Regex(@"#(?<ISSUE>\d+)");
+            if(string.IsNullOrWhiteSpace(releaseNoteValue)) {
+                AppendAndSelect("no release note");
+            } else {
+                var lines = ReadLines(releaseNoteValue);
+                var uriRegex = new Regex(@"(<URI>http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?)");
+                var issueRegex = new Regex(@"#(?<ISSUE>\d+)");
 
-            var defaultIndent = this.viewReleaseNote.SelectionIndent;
+                var defaultIndent = this.viewReleaseNote.SelectionIndent;
 
-            foreach(var line in lines) {
-                Break();
+                foreach(var line in lines) {
+                    Break();
 
-                var usingLine = line;
-                var listItemPosition = line.IndexOf('*');
-                var isListItem = listItemPosition != -1;
+                    var usingLine = line;
+                    var listItemPosition = line.IndexOf('*');
+                    var isListItem = listItemPosition != -1;
 
-                if(isListItem) {
-                    usingLine = usingLine.Substring(listItemPosition + 1);
-                }
-
-                AppendAndSelect(usingLine, r => {
                     if(isListItem) {
-                        r.SelectionIndent = listItemPosition * 10;
-                        r.SelectionBullet = true;
-                    } else {
-                        r.SelectionIndent = defaultIndent;
-                        r.SelectionBullet = false;
+                        usingLine = usingLine.Substring(listItemPosition + 1);
                     }
-                });
+
+                    AppendAndSelect(usingLine, r => {
+                        if(isListItem) {
+                            r.SelectionIndent = listItemPosition * 10;
+                            r.SelectionBullet = true;
+                        } else {
+                            r.SelectionIndent = defaultIndent;
+                            r.SelectionBullet = false;
+                        }
+                    });
+                }
             }
         }
 

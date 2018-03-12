@@ -34,7 +34,7 @@
             // commandClose
             // 
             this.commandClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.commandClose.Location = new System.Drawing.Point(160, 267);
+            this.commandClose.Location = new System.Drawing.Point(156, 277);
             this.commandClose.Name = "commandClose";
             this.commandClose.Size = new System.Drawing.Size(75, 23);
             this.commandClose.TabIndex = 0;
@@ -46,6 +46,7 @@
             // 
             this.viewReleaseNote.Location = new System.Drawing.Point(38, 44);
             this.viewReleaseNote.Name = "viewReleaseNote";
+            this.viewReleaseNote.ReadOnly = true;
             this.viewReleaseNote.Size = new System.Drawing.Size(391, 203);
             this.viewReleaseNote.TabIndex = 1;
             this.viewReleaseNote.Text = "";
