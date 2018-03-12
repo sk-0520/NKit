@@ -22,7 +22,7 @@ rem 	set MB=%windir%\microsoft.net\framework64\%DOTNETVER%\msbuild
 rem ) else (
 rem 	set MB=%windir%\microsoft.net\framework\%DOTNETVER%\msbuild
 rem )
-set MB=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild.exe
+if not defined MB set MB=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild.exe
 
 echo build x86
 "%MB%" Source\NKit.sln /p:DefineConstants="BUILD;%1" /p:Configuration=Release;Platform="Any CPU" /t:Rebuild /m /p:TargetFrameworkVersion=v4.7 /p:CodeAnalysisRuleSet=
