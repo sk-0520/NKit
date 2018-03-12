@@ -36,7 +36,7 @@ if "%2" == "FULL" goto REMOVED
 
 echo remove
 echo remove *.pdb, *.xml
-del /S /Q *.pdb
+del /S /Q "%OUTPUT_x86%\*.pdb
 del /S /Q "%OUTPUT_x86%\lib\*.xml"
 
 :REMOVED
