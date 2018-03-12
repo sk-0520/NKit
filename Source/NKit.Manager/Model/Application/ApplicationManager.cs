@@ -21,17 +21,17 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         #endregion
 
-        public ApplicationManager(IApplicationLogCreator logCreator)
+        public ApplicationManager(IApplicationLogFactory logFactory)
         {
-            LogCreator = logCreator;
-            Logger = LogCreator.CreateLogger("AP");
+            LogFactory = logFactory;
+            Logger = LogFactory.CreateLogger("AP");
         }
 
         #region property
 
         NKitApplicationItem MainApplication { get; set; }
 
-        IApplicationLogCreator LogCreator { get; }
+        IApplicationLogFactory LogFactory { get; }
         ILogger Logger { get; }
 
         object _itemsLocker = new object();
@@ -69,7 +69,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 MainApplication.Exited -= MainApplication_Exited;
             }
 
-            MainApplication = new NKitApplicationItem(NKitApplicationKind.Main, LogCreator) {
+            MainApplication = new NKitApplicationItem(NKitApplicationKind.Main, LogFactory) {
                 Arguments = AddNKitArguments(activeWorkspace, workspaceItemSetting, string.Empty)
             };
 
@@ -87,7 +87,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                     throw new ArgumentException();
 
                 case NKitApplicationKind.Rocket:
-                    item = new NKitApplicationItem(targetApplication, LogCreator) {
+                    item = new NKitApplicationItem(targetApplication, LogFactory) {
                         Arguments = AddNKitArguments(activeWorkspace, workspace, arguments),
                     };
                     break;

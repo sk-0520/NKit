@@ -146,12 +146,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
     public class NKitApplicationItem : ApplicationItem
     {
-        public NKitApplicationItem(NKitApplicationKind kind, IApplicationLogCreator logCreator)
+        public NKitApplicationItem(NKitApplicationKind kind, IApplicationLogFactory logFactory)
             : base(GetApplicationPath(kind))
         {
             Kind = kind;
 
-            Logger = logCreator.CreateLogger(Kind);
+            Logger = logFactory.CreateLogger(Kind);
 
             if(kind == NKitApplicationKind.Main) {
                 IsOutputReceive = true;

@@ -14,7 +14,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
     public delegate void WriteMessageDelegate(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string callerMemberName, string callerFilePath, int callerLineNumber);
     public delegate void WriteExceptionDelegate(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, Exception ex, string callerMemberName, string callerFilePath, int callerLineNumber);
 
-    public interface IApplicationLogCreator : ILogFactory
+    public interface IApplicationLogFactory : ILogFactory
     {
         #region function
 
@@ -53,7 +53,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
         #endregion
     }
 
-    public class LogManager : ManagerBase, IApplicationLogCreator
+    public class LogManager : ManagerBase, IApplicationLogFactory
     {
         #region define
 
@@ -155,7 +155,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
 
         #endregion
 
-        #region IApplicationLogCreator
+        #region IApplicationLogFactory
 
         public ILogger CreateLogger()
         {
