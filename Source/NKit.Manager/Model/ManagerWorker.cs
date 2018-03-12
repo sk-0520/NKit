@@ -62,6 +62,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         NKitLoggingTalkerHost NKitLoggingTalkerHost { get; set; }
 
         public bool IsFirstExecute { get; private set; }
+        public bool IsUpdatedFirstExecute { get; private set; }
         public bool Accepted
         {
             get { return ManagerSetting.Accepted; }
@@ -176,6 +177,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                         var serializer = new DataContractSerializer(typeof(ManagerSetting));
                         using(var reader = XmlReader.Create(stream)) {
                             ManagerSetting = (ManagerSetting)serializer.ReadObject(reader);
+                            IsUpdatedFirstExecute = ManagerSetting.LastExecuteVersion < currentVersion;
                             ManagerSetting.LastExecuteVersion = currentVersion;
                             ManagerSetting.LastExecuteTimestamp = currentTimestamp;
                             ManagerSetting.ExecuteCount += 1;
