@@ -9,15 +9,15 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace
 {
     public class WorkspaceManager: ManagerBase
     {
-        public WorkspaceManager(ILogCreator logCreator)
+        public WorkspaceManager(ILogFactory logFactory)
         {
-            LogCreator = logCreator;
-            Logger = LogCreator.CreateLogger("WS");
+            LogFactory = logFactory;
+            Logger = LogFactory.CreateLogger("WS");
         }
 
         #region property
 
-        ILogCreator LogCreator { get; }
+        ILogFactory LogFactory { get; }
         ILogger Logger { get; }
 
         #endregion

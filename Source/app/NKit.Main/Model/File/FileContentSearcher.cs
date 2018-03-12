@@ -48,7 +48,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
         #region property
 
         FileInfo File { get; }
-        ILogCreator LogCreator { get; }
+        ILogFactory LogFactory { get; }
 
         Stream FileStream { get; }
 

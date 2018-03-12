@@ -14,7 +14,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
     public delegate void WriteMessageDelegate(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string callerMemberName, string callerFilePath, int callerLineNumber);
     public delegate void WriteExceptionDelegate(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, Exception ex, string callerMemberName, string callerFilePath, int callerLineNumber);
 
-    public interface IApplicationLogCreator : ILogCreator
+    public interface IApplicationLogCreator : ILogFactory
     {
         #region function
 

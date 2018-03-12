@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.NKit.Common
         void Fatal(Exception ex, string callerMemberName = "", string callerFilePath = "", int callerLineNumber = 0);
     }
 
-    public interface ILogCreator
+    public interface ILogFactory
     {
         #region function
 

@@ -134,7 +134,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         #endregion
     }
 
-    public class LogSwitcher: DisposerBase, ILogCreator
+    public class LogSwitcher: DisposerBase, ILogFactory
     {
         public LogSwitcher(NKitApplicationKind senderApplication, Uri serviceUri)
         {
@@ -250,11 +250,11 @@ namespace ContentTypeTextNet.NKit.Utility.Model
     {
         static Log()
         {
-            LogCreator = new LogSwitcher(NKitApplicationKind.Unknown, null) {
+            LogFactory = new LogSwitcher(NKitApplicationKind.Unknown, null) {
                 LastErrorTimestamp = DateTime.MaxValue,
                 RetrySpan = TimeSpan.Zero,
             };
-            Out = LogCreator.CreateLogger("{OUT}");
+            Out = LogFactory.CreateLogger("{OUT}");
         }
 
         #region property
@@ -262,30 +262,30 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 #if DEBUG
         static bool IsInitialized { get; set; } = false;
 #endif
-        static ILogCreator LogCreator { get; set; }
+        static ILogFactory LogFactory { get; set; }
 
         public static ILogger Out { get; set; }
 
         public static ILogger CreateLogger()
         {
-            return LogCreator.CreateLogger();
+            return LogFactory.CreateLogger();
         }
 
         public static ILogger CreateLogger(string subject)
         {
-            return LogCreator.CreateLogger(subject);
+            return LogFactory.CreateLogger(subject);
         }
 
         public static ILogger CreateLogger(object obj)
         {
-            return LogCreator.CreateLogger(obj.GetType().Name);
+            return LogFactory.CreateLogger(obj.GetType().Name);
         }
 
         #endregion
 
         #region function
 
-        public static void Initialize(ILogCreator logCreator)
+        public static void Initialize(ILogFactory logFactory)
         {
 #if DEBUG
             if(IsInitialized) {
@@ -293,8 +293,8 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             }
 #endif
 
-            LogCreator = logCreator;
-            Out = LogCreator.CreateLogger("<OUT>");
+            LogFactory = logFactory;
+            Out = LogFactory.CreateLogger("<OUT>");
 
 #if DEBUG
             IsInitialized = true;
