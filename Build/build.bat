@@ -44,3 +44,6 @@ del /S /Q "%OUTPUT_ANY%\lib\*.xml"
 echo compression
 cscript "%ZIP%" "%OUTPUT_ANY%" "%OUTPUT%\NKit_%EXEVER%_AnyCPU.zip"
 
+echo output version
+echo %EXEVER% > %OUTPUT%\version.txt
+

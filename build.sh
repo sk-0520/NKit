@@ -23,6 +23,8 @@ pushd Build
     cmd.exe //c build.bat ${BUILD_TYPE} ${BUILD_OUTPUT}
 popd
 
+echo $VERSION_REV > Output/Release/hash.txt
+
 # バージョン戻し
 git reset --hard
 
