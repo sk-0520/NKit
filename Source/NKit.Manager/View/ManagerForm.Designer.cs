@@ -226,6 +226,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandExecuteUpdate.TabIndex = 1;
             this.commandExecuteUpdate.Text = "start up";
             this.commandExecuteUpdate.UseVisualStyleBackColor = true;
+            this.commandExecuteUpdate.Click += new System.EventHandler(this.commandExecuteUpdate_Click);
             // 
             // ManagerForm
             // 

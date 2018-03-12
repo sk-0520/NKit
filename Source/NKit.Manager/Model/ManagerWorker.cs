@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -66,6 +67,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             get { return ManagerSetting.Accepted; }
             set { ManagerSetting.Accepted = value; }
         }
+
+        public bool CanUpdate => UpdateManager.HasUpdate;
 
         public bool NeedSave { get; private set; } = true;
         ManagerSetting ManagerSetting { get; set; }
@@ -435,16 +438,43 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         public bool CheckCanExit()
         {
-            var result = SelectedWorkspaceItem == null || WorkspaceState != WorkspaceState.Running;
+            var result = SelectedWorkspaceItem == null || WorkspaceState != WorkspaceState.Running || WorkspaceState != WorkspaceState.Updating;
 
             Logger.Information($"can exit: {result}");
 
             return result;
         }
 
-        public Task CheckUpdateAsync()
+        public Task CheckUpdateAsync(Control updateFireControl)
         {
-            return UpdateManager.CheckUpdateAsync();
+            updateFireControl.Enabled = false;
+            return UpdateManager.CheckUpdateAsync().ContinueWith(t => {
+                updateFireControl.Enabled = true;
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        public Task<bool> ExecuteUpdateAsync(EventWaitHandle executeEvent)
+        {
+            //TODO: すでに動いてるやつらを落としたりなんかする
+
+
+            WorkspaceState = WorkspaceState.Updating;
+            // GUI側の待機状態を解除
+            executeEvent.Set();
+
+            // アップデート処理開始
+            return UpdateManager.UpdateAsync().ContinueWith(t => {
+                // ダメだったら何食わぬ顔で元に戻す
+                if(!t.Result) {
+                    if(SelectedWorkspaceItem!=null) {
+                        WorkspaceState = WorkspaceState.Selecting;
+                    } else {
+                        WorkspaceState = WorkspaceState.None;
+                    }
+                }
+
+                return t.Result;
+            });
         }
 
         #endregion

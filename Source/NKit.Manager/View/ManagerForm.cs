@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ContentTypeTextNet.NKit.Manager.Model;
@@ -72,6 +73,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.commandWorkspaceDirectorySelect.Enabled = true;
                     this.commandWorkspaceSave.Enabled = true;
                     this.selectLogging.Enabled = true;
+                    this.commandExecuteUpdate.Enabled = Worker.CanUpdate;
                     break;
 
                 case Define.WorkspaceState.Selecting:
@@ -87,6 +89,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.commandWorkspaceDirectorySelect.Enabled = true;
                     this.commandWorkspaceSave.Enabled = true;
                     this.selectLogging.Enabled = true;
+                    this.commandExecuteUpdate.Enabled = Worker.CanUpdate;
                     break;
 
                 case Define.WorkspaceState.Running:
@@ -102,6 +105,26 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.commandWorkspaceDirectorySelect.Enabled = false;
                     this.commandWorkspaceSave.Enabled = false;
                     this.selectLogging.Enabled = false;
+                    this.commandExecuteUpdate.Enabled = false;
+                    break;
+
+                case Define.WorkspaceState.Updating:
+                    this.commandWorkspaceLoad.Enabled = false;
+                    this.commandWorkspaceClose.Enabled = false;
+                    this.selectWorkspace.Enabled = false;
+                    this.commandWorkspaceCopy.Enabled = false;
+                    this.commandWorkspaceCreate.Enabled = false;
+                    //this.panelWorkspace.Enabled = true;
+                    this.inputWorkspaceName.ReadOnly = false;
+                    this.inputWorkspaceDirectoryPath.ReadOnly = false;
+                    this.inputWorkspaceName.Enabled = false;
+                    this.inputWorkspaceDirectoryPath.Enabled = false;
+                    this.commandWorkspaceDelete.Enabled = false;
+                    this.commandWorkspaceDirectorySelect.Enabled = false;
+                    this.commandWorkspaceSave.Enabled = false;
+                    this.selectLogging.Enabled = false;
+                    this.commandCheckUpdate.Enabled = false;
+                    this.commandExecuteUpdate.Enabled = false;
                     break;
 
                 default:
@@ -210,9 +233,30 @@ namespace ContentTypeTextNet.NKit.Manager.View
             e.Cancel = !Worker.CheckCanExit();
         }
 
-        private void commandCheckUpdate_Click(object sender, EventArgs e)
+        private async void commandCheckUpdate_Click(object sender, EventArgs e)
         {
-            Worker.CheckUpdateAsync();
+            await Worker.CheckUpdateAsync(this.commandCheckUpdate);
+            RefreshControls();
+        }
+
+        private async void commandExecuteUpdate_Click(object sender, EventArgs e)
+        {
+            var execEvent = new AutoResetEvent(false);
+
+            var task = Worker.ExecuteUpdateAsync(execEvent);
+
+            // 向こうから非同期処理完了前に制御が帰ってきたらコントロール系を更新
+            execEvent.WaitOne();
+            RefreshControls();
+
+            var updated = await task;
+            if(!updated) {
+                // あかなんだ
+                RefreshControls();
+                return;
+            }
+
+            //TODO: 再起動
         }
     }
 }

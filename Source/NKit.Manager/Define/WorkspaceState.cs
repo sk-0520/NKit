@@ -28,5 +28,9 @@ namespace ContentTypeTextNet.NKit.Manager.Define
         /// ワークスペース実行中。
         /// </summary>
         Running,
+        /// <summary>
+        /// 更新中。
+        /// </summary>
+        Updating,
     }
 }

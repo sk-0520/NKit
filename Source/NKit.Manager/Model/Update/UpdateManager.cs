@@ -27,6 +27,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
         ILogFactory LogFactory { get; }
         ILogger Logger { get; }
 
+        public bool HasUpdate { get; private set; }
+
         public Version NewVersion { get; private set; }
         public Uri DownloadUri { get; private set; }
 
@@ -173,12 +175,18 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
                 var rawReleaseNoteFile = await GetStringAsync(client, Constants.UpdateReleaseNoteBaseUri, hash, releaseNoteFilePath);
 
 
+                HasUpdate = true;
                 NewVersion = parsedVersion;
                 DownloadUri = new Uri(downloadUri);
                 ReleaseNote = rawReleaseNoteFile;
             }
 
             return true;
+        }
+
+        public Task<bool> UpdateAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }
