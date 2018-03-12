@@ -241,7 +241,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             return ManagerSetting.LastExecuteVersion <= version.MinimumVersion;
         }
 
-        public void ListupWorkspace(ComboBox targetControl)
+        public void ListupWorkspace(ComboBox targetControl, Guid selectedWorkspaceId)
         {
             targetControl.Items.Clear();
 
@@ -261,7 +261,11 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
             targetControl.Items.AddRange(items);
 
-            var lastUseItem = items.SingleOrDefault(i => i.Value.Id == ManagerSetting.Workspace.LastUseWorkspaceId);
+            var targetGuid = selectedWorkspaceId == Guid.Empty
+                ? ManagerSetting.Workspace.LastUseWorkspaceId
+                : selectedWorkspaceId
+            ;
+            var lastUseItem = items.SingleOrDefault(i => i.Value.Id == targetGuid);
             if(lastUseItem != null) {
                 targetControl.SelectedItem = lastUseItem;
             } else if(items.Any()) {
@@ -273,7 +277,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             WorkspaceState = WorkspaceState.Selecting;
         }
 
-        public bool SaveWorkspace(ErrorProvider errorProvider, Control nameControl, Control directoryControl)
+        public bool SaveWorkspace(ErrorProvider errorProvider, Control nameControl, Control directoryControl, CheckBox loggingControl)
         {
 
             var hasError = false;
@@ -293,6 +297,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             } else {
                 errorProvider.SetError(directoryControl, null);
             }
+
+            var logging = loggingControl.Checked;
 
             if(hasError) {
                 return false;
@@ -321,6 +327,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             SelectedWorkspaceItem.Name = name;
             SelectedWorkspaceItem.DirectoryPath = directoryPath;
             SelectedWorkspaceItem.UpdatedTimestamp = currentTimestamp;
+            SelectedWorkspaceItem.Logging = logging;
 
             WorkspaceState = WorkspaceState.Selecting;
 
@@ -388,11 +395,19 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             }
 
             // ワークスペースにログ出力開始
-            ActiveWorkspace.LogFilePath = Path.Combine(workspaceDirPath, CommonUtility.WorkspaceLogDirectoryName, DateTime.Now.ToString("yyyy-MM-dd_hhmmss") + ".log");
-            ActiveWorkspace.LogWriter = File.CreateText(ActiveWorkspace.LogFilePath);
-            LogManager.AttachOutputWriter(ActiveWorkspace.LogWriter, true);
+            if(SelectedWorkspaceItem.Logging) {
+                ActiveWorkspace.LogFilePath = Path.Combine(workspaceDirPath, CommonUtility.WorkspaceLogDirectoryName, DateTime.Now.ToString("yyyy-MM-dd_hhmmss") + ".log");
+                ActiveWorkspace.LogWriter = File.CreateText(ActiveWorkspace.LogFilePath);
+                LogManager.AttachOutputWriter(ActiveWorkspace.LogWriter, true);
+                Logger.Information($"work space log: {ActiveWorkspace.LogFilePath}");
+            } else {
+                ActiveWorkspace.LogFilePath = null;
+                ActiveWorkspace.LogWriter = null;
+                Logger.Information("work space log: none");
+            }
 
-            Logger.Information($"work space log: {ActiveWorkspace.LogFilePath}");
+            // 直近ワークスペース設定
+            ManagerSetting.Workspace.LastUseWorkspaceId = SelectedWorkspaceItem.Id;
 
             // 起動処理
             var aboutId = DateTime.Now.ToFileTime().ToString();
@@ -410,6 +425,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             ApplicationManager.ExecuteMainApplication(ActiveWorkspace, SelectedWorkspaceItem);
 
             WorkspaceState = WorkspaceState.Running;
+
+            SaveSetting();
         }
 
         public bool CheckCanExit()
@@ -464,8 +481,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                 WorkspaceExited(sender, e);
             }
 
-            LogManager.DetachOutputWriter(ActiveWorkspace.LogWriter);
-            ActiveWorkspace.LogWriter.Dispose();
+            if(ActiveWorkspace.LogWriter != null) {
+                LogManager.DetachOutputWriter(ActiveWorkspace.LogWriter);
+                ActiveWorkspace.LogWriter.Dispose();
+            }
         }
 
         private void NKitApplicationTasker_ApplicationWakeup(object sender, TalkApplicationWakeupEventArgs e)

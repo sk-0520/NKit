@@ -37,18 +37,19 @@ namespace ContentTypeTextNet.NKit.Manager.View
             Worker.OutputLog += Worker_OutputLog;
         }
 
-        void SetInputControl(string name, string directoryPath)
+        void SetInputControl(string name, string directoryPath, bool logging)
         {
             this.inputWorkspaceName.Text = name;
             this.inputWorkspaceDirectoryPath.Text = directoryPath;
+            this.selectLogging.Checked = logging;
         }
 
         void SetInputControlFromSelectedWorkspaceItem()
         {
             if(Worker.SelectedWorkspaceItem != null) {
-                SetInputControl(Worker.SelectedWorkspaceItem.Name, Worker.SelectedWorkspaceItem.DirectoryPath);
+                SetInputControl(Worker.SelectedWorkspaceItem.Name, Worker.SelectedWorkspaceItem.DirectoryPath, Worker.SelectedWorkspaceItem.Logging);
             } else {
-                SetInputControl(string.Empty, string.Empty);
+                SetInputControl(string.Empty, string.Empty, false);
             }
         }
 
@@ -109,14 +110,14 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         private void ManagerForm_Load(object sender, EventArgs e)
         {
-            Worker.ListupWorkspace(this.selectWorkspace);
+            Worker.ListupWorkspace(this.selectWorkspace, Guid.Empty);
             RefreshControls();
         }
 
         private void commandWorkspaceSave_Click(object sender, EventArgs e)
         {
-            if(Worker.SaveWorkspace(this.errorProvider, this.inputWorkspaceName, this.inputWorkspaceDirectoryPath)) {
-                Worker.ListupWorkspace(this.selectWorkspace);
+            if(Worker.SaveWorkspace(this.errorProvider, this.inputWorkspaceName, this.inputWorkspaceDirectoryPath, this.selectLogging)) {
+                Worker.ListupWorkspace(this.selectWorkspace, Worker.SelectedWorkspaceItem.Id);
                 SetInputControlFromSelectedWorkspaceItem();
                 RefreshControls();
             }
@@ -126,18 +127,18 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             Worker.ClearSelectedWorkspace();
             this.selectWorkspace.SelectedIndex = -1;
-            SetInputControl(string.Empty, string.Empty);
+            SetInputControl(string.Empty, string.Empty, false);
             RefreshControls();
         }
 
         private void commandWorkspaceDelete_Click(object sender, EventArgs e)
         {
             Worker.DeleteSelectedWorkspace();
-            Worker.ListupWorkspace(this.selectWorkspace);
+            Worker.ListupWorkspace(this.selectWorkspace, Guid.Empty);
             if(Worker.SelectedWorkspaceItem != null) {
                 SetInputControlFromSelectedWorkspaceItem();
             } else {
-                SetInputControl(string.Empty, string.Empty);
+                SetInputControl(string.Empty, string.Empty, false);
             }
             RefreshControls();
         }
@@ -148,7 +149,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             if(Worker.WorkspaceState == Define.WorkspaceState.Selecting) {
                 SetInputControlFromSelectedWorkspaceItem();
             } else {
-                SetInputControl(string.Empty, string.Empty);
+                SetInputControl(string.Empty, string.Empty, false);
             }
         }
 

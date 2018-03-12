@@ -44,6 +44,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.viewLog = new System.Windows.Forms.RichTextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.selectLogging = new System.Windows.Forms.CheckBox();
             this.panelWorkspace.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
@@ -161,6 +162,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             // panelWorkspace
             // 
+            this.panelWorkspace.Controls.Add(this.selectLogging);
             this.panelWorkspace.Controls.Add(this.inputWorkspaceName);
             this.panelWorkspace.Controls.Add(this.inputWorkspaceDirectoryPath);
             this.panelWorkspace.Controls.Add(this.commandWorkspaceDelete);
@@ -193,6 +195,16 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.label3.Size = new System.Drawing.Size(56, 12);
             this.label3.TabIndex = 2;
             this.label3.Text = "こーじちゅう";
+            // 
+            // selectLogging
+            // 
+            this.selectLogging.AutoSize = true;
+            this.selectLogging.Location = new System.Drawing.Point(11, 60);
+            this.selectLogging.Name = "selectLogging";
+            this.selectLogging.Size = new System.Drawing.Size(39, 16);
+            this.selectLogging.TabIndex = 5;
+            this.selectLogging.Text = "log";
+            this.selectLogging.UseVisualStyleBackColor = true;
             // 
             // ManagerForm
             // 
@@ -237,6 +249,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.ErrorProvider errorProvider;
         private System.Windows.Forms.RichTextBox viewLog;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox selectLogging;
     }
 }
 

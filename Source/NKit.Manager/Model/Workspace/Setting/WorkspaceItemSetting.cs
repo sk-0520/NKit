@@ -23,6 +23,11 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting
         string DirectoryPath { get; }
 
         /// <summary>
+        /// ログ出力を行うか。
+        /// </summary>
+        bool Logging { get; }
+
+        /// <summary>
         /// 作成日時。
         /// </summary>
         DateTime CreatedTimestamp { get; }
@@ -45,6 +50,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting
 
         [DataMember]
         public string DirectoryPath { get; set; }
+
+        [DataMember]
+        public bool Logging { get; set; }
+
 
         [DataMember]
         public DateTime CreatedTimestamp { get; set; }
