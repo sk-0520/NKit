@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.ServiceModel;
@@ -75,6 +76,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.commandWorkspaceSave.Enabled = true;
                     this.selectLogging.Enabled = true;
                     this.commandExecuteUpdate.Enabled = Worker.CanUpdate;
+                    this.commandShowReleaseNote.Enabled = Worker.CanUpdate;
                     break;
 
                 case Define.WorkspaceState.Selecting:
@@ -91,6 +93,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.commandWorkspaceSave.Enabled = true;
                     this.selectLogging.Enabled = true;
                     this.commandExecuteUpdate.Enabled = Worker.CanUpdate;
+                    this.commandShowReleaseNote.Enabled = Worker.CanUpdate;
                     break;
 
                 case Define.WorkspaceState.Running:
@@ -107,6 +110,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.commandWorkspaceSave.Enabled = false;
                     this.selectLogging.Enabled = false;
                     this.commandExecuteUpdate.Enabled = false;
+                    this.commandShowReleaseNote.Enabled = Worker.CanUpdate;
                     break;
 
                 case Define.WorkspaceState.Updating:
@@ -126,11 +130,28 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.selectLogging.Enabled = false;
                     this.commandCheckUpdate.Enabled = false;
                     this.commandExecuteUpdate.Enabled = false;
+                    this.commandShowReleaseNote.Enabled = Worker.CanUpdate;
                     break;
 
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        void ShowReleaseNote()
+        {
+            Debug.Assert(Worker.CanUpdate);
+
+            if(ReleaseNoteForm == null) {
+                ReleaseNoteForm = new ReleaseNoteForm();
+                ReleaseNoteForm.IssueBaseUri = Constants.IssuesBaseUri;
+                ReleaseNoteForm.FormClosed += ReleaseNoteForm_FormClosed;
+            }
+
+            ReleaseNoteForm.ReleaseNoteUri = Worker.ReleaseNoteUri;
+            ReleaseNoteForm.SetReleaseNote(Worker.NewVersion, Worker.ReleaseHash, Worker.ReleaseTimestamp, Worker.ReleaseNoteValue);
+            ReleaseNoteForm.Show(this);
+
         }
 
         #endregion
@@ -255,14 +276,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             await Worker.CheckUpdateAsync(this.commandCheckUpdate);
             RefreshControls();
             if(Worker.CanUpdate) {
-                if(ReleaseNoteForm == null) {
-                    ReleaseNoteForm = new ReleaseNoteForm();
-                    ReleaseNoteForm.IssueBaseUri = Constants.IssuesBaseUri;
-                }
-
-                ReleaseNoteForm.ReleaseNoteUri = Worker.ReleaseNoteUri;
-                ReleaseNoteForm.SetReleaseNote(Worker.NewVersion, Worker.ReleaseHash, Worker.ReleaseTimestamp, Worker.ReleaseNoteValue);
-                ReleaseNoteForm.Show(this);
+                ShowReleaseNote();
             }
         }
 
@@ -283,8 +297,29 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 return;
             }
 
+            if(ReleaseNoteForm != null) {
+                ReleaseNoteForm.Close();
+            }
+
             //TODO: 再起動
             Application.Restart();
         }
+
+        private void commandShowReleaseNote_Click(object sender, EventArgs e)
+        {
+            if(ReleaseNoteForm == null) {
+                ShowReleaseNote();
+            } else if(ReleaseNoteForm.Visible) {
+                ReleaseNoteForm.Activate();
+            }
+        }
+
+        private void ReleaseNoteForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            ReleaseNoteForm.FormClosed -= ReleaseNoteForm_FormClosed;
+            ReleaseNoteForm.Dispose();
+            ReleaseNoteForm = null;
+        }
+
     }
 }

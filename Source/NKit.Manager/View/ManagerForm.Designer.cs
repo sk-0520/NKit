@@ -47,6 +47,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.label3 = new System.Windows.Forms.Label();
             this.commandCheckUpdate = new System.Windows.Forms.Button();
             this.commandExecuteUpdate = new System.Windows.Forms.Button();
+            this.commandShowReleaseNote = new System.Windows.Forms.Button();
             this.panelWorkspace.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
@@ -228,11 +229,22 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandExecuteUpdate.UseVisualStyleBackColor = true;
             this.commandExecuteUpdate.Click += new System.EventHandler(this.commandExecuteUpdate_Click);
             // 
+            // commandShowReleaseNote
+            // 
+            this.commandShowReleaseNote.Location = new System.Drawing.Point(83, 95);
+            this.commandShowReleaseNote.Name = "commandShowReleaseNote";
+            this.commandShowReleaseNote.Size = new System.Drawing.Size(75, 23);
+            this.commandShowReleaseNote.TabIndex = 7;
+            this.commandShowReleaseNote.Text = "note";
+            this.commandShowReleaseNote.UseVisualStyleBackColor = true;
+            this.commandShowReleaseNote.Click += new System.EventHandler(this.commandShowReleaseNote_Click);
+            // 
             // ManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(612, 270);
+            this.Controls.Add(this.commandShowReleaseNote);
             this.Controls.Add(this.viewLog);
             this.Controls.Add(this.panelWorkspace);
             this.Controls.Add(this.commandWorkspaceClose);
@@ -276,6 +288,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.CheckBox selectLogging;
         private System.Windows.Forms.Button commandExecuteUpdate;
         private System.Windows.Forms.Button commandCheckUpdate;
+        private System.Windows.Forms.Button commandShowReleaseNote;
     }
 }
 

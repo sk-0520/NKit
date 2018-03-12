@@ -96,6 +96,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
             var defaultIndent = this.viewReleaseNote.SelectionIndent;
 
             foreach(var line in lines) {
+                Break();
+
                 var usingLine = line;
                 var listItemPosition = line.IndexOf('*');
                 var isListItem = listItemPosition != -1;
@@ -113,8 +115,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
                         r.SelectionBullet = false;
                     }
                 });
-
-                Break();
             }
         }
 
