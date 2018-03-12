@@ -49,10 +49,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
         public async Task<bool> CheckUpdateAsync()
         {
             var assembly = Assembly.GetExecutingAssembly();
+            var assemblyVersion = assembly.GetName().Version;
 
             var versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
             var productVersion = versionInfo.ProductVersion;
 
+            Logger.Debug($"{nameof(assemblyVersion)}: {assemblyVersion}");
             Logger.Debug($"{nameof(productVersion)}: {productVersion}");
 
             using(var client = new HttpClient()) {
@@ -64,17 +66,47 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
                 // Json をデシリアライズする余力無し(nugetっていうかライブラリ参照すると解放できないのよね)
                 // DataContractJsonSerializer? 格納クラスつくんのだりぃ
                 var hashRegex = new Regex(Constants.UpdateCheckBranchHashPattern, (RegexOptions)Enum.Parse(typeof(RegexOptions), Constants.UpdateCheckBranchHashPatternOptions));
-                var match = hashRegex.Match(rawJson);
-                if(!match.Success) {
+                var hashMatch = hashRegex.Match(rawJson);
+                if(!hashMatch.Success) {
                     Logger.Warning("not found hash");
                     return false;
                 }
-                var hash = match.Groups["HASH"].Value;
-                Logger.Information($"hash: {hash}");
+                var hash = hashMatch.Groups[Constants.UpdateCheckBranchHashPatternKey].Value;
+                Logger.Debug($"hash: {hash}");
 
-                // ハッシュ比較
+                if(string.Equals(hash, productVersion, StringComparison.InvariantCultureIgnoreCase)) {
+                    // ハッシュは一緒
+                    Logger.Information("latest version");
+                    return false;
+                }
 
                 // ハッシュが違うのでバージョンが変わってるかもしんない
+                var versionFileUri = CombineUri(Constants.UpdateCheckVersionBaseUri, hash, Constants.UpdateCheckVersionFilePath);
+                Logger.Debug($"file uri: {versionFileUri}");
+                var rawVersionFile = await client.GetStringAsync(versionFileUri);
+                var versionRegex = new Regex(Constants.UpdateCheckVersionFilePattern, (RegexOptions)Enum.Parse(typeof(RegexOptions), Constants.UpdateCheckVersionFilePatternOptions));
+                var versionMatch = versionRegex.Match(rawVersionFile);
+                if(!versionMatch.Success) {
+                    Logger.Warning("not found version");
+                    return false;
+                }
+
+                var version = versionMatch.Groups[Constants.UpdateCheckVersionFilePatternKey].Value;
+                Logger.Debug($"version: {version}");
+
+                if(!Version.TryParse(version, out var versionResult)) {
+                    Logger.Warning("version text can not parse");
+                }
+
+                if(versionResult <= assemblyVersion) {
+                    // 一緒かβ版とかデバッグ時の新しいやつ
+                    Logger.Information("latest version");
+                    return false;
+                }
+
+                // バージョン違うけど各種サービス連携にも時間かかるしダウンロードファイルは存在しないかもしんない
+
+
             }
 
             return false;
