@@ -10,6 +10,10 @@ namespace ContentTypeTextNet.NKit.Manager
     {
         #region property
 
+        public static string ArchiveDirectoryName { get; } = "archive";
+        public static string ExtractDirectoryName { get; } = "extract";
+        public static string BackupFileName { get; } = "backup.zip";
+
         #endregion
     }
 }

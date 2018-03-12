@@ -29,6 +29,9 @@ namespace ContentTypeTextNet.NKit.Manager
         public static string UpdateReleaseNoteBaseUri => ConfigurationManager.AppSettings["update-release-note-base-uri"];
         public static string UpdateReleaseNoteFilePathFormat => ConfigurationManager.AppSettings["update-release-note-file-path-format"];
 
+
+        public static int UpdateLeaveArchiveCount => int.Parse(ConfigurationManager.AppSettings["update-leave-archive-count"]);
+
         #endregion
     }
 }

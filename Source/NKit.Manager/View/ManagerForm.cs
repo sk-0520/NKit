@@ -257,6 +257,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             }
 
             //TODO: 再起動
+            Application.Restart();
         }
     }
 }

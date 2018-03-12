@@ -458,6 +458,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             //TODO: すでに動いてるやつらを落としたりなんかする
 
 
+            // 怖いし設定は保存しとく
+            SaveSetting();
+
             WorkspaceState = WorkspaceState.Updating;
             // GUI側の待機状態を解除
             executeEvent.Set();
