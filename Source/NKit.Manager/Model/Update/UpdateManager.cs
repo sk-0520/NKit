@@ -33,7 +33,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
         public Version NewVersion { get; private set; }
         public Uri DownloadUri { get; private set; }
 
-        public string ReleaseNote { get; private set; }
+        public string ReleaseNoteValue { get; private set; }
+        public string ReleaseHash { get; private set; }
+        public DateTime ReleaseTimestamp { get; private set; }
+        public Uri ReleaseNoteUri { get; private set; }
 
         #endregion
 
@@ -50,7 +53,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
             return new Uri(originUri);
         }
 
-        Task<string> GetStringAsync(HttpClient client, string baseUri, params string[] hierarchies)
+        Task<(string value, Uri uri)> GetStringAsync(HttpClient client, string baseUri, params string[] hierarchies)
         {
             var uri = CombineUri(baseUri, hierarchies);
 
@@ -62,11 +65,13 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
                 Logger.Debug($"http status code: {result.StatusCode}");
 
                 if(result.IsSuccessStatusCode) {
-                    return result.Content.ReadAsStringAsync();
+                    return result.Content.ReadAsStringAsync().ContinueWith(t2 => {
+                        return (t2.Result, uri);
+                    });
                 }
 
                 Logger.Warning("http content is empty");
-                return Task.FromResult(string.Empty);
+                return Task.FromResult((string.Empty, uri));
             }).Unwrap();
         }
 
@@ -125,7 +130,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
                 var rawJson = await GetStringAsync(client, Constants.UpdateCheckBranchBaseUri, Constants.UpdateCheckBranchTargetName);
                 // Json をデシリアライズする余力無し(nugetっていうかライブラリ参照すると解放できないのよね)
                 // DataContractJsonSerializer? 格納クラスつくんのだりぃ
-                var hashResult = GetTagetValue(rawJson, Constants.UpdateCheckBranchHashPattern, Constants.UpdateCheckBranchHashPatternOptions, Constants.UpdateCheckBranchHashPatternKey);
+                var hashResult = GetTagetValue(rawJson.value, Constants.UpdateCheckBranchHashPattern, Constants.UpdateCheckBranchHashPatternOptions, Constants.UpdateCheckBranchHashPatternKey);
                 if(!hashResult.isMatch) {
                     Logger.Warning("not found hash");
                     return false;
@@ -139,9 +144,19 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
                     return false;
                 }
 
+                // リリース日を取得
+                var timestampResult = GetTagetValue(rawJson.value, Constants.UpdateCheckBranchTimestampPattern, Constants.UpdateCheckBranchTimestampPatternOptions, Constants.UpdateCheckBranchTimestampPatternKey);
+                var timestamp = DateTime.MinValue;
+                if(timestampResult.isMatch) {
+                    Logger.Debug($"timestamp: {timestampResult.value}");
+                    timestamp = DateTime.Parse(timestampResult.value);
+                } else {
+                    Logger.Debug($"timestamp not found");
+                }
+
                 // ハッシュが違うのでバージョンが変わってるかもしんない
                 var rawVersionFile = await GetStringAsync(client, Constants.UpdateCheckVersionBaseUri, hash, Constants.UpdateCheckVersionFilePath);
-                var versionResult = GetTagetValue(rawVersionFile, Constants.UpdateCheckVersionFilePattern, Constants.UpdateCheckVersionFilePatternOptions, Constants.UpdateCheckVersionFilePatternKey);
+                var versionResult = GetTagetValue(rawVersionFile.value, Constants.UpdateCheckVersionFilePattern, Constants.UpdateCheckVersionFilePatternOptions, Constants.UpdateCheckVersionFilePatternKey);
                 if(!versionResult.isMatch) {
                     Logger.Warning("not found version");
                     return false;
@@ -165,7 +180,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
                 // 単純検索
                 var downloadFileName = GetFormattedArchiveFileName(parsedVersion);
                 var donwloadPattern = Constants.UpdateCheckDownloadUriPattern.Replace("${FILENAME}", Regex.Escape(downloadFileName));
-                var downloadResult = GetTagetValue(rawDownload, donwloadPattern, Constants.UpdateCheckDownloadUriPatternOptions, Constants.UpdateCheckDownloadUriPatternKey);
+                var downloadResult = GetTagetValue(rawDownload.value, donwloadPattern, Constants.UpdateCheckDownloadUriPatternOptions, Constants.UpdateCheckDownloadUriPatternKey);
                 if(!downloadResult.isMatch) {
                     Logger.Information("not found module");
                     return false;
@@ -184,9 +199,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
 
 
                 HasUpdate = true;
+                ReleaseHash = hash;
+                ReleaseTimestamp = timestamp;
                 NewVersion = parsedVersion;
                 DownloadUri = new Uri(downloadUri);
-                ReleaseNote = rawReleaseNoteFile;
+                ReleaseNoteValue = rawReleaseNoteFile.value;
+                ReleaseNoteUri = rawReleaseNoteFile.uri;
             }
 
             return true;

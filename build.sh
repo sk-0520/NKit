@@ -25,7 +25,7 @@ popd
 
 echo create tag api json
 VERSION_NUM=`head -n 1 Output/Release/version.txt | tr -d " "`
-echo "{ \"name\": \"${VERSION_NUM}\", \"target\": { \"hash\": \"${VERSION_REV}\" } }" > Output/Release/bitcuket-tag.json
+echo "{ \"name\": \"ver_${VERSION_NUM//-/.}\", \"target\": { \"hash\": \"${VERSION_REV}\" } }" > Output/Release/bitcuket-tag.json
 
 # バージョン戻し
 git reset --hard
