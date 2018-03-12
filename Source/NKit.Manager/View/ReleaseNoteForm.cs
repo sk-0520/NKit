@@ -119,5 +119,10 @@ namespace ContentTypeTextNet.NKit.Manager.View
         }
 
         #endregion
+
+        private void commandClose_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

@@ -33,12 +33,14 @@
             // 
             // commandClose
             // 
+            this.commandClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.commandClose.Location = new System.Drawing.Point(160, 267);
             this.commandClose.Name = "commandClose";
             this.commandClose.Size = new System.Drawing.Size(75, 23);
             this.commandClose.TabIndex = 0;
             this.commandClose.Text = "close";
             this.commandClose.UseVisualStyleBackColor = true;
+            this.commandClose.Click += new System.EventHandler(this.commandClose_Click);
             // 
             // viewReleaseNote
             // 
@@ -50,8 +52,10 @@
             // 
             // ReleaseNoteForm
             // 
+            this.AcceptButton = this.commandClose;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.commandClose;
             this.ClientSize = new System.Drawing.Size(465, 312);
             this.Controls.Add(this.viewReleaseNote);
             this.Controls.Add(this.commandClose);
