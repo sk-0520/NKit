@@ -21,6 +21,13 @@ namespace ContentTypeTextNet.NKit.Manager
         public static string UpdateCheckVersionFilePattern => ConfigurationManager.AppSettings["update-check-version-file-pattern"];
         public static string UpdateCheckVersionFilePatternOptions => ConfigurationManager.AppSettings["update-check-version-file-pattern-options"];
         public static string UpdateCheckVersionFilePatternKey => ConfigurationManager.AppSettings["update-check-version-file-pattern-key"];
+        public static string UpdateCheckDownloadBaseUri => ConfigurationManager.AppSettings["update-check-download-base-uri"];
+        public static string UpdateCheckDownloadNameFormat => ConfigurationManager.AppSettings["update-check-download-name-format"];
+        public static string UpdateCheckDownloadUriPattern => ConfigurationManager.AppSettings["update-check-download-uri-pattern"];
+        public static string UpdateCheckDownloadUriPatternOptions => ConfigurationManager.AppSettings["update-check-download-uri-pattern-options"];
+        public static string UpdateCheckDownloadUriPatternKey => ConfigurationManager.AppSettings["update-check-download-uri-pattern-key"];
+        public static string UpdateReleaseNoteBaseUri => ConfigurationManager.AppSettings["update-release-note-base-uri"];
+        public static string UpdateReleaseNoteFilePathFormat => ConfigurationManager.AppSettings["update-release-note-file-path-format"];
 
         #endregion
     }

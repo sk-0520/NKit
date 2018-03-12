@@ -27,12 +27,13 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
         ILogFactory LogFactory { get; }
         ILogger Logger { get; }
 
+        public Version NewVersion { get; private set; }
+        public Uri DownloadUri { get; private set; }
+
+        public string ReleaseNote { get; private set; }
+
         #endregion
 
-        string CombineUriCore(string left, string right)
-        {
-            return left.TrimEnd('/') + "/" + right.TrimStart('/');
-        }
 
         Uri CombineUri(string baseUri, params string[] hierarchies)
         {
@@ -41,7 +42,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
             };
             list.AddRange(hierarchies);
             //hierarchy
-            var originUri = list.Aggregate((left, right) => CombineUriCore(left, right));
+            var originUri = list.Aggregate((left, right) => left.TrimEnd('/') + "/" + right.TrimStart('/'));
 
             return new Uri(originUri);
         }
@@ -52,7 +53,18 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
 
             Logger.Debug($"target uri: {uri}");
 
-            return client.GetStringAsync(uri);
+            var response = client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
+            return response.ContinueWith(t => {
+                var result = t.Result;
+                Logger.Debug($"http status code: {result.StatusCode}");
+
+                if(result.IsSuccessStatusCode) {
+                    return result.Content.ReadAsStringAsync();
+                }
+
+                Logger.Warning("http content is empty");
+                return Task.FromResult(string.Empty);
+            }).Unwrap();
         }
 
         (bool isMatch, string value) GetTagetValue(string input, string pattern, string rawRegexOptions, string matchKey)
@@ -73,6 +85,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
             return (true, result);
         }
 
+        // TODO: くっそながい
         public async Task<bool> CheckUpdateAsync()
         {
             var assembly = Assembly.GetExecutingAssembly();
@@ -86,7 +99,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
 
             using(var client = new HttpClient()) {
                 // 対象ブランチのハッシュを取得
-                var rawJson = await GetStringAsync(client, Constants.UpdateCheckVersionBaseUri, Constants.UpdateCheckVersionFilePath);
+                var rawJson = await GetStringAsync(client, Constants.UpdateCheckBranchBaseUri, Constants.UpdateCheckBranchTargetName);
                 // Json をデシリアライズする余力無し(nugetっていうかライブラリ参照すると解放できないのよね)
                 // DataContractJsonSerializer? 格納クラスつくんのだりぃ
                 var hashResult = GetTagetValue(rawJson, Constants.UpdateCheckBranchHashPattern, Constants.UpdateCheckBranchHashPatternOptions, Constants.UpdateCheckBranchHashPatternKey);
@@ -125,11 +138,47 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
                 }
 
                 // バージョン違うけど各種サービス連携にも時間かかるしダウンロードファイルは存在しないかもしんない
+                var rawDownload = await GetStringAsync(client, Constants.UpdateCheckDownloadBaseUri, string.Empty);
+                // 単純検索
+                var downloadFileName = Constants.UpdateCheckDownloadNameFormat
+                    .Replace("${MAJOR}", parsedVersion.Major.ToString())
+                    .Replace("${MINOR}", parsedVersion.Minor.ToString())
+                    .Replace("${BUILD}", parsedVersion.Build.ToString())
+#if BUILD_PLATFORM_ANYCPU
+                    .Replace("${PLATFORM}", "AnyCPU")
+#elif BUILD_PLATFORM_x86
+                    .Replace("${PLATFORM}", "x86")
+#elif BUILD_PLATFORM_x64
+                    .Replace("${PLATFORM}", "x64")
+#else
+#   error not defined: BUILD_PLATFORM_`xxxx'
+#endif
+                ;
+                var donwloadPattern = Constants.UpdateCheckDownloadUriPattern.Replace("${FILENAME}", Regex.Escape(downloadFileName));
+                var downloadResult = GetTagetValue(rawDownload, donwloadPattern, Constants.UpdateCheckDownloadUriPatternOptions, Constants.UpdateCheckDownloadUriPatternKey);
+                if(!downloadResult.isMatch) {
+                    Logger.Information("not found module");
+                    return false;
+                }
+
+                var downloadUri = downloadResult.value;
+                Logger.Debug($"download uri: {downloadUri}");
+
+                // リリースノート本文を取ってくる(ここまで来たら404だろうが何だろうが関係なく進める)
+                var releaseNoteFilePath = Constants.UpdateReleaseNoteFilePathFormat
+                    .Replace("${MAJOR}", parsedVersion.Major.ToString())
+                    .Replace("${MINOR}", parsedVersion.Minor.ToString())
+                    .Replace("${BUILD}", parsedVersion.Build.ToString())
+                ;
+                var rawReleaseNoteFile = await GetStringAsync(client, Constants.UpdateReleaseNoteBaseUri, hash, releaseNoteFilePath);
 
 
+                NewVersion = parsedVersion;
+                DownloadUri = new Uri(downloadUri);
+                ReleaseNote = rawReleaseNoteFile;
             }
 
-            return false;
+            return true;
         }
     }
 }
