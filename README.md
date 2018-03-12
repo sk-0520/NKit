@@ -35,3 +35,8 @@
  * **current** [![Build status](https://ci.appveyor.com/api/projects/status/6qpnilbs1cbch2c7?svg=true)](https://ci.appveyor.com/project/sk_0520/nkit-fat42)
  * **mater** [![Build status](https://ci.appveyor.com/api/projects/status/6qpnilbs1cbch2c7/branch/master?svg=true)](https://ci.appveyor.com/project/sk_0520/nkit-fat42/branch/master)
 
+
+### リリース版
+
+ *  [配布物 ![Build status](https://ci.appveyor.com/api/projects/status/76dq8jftx4jl6onf/branch/master?svg=true)](https://ci.appveyor.com/project/sk_0520/nkit-q5jv9/branch/master)
+
