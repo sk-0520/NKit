@@ -33,6 +33,7 @@ if [ -f Build/@error ] ; then
         read
     else
         echo "!!!build failed!!! CI mode."
+        exit 1
     fi
 else
     if [ -z "${CI+x}" ] ; then
