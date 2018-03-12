@@ -15,6 +15,7 @@ using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Manager.Define;
 using ContentTypeTextNet.NKit.Manager.Model.Application;
 using ContentTypeTextNet.NKit.Manager.Model.Log;
+using ContentTypeTextNet.NKit.Manager.Model.Update;
 using ContentTypeTextNet.NKit.Manager.Model.Workspace;
 using ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting;
 
@@ -43,6 +44,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
             ApplicationManager = new ApplicationManager(LogManager);
             ApplicationManager.MainApplicationExited += ApplicationManager_MainApplicationExited;
+
+            UpdateManager = new UpdateManager(LogManager);
         }
 
 
@@ -52,6 +55,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         ILogger Logger { get; set; }
 
         ApplicationManager ApplicationManager { get; }
+        UpdateManager UpdateManager { get; }
 
         NKitApplicationTalkerHost NKitApplicationTalkerHost { get; set; }
         NKitLoggingTalkerHost NKitLoggingTalkerHost { get; set; }
@@ -436,6 +440,11 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             Logger.Information($"can exit: {result}");
 
             return result;
+        }
+
+        public Task CheckUpdateAsync()
+        {
+            return UpdateManager.CheckUpdateAsync();
         }
 
         #endregion

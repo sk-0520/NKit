@@ -41,10 +41,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandWorkspaceCopy = new System.Windows.Forms.Button();
             this.commandWorkspaceDelete = new System.Windows.Forms.Button();
             this.panelWorkspace = new System.Windows.Forms.Panel();
+            this.selectLogging = new System.Windows.Forms.CheckBox();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.viewLog = new System.Windows.Forms.RichTextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.selectLogging = new System.Windows.Forms.CheckBox();
+            this.commandCheckUpdate = new System.Windows.Forms.Button();
+            this.commandExecuteUpdate = new System.Windows.Forms.Button();
             this.panelWorkspace.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
@@ -175,6 +177,16 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.panelWorkspace.Size = new System.Drawing.Size(246, 92);
             this.panelWorkspace.TabIndex = 5;
             // 
+            // selectLogging
+            // 
+            this.selectLogging.AutoSize = true;
+            this.selectLogging.Location = new System.Drawing.Point(11, 60);
+            this.selectLogging.Name = "selectLogging";
+            this.selectLogging.Size = new System.Drawing.Size(39, 16);
+            this.selectLogging.TabIndex = 5;
+            this.selectLogging.Text = "log";
+            this.selectLogging.UseVisualStyleBackColor = true;
+            // 
             // errorProvider
             // 
             this.errorProvider.ContainerControl = this;
@@ -196,15 +208,24 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.label3.TabIndex = 2;
             this.label3.Text = "こーじちゅう";
             // 
-            // selectLogging
+            // commandCheckUpdate
             // 
-            this.selectLogging.AutoSize = true;
-            this.selectLogging.Location = new System.Drawing.Point(11, 60);
-            this.selectLogging.Name = "selectLogging";
-            this.selectLogging.Size = new System.Drawing.Size(39, 16);
-            this.selectLogging.TabIndex = 5;
-            this.selectLogging.Text = "log";
-            this.selectLogging.UseVisualStyleBackColor = true;
+            this.commandCheckUpdate.Location = new System.Drawing.Point(12, 66);
+            this.commandCheckUpdate.Name = "commandCheckUpdate";
+            this.commandCheckUpdate.Size = new System.Drawing.Size(75, 23);
+            this.commandCheckUpdate.TabIndex = 1;
+            this.commandCheckUpdate.Text = "check up";
+            this.commandCheckUpdate.UseVisualStyleBackColor = true;
+            this.commandCheckUpdate.Click += new System.EventHandler(this.commandCheckUpdate_Click);
+            // 
+            // commandExecuteUpdate
+            // 
+            this.commandExecuteUpdate.Location = new System.Drawing.Point(2, 95);
+            this.commandExecuteUpdate.Name = "commandExecuteUpdate";
+            this.commandExecuteUpdate.Size = new System.Drawing.Size(75, 23);
+            this.commandExecuteUpdate.TabIndex = 1;
+            this.commandExecuteUpdate.Text = "start up";
+            this.commandExecuteUpdate.UseVisualStyleBackColor = true;
             // 
             // ManagerForm
             // 
@@ -215,6 +236,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.Controls.Add(this.panelWorkspace);
             this.Controls.Add(this.commandWorkspaceClose);
             this.Controls.Add(this.commandWorkspaceCopy);
+            this.Controls.Add(this.commandExecuteUpdate);
+            this.Controls.Add(this.commandCheckUpdate);
             this.Controls.Add(this.commandWorkspaceCreate);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.commandWorkspaceLoad);
@@ -250,6 +273,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.RichTextBox viewLog;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox selectLogging;
+        private System.Windows.Forms.Button commandExecuteUpdate;
+        private System.Windows.Forms.Button commandCheckUpdate;
     }
 }
 

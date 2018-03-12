@@ -209,5 +209,10 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             e.Cancel = !Worker.CheckCanExit();
         }
+
+        private void commandCheckUpdate_Click(object sender, EventArgs e)
+        {
+            Worker.CheckUpdateAsync();
+        }
     }
 }
