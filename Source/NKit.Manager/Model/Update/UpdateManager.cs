@@ -46,6 +46,33 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
             return new Uri(originUri);
         }
 
+        Task<string> GetStringAsync(HttpClient client, string baseUri, params string[] hierarchies)
+        {
+            var uri = CombineUri(baseUri, hierarchies);
+
+            Logger.Debug($"target uri: {uri}");
+
+            return client.GetStringAsync(uri);
+        }
+
+        (bool isMatch, string value) GetTagetValue(string input, string pattern, string rawRegexOptions, string matchKey)
+        {
+            var options = (RegexOptions)Enum.Parse(typeof(RegexOptions), rawRegexOptions);
+            var regex = new Regex(pattern, options);
+            var match = regex.Match(input);
+
+            if(!match.Success) {
+                return (false, string.Empty);
+            }
+
+            var result = match.Groups[matchKey].Value;
+            if(string.IsNullOrEmpty(result)) {
+                return (false, string.Empty);
+            }
+
+            return (true, result);
+        }
+
         public async Task<bool> CheckUpdateAsync()
         {
             var assembly = Assembly.GetExecutingAssembly();
@@ -59,19 +86,15 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
 
             using(var client = new HttpClient()) {
                 // 対象ブランチのハッシュを取得
-                var branchUri = CombineUri(Constants.UpdateCheckBranchBaseUri, Constants.UpdateCheckBranchTargetName);
-                Logger.Debug($"hash uri: {branchUri}");
-                var rawJson = await client.GetStringAsync(branchUri);
-                Logger.Debug(rawJson);
+                var rawJson = await GetStringAsync(client, Constants.UpdateCheckVersionBaseUri, Constants.UpdateCheckVersionFilePath);
                 // Json をデシリアライズする余力無し(nugetっていうかライブラリ参照すると解放できないのよね)
                 // DataContractJsonSerializer? 格納クラスつくんのだりぃ
-                var hashRegex = new Regex(Constants.UpdateCheckBranchHashPattern, (RegexOptions)Enum.Parse(typeof(RegexOptions), Constants.UpdateCheckBranchHashPatternOptions));
-                var hashMatch = hashRegex.Match(rawJson);
-                if(!hashMatch.Success) {
+                var hashResult = GetTagetValue(rawJson, Constants.UpdateCheckBranchHashPattern, Constants.UpdateCheckBranchHashPatternOptions, Constants.UpdateCheckBranchHashPatternKey);
+                if(!hashResult.isMatch) {
                     Logger.Warning("not found hash");
                     return false;
                 }
-                var hash = hashMatch.Groups[Constants.UpdateCheckBranchHashPatternKey].Value;
+                var hash = hashResult.value;
                 Logger.Debug($"hash: {hash}");
 
                 if(string.Equals(hash, productVersion, StringComparison.InvariantCultureIgnoreCase)) {
@@ -81,24 +104,21 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
                 }
 
                 // ハッシュが違うのでバージョンが変わってるかもしんない
-                var versionFileUri = CombineUri(Constants.UpdateCheckVersionBaseUri, hash, Constants.UpdateCheckVersionFilePath);
-                Logger.Debug($"file uri: {versionFileUri}");
-                var rawVersionFile = await client.GetStringAsync(versionFileUri);
-                var versionRegex = new Regex(Constants.UpdateCheckVersionFilePattern, (RegexOptions)Enum.Parse(typeof(RegexOptions), Constants.UpdateCheckVersionFilePatternOptions));
-                var versionMatch = versionRegex.Match(rawVersionFile);
-                if(!versionMatch.Success) {
+                var rawVersionFile = await GetStringAsync(client, Constants.UpdateCheckVersionBaseUri, hash, Constants.UpdateCheckVersionFilePath);
+                var versionResult = GetTagetValue(rawVersionFile, Constants.UpdateCheckVersionFilePattern, Constants.UpdateCheckVersionFilePatternOptions, Constants.UpdateCheckVersionFilePatternKey);
+                if(!versionResult.isMatch) {
                     Logger.Warning("not found version");
                     return false;
                 }
 
-                var version = versionMatch.Groups[Constants.UpdateCheckVersionFilePatternKey].Value;
+                var version = versionResult.value;
                 Logger.Debug($"version: {version}");
 
-                if(!Version.TryParse(version, out var versionResult)) {
+                if(!Version.TryParse(version, out var parsedVersion)) {
                     Logger.Warning("version text can not parse");
                 }
 
-                if(versionResult <= assemblyVersion) {
+                if(parsedVersion <= assemblyVersion) {
                     // 一緒かβ版とかデバッグ時の新しいやつ
                     Logger.Information("latest version");
                     return false;
