@@ -26,6 +26,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         #region property
 
         ManagerWorker Worker { get; set; }
+        ReleaseNoteForm ReleaseNoteForm { get; set; }
 
         #endregion
 
@@ -138,6 +139,22 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             Worker.ListupWorkspace(this.selectWorkspace, Guid.Empty);
             RefreshControls();
+            /*
+            var r = new ReleaseNoteForm();
+            r.IssueBaseUri = Constants.IssuesBaseUri;
+            r.ReleaseNoteUri = new Uri("http://localhost/");
+            r.SetReleaseNote(new Version("1.2.3.4"), new string('x', 40), DateTime.Now, @"
+* a
+   * b
+        *c
+      *d
+        *e
+
+123456846
+258146586
+");
+            r.Show();
+            */
         }
 
         private void commandWorkspaceSave_Click(object sender, EventArgs e)
@@ -237,6 +254,16 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             await Worker.CheckUpdateAsync(this.commandCheckUpdate);
             RefreshControls();
+            if(Worker.CanUpdate) {
+                if(ReleaseNoteForm == null) {
+                    ReleaseNoteForm = new ReleaseNoteForm();
+                    ReleaseNoteForm.IssueBaseUri = Constants.IssuesBaseUri;
+                }
+
+                ReleaseNoteForm.ReleaseNoteUri = Worker.ReleaseNoteUri;
+                ReleaseNoteForm.SetReleaseNote(Worker.NewVersion, Worker.ReleaseHash, Worker.ReleaseTimestamp, Worker.ReleaseNoteValue);
+                ReleaseNoteForm.Show(this);
+            }
         }
 
         private async void commandExecuteUpdate_Click(object sender, EventArgs e)

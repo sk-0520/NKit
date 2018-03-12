@@ -28,7 +28,7 @@
         private void InitializeComponent()
         {
             this.commandClose = new System.Windows.Forms.Button();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.viewReleaseNote = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // commandClose
@@ -40,20 +40,20 @@
             this.commandClose.Text = "close";
             this.commandClose.UseVisualStyleBackColor = true;
             // 
-            // richTextBox1
+            // viewReleaseNote
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(46, 12);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(391, 203);
-            this.richTextBox1.TabIndex = 1;
-            this.richTextBox1.Text = "";
+            this.viewReleaseNote.Location = new System.Drawing.Point(38, 44);
+            this.viewReleaseNote.Name = "viewReleaseNote";
+            this.viewReleaseNote.Size = new System.Drawing.Size(391, 203);
+            this.viewReleaseNote.TabIndex = 1;
+            this.viewReleaseNote.Text = "";
             // 
             // ReleaseNoteForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(465, 312);
-            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.viewReleaseNote);
             this.Controls.Add(this.commandClose);
             this.Name = "ReleaseNoteForm";
             this.Text = "ReleaseNoteForm";
@@ -64,6 +64,6 @@
         #endregion
 
         private System.Windows.Forms.Button commandClose;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox viewReleaseNote;
     }
 }

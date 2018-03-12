@@ -16,6 +16,9 @@ namespace ContentTypeTextNet.NKit.Manager
         public static string UpdateCheckBranchHashPattern => ConfigurationManager.AppSettings["update-check-branch-hash-pattern"];
         public static string UpdateCheckBranchHashPatternOptions => ConfigurationManager.AppSettings["update-check-branch-hash-pattern-options"];
         public static string UpdateCheckBranchHashPatternKey => ConfigurationManager.AppSettings["update-check-branch-hash-pattern-key"];
+        public static string UpdateCheckBranchTimestampPattern => ConfigurationManager.AppSettings["update-check-branch-timestamp-pattern"];
+        public static string UpdateCheckBranchTimestampPatternOptions => ConfigurationManager.AppSettings["update-check-branch-timestamp-pattern-options"];
+        public static string UpdateCheckBranchTimestampPatternKey => ConfigurationManager.AppSettings["update-check-branch-timestamp-pattern-key"];
         public static string UpdateCheckVersionBaseUri => ConfigurationManager.AppSettings["update-check-version-base-uri"];
         public static string UpdateCheckVersionFilePath => ConfigurationManager.AppSettings["update-check-version-file-path"];
         public static string UpdateCheckVersionFilePattern => ConfigurationManager.AppSettings["update-check-version-file-pattern"];
@@ -29,8 +32,9 @@ namespace ContentTypeTextNet.NKit.Manager
         public static string UpdateReleaseNoteBaseUri => ConfigurationManager.AppSettings["update-release-note-base-uri"];
         public static string UpdateReleaseNoteFilePathFormat => ConfigurationManager.AppSettings["update-release-note-file-path-format"];
 
-
         public static int UpdateLeaveArchiveCount => int.Parse(ConfigurationManager.AppSettings["update-leave-archive-count"]);
+
+        public static Uri IssuesBaseUri => new Uri(ConfigurationManager.AppSettings["issues-base-uri"]);
 
         #endregion
     }
