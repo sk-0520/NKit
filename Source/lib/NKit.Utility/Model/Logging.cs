@@ -15,7 +15,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
     public delegate void WriteDetailDelegate(NKitLogKind logKind, string subject, string message, string detail, string callerMemberName, string callerFilePath, int callerLineNumber);
     public delegate void WriteExceptionDelegate(NKitLogKind logKind, string subject, Exception ex, string callerMemberName, string callerFilePath, int callerLineNumber);
 
-    public class SwitchLogger : ILogger
+    public class SwitchLogger : DisposerBase, ILogger
     {
         public SwitchLogger(string subject, WriteMessageDelegate messageWriter, WriteDetailDelegate detailWriter, WriteExceptionDelegate exceptionWriter)
         {
@@ -28,9 +28,26 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         #region property
 
         string Subject { get; }
-        WriteMessageDelegate MessageWriter { get; }
-        WriteDetailDelegate DetailWriter { get; }
-        WriteExceptionDelegate ExceptionWriter { get; }
+        WriteMessageDelegate MessageWriter { get; set; }
+        WriteDetailDelegate DetailWriter { get; set; }
+        WriteExceptionDelegate ExceptionWriter { get; set; }
+
+        #endregion
+
+        #region DisposerBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if(!IsDisposed) {
+                if(disposing) {
+                    MessageWriter = null;
+                    DetailWriter = null;
+                    ExceptionWriter = null;
+                }
+            }
+
+            base.Dispose(disposing);
+        }
 
         #endregion
 
@@ -176,6 +193,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                     break;
             }
 
+            // WCF死んだ場合の処理
             if(writeException != null) {
                 Write(NKitLogKind.Error, nameof(LogSwitcher), writeException.Message, writeException.ToString(), $"{nameof(Write)}/{callerMemberName}", callerFilePath, callerLineNumber);
             }
