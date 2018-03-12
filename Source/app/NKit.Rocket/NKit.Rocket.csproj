@@ -90,7 +90,6 @@
     <Compile Include="..\..\common\nkit.common.link\CommonUtility.cs">
       <Link>Common\CommonUtility.cs</Link>
     </Compile>
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Model\MicrosoftExcelOpener.cs" />
     <Compile Include="Model\MicrosoftWordOpener.cs" />
     <Compile Include="Model\OpenerBase.cs" />
