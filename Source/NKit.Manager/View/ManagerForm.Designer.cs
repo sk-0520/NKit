@@ -48,6 +48,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandCheckUpdate = new System.Windows.Forms.Button();
             this.commandExecuteUpdate = new System.Windows.Forms.Button();
             this.commandShowReleaseNote = new System.Windows.Forms.Button();
+            this.labelVersionNumber = new System.Windows.Forms.Label();
+            this.labelVersionHash = new System.Windows.Forms.Label();
+            this.labelBuildType = new System.Windows.Forms.Label();
             this.panelWorkspace.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
@@ -239,11 +242,41 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandShowReleaseNote.UseVisualStyleBackColor = true;
             this.commandShowReleaseNote.Click += new System.EventHandler(this.commandShowReleaseNote_Click);
             // 
+            // labelVersionNumber
+            // 
+            this.labelVersionNumber.AutoSize = true;
+            this.labelVersionNumber.Location = new System.Drawing.Point(81, 257);
+            this.labelVersionNumber.Name = "labelVersionNumber";
+            this.labelVersionNumber.Size = new System.Drawing.Size(107, 12);
+            this.labelVersionNumber.TabIndex = 8;
+            this.labelVersionNumber.Text = "labelVersionNumber";
+            // 
+            // labelVersionHash
+            // 
+            this.labelVersionHash.AutoSize = true;
+            this.labelVersionHash.Location = new System.Drawing.Point(186, 248);
+            this.labelVersionHash.Name = "labelVersionHash";
+            this.labelVersionHash.Size = new System.Drawing.Size(94, 12);
+            this.labelVersionHash.TabIndex = 8;
+            this.labelVersionHash.Text = "labelVersionHash";
+            // 
+            // labelBuildType
+            // 
+            this.labelBuildType.AutoSize = true;
+            this.labelBuildType.Location = new System.Drawing.Point(12, 245);
+            this.labelBuildType.Name = "labelBuildType";
+            this.labelBuildType.Size = new System.Drawing.Size(80, 12);
+            this.labelBuildType.TabIndex = 8;
+            this.labelBuildType.Text = "labelBuildType";
+            // 
             // ManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(612, 270);
+            this.ClientSize = new System.Drawing.Size(654, 266);
+            this.Controls.Add(this.labelVersionHash);
+            this.Controls.Add(this.labelBuildType);
+            this.Controls.Add(this.labelVersionNumber);
             this.Controls.Add(this.commandShowReleaseNote);
             this.Controls.Add(this.viewLog);
             this.Controls.Add(this.panelWorkspace);
@@ -289,6 +322,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.Button commandExecuteUpdate;
         private System.Windows.Forms.Button commandCheckUpdate;
         private System.Windows.Forms.Button commandShowReleaseNote;
+        private System.Windows.Forms.Label labelVersionHash;
+        private System.Windows.Forms.Label labelBuildType;
+        private System.Windows.Forms.Label labelVersionNumber;
     }
 }
 

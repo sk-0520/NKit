@@ -5,11 +5,13 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Manager.Model;
 using ContentTypeTextNet.NKit.Manager.Model.Log;
 
@@ -158,6 +160,11 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         private void ManagerForm_Load(object sender, EventArgs e)
         {
+            var assembly = Assembly.GetExecutingAssembly();
+            this.labelBuildType.Text = CommonUtility.BuildType;
+            this.labelVersionNumber.Text = assembly.GetName().Version.ToString();
+            this.labelVersionHash.Text = FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;
+
             Worker.ListupWorkspace(this.selectWorkspace, Guid.Empty);
             RefreshControls();
             /*
