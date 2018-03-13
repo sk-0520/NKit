@@ -52,6 +52,10 @@
       <HintPath>..\..\packages\ContentTypeTextNet.PInvoke.1.0.0.27\lib\net46\ContentTypeTextNet.PInvoke.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Gma.System.MouseKeyHook, Version=5.6.130.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MouseKeyHook.5.6.0\lib\net40\Gma.System.MouseKeyHook.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Hnx8.ReadJEnc, Version=1.3.0.821, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ReadJEnc.1.3.0.0821\lib\net\Hnx8.ReadJEnc.dll</HintPath>
       <Private>False</Private>
