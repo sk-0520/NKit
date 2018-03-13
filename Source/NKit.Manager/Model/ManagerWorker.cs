@@ -19,6 +19,7 @@ using ContentTypeTextNet.NKit.Manager.Model.Log;
 using ContentTypeTextNet.NKit.Manager.Model.Update;
 using ContentTypeTextNet.NKit.Manager.Model.Workspace;
 using ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting;
+using ContentTypeTextNet.NKit.Manager.View;
 
 namespace ContentTypeTextNet.NKit.Manager.Model
 {
@@ -485,6 +486,13 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
                 return t.Result;
             });
+        }
+
+        public void ExecuteTest(TestExecuteForm testExecuteForm, bool force)
+        {
+            testExecuteForm.SetApplicationManager(ApplicationManager);
+            testExecuteForm.ForceExecute = force;
+            testExecuteForm.ShowDialog();
         }
 
         #endregion

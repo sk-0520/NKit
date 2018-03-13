@@ -116,6 +116,12 @@
     <Compile Include="View\ReleaseNoteForm.Designer.cs">
       <DependentUpon>ReleaseNoteForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\TestExecuteForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\TestExecuteForm.Designer.cs">
+      <DependentUpon>TestExecuteForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -134,6 +140,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\ReleaseNoteForm.resx">
       <DependentUpon>ReleaseNoteForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\TestExecuteForm.resx">
+      <DependentUpon>TestExecuteForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

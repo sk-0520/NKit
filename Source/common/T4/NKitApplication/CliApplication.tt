@@ -28,6 +28,10 @@ namespace <#= defaultNamespace #>
         static int Main(string[] args)
         {
             StartupOptions.Initialize(args);
+            if(StartupOptions.LetsDie) {
+                return 0;
+            }
+
             using(var logSwitcher = new LogSwitcher(NKitApplicationKind.<#= applicationKind #>, StartupOptions.ServiceUri)) {
                 logSwitcher.Initialize();
                 Log.Initialize(logSwitcher);
@@ -35,11 +39,6 @@ namespace <#= defaultNamespace #>
 
                 logger.Information("!!START!!");
                 logger.Information($"this template compiled: <#= DateTime.UtcNow.ToString("u") #> UTC");
-
-                if(StartupOptions.LetsDeath) {
-                    logger.Information("let's death");
-                    return 0;
-                }
 
                 var model = new <#= executeModelClass #>(args);
                 var result = model.Run(CancellationToken.None);

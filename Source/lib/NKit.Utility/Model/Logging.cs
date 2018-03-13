@@ -250,7 +250,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
     {
         static Log()
         {
-            LogFactory = new LogSwitcher(NKitApplicationKind.Unknown, null) {
+            LogFactory = new LogSwitcher(NKitApplicationKind.Others, null) {
                 LastErrorTimestamp = DateTime.MaxValue,
                 RetrySpan = TimeSpan.Zero,
             };

@@ -29,18 +29,17 @@ namespace ContentTypeTextNet.NKit.Rocket
         static int Main(string[] args)
         {
             StartupOptions.Initialize(args);
+            if(StartupOptions.LetsDie) {
+                return 0;
+            }
+
             using(var logSwitcher = new LogSwitcher(NKitApplicationKind.Rocket, StartupOptions.ServiceUri)) {
                 logSwitcher.Initialize();
                 Log.Initialize(logSwitcher);
                 var logger = Log.CreateLogger();
 
                 logger.Information("!!START!!");
-                logger.Information($"this template compiled: 2018-03-10 21:24:34Z UTC");
-
-                if(StartupOptions.LetsDeath) {
-                    logger.Information("let's death");
-                    return 0;
-                }
+                logger.Information($"this template compiled: 2018-03-13 01:51:10Z UTC");
 
                 var model = new ContentTypeTextNet.NKit.Rocket.Model.RocketModel(args);
                 var result = model.Run(CancellationToken.None);

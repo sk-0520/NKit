@@ -9,8 +9,7 @@ namespace ContentTypeTextNet.NKit.Common
     public static class StartupOptions
     {
         #region property
-
-        public static bool LetsDeath { get; private set; }
+        public static bool LetsDie { get; private set; }
 
         public static Uri ServiceUri { get; private set; }
         public static string WorkspacePath { get; private set; }
@@ -33,7 +32,7 @@ namespace ContentTypeTextNet.NKit.Common
 #endif
             var cl = new CommandLineApplication(false);
 
-            var letsDeathOption = cl.Option("--nkit_lets_death", "exit event name", CommandOptionType.NoValue);
+            var letsDieOption = cl.Option("--nkit_lets_die", "Let's die", CommandOptionType.NoValue);
             var serviceUriOption = cl.Option("--nkit_service_uri", "service uri", CommandOptionType.SingleValue);
             var applicationIdOption = cl.Option("--nkit_application_id", "application id", CommandOptionType.SingleValue);
             var workspacePathOption = cl.Option("--nkit_workspace", "workspace path", CommandOptionType.SingleValue);
@@ -41,7 +40,7 @@ namespace ContentTypeTextNet.NKit.Common
 
             cl.Execute(args);
 
-            LetsDeath = letsDeathOption.HasValue();
+            LetsDie = letsDieOption.HasValue();
 
             if(serviceUriOption.HasValue()) {
                 ServiceUri = new Uri(serviceUriOption.Value());

@@ -173,7 +173,7 @@ namespace ContentTypeTextNet.NKit.Common
         public static FileInfo GetBusyBox(bool usePlatformBusyBox, DirectoryInfo binaryDirectory)
         {
             var name = "busybox.exe";
-            if(Environment.ProcessorCount == 64) {
+            if(Environment.Is64BitOperatingSystem) {
                 name = "busybox64.exe";
             }
             var path = Path.Combine(binaryDirectory.FullName, BinaryBusyboxDirectoryName, name);
