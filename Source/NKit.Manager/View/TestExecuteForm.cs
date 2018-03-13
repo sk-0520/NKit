@@ -77,21 +77,25 @@ namespace ContentTypeTextNet.NKit.Manager.View
             ApplicationInfos.Add(new ApplicationInfo() {
                 Kind = NKitApplicationKind.Main,
                 Name = "main",
+                Arguments = "--nkit_lets_die",
             });
             ApplicationInfos.Add(new ApplicationInfo() {
                 Kind = NKitApplicationKind.Rocket,
                 Name = "rocket",
+                Arguments = "--nkit_lets_die",
             });
             ApplicationInfos.Add(new ApplicationInfo() {
                 Kind = NKitApplicationKind.Others,
                 Name = "busybox",
                 File = CommonUtility.GetBusyBox(false, binDir),
+                Arguments = "--help",
             });
             if(Environment.Is64BitOperatingSystem) {
                 ApplicationInfos.Add(new ApplicationInfo() {
                     Kind = NKitApplicationKind.Others,
                     Name = "busybox(64bit)",
                     File = CommonUtility.GetBusyBox(true, binDir),
+                    Arguments = "--help",
                 });
             }
 
