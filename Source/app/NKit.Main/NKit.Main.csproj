@@ -170,6 +170,9 @@
     <Compile Include="Model\NKit\NKitApplicationExecutor.cs" />
     <Compile Include="Model\XmlHtmlSearcher.cs" />
     <Compile Include="ViewModel\Capture\CaptureGroupViewModel.cs" />
+    <Compile Include="View\Capture\CaptureGroupControl.xaml.cs">
+      <DependentUpon>CaptureGroupControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Capture\CaptureManagerControl.xaml.cs">
       <DependentUpon>CaptureManagerControl.xaml</DependentUpon>
     </Compile>
@@ -182,6 +185,10 @@
     <Compile Include="View\NKit\NKitManagerControl.xaml.cs">
       <DependentUpon>NKitManagerControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\Capture\CaptureGroupControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Capture\CaptureManagerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

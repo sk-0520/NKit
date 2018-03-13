@@ -20,7 +20,19 @@
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
-    <Button Grid.Row="0" Command="{Binding AddNewGroupCommand}">add new group</Button>
+    <Grid  Grid.Row="0" >
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition />
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+
+      <Button Grid.Column="0" Command="{Binding AddNewGroupCommand}">add new group</Button>
+      <Button Grid.Column="1" >clipboard:screen</Button>
+      <Button Grid.Column="2" >clipboard:target</Button>
+      <Button Grid.Column="3" >clipboard:scroll</Button>
+    </Grid>
     <TabControl Grid.Row="1" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroupItem}">
       <TabControl.ItemTemplate>
         <DataTemplate>
@@ -33,7 +45,7 @@
       </TabControl.ItemTemplate>
       <TabControl.ContentTemplate>
         <DataTemplate>
-          <!--<app_main_view_capture:CaptureGroupControl />-->
+          <app_main_view_capture:CaptureGroupControl />
         </DataTemplate>
       </TabControl.ContentTemplate>
     </TabControl>
