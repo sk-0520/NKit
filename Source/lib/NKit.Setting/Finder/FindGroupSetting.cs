@@ -13,7 +13,7 @@ using Newtonsoft.Json.Converters;
 
 namespace ContentTypeTextNet.NKit.Setting.Finder
 {
-    public interface IReadOnlyFindGroupSetting : IReadOnlyGuidIdSetting
+    public interface IReadOnlyFindGroupSetting : IReadOnlyGuidSetting
     {
         #region property
 
@@ -111,7 +111,7 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
     }
 
     [Serializable, DataContract]
-    public class FindGroupSetting : GuidIdSettingBase, IReadOnlyFindGroupSetting
+    public class FindGroupSetting : GuidSettingBase, IReadOnlyFindGroupSetting
     {
         #region IReadOnlyFindGroupSetting
 

@@ -164,6 +164,7 @@
     <Compile Include="..\..\common\nkit.common.link\CommonUtility.cs">
       <Link>Common\CommonUtility.cs</Link>
     </Compile>
+    <Compile Include="Model\Capture\CaptureGroupModel.cs" />
     <Compile Include="Model\File\FilePropertySearchResult.cs" />
     <Compile Include="Model\Finder\FindGroupCache.cs" />
     <Compile Include="Model\NKit\NKitApplicationExecutor.cs" />

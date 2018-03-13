@@ -8,7 +8,7 @@ using ContentTypeTextNet.NKit.Common;
 
 namespace ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting
 {
-    public interface IReadOnlyWorkspaceItemSetting: IReadOnlyGuidIdSetting
+    public interface IReadOnlyWorkspaceItemSetting: IReadOnlyGuidSetting
     {
         #region property
 
@@ -41,7 +41,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting
     }
 
     [Serializable, DataContract]
-    public class WorkspaceItemSetting : GuidIdSettingBase, IReadOnlyWorkspaceItemSetting
+    public class WorkspaceItemSetting : GuidSettingBase, IReadOnlyWorkspaceItemSetting
     {
         #region IReadOnlyWorkspaceItemSetting
 

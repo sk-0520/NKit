@@ -26,7 +26,7 @@ namespace ContentTypeTextNet.NKit.Common
         TId Id { get; }
     }
 
-    public interface IReadOnlyGuidIdSetting : IReadOnlyIdSetting<Guid>
+    public interface IReadOnlyGuidSetting : IReadOnlyIdSetting<Guid>
     { }
 
     [Serializable, DataContract]
@@ -42,9 +42,9 @@ namespace ContentTypeTextNet.NKit.Common
     }
 
     [Serializable, DataContract]
-    public abstract class GuidIdSettingBase : IdSettingBase<Guid>, IReadOnlyGuidIdSetting
+    public abstract class GuidSettingBase : IdSettingBase<Guid>, IReadOnlyGuidSetting
     {
-        public GuidIdSettingBase()
+        public GuidSettingBase()
         {
             Id = Guid.NewGuid();
         }
