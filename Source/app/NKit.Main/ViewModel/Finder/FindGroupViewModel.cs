@@ -494,7 +494,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 }
             }
 
-            if(IsEnabledFileNameFilter) {
+            if(!string.IsNullOrEmpty(Model.CurrentFindGroupSetting.FileNameSearchPattern) && IsEnabledFileNameFilter) {
                 if(!item.MatchedName) {
                     if(item.IsSelected) {
                         item.IsSelected = false;
