@@ -156,7 +156,9 @@
                   <CheckBox IsChecked="{Binding XmlContentAttributeKey}">AttributeKey</CheckBox>
                   <CheckBox IsChecked="{Binding XmlContentAttributeValue}">AttributeValue</CheckBox>
                   <CheckBox IsChecked="{Binding XmlContentComment}">Comment</CheckBox>
-                  <CheckBox IsChecked="{Binding XmlContentIgnoreHtmlLinkValue}">IgnoreHtmlLinkValue</CheckBox>
+                  <CheckBox IsChecked="{Binding XmlContentIgnoreHtmlLinkValue}">
+                    <TextBlock TextDecorations="Strikethrough">IgnoreHtmlLinkValue</TextBlock>
+                  </CheckBox>
                 </StackPanel>
               </GroupBox>
 
