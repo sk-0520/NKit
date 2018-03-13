@@ -59,6 +59,10 @@ namespace ContentTypeTextNet.NKit.Main
             base.OnStartup(e);
 
             StartupOptions.Initialize(e.Args);
+            if(StartupOptions.LetsDie) {
+                Shutdown(0);
+                return;
+            }
 
             MainWindow = StartApplication();
 
@@ -67,7 +71,9 @@ namespace ContentTypeTextNet.NKit.Main
 
         protected override void OnExit(ExitEventArgs e)
         {
-            MainModel.Uninitialize();
+            if(MainModel != null) {
+                MainModel.Uninitialize();
+            }
 
             base.OnExit(e);
         }

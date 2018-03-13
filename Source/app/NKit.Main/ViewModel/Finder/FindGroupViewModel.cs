@@ -57,7 +57,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         #region property
 
-        public IReadOnlyFindGroupSetting CurrentFindGroupSetting => Model.CurrentFindGroupSetting;
+        public IReadOnlyFindGroupSetting CurrentFindGroupSetting => Model.CurrentCache.Setting;
 
         public string GroupName
         {
@@ -314,7 +314,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         //}
 
         ObservableCollection<FindItemViewModel> ItemViewModels { get; } = new ObservableCollection<FindItemViewModel>();
-        public long EnabledItemsCount => ItemViewModels.Count(i => i.MatchedName && (!Model.CurrentFindGroupSetting.FindFileContent || (Model.CurrentFindGroupSetting.FindFileContent && i.MatchedContent)));
+        public long EnabledItemsCount => ItemViewModels.Count(i => i.MatchedName && (!Model.CurrentCache.Setting.FindFileContent || (Model.CurrentCache.Setting.FindFileContent && i.MatchedContent)));
         public long TotalItemsCount => ItemViewModels.Count;
 
         public SortedSet<string> ExtensionItems { get; } = new SortedSet<string>();
@@ -494,7 +494,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 }
             }
 
-            if(IsEnabledFileNameFilter) {
+            if(IsEnabledFileNameFilter && !string.IsNullOrEmpty(Model.CurrentCache.Setting.FileNameSearchPattern)) {
                 if(!item.MatchedName) {
                     if(item.IsSelected) {
                         item.IsSelected = false;
@@ -503,7 +503,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 }
             }
 
-            if(IsEnabledFileSizeFilter && 0 < Model.CurrentFindGroupSetting.FileSizeLimit.Tail) { // Head はまぁいいっしょ...
+            if(IsEnabledFileSizeFilter && 0 < Model.CurrentCache.Setting.FileSizeLimit.Tail) { // Head はまぁいいっしょ...
                 if(!item.MatchedSize) {
                     if(item.IsSelected) {
                         item.IsSelected = false;
@@ -512,7 +512,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 }
             }
 
-            if(Model.CurrentFindGroupSetting.FindFileProperty && IsEnabledFilePropertyFilter) {
+            if(IsEnabledFilePropertyFilter && Model.CurrentCache.Setting.FindFileProperty) {
                 if(!item.MatchedProperty) {
                     if(item.IsSelected) {
                         item.IsSelected = false;
@@ -521,7 +521,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 }
             }
 
-            if(Model.CurrentFindGroupSetting.FindFileContent && IsEnabledFileContentFilter) {
+            if(IsEnabledFileContentFilter && Model.CurrentCache.Setting.FindFileContent) {
                 if(!item.MatchedContent) {
                     if(item.IsSelected) {
                         item.IsSelected = false;

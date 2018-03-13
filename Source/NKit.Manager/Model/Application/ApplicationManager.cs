@@ -18,6 +18,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         #region event
 
         public event EventHandler<EventArgs> MainApplicationExited;
+        public event EventHandler<EventArgs> ApplicationExited;
 
         #endregion
 
@@ -83,8 +84,11 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             ApplicationItem item = null;
 
             switch(targetApplication) {
-                case NKitApplicationKind.Main:
-                    throw new ArgumentException();
+                case NKitApplicationKind.Main: // 通常処理として起動する可能性あり(想定する用途としては初回一括起動)
+                    item = new NKitApplicationItem(targetApplication, LogFactory) {
+                        Arguments = AddNKitArguments(activeWorkspace, workspace, arguments),
+                    };
+                    break;
 
                 case NKitApplicationKind.Rocket:
                     item = new NKitApplicationItem(targetApplication, LogFactory) {
@@ -96,6 +100,21 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                     throw new NotImplementedException();
             }
 
+            item.Exited += Item_Exited;
+            lock(this._itemsLocker) {
+                Items.Add(item);
+            }
+            item.Execute();
+        }
+
+        public void ExecuteOtherApplication(NKitApplicationKind senderApplication, string programPath, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
+        {
+            var item = new ApplicationItem(programPath) {
+                Arguments = arguments,
+                WorkingDirectoryPath = workingDirectoryPath,
+                CreateWindow = false,
+                IsOutputReceive = true,
+            };
             item.Exited += Item_Exited;
             lock(this._itemsLocker) {
                 Items.Add(item);
@@ -121,11 +140,15 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         private void Item_Exited(object sender, EventArgs e)
         {
-            var item = (NKitApplicationItem)sender;
+            var item = (ApplicationItem)sender;
             item.Exited -= Item_Exited;
 
             lock(this._itemsLocker) {
                 Items.Remove(item);
+            }
+
+            if(ApplicationExited != null) {
+                ApplicationExited(this, e);
             }
         }
     }

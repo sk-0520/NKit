@@ -19,6 +19,7 @@ using ContentTypeTextNet.NKit.Manager.Model.Log;
 using ContentTypeTextNet.NKit.Manager.Model.Update;
 using ContentTypeTextNet.NKit.Manager.Model.Workspace;
 using ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting;
+using ContentTypeTextNet.NKit.Manager.View;
 
 namespace ContentTypeTextNet.NKit.Manager.Model
 {
@@ -402,7 +403,13 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                 //TODO: ワークスペースチェック
             } else {
                 // 何やってるか忘れないために冗長に書いとく
-                Directory.CreateDirectory(workspaceDirPath);
+                try {
+                    Directory.CreateDirectory(workspaceDirPath);
+                } catch(DirectoryNotFoundException ex) {
+                    Logger.Error(ex);
+                    Logger.Warning("drive!");
+                    return;
+                }
                 Directory.CreateDirectory(Path.Combine(workspaceDirPath, CommonUtility.WorkspaceSettingDirectoryName));
                 Directory.CreateDirectory(Path.Combine(workspaceDirPath, CommonUtility.WorkspaceLogDirectoryName));
                 Directory.CreateDirectory(Path.Combine(workspaceDirPath, CommonUtility.WorkspaceTemporaryDirectoryName));
@@ -445,7 +452,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         public bool CheckCanExit()
         {
-            var result = SelectedWorkspaceItem == null || WorkspaceState != WorkspaceState.Running || WorkspaceState != WorkspaceState.Updating;
+            var result = SelectedWorkspaceItem == null || (WorkspaceState != WorkspaceState.Running && WorkspaceState != WorkspaceState.Updating);
 
             Logger.Information($"can exit: {result}");
 
@@ -485,6 +492,13 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
                 return t.Result;
             });
+        }
+
+        public void ExecuteTest(TestExecuteForm testExecuteForm, bool force)
+        {
+            testExecuteForm.SetApplicationManager(ApplicationManager);
+            testExecuteForm.ForceExecute = force;
+            testExecuteForm.ShowDialog();
         }
 
         #endregion

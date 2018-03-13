@@ -79,6 +79,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.selectLogging.Enabled = true;
                     this.commandExecuteUpdate.Enabled = Worker.CanUpdate;
                     this.commandShowReleaseNote.Enabled = Worker.CanUpdate;
+                    this.commandTestExecute.Enabled = true;
                     break;
 
                 case Define.WorkspaceState.Selecting:
@@ -96,6 +97,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.selectLogging.Enabled = true;
                     this.commandExecuteUpdate.Enabled = Worker.CanUpdate;
                     this.commandShowReleaseNote.Enabled = Worker.CanUpdate;
+                    this.commandTestExecute.Enabled = true;
                     break;
 
                 case Define.WorkspaceState.Running:
@@ -113,6 +115,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.selectLogging.Enabled = false;
                     this.commandExecuteUpdate.Enabled = false;
                     this.commandShowReleaseNote.Enabled = Worker.CanUpdate;
+                    this.commandTestExecute.Enabled = false;
                     break;
 
                 case Define.WorkspaceState.Updating:
@@ -133,6 +136,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.commandCheckUpdate.Enabled = false;
                     this.commandExecuteUpdate.Enabled = false;
                     this.commandShowReleaseNote.Enabled = Worker.CanUpdate;
+                    this.commandTestExecute.Enabled = false;
                     break;
 
                 default:
@@ -328,5 +332,27 @@ namespace ContentTypeTextNet.NKit.Manager.View
             ReleaseNoteForm = null;
         }
 
+        private void commandTestExecute_Click(object sender, EventArgs e)
+        {
+            using(var form = new TestExecuteForm()) {
+                Worker.ExecuteTest(form, false);
+            }
+        }
+
+        private void ManagerForm_Shown(object sender, EventArgs e)
+        {
+            // バージョンアップ時とかなら強制で全アプリケーションを起動
+            if(Worker.IsFirstExecute || Worker.IsUpdatedFirstExecute) {
+#if DEBUG
+                if(Worker.IsUpdatedFirstExecute) {
+                    // デバッグ中にばっしばし動くのはちょっと勘弁
+                    return;
+                }
+#endif
+                using(var form = new TestExecuteForm()) {
+                    Worker.ExecuteTest(form, true);
+                }
+            }
+        }
     }
 }

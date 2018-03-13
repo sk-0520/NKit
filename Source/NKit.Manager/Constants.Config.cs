@@ -36,6 +36,9 @@ namespace ContentTypeTextNet.NKit.Manager
 
         public static Uri IssuesBaseUri => new Uri(ConfigurationManager.AppSettings["issues-base-uri"]);
 
+        public static TimeSpan TestExecuteWait => TimeSpan.Parse(ConfigurationManager.AppSettings["test-execute-wait"]);
+
+        
         #endregion
     }
 }

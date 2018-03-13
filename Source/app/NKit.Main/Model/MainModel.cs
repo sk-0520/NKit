@@ -108,10 +108,14 @@ namespace ContentTypeTextNet.NKit.Main.Model
         void SaveSetting(MainSetting setting)
         {
             var file = GetSettingFile();
-            // ディレクトリ確認してる時点でワークスペースぶっ壊れてると思うのね
-            //if(!file.Directory.Exists) {
-            //    file.Directory.Create();
-            //}
+
+            // 単独起動の場合にのみディレクトリ作成
+            if(StartupOptions.ServiceUri == null) {
+                if(!file.Directory.Exists) {
+                    file.Directory.Create();
+                }
+            }
+
             using(var stream = file.Create()) {
                 var serializer = new JsonSerializer();
                 serializer.Save(setting, stream);
