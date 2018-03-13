@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.ServiceModel;
@@ -402,6 +403,25 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private void selectWorkspaceLoadToHide_CheckedChanged(object sender, EventArgs e)
         {
             Worker.WorkspaceLoadToHide = this.selectWorkspaceLoadToHide.Checked;
+        }
+
+        private void commandWorkspaceDirectorySelect_Click(object sender, EventArgs e)
+        {
+            var dirPath = this.inputWorkspaceDirectoryPath.Text;
+            if(!string.IsNullOrWhiteSpace(dirPath)) {
+                dirPath = Environment.ExpandEnvironmentVariables(dirPath);
+            }
+            if(string.IsNullOrWhiteSpace(dirPath) || !Directory.Exists(dirPath)) {
+                dirPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            }
+
+            using(var dialog = new FolderBrowserDialog()) {
+                dialog.SelectedPath = dirPath;
+                dialog.ShowNewFolderButton = true;
+                if(dialog.ShowDialog() == DialogResult.OK) {
+                    this.inputWorkspaceDirectoryPath.Text = dialog.SelectedPath;
+                }
+            }
         }
     }
 }

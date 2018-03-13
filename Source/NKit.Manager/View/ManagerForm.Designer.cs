@@ -134,6 +134,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandWorkspaceDirectorySelect.TabIndex = 3;
             this.commandWorkspaceDirectorySelect.Text = "dir";
             this.commandWorkspaceDirectorySelect.UseVisualStyleBackColor = true;
+            this.commandWorkspaceDirectorySelect.Click += new System.EventHandler(this.commandWorkspaceDirectorySelect_Click);
             // 
             // inputWorkspaceName
             // 
