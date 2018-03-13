@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -12,7 +13,7 @@ namespace ContentTypeTextNet.NKit.Setting.Capture
     {
         #region property
 
-
+        IReadOnlyCollection<IReadOnlyCaptureGroupSetting> Groups { get; }
 
         #endregion
     }
@@ -22,6 +23,9 @@ namespace ContentTypeTextNet.NKit.Setting.Capture
     {
         #region IReadOnlyCaptureSetting
 
+        [DataMember]
+        public Collection<CaptureGroupSetting> Groups { get; set; } = new Collection<CaptureGroupSetting>();
+        IReadOnlyCollection<IReadOnlyCaptureGroupSetting> IReadOnlyCaptureSetting.Groups => Groups;
 
 
         #endregion

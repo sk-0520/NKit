@@ -18,12 +18,9 @@ namespace ContentTypeTextNet.NKit.Setting.Capture
     }
 
     [Serializable, DataContract]
-    public class CaptureGroupSetting: SettingBase, IReadOnlyCaptureGroupSetting
+    public class CaptureGroupSetting: GuidSettingBase, IReadOnlyCaptureGroupSetting
     {
         #region IReadOnlyCaptureGroupSetting
-
-        [DataMember]
-        public Guid Id { get; set; }
 
         [DataMember]
         public string GroupName { get; set; }

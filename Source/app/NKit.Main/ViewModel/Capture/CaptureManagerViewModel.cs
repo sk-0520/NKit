@@ -1,16 +1,73 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
+using System.Windows.Input;
 using ContentTypeTextNet.NKit.Main.Model.Capture;
+using Prism.Commands;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
 {
     public class CaptureManagerViewModel : ManagerViewModelBase<CaptureManagerModel>
     {
+        #region variable
+
+        CaptureGroupViewModel _selectedGroupItem;
+
+        #endregion
+
         public CaptureManagerViewModel(CaptureManagerModel model)
             : base(model)
-        { }
+        {
+            GroupViewModels = new ObservableCollection<CaptureGroupViewModel>(Model.Groups.Select(g => new CaptureGroupViewModel(g)));
+            if(GroupViewModels.Any()) {
+                SelectedGroupItem = GroupViewModels[0];
+            }
+            Groups = CollectionViewSource.GetDefaultView(GroupViewModels);
+        }
+
+        #region property
+
+        ObservableCollection<CaptureGroupViewModel> GroupViewModels { get; }
+        public ICollectionView Groups { get; }
+
+        public CaptureGroupViewModel SelectedGroupItem
+        {
+            get { return this._selectedGroupItem; }
+            set { SetProperty(ref this._selectedGroupItem, value); }
+        }
+
+        #endregion
+
+        #region command
+
+        public ICommand AddNewGroupCommand => new DelegateCommand(() => {
+            var model = Model.AddNewGroup();
+            var viewModel = new CaptureGroupViewModel(model);
+
+            GroupViewModels.Add(viewModel);
+            SelectedGroupItem = viewModel;
+        });
+
+        public ICommand RemoveGroupCommand => new DelegateCommand<CaptureGroupViewModel>(vm => {
+            if(SelectedGroupItem == vm) {
+                // くるしい, 近しい子を選んであげるべき
+                SelectedGroupItem = GroupViewModels.Where(g => g != vm).FirstOrDefault();
+            }
+
+            var index = GroupViewModels.IndexOf(vm);
+            GroupViewModels.RemoveAt(index);
+            vm.Dispose();
+            Model.RemoveGroupAt(index);
+        });
+
+        #endregion
+
+        #region function
+        #endregion
     }
 }

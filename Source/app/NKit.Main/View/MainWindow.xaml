@@ -7,6 +7,7 @@
   mc:Ignorable="d"
 
   xmlns:app_main_view_finder="clr-namespace:ContentTypeTextNet.NKit.Main.View.Finder"
+  xmlns:app_main_view_capture="clr-namespace:ContentTypeTextNet.NKit.Main.View.Capture"
   xmlns:app_main_view_nkit="clr-namespace:ContentTypeTextNet.NKit.Main.View.NKit"
 
   Title="MainWindow"
@@ -34,7 +35,7 @@
       </TabItem>
 
       <TabItem Header="capture" DataContext="{Binding CaptureManager}">
-
+        <app_main_view_capture:CaptureManagerControl />
       </TabItem>
 
       <TabItem Header="system" DataContext="{Binding SystemManager}">
