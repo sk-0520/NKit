@@ -19,6 +19,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting
 
         IReadOnlyWorkspaceItemSetting[] Items { get; }
 
+        bool WorkspaceLoadToHide { get; }
+
         #endregion
     }
 
@@ -34,6 +36,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting
         public WorkspaceItemSetting[] Items { get; set; } = new WorkspaceItemSetting[0];
 
         IReadOnlyWorkspaceItemSetting[] IReadOnlyWorkspaceSetting.Items => Items;
+
+        [DataMember]
+        public bool WorkspaceLoadToHide { get; set; }
 
         #endregion
     }

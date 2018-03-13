@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ContentTypeTextNet.NKit.Common;
+using ContentTypeTextNet.NKit.Manager.Define;
 using ContentTypeTextNet.NKit.Manager.Model;
 using ContentTypeTextNet.NKit.Manager.Model.Log;
 
@@ -24,6 +25,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             InitializeComponent();
 
             Font = SystemFonts.MessageBoxFont;
+            this.notifyIcon.Icon = Icon;
         }
 
         #region property
@@ -169,7 +171,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.labelVersionNumber.Text = assembly.GetName().Version.ToString();
             this.labelVersionHash.Text = FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;
 
+
+            // 設定値をどばーっと反映
             Worker.ListupWorkspace(this.selectWorkspace, Guid.Empty);
+            this.selectWorkspaceLoadToHide.Checked = Worker.WorkspaceLoadToHide;
+
+
             RefreshControls();
             /*
             var r = new ReleaseNoteForm();
@@ -243,12 +250,20 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             Worker.LoadSelectedWorkspace();
             RefreshControls();
+            if(Worker.WorkspaceLoadToHide && Worker.WorkspaceState == WorkspaceState.Running) {
+                WindowState = FormWindowState.Minimized;
+            }
         }
 
         private void Worker_WorkspaceExited(object sender, EventArgs e)
         {
             Invoke(new Action(() => {
                 RefreshControls();
+
+                // マネージャウィンドウの復帰
+                if(WindowState == FormWindowState.Minimized) {
+                    WindowState = FormWindowState.Normal;
+                }
             }));
         }
         private void Worker_OutputLog(object sender, LogEventArgs e)
@@ -280,6 +295,11 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private void ManagerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = !Worker.CheckCanExit();
+            if(e.Cancel) {
+                if(Worker.WorkspaceState == Define.WorkspaceState.Running) {
+                    WindowState = FormWindowState.Minimized;
+                }
+            }
         }
 
         private async void commandCheckUpdate_Click(object sender, EventArgs e)
@@ -353,6 +373,35 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     Worker.ExecuteTest(form, true);
                 }
             }
+        }
+
+        private void ManagerForm_SizeChanged(object sender, EventArgs e)
+        {
+            if(Worker == null) {
+                return;
+            }
+
+            if(Worker.WorkspaceState == WorkspaceState.Running) {
+                if(WindowState == FormWindowState.Minimized) {
+                    this.notifyIcon.Visible = true;
+                } else {
+                    this.notifyIcon.Visible = false;
+                }
+            } else {
+                this.notifyIcon.Visible = false;
+            }
+
+            ShowInTaskbar = !this.notifyIcon.Visible;
+        }
+
+        private void notifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            WindowState = FormWindowState.Normal;
+        }
+
+        private void selectWorkspaceLoadToHide_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.WorkspaceLoadToHide = this.selectWorkspaceLoadToHide.Checked;
         }
     }
 }
