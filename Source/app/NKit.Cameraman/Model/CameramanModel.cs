@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -17,6 +18,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 {
     public class CameramanModel : ModelBase
     {
+
         public CameramanModel(string[] arguments)
         {
             var command = new CommandLineApplication(false);
@@ -28,6 +30,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             var saveEventOption = command.Option("--save_event_name", "save event", CommandOptionType.SingleValue);
             var exitEventOption = command.Option("--exit_event_name", "exit event, pair --save_event_name", CommandOptionType.SingleValue);
             var continuationOption = command.Option("--continuation", "one/continuation", CommandOptionType.NoValue);
+            var shotKeyOption = command.Option("--photo_opportunity_key", "shot", CommandOptionType.SingleValue);
+            var selectKeyOption = command.Option("--wait_opportunity_key", "select", CommandOptionType.SingleValue);
 
             command.Execute(arguments);
 
@@ -45,6 +49,20 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 ExitNoticeEvent = EventWaitHandle.OpenExisting(exitEventOption.Value());
             }
             IsContinuation = continuationOption.HasValue();
+
+            if(CaptureMode != CaptureMode.Screen && !IsContinuation) {
+                if(!shotKeyOption.HasValue() && !selectKeyOption.HasValue()) {
+                    throw new ArgumentException("shot key!");
+                }
+
+                if(shotKeyOption.HasValue()) {
+                    ShotKeys = EnumUtility.Parse<Keys>(shotKeyOption.Value());
+                }
+                if(selectKeyOption.HasValue()) {
+                    SelectKeys = EnumUtility.Parse<Keys>(selectKeyOption.Value());
+                }
+            }
+
         }
 
         #region property
@@ -61,6 +79,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         bool IsContinuation { get; }
 
+        Keys ShotKeys { get; set; }
+        Keys SelectKeys { get; set; }
+
+        CameramanForm Form { get; set; }
         #endregion
 
         #region function
@@ -71,9 +93,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         /// <returns></returns>
         Image TakeShot()
         {
-            if(CaptureMode == CaptureMode.Screen && !IsContinuation) {
+            if(CaptureMode == CaptureMode.Screen) {
                 var screenCamera = new ScreenCamera();
                 return screenCamera.TaskShot();
+            } else {
+                Debug.Assert(CaptureMode == CaptureMode.Target);
+                Form.ShowDialog();
             }
 
             throw new NotImplementedException();
@@ -105,7 +130,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 var image = TakeShot();
                 Develop(image);
             } else {
-                form.ShowDialog();
+                Form = form;
+                var image = TakeShot();
+                Develop(image);
             }
         }
 
