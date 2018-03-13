@@ -55,7 +55,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
 
         Task<(string value, Uri uri)> GetStringAsync(HttpClient client, string baseUri, params string[] hierarchies)
         {
-            var uri = CombineUri(baseUri, hierarchies);
+            var combinedUri = CombineUri(baseUri, hierarchies);
+            var uri = Constants.UpdateCheckUriAppendRandom
+                ? new Uri(combinedUri.ToString().TrimEnd('/') + $"?{DateTime.Now.ToFileTime()}")
+                : combinedUri
+            ;
+
 
             Logger.Debug($"target uri: {uri}");
 
