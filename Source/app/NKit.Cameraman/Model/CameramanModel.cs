@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -64,6 +65,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         #region function
 
+        /// <summary>
+        /// 撮影。
+        /// </summary>
+        /// <returns></returns>
         Image TakeShot()
         {
             if(CaptureMode == CaptureMode.Screen && !IsContinuation) {
@@ -74,18 +79,39 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             throw new NotImplementedException();
         }
 
-        void Exit()
+        /// <summary>
+        /// 現像。
+        /// </summary>
+        /// <param name="image"></param>
+        void Develop(Image image)
         {
+            if(IsEnabledClipboard) {
+                Clipboard.SetImage(image);
+            }
+            if(SaveDirectory != null) {
+                var fileName = $"{DateTime.Now: yyyyMMdd_hhmmss}.png";
+                var filePath = Path.Combine(SaveDirectory.FullName, fileName);
+                image.Save(filePath, ImageFormat.Png);
+            }
 
+            if(SaveNoticeEvent != null) {
+                SaveNoticeEvent.Set();
+            }
         }
 
         public void Execute(CameramanForm form)
         {
             if(CaptureMode == CaptureMode.Screen) {
-                TakeShot();
+                var image = TakeShot();
+                Develop(image);
             } else {
                 form.ShowDialog();
             }
+        }
+
+        void Exit()
+        {
+
         }
 
         #endregion
