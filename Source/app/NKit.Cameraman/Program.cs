@@ -44,14 +44,14 @@ namespace ContentTypeTextNet.NKit.Cameraman
                 var logger = Log.CreateLogger();
 
                 logger.Information("!!START!!");
-                logger.Information($"this template compiled: 2018-03-13 07:26:21Z UTC");
+                logger.Information($"this template compiled: 2018-03-13 07:40:36Z UTC");
 
                 var model = new ContentTypeTextNet.NKit.Cameraman.Model.CameramanModel(args);
                 var form = new ContentTypeTextNet.NKit.Cameraman.View.CameramanForm();
                 form.SetModel(model);
-                
-                Application.Run(form);
 
+                                model.Execute(form);
+                
 //                logger.Information($"RESULT STATUS =================");
 //                logger.Information($"{model.StartTimestamp}");
 //                logger.Information($"{model.PreparationSpan}");

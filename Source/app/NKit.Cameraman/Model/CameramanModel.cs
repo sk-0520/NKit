@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ContentTypeTextNet.NKit.Cameraman.View;
 using ContentTypeTextNet.NKit.Utility.Model;
 
 namespace ContentTypeTextNet.NKit.Cameraman.Model
@@ -16,6 +17,15 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         #region property
 
         string[] Arguments { get; }
+
+        #endregion
+
+        #region function
+
+        public void Execute(CameramanForm form)
+        {
+            form.ShowDialog();
+        }
 
         #endregion
     }

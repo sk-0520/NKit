@@ -48,8 +48,12 @@ namespace <#= defaultNamespace #>
                 var model = new <#= executeModelClass #>(args);
                 var form = new <#= executeFormClass #>();
                 form.SetModel(model);
-                
+
+                <# if(showWindow) { #>
                 Application.Run(form);
+                <# } else { #>
+                model.Execute(form);
+                <# } #>
 
 //                logger.Information($"RESULT STATUS =================");
 //                logger.Information($"{model.StartTimestamp}");
