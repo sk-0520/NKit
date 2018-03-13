@@ -9,6 +9,9 @@ namespace ContentTypeTextNet.NKit.Setting.Define
     public enum CaptureMode
     {
         Screen,
-        Target,
+        TargetWindow,
+        TargetClient,
+        TargetControl,
+        Scroll,
     }
 }
