@@ -214,9 +214,6 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
                 "--spreadsheet_x",
                 ProgramRelationUtility.EscapesequenceToArgument(parameter.SpreadSeet.ColumnIndex.ToString()),
 
-                "--spreadsheet_x",
-                ProgramRelationUtility.EscapesequenceToArgument(parameter.SpreadSeet.ColumnIndex.ToString()),
-
                 "--spreadsheet_cell",
                 ProgramRelationUtility.EscapesequenceToArgument(new CellReference(parameter.SpreadSeet.RowIndex, parameter.SpreadSeet.ColumnIndex).FormatAsString()),
             };
