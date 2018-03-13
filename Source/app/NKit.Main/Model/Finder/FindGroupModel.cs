@@ -40,7 +40,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         /// <summary>
         /// 検索時に使用した各種設定。
         /// </summary>
-        FindGroupCache Cache { get; } = new FindGroupCache();
+        FindGroupCache Cache { get; /*テスト用*/set; } = new FindGroupCache();
         public IReadOnlyFindGroupCache CurrentCache => Cache;
 
         public ObservableCollection<FindItemModel> Items { get; } = new ObservableCollection<FindItemModel>();
