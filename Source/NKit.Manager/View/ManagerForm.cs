@@ -343,6 +343,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             // バージョンアップ時とかなら強制で全アプリケーションを起動
             if(Worker.IsFirstExecute || Worker.IsUpdatedFirstExecute) {
+#if DEBUG
+                if(Worker.IsUpdatedFirstExecute) {
+                    // デバッグ中にばっしばし動くのはちょっと勘弁
+                    return;
+                }
+#endif
                 using(var form = new TestExecuteForm()) {
                     Worker.ExecuteTest(form, true);
                 }
