@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Library.PInvoke.Windows;
@@ -11,6 +12,21 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 {
     public static class WindowHandleUtility
     {
+        #region define
+        // PInvoke 待つの疲れた
+
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
+
+        [DllImport("user32.dll")]
+        static extern bool AttachThreadInput(uint idAttach, uint idAttachTo, bool fAttach);
+
+        [DllImport("kernel32.dll")]
+        static extern uint GetCurrentThreadId();
+
+        #endregion
+
+
         #region function
 
         public static IntPtr GetView(Point point, CaptureMode captureMode)
@@ -52,7 +68,32 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         public static IntPtr GetActiveWindow(CaptureMode captureMode)
         {
-            throw new NotImplementedException();
+            if(captureMode == CaptureMode.Screen) {
+                throw new ArgumentException(nameof(captureMode));
+            }
+
+            var hWnd = NativeMethods.GetForegroundWindow();
+            if(captureMode != CaptureMode.TargetControl) {
+                return hWnd;
+            }
+
+            if(hWnd == IntPtr.Zero) {
+                return IntPtr.Zero;
+            }
+
+            // なんとかしてフォーカスウィンドウまで飛んでいく
+            int targetProcessId;
+            var targetThreadId = GetWindowThreadProcessId(hWnd, out targetProcessId);
+            var myThreadId = GetCurrentThreadId();
+            if(AttachThreadInput(myThreadId, targetThreadId, true)) {
+                try {
+                    return NativeMethods.GetFocus();
+                } finally {
+                    AttachThreadInput(myThreadId, targetThreadId, false);
+                }
+            }
+
+            return IntPtr.Zero;
         }
 
 

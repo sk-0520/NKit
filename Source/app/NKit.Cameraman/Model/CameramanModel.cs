@@ -213,7 +213,11 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
             var image = TakeShot();
             Develop(image);
-            EndViewSelect();
+
+            // 選択してたら選択終了
+            if(NowSelecting) {
+                EndViewSelect();
+            }
 
             if(!IsContinuation) {
                 Exit();
@@ -286,6 +290,14 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                         }
                     } else {
                         // 今時点でアクティブなやつからキャプチャ
+                        var hWnd = WindowHandleUtility.GetActiveWindow(CaptureMode);
+                        if(hWnd != IntPtr.Zero) {
+                            Logger.Debug("window handle!");
+                            TargetWindowHandle = hWnd;
+                            CaptureSelect();
+                        } else {
+                            Logger.Debug("window handle is null");
+                        }
                     }
                 }
             }
