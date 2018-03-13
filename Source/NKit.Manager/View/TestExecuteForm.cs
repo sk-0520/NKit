@@ -15,6 +15,7 @@ using ContentTypeTextNet.NKit.Manager.Model;
 using ContentTypeTextNet.NKit.Manager.Model.Application;
 using ContentTypeTextNet.NKit.Manager.Model.Workspace;
 using ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting;
+using static System.Windows.Forms.ListViewItem;
 
 namespace ContentTypeTextNet.NKit.Manager.View
 {
@@ -116,6 +117,38 @@ namespace ContentTypeTextNet.NKit.Manager.View
             }
         }
 
+        (ListViewItem item, ListViewSubItem stateItem) GetListViewItems(string key)
+        {
+            ListViewItem item = null;
+            ListViewSubItem stateItem = null;
+            var action = new Action(() => {
+                item = this.listApplications.Items[key];
+                stateItem = item.SubItems[this.columnState.Index];
+            });
+            if(InvokeRequired) {
+                Invoke(action);
+            } else {
+                action();
+            }
+
+            return (item, stateItem);
+        }
+
+        void SetState(ListViewSubItem stateItem, ApplicationInfo info, TestState testState)
+        {
+            info.State = testState;
+
+            var action = new Action(() => {
+                stateItem.Text = info.State.ToString();
+            });
+            if(InvokeRequired) {
+                Invoke(action);
+            } else {
+                action();
+            }
+
+        }
+
         Task ExecuteAsync()
         {
             Manager.ApplicationExited -= Manager_ApplicationExited;
@@ -135,38 +168,48 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 Name = "🐉",
                 UpdatedTimestamp = DateTime.MinValue,
             };
-            var workDirPath = Path.GetTempPath();
-            foreach(var info in ApplicationInfos) {
-                var listViewItem = this.listApplications.Items[info.Name];
-                Debug.Assert(listViewItem.Tag == info);
 
-                info.State = TestState.Testing;
+            return Task.Run(() => {
+                var workDirPath = Path.GetTempPath();
+                foreach(var info in ApplicationInfos) {
+                    var listVuewItems = GetListViewItems(info.Name);
+                    Debug.Assert(listVuewItems.item.Tag == info);
 
-                listViewItem.SubItems[this.columnState.Index].Text = info.State.ToString();
+                    SetState(listVuewItems.stateItem, info, TestState.Testing);
 
-                if(info.Kind == NKitApplicationKind.Others) {
-                    Manager.ExecuteOtherApplication(NKitApplicationKind.Manager, info.File.FullName, dummyActiveWorkspace, dummyWorkspaceSetting, info.Arguments, workDirPath);
-                } else {
-                    Manager.ExecuteNKitApplication(NKitApplicationKind.Manager, info.Kind, dummyActiveWorkspace, dummyWorkspaceSetting, info.Arguments, workDirPath);
+                    if(info.Kind == NKitApplicationKind.Others) {
+                        Manager.ExecuteOtherApplication(NKitApplicationKind.Manager, info.File.FullName, dummyActiveWorkspace, dummyWorkspaceSetting, info.Arguments, workDirPath);
+                    } else {
+                        Manager.ExecuteNKitApplication(NKitApplicationKind.Manager, info.Kind, dummyActiveWorkspace, dummyWorkspaceSetting, info.Arguments, workDirPath);
+                    }
+
+                    if(ExitEvent.WaitOne(Constants.TestExecuteWait)) {
+                        // 無事に死んだ
+                        SetState(listVuewItems.stateItem, info, TestState.Ok);
+                    } else {
+                        // なんか知らんけどあかんかった
+                        SetState(listVuewItems.stateItem, info, TestState.Fail);
+                    }
                 }
 
-                ExitEvent.WaitOne();
-                // 死んだ！
-                info.State = TestState.Ok;
-                listViewItem.SubItems[this.columnState.Index].Text = info.State.ToString();
-            }
+                Manager.ApplicationExited -= Manager_ApplicationExited;
+                ExitEvent.Dispose();
+            });
+        }
 
-            Manager.ApplicationExited -= Manager_ApplicationExited;
-            ExitEvent.Dispose();
-
-            return Task.CompletedTask;
+        void RefreshControls(bool isEnabled)
+        {
+            this.commandClose.Enabled = isEnabled;
+            this.commandExecute.Enabled = isEnabled;
         }
 
         #endregion
 
-        private void commandExecute_Click(object sender, EventArgs e)
+        private async void commandExecute_Click(object sender, EventArgs e)
         {
-            ExecuteAsync();
+            RefreshControls(false);
+            await ExecuteAsync();
+            RefreshControls(true);
         }
 
         private void Manager_ApplicationExited(object sender, EventArgs e)
