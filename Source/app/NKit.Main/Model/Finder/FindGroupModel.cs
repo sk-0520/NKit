@@ -203,6 +203,18 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         {
             var files = targetDirectory.EnumerateFiles(searchPattern, SearchOption.TopDirectoryOnly);
             foreach(var file in files) {
+                if(!Cache.Setting.FindDotFile) {
+                    if(file.Name.StartsWith(".")) {
+                        continue;
+                    }
+                }
+
+                if(!Cache.Setting.FindFileNameOnly) {
+                    if(string.IsNullOrEmpty(file.Extension)) {
+                        continue;
+                    }
+                }
+
                 yield return file;
             }
 

@@ -54,6 +54,15 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         string FileNameSearchPattern { get; }
 
         /// <summary>
+        /// ファイル名の先頭が . で始まるファイルを検索するか。
+        /// </summary>
+        bool FindDotFile { get; }
+        /// <summary>
+        /// 拡張子のないファイル名のファイルを検索対象とするか。
+        /// </summary>
+        bool FindFileNameOnly { get; }
+
+        /// <summary>
         /// ファイル検索に用いるファイルサイズの上下限を指定する。
         /// <para>0は無制限。</para>
         /// <para>一応のUI運用としては上限のみの指定でいいと思ってる。下限 0 の 上限 n みたいな。</para>
@@ -127,8 +136,14 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         public string FileNameSearchPattern { get; set; }
 
         [DataMember]
+        public bool FindDotFile { get; set; }
+        [DataMember]
+        public bool FindFileNameOnly { get; set; }
+
+        [DataMember]
         public Range<long> FileSizeLimit { get; set; }
         IReadOnlyRange<long> IReadOnlyFindGroupSetting.FileSizeLimit => FileSizeLimit;
+
 
         [DataMember]
         public bool FindFileProperty { get; set; }

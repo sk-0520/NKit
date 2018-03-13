@@ -78,6 +78,9 @@
 
           <Label>type:</Label>
           <app_main_view_control:SearchPatternSelectControl SearchPatternKind="{Binding FileNameSearchPatternKind, Mode=TwoWay}" />
+          
+          <CheckBox IsChecked="{Binding FindDotFile}">FindDotFile</CheckBox>
+          <CheckBox IsChecked="{Binding FindFileNameOnly}">FindFileNameOnly</CheckBox>
 
           <Label>size max:</Label>
           <Grid>
@@ -89,7 +92,7 @@
             <Slider Grid.Column="0" Minimum="0" Maximum="9999999" Value="{Binding FileSizeLimitMaximum}"  />
             <TextBox Grid.Column="1" Text="{Binding FileSizeLimitMaximum}" />
           </Grid>
-
+          
           <Separator />
 
           <Expander IsExpanded="{Binding FindFileProperty}">
