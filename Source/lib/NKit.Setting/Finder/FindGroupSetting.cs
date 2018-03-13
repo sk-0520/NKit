@@ -112,7 +112,7 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         [DataMember]
         public string RootDirectoryPath { get; set; }
         [DataMember]
-        public int DirectoryLimitLevel { get; set; }
+        public int DirectoryLimitLevel { get; set; } = 1;
         [DataMember]
         public bool FindHiddenDirectory { get; set; }
         [DataMember]
