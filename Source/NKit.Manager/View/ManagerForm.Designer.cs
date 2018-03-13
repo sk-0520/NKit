@@ -51,6 +51,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.labelVersionNumber = new System.Windows.Forms.Label();
             this.labelVersionHash = new System.Windows.Forms.Label();
             this.labelBuildType = new System.Windows.Forms.Label();
+            this.commandTestExecute = new System.Windows.Forms.Button();
             this.panelWorkspace.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
@@ -269,11 +270,22 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.labelBuildType.TabIndex = 8;
             this.labelBuildType.Text = "labelBuildType";
             // 
+            // commandTestExecute
+            // 
+            this.commandTestExecute.Location = new System.Drawing.Point(140, 38);
+            this.commandTestExecute.Name = "commandTestExecute";
+            this.commandTestExecute.Size = new System.Drawing.Size(75, 23);
+            this.commandTestExecute.TabIndex = 9;
+            this.commandTestExecute.Text = "test exec";
+            this.commandTestExecute.UseVisualStyleBackColor = true;
+            this.commandTestExecute.Click += new System.EventHandler(this.commandTestExecute_Click);
+            // 
             // ManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(654, 266);
+            this.Controls.Add(this.commandTestExecute);
             this.Controls.Add(this.labelVersionHash);
             this.Controls.Add(this.labelBuildType);
             this.Controls.Add(this.labelVersionNumber);
@@ -325,6 +337,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.Label labelVersionHash;
         private System.Windows.Forms.Label labelBuildType;
         private System.Windows.Forms.Label labelVersionNumber;
+        private System.Windows.Forms.Button commandTestExecute;
     }
 }
 
