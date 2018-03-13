@@ -338,5 +338,15 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 Worker.ExecuteTest(form, false);
             }
         }
+
+        private void ManagerForm_Shown(object sender, EventArgs e)
+        {
+            // バージョンアップ時とかなら強制で全アプリケーションを起動
+            if(Worker.IsFirstExecute || Worker.IsUpdatedFirstExecute) {
+                using(var form = new TestExecuteForm()) {
+                    Worker.ExecuteTest(form, true);
+                }
+            }
+        }
     }
 }

@@ -53,6 +53,7 @@
             this.commandClose.TabIndex = 0;
             this.commandClose.Text = "close";
             this.commandClose.UseVisualStyleBackColor = true;
+            this.commandClose.Click += new System.EventHandler(this.commandClose_Click);
             // 
             // listApplications
             // 
@@ -89,6 +90,7 @@
             this.Controls.Add(this.commandExecute);
             this.Name = "TestExecuteForm";
             this.Text = "TestExecuteForm";
+            this.Shown += new System.EventHandler(this.TestExecuteForm_Shown);
             this.ResumeLayout(false);
 
         }

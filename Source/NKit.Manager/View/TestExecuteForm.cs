@@ -217,6 +217,19 @@ namespace ContentTypeTextNet.NKit.Manager.View
             ExitEvent.Set();
         }
 
+        private void commandClose_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
 
+        private async void TestExecuteForm_Shown(object sender, EventArgs e)
+        {
+            if(ForceExecute) {
+                RefreshControls(false);
+                await ExecuteAsync();
+                RefreshControls(true);
+                Close();
+            }
+        }
     }
 }

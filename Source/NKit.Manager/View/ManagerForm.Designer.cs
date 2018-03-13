@@ -304,6 +304,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ManagerForm_FormClosing);
             this.Load += new System.EventHandler(this.ManagerForm_Load);
+            this.Shown += new System.EventHandler(this.ManagerForm_Shown);
             this.panelWorkspace.ResumeLayout(false);
             this.panelWorkspace.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
