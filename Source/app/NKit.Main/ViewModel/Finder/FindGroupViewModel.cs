@@ -494,7 +494,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 }
             }
 
-            if(!string.IsNullOrEmpty(Model.CurrentFindGroupSetting.FileNameSearchPattern) && IsEnabledFileNameFilter) {
+            if(IsEnabledFileNameFilter && !string.IsNullOrEmpty(Model.CurrentFindGroupSetting.FileNameSearchPattern)) {
                 if(!item.MatchedName) {
                     if(item.IsSelected) {
                         item.IsSelected = false;
@@ -512,7 +512,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 }
             }
 
-            if(Model.CurrentFindGroupSetting.FindFileProperty && IsEnabledFilePropertyFilter) {
+            if(IsEnabledFilePropertyFilter && Model.CurrentFindGroupSetting.FindFileProperty) {
                 if(!item.MatchedProperty) {
                     if(item.IsSelected) {
                         item.IsSelected = false;
@@ -521,7 +521,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 }
             }
 
-            if(Model.CurrentFindGroupSetting.FindFileContent && IsEnabledFileContentFilter) {
+            if(IsEnabledFileContentFilter && Model.CurrentFindGroupSetting.FindFileContent) {
                 if(!item.MatchedContent) {
                     if(item.IsSelected) {
                         item.IsSelected = false;
