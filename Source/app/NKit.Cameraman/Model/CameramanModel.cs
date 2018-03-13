@@ -64,35 +64,14 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         #region function
 
-        void TakeScreen()
+        Image TakeShot()
         {
-            var allScreens = Screen.AllScreens;
-
-            var minLeft = allScreens.Min(s => s.Bounds.Left);
-            var minTop = allScreens.Min(s => s.Bounds.Top);
-            var maxRight = allScreens.Max(s => s.Bounds.Right);
-            var maxBottom = allScreens.Max(s => s.Bounds.Bottom);
-
-            // 原点が(0,0)の左上座標へ補正してあげる
-            var addX = minLeft < 0 ? -minLeft : 0;
-            var addY = minTop < 0 ? -minTop : 0;
-
-            var width = maxRight + addX;
-            var height = maxBottom + addY;
-
-            using(var bitmap = new Bitmap(width, height)) {
-                using(var g = Graphics.FromImage(bitmap)) {
-                    foreach(var screen in allScreens) {
-                        var screenBounds = screen.Bounds;
-                        var srcPoint = new Point(screenBounds.X, screenBounds.Y);
-                        var dstPoint = new Point(screenBounds.X + addX, screenBounds.Y + addY);
-                        var dstSize = new Size(screenBounds.Width, screenBounds.Height);
-                        g.CopyFromScreen(srcPoint, dstPoint, dstSize);
-                    }
-                }
-                bitmap.Save(@"Z:\cap.png");
+            if(CaptureMode == CaptureMode.Screen && !IsContinuation) {
+                var screenCamera = new ScreenCamera();
+                return screenCamera.TaskShot();
             }
 
+            throw new NotImplementedException();
         }
 
         void Exit()
@@ -102,14 +81,11 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         public void Execute(CameramanForm form)
         {
-            if(CaptureMode == CaptureMode.Screen && !IsContinuation) {
-                // ただのスクリーンキャプチャならその場で死ぬべし
-                TakeScreen();
-                Exit();
-                return;
+            if(CaptureMode == CaptureMode.Screen) {
+                TakeShot();
+            } else {
+                form.ShowDialog();
             }
-
-            form.ShowDialog();
         }
 
         #endregion

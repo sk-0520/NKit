@@ -78,7 +78,9 @@
     <Compile Include="..\..\common\NKit.Common.Link\CommonUtility.cs">
       <Link>Common\CommonUtility.cs</Link>
     </Compile>
+    <Compile Include="Model\CameraBase.cs" />
     <Compile Include="Model\CameramanModel.cs" />
+    <Compile Include="Model\ScreenCamera.cs" />
     <Compile Include="Program.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
