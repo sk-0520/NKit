@@ -165,6 +165,7 @@
       <Link>Common\CommonUtility.cs</Link>
     </Compile>
     <Compile Include="Model\File\FilePropertySearchResult.cs" />
+    <Compile Include="Model\Finder\FindGroupCache.cs" />
     <Compile Include="Model\NKit\NKitApplicationExecutor.cs" />
     <Compile Include="Model\XmlHtmlSearcher.cs" />
     <Compile Include="View\Control\FlagMatchSelectControl.xaml.cs">
