@@ -11,7 +11,7 @@ namespace ContentTypeTextNet.NKit.Common
         /// <summary>
         /// よその子。
         /// </summary>
-        Unknown,
+        Others,
         Manager,
         Main,
         Rocket,

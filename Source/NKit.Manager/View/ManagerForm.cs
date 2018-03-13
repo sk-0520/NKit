@@ -335,7 +335,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private void commandTestExecute_Click(object sender, EventArgs e)
         {
             using(var form = new TestExecuteForm()) {
-                Worker.ExecuteTest(form);
+                Worker.ExecuteTest(form, false);
             }
         }
     }

@@ -488,9 +488,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             });
         }
 
-        public void ExecuteTest(TestExecuteForm testExecuteForm)
+        public void ExecuteTest(TestExecuteForm testExecuteForm, bool force)
         {
-            testExecuteForm.SetWorker(this);
+            testExecuteForm.SetApplicationManager(ApplicationManager);
+            testExecuteForm.ForceExecute = force;
             testExecuteForm.ShowDialog();
         }
 
