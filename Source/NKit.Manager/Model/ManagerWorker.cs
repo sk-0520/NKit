@@ -445,7 +445,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         public bool CheckCanExit()
         {
-            var result = SelectedWorkspaceItem == null || WorkspaceState != WorkspaceState.Running || WorkspaceState != WorkspaceState.Updating;
+            var result = SelectedWorkspaceItem == null || (WorkspaceState != WorkspaceState.Running && WorkspaceState != WorkspaceState.Updating);
 
             Logger.Information($"can exit: {result}");
 
