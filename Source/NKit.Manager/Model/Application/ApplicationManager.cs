@@ -96,6 +96,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                     };
                     break;
 
+                case NKitApplicationKind.Cameraman:
+                    item = new NKitApplicationItem(targetApplication, LogFactory) {
+                        Arguments = AddNKitArguments(activeWorkspace, workspace, arguments),
+                    };
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }

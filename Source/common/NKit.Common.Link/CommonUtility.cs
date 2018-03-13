@@ -192,6 +192,13 @@ namespace ContentTypeTextNet.NKit.Common
             return new FileInfo(path);
         }
 
-#endregion
+        public static FileInfo GetCameramanApplication(DirectoryInfo applicationDirectory)
+        {
+            var path = Path.Combine(applicationDirectory.FullName, "NKit.Cameraman.exe");
+            return new FileInfo(path);
+        }
+
+
+        #endregion
     }
 }

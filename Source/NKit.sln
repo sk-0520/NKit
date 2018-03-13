@@ -46,12 +46,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NKitApplication", "NKitApplication", "{27D60F2A-A517-4371-8A87-17F0B9B9EF37}"
 	ProjectSection(SolutionItems) = preProject
 		common\T4\NKitApplication\CliApplication.tt = common\T4\NKitApplication\CliApplication.tt
+		common\T4\NKitApplication\FormsApplication.tt = common\T4\NKitApplication\FormsApplication.tt
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Cameraman", "app\NKit.Cameraman\NKit.Cameraman.csproj", "{6E1DA3F8-DEED-47BA-9E83-382B8F4DC4D9}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		common\NKit.Common.Application\NKit.Common.Application.projitems*{248cd44d-7fa9-4e7f-94aa-e1507f527cc0}*SharedItemsImports = 4
 		common\NKit.Common.Application\NKit.Common.Application.projitems*{4c796afb-aa0c-4a6e-b85f-ebb07486ea0a}*SharedItemsImports = 4
+		common\NKit.Common.Application\NKit.Common.Application.projitems*{6e1da3f8-deed-47ba-9e83-382b8f4dc4d9}*SharedItemsImports = 4
 		common\NKit.Common.Application\NKit.Common.Application.projitems*{9d4f8e27-8f0d-4745-b6d7-bc6997e97bac}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +95,10 @@ Global
 		{4C796AFB-AA0C-4A6E-B85F-EBB07486EA0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C796AFB-AA0C-4A6E-B85F-EBB07486EA0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C796AFB-AA0C-4A6E-B85F-EBB07486EA0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E1DA3F8-DEED-47BA-9E83-382B8F4DC4D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E1DA3F8-DEED-47BA-9E83-382B8F4DC4D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E1DA3F8-DEED-47BA-9E83-382B8F4DC4D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E1DA3F8-DEED-47BA-9E83-382B8F4DC4D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +117,7 @@ Global
 		{75B61508-BAF3-4F46-A875-900DB01B95DE} = {91FBCEEB-423A-4ACA-84B8-80970B97402B}
 		{99EBEF4A-19B0-4663-BD4F-36CEC1779D37} = {91FBCEEB-423A-4ACA-84B8-80970B97402B}
 		{27D60F2A-A517-4371-8A87-17F0B9B9EF37} = {99EBEF4A-19B0-4663-BD4F-36CEC1779D37}
+		{6E1DA3F8-DEED-47BA-9E83-382B8F4DC4D9} = {BA7C2163-9D37-4D39-96AC-9DB9269B97D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DCA37A7D-11B2-4BEF-BD2E-1441C71C69AB}

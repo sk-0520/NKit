@@ -181,6 +181,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 case NKitApplicationKind.Rocket:
                     return CommonUtility.GetRocketApplication(CommonUtility.GetApplicationDirectory()).FullName;
 
+                case NKitApplicationKind.Cameraman:
+                    return CommonUtility.GetCameramanApplication(CommonUtility.GetApplicationDirectory()).FullName;
+
                 default:
                     throw new NotImplementedException();
             }

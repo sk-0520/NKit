@@ -86,6 +86,11 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 Arguments = "--nkit_lets_die",
             });
             ApplicationInfos.Add(new ApplicationInfo() {
+                Kind = NKitApplicationKind.Cameraman,
+                Name = "cameraman",
+                Arguments = "--nkit_lets_die",
+            });
+            ApplicationInfos.Add(new ApplicationInfo() {
                 Kind = NKitApplicationKind.Others,
                 Name = "busybox",
                 File = CommonUtility.GetBusyBox(false, binDir),
