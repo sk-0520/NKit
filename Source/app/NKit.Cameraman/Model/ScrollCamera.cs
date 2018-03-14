@@ -13,18 +13,11 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 {
     public class ScrollCamera : WindowHandleCamera
     {
-        #region PInvoke
-
-        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
-
-        #endregion
-
         #region define
 
-        const int WindowClassMaxSize = 256;
 
-        const string WindowClassInternetExplorer = "Internet Explorer_Server";
+        const string WindowClass_InternetExplorer_Frame = "IEFrame";
+        const string WindowClass_InternetExplorer_Server = "Internet Explorer_Server";
 
 
         enum ScrollWindowKind
@@ -41,21 +34,51 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         {
         }
 
+        #region property
+
+        /// <summary>
+        /// 実際に使用するウィンドウハンドル。
+        /// <para>対象によっては渡されたウィンドウハンドルからさらに冒険するがあるためこちらを使用すること。</para>
+        /// </summary>
+        IntPtr TargetWindowHandle { get; set; }
+
+        #endregion
+
         #region function
 
         ScrollWindowKind GetScrollWindowKind()
         {
-            var windowClassNameBuffer = new StringBuilder(WindowClassMaxSize);
-            var windowClassResult = GetClassName(WindowHandle, windowClassNameBuffer, windowClassNameBuffer.Capacity);
-            if(windowClassResult == 0) {
-                Logger.Debug("window class name: empty");
-                return ScrollWindowKind.Unknown;
-            }
-
-            var windowClassName = windowClassNameBuffer.ToString();
+            var windowClassName = WindowHandleUtility.GetWindowClassName(WindowHandle);
             Logger.Debug($"window class name: {windowClassName}");
 
-            if(windowClassName == WindowClassInternetExplorer) {
+            // IE 用判定処理
+            if(windowClassName == WindowClass_InternetExplorer_Frame) {
+                Logger.Debug("search ieframe start");
+                // IFrame なら中を探検していく
+                var findWindowHandle = IntPtr.Zero;
+                var result = WindowHandleUtility.EnumChildWindows(
+                    WindowHandle,
+                    (hWnd, lParam) => {
+                        var childWindowClassName = WindowHandleUtility.GetWindowClassName(hWnd);
+                        Logger.Debug($"search ieframe: {childWindowClassName}");
+                        if(childWindowClassName == WindowClass_InternetExplorer_Server) {
+                            Logger.Trace("おったどー");
+                            findWindowHandle = hWnd;
+                            return false;
+                        }
+                        return true;
+                    },
+                    IntPtr.Zero
+                );
+                if(result && findWindowHandle != IntPtr.Zero) {
+                    Logger.Debug($"handle: {WindowHandle} -> {findWindowHandle}");
+                    TargetWindowHandle = findWindowHandle;
+                    return ScrollWindowKind.InternetExplorer;
+                }
+            }
+
+            if(windowClassName == WindowClass_InternetExplorer_Server) {
+                TargetWindowHandle = WindowHandle;
                 return ScrollWindowKind.InternetExplorer;
             }
 
