@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ContentTypeTextNet.Library.PInvoke.Windows;
@@ -22,6 +23,15 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
         #region property
 
         protected TimeSpan WaitTime { get; }
+
+        #endregion
+
+        #region function
+
+        protected void Wait()
+        {
+            Thread.Sleep(WaitTime);
+        }
 
         #endregion
     }
