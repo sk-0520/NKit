@@ -34,15 +34,48 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
                 }
 
                 // IE が取得出来たらまずは一番上まで移動する
-                ie.Scroll(0, 0);
+                ie.ScrollTo(0, 0);
                 Wait();
 
-                
+                var scale = ie.GetScale();
+                var clientSize = ie.GetClientSize();
+                var scrollSize = ie.GetScrollSize();
 
+                // キャプチャ取得用の画像作成
+                var blockSize = new Size((int)(clientSize.Width * scale.X), (int)(clientSize.Height * scale.Y));
+                var imageSize = new Size((int)(scrollSize.Width * scale.X), (int)(scrollSize.Height * scale.Y));
+                var bitmap = new Bitmap(imageSize.Width, imageSize.Height);
+                using(var g = Graphics.FromImage(bitmap)) {
+                    for(var imageX = 0; imageX < imageSize.Width; imageX += blockSize.Width) {
+                        for(var imageY = 0; imageY < imageSize.Height; imageY += blockSize.Height) {
+                            // スクロールの位置と貼り付け先画像位置は一致しない(特に最後の方)ので補正
+                            var diffPoint = new Point(
+                                imageX + blockSize.Width < imageSize.Width ? 0 : imageSize.Width - (imageX + blockSize.Width),
+                                imageY + blockSize.Height < imageSize.Height ? 0 : imageSize.Height - (imageY + blockSize.Height)
+                            );
+                            var diffSize = new Size(
+                                blockSize.Width + diffPoint.X,
+                                blockSize.Height + diffPoint.Y
+                            );
+
+                            ie.ScrollTo((int)(imageX / scale.X), (int)(imageY / scale.Y));
+                            Wait();
+
+                            // スクロール中にウィンドウを動かすバカのために毎度毎度座標を取得する
+                            NativeMethods.GetWindowRect(WindowHandle, out var rect);
+                            g.CopyFromScreen(rect.Left - diffPoint.X, rect.Top - diffPoint.Y, imageX, imageY, diffSize);
+#if DEBUG
+                            g.DrawString($"{imageX} * {imageY}, {diffPoint}, {diffSize}", SystemFonts.DialogFont, SystemBrushes.ActiveCaption, new PointF(imageX, imageY));
+#endif                            
+
+                        }
+                    }
+                }
+                return bitmap;
             }
 
 
-            return null;
+            //return null;
         }
 
         #endregion
@@ -141,14 +174,53 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
             Logger.Information($"d: {HtmlScreen2.Com.deviceXDPI} * {HtmlScreen2.Com.deviceYDPI}");
             Logger.Information($"l: {HtmlScreen2.Com.logicalXDPI} * {HtmlScreen2.Com.logicalYDPI}");
 
-            
+
             return true;
         }
 
-        public void Scroll(int x, int y)
+        public Size GetClientSize()
         {
-            HtmlWindow.Com.scroll(0, 0);
+            return new Size(
+                Body2.Com.clientWidth,
+                Body2.Com.clientHeight
+            );
         }
+        public Size GetScrollSize()
+        {
+            return new Size(
+                Body2.Com.scrollWidth,
+                Body2.Com.scrollHeight
+            );
+        }
+
+        public PointF GetScale()
+        {
+            return new PointF(
+                HtmlScreen2.Com.deviceXDPI / (float)HtmlScreen2.Com.logicalXDPI,
+                HtmlScreen2.Com.deviceYDPI / (float)HtmlScreen2.Com.logicalYDPI
+            );
+        }
+
+        /// <summary>
+        /// 絶対座標でスクロール。
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void ScrollTo(int x, int y)
+        {
+            HtmlWindow.Com.scroll(x, y);
+        }
+
+        /// <summary>
+        /// 相対座標でのスクロール。
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void ScrollBy(int x, int y)
+        {
+            HtmlWindow.Com.scrollBy(x, y);
+        }
+
 
         #endregion
 

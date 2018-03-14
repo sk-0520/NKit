@@ -148,7 +148,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 Clipboard.SetImage(image);
             }
             if(SaveDirectory != null) {
-                var fileName = $"{DateTime.Now: yyyyMMdd_hhmmss}.png";
+                var fileName = $"{DateTime.Now: yyyyMMdd_HHmmss}.png";
                 var filePath = Path.Combine(SaveDirectory.FullName, fileName);
                 image.Save(filePath, ImageFormat.Png);
             }
