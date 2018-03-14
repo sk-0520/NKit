@@ -18,16 +18,25 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
 {
     public class InternetExplorerScrollCamera : ScrollCameraBase
     {
-        public InternetExplorerScrollCamera(IntPtr hWnd, TimeSpan waitTime)
-            : base(hWnd, waitTime)
+        public InternetExplorerScrollCamera(IntPtr hWnd, TimeSpan delayTime)
+            : base(hWnd, delayTime)
         { }
 
+        #region nproperty
+
+        public TimeSpan SendMessageWaitTime { get; set; }
+        public TimeSpan DocumentWaitTime { get; set; }
+
+        #endregion
 
         #region WindowHandleCamera
 
         protected override Image TaskShotCore()
         {
             using(var ie = new InternetExplorerWrapper(WindowHandle)) {
+                ie.SendMessageWaitTime = SendMessageWaitTime;
+                ie.DocumentWaitTime = DocumentWaitTime;
+
                 if(!ie.Initialize()) {
                     Logger.Warning($"{nameof(InternetExplorerWrapper)}.{nameof(InternetExplorerWrapper.Initialize)}: failure");
                     return null;
@@ -98,8 +107,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
 
         IntPtr ServerWindowHandle { get; }
 
-        public TimeSpan SendMessageWaitTime { get; } = TimeSpan.FromMilliseconds(500);
-        public TimeSpan DocumentWaitTime { get; } = TimeSpan.FromMilliseconds(500);
+        public TimeSpan SendMessageWaitTime { get; set; } 
+        public TimeSpan DocumentWaitTime { get; set; } 
 
         ComModel<IHTMLDocument2> HtmlDocument { get; set; }
         ComModel<IHTMLWindow2> HtmlWindow { get; set; }

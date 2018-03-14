@@ -42,6 +42,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             var selectKeyOption = command.Option("--wait_opportunity_key", "select", CommandOptionType.SingleValue);
             var cameraBorderColorOption = command.Option("--camera_border_color", "color", CommandOptionType.SingleValue);
             var cameraBorderWidthOption = command.Option("--camera_border_width", "color", CommandOptionType.SingleValue);
+            var scrollDelayTimeOption = command.Option("--scroll_delay_time", "color", CommandOptionType.SingleValue);
+            var scrollIeInitializeTimeOption = command.Option("--scroll_ie_init_time", "color", CommandOptionType.SingleValue);
 
             command.Execute(arguments);
 
@@ -92,6 +94,15 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             if(cameraBorderWidthOption.HasValue()) {
                 BorderWidth = int.Parse(cameraBorderWidthOption.Value());
             }
+
+            if(CaptureMode == CaptureMode.Scroll) {
+                if(scrollDelayTimeOption.HasValue()) {
+                    ScrollDelayTime = TimeSpan.Parse(scrollDelayTimeOption.Value());
+                }
+                if(scrollIeInitializeTimeOption.HasValue()) {
+                    ScrollInternetExplorerInitializeTime = TimeSpan.Parse(scrollIeInitializeTimeOption.Value());
+                }
+            }
         }
 
         #region property
@@ -116,6 +127,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         public Color BorderColor { get; } = Constants.CameraBorderColor;
         public int BorderWidth { get; } = Constants.CameraBorderWidth;
 
+        TimeSpan ScrollDelayTime { get; } = Constants.ScrollDelayTime;
+        TimeSpan ScrollInternetExplorerInitializeTime { get; } = Constants.ScrollInternetExplorerInitializeTime;
+
+
         CameramanForm Form { get; set; }
 
         IKeyboardMouseEvents HookEvents { get; set; }
@@ -139,8 +154,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 return camera.TaskShot();
             } else if(TargetWindowHandle != IntPtr.Zero) {
                 if(CaptureMode == CaptureMode.Scroll) {
-                    var waitTime = TimeSpan.Parse("0.00:00:01");
-                    var camera = new ScrollCamera(TargetWindowHandle, waitTime);
+                    var camera = new ScrollCamera(TargetWindowHandle, ScrollDelayTime) {
+                        ScrollInternetExplorerInitializeTime = ScrollInternetExplorerInitializeTime,
+                    };
                     return camera.TaskShot();
                 } else {
                     var camera = new WindowHandleCamera(TargetWindowHandle, CaptureMode);
@@ -330,6 +346,11 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
                     e.Handled = true;
                     StartViewSelect();
+                } else {
+                    Logger.Information("select");
+
+                    e.Handled = true;
+                    EndViewSelect();
                 }
             }
             if(e.KeyCode == ShotKeys) {

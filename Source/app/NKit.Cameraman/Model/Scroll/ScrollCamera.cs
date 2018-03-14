@@ -14,15 +14,15 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
 {
     public abstract class ScrollCameraBase : WindowHandleCamera
     {
-        public ScrollCameraBase(IntPtr hWnd, TimeSpan waitTime)
+        public ScrollCameraBase(IntPtr hWnd, TimeSpan delayTime)
             : base(hWnd, CaptureMode.TargetClient)
         {
-            WaitTime = waitTime;
+            DelayTime = delayTime;
         }
 
         #region property
 
-        protected TimeSpan WaitTime { get; }
+        protected TimeSpan DelayTime { get; }
 
         #endregion
 
@@ -30,7 +30,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
 
         protected void Wait()
         {
-            Thread.Sleep(WaitTime);
+            Thread.Sleep(DelayTime);
         }
 
         #endregion
@@ -52,8 +52,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
 
         #endregion
 
-        public ScrollCamera(IntPtr hWnd, TimeSpan waitTime)
-            : base(hWnd, waitTime)
+        public ScrollCamera(IntPtr hWnd, TimeSpan delayTime)
+            : base(hWnd, delayTime)
         { }
 
         #region property
@@ -63,6 +63,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
         /// <para>対象によっては渡されたウィンドウハンドルからさらに冒険するがあるためこちらを使用すること。</para>
         /// </summary>
         IntPtr TargetWindowHandle { get; set; }
+
+        public TimeSpan ScrollInternetExplorerInitializeTime { get; set; }
 
         #endregion
 
@@ -109,7 +111,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
 
         Image TaskShotInternetExplorer()
         {
-            var camera = new InternetExplorerScrollCamera(TargetWindowHandle, WaitTime);
+            var camera = new InternetExplorerScrollCamera(TargetWindowHandle, DelayTime) {
+                SendMessageWaitTime = ScrollInternetExplorerInitializeTime,
+                DocumentWaitTime = ScrollInternetExplorerInitializeTime,
+            };
             return camera.TaskShot();
         }
 
