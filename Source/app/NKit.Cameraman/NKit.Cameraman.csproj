@@ -111,6 +111,12 @@
       <DependentUpon>CameramanForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\InformationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\InformationForm.Designer.cs">
+      <DependentUpon>InformationForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="View\CameramanForm.resx">
       <DependentUpon>CameramanForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -130,6 +136,9 @@
       <AutoGen>True</AutoGen>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="View\InformationForm.resx">
+      <DependentUpon>InformationForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="NKit.Cameraman.user.config">
       <DependentUpon>App.config</DependentUpon>
     </None>

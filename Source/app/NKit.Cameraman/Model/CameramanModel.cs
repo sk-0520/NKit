@@ -200,7 +200,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     Application.Run();
                 } else {
                     Form = form;
-
                     Application.Run(Form);
                 }
 
@@ -217,8 +216,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             HookEvents.MouseMove += HookEvents_MouseMove;
             HookEvents.MouseDown += HookEvents_MouseDown;
 
-            Form.Opacity = 0;
-            Form.Visible = true;
+            //Form.Opacity = 0;
+            //Form.Visible = true;
 
             SelectViewAndFocus(Cursor.Position);
         }
@@ -231,7 +230,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             TargetWindowHandle = IntPtr.Zero;
             NowSelecting = false;
 
-            Form.Visible = false;
+            Form.HideStatus();
 
             HookEvents.MouseMove -= HookEvents_MouseMove;
             HookEvents.MouseDown -= HookEvents_MouseDown;
@@ -287,27 +286,18 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         {
             var hWnd = WindowHandleUtility.GetView(mousePoint, CaptureMode);
             if(Form.Handle == hWnd) {
-                Form.Visible = false;
+                Form.HideStatus();
                 return;
             }
 
             if(hWnd == IntPtr.Zero) {
-                Form.Visible = false;
+                Form.HideStatus();
                 return;
             }
 
-            Form.Visible = true;
-            Form.Opacity = 1;
-
             var rect = WindowHandleUtility.GetViewArea(hWnd, CaptureMode);
             // 枠用にサイズ補正
-            rect.X -= Form.Padding.Left;
-            rect.Y -= Form.Padding.Top;
-            rect.Width += Form.Padding.Horizontal;
-            rect.Height += Form.Padding.Vertical;
-
-            Form.Location = rect.Location;
-            Form.Size = rect.Size;
+            Form.ShowStatus(hWnd, rect);
 
             TargetWindowHandle = hWnd;
         }

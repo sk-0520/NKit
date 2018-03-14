@@ -22,6 +22,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
         CameramanModel Model { get; set; }
 
+        InformationForm InformationForm { get; set; }
+
         #endregion
 
         #region function
@@ -41,6 +43,36 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             }
         }
 
+        public void HideStatus()
+        {
+            Visible = false;
+
+            InformationForm.Detach();
+        }
+
+        public void ShowStatus(IntPtr hWnd, Rectangle hWndRectangle)
+        {
+            Location = new Point(
+                hWndRectangle.X - Padding.Left,
+                hWndRectangle.Y - Padding.Top
+            );
+            Size = new Size(
+                hWndRectangle.Width + Padding.Horizontal,
+                hWndRectangle.Height + Padding.Vertical
+            );
+
+            InformationForm.Attach(hWnd, hWndRectangle);
+
+            Visible = true;
+            Opacity = 1;
+        }
+
         #endregion
+
+        private void CameramanForm_Shown(object sender, EventArgs e)
+        {
+            InformationForm = new InformationForm();
+            InformationForm.Show(this);
+        }
     }
 }
