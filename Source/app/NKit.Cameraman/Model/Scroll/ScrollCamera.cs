@@ -82,7 +82,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
                     },
                     IntPtr.Zero
                 );
-                if(result && findWindowHandle != IntPtr.Zero) {
+                if(findWindowHandle != IntPtr.Zero) {
                     Logger.Debug($"handle: {WindowHandle} -> {findWindowHandle}");
                     TargetWindowHandle = findWindowHandle;
                     return ScrollWindowKind.InternetExplorer;

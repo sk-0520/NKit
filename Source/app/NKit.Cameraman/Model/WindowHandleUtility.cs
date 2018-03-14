@@ -15,6 +15,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         #region PInvoke
         // PInvoke 待つの疲れた
 
+        #region Winuser.h
+
         [DllImport("user32.dll", SetLastError = true)]
         static extern uint GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
 
@@ -30,6 +32,30 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool EnumChildWindows(IntPtr hwndParent, NativeMethods.EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern uint RegisterWindowMessage(string lpString);
+
+        #endregion
+
+        #region Oleacc.h
+
+        [DllImport("oleacc.dll", PreserveSig = false)]
+        [return: MarshalAs(UnmanagedType.Interface)]
+        public static extern object ObjectFromLresult(UIntPtr lResult, [MarshalAs(UnmanagedType.LPStruct)] Guid refiid, IntPtr wParam);
+
+        #endregion
+
+        #region pinvoke.net にはあったけど MSDN 見つけられんかったからヘッダファイル分かんね
+
+        [ComImport]
+        [Guid("6d5140c1-7436-11ce-8034-00aa006009fa")]
+        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        public interface IServiceProvider
+        {
+            void QueryService(ref Guid guidService, ref Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvObject);
+        }
+        #endregion
 
         #endregion
 
