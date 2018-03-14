@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -28,7 +29,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
 
         #region property
 
-        TimeSpan SendMessageTimeout { get; } = TimeSpan.FromSeconds(1);
+        TimeSpan SendMessageTimeoutTime { get; } = TimeSpan.FromMilliseconds(500);
         int RetryCount { get; } = 10;
         TimeSpan RetryWait { get; } = TimeSpan.FromMilliseconds(100);
 
@@ -44,28 +45,23 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
                 return null;
             }
 
-            var timeoutResult = NativeMethods.SendMessageTimeout(WindowHandle, message, UIntPtr.Zero, IntPtr.Zero, SMTO.SMTO_ABORTIFHUNG, (uint)SendMessageTimeout.TotalMilliseconds, out UIntPtr sendMessageResult);
+            var stopwatch = Stopwatch.StartNew();
+            stopwatch.Start();
+            var timeoutResult = NativeMethods.SendMessageTimeout(WindowHandle, message, UIntPtr.Zero, IntPtr.Zero, SMTO.SMTO_ABORTIFHUNG, (uint)SendMessageTimeoutTime.TotalMilliseconds, out UIntPtr sendMessageResult);
             if(timeoutResult == IntPtr.Zero) {
                 Logger.Warning($"${nameof(NativeMethods.SendMessageTimeout)} is 0");
                 return null;
             }
-
-            Thread.Sleep(1000);
+            stopwatch.Stop();
+            if(stopwatch.Elapsed < SendMessageTimeoutTime) {
+                // なんか知らんけど 1 秒まったらサクサク動き始めてもう意味が分からんから待ち時間からの差分だけ待つことにした
+                var sleepTime = SendMessageTimeoutTime - stopwatch.Elapsed;
+                Logger.Trace($"sleep: {sleepTime}");
+                Thread.Sleep(sleepTime);
+            }
 
             var IID_IHTMLDocument3 = typeof(IHTMLDocument3).GUID;
-            IHTMLDocument2 rawDocument = null;
-            foreach(var counter in new Counter(RetryCount)) {
-                try {
-                    rawDocument = (IHTMLDocument2)WindowHandleUtility.ObjectFromLresult(sendMessageResult, IID_IHTMLDocument3, IntPtr.Zero);
-                    break;
-                } catch(COMException ex) {
-                    Logger.Warning(ex);
-                }
-                if(!counter.IsLast) {
-                    Logger.Trace($"threep: {RetryWait}");
-                    Thread.Sleep(RetryWait);
-                }
-            }
+            IHTMLDocument2 rawDocument = (IHTMLDocument2)WindowHandleUtility.ObjectFromLresult(sendMessageResult, IID_IHTMLDocument3, IntPtr.Zero);
             if(rawDocument == null) {
                 Logger.Warning($"{nameof(IHTMLDocument2)} is null, {sendMessageResult}, {IID_IHTMLDocument3}");
                 return null;
@@ -85,9 +81,15 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
                     using(var webBrowser = ComModel.Create(rawWebBrowser)) {
                         // ばかにしてんのか
                         using(var document2 = ComModel.Create((IHTMLDocument2)webBrowser.Com.Document)) {
-                            var body = ComModel.Create((IHTMLElement2)document2.Com.body);
-                            Logger.Trace($"{body.Com.clientWidth} * {body.Com.clientHeight}");
-                            Logger.Trace($"{body.Com.scrollWidth} * {body.Com.scrollHeight}");
+                            using(var window = ComModel.Create(document2.Com.parentWindow)) {
+                                using(var body2 = ComModel.Create((IHTMLElement2)document2.Com.body)) {
+                                    Logger.Trace($"{body2.Com.clientWidth} * {body2.Com.clientHeight}");
+                                    Logger.Trace($"{body2.Com.scrollWidth} * {body2.Com.scrollHeight}");
+
+                                    // 原点移動
+                                    window.Com.scroll(0, 0);
+                                }
+                            }
                         }
                     }
                 }
