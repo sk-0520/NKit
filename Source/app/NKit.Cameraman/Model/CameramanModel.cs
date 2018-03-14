@@ -145,19 +145,19 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         /// 撮影。
         /// </summary>
         /// <returns></returns>
-        Image TakeShot()
+        Image TakeShot(IntPtr hWnd)
         {
             if(CaptureMode == CaptureMode.Screen) {
                 var camera = new ScreenCamera();
                 return camera.TaskShot();
-            } else if(TargetWindowHandle != IntPtr.Zero) {
+            } else if(hWnd != IntPtr.Zero) {
                 if(CaptureMode == CaptureMode.Scroll) {
-                    var camera = new ScrollCamera(TargetWindowHandle, ScrollDelayTime) {
+                    var camera = new ScrollCamera(hWnd, ScrollDelayTime) {
                         ScrollInternetExplorerInitializeTime = ScrollInternetExplorerInitializeTime,
                     };
                     return camera.TaskShot();
                 } else {
-                    var camera = new WindowHandleCamera(TargetWindowHandle, CaptureMode);
+                    var camera = new WindowHandleCamera(hWnd, CaptureMode);
                     return camera.TaskShot();
                 }
             }
@@ -238,7 +238,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         void CaptureScreen()
         {
-            var image = TakeShot();
+            var image = TakeShot(TargetWindowHandle);
             Develop(image);
 
             if(!IsContinuation) {
@@ -250,13 +250,15 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         {
             Debug.Assert(TargetWindowHandle != IntPtr.Zero);
 
-            var image = TakeShot();
-            Develop(image);
-
-            // 選択してたら選択終了
+            // 選択してたら選択終了するんでウィンドウハンドル消えちゃうので退避
+            var hWnd = TargetWindowHandle;
             if(NowSelecting) {
                 EndViewSelect();
             }
+
+            var image = TakeShot(hWnd);
+            Develop(image);
+
 
             if(!IsContinuation) {
                 Exit();
