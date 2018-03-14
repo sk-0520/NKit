@@ -342,10 +342,11 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     e.Handled = true;
                     StartViewSelect();
                 } else {
-                    Logger.Information("select");
-
+                    Logger.Information("select shot!");
+                    if(TargetWindowHandle != IntPtr.Zero) {
+                        CaptureSelect();
+                    }
                     e.Handled = true;
-                    EndViewSelect();
                 }
             }
             if(e.KeyCode == ShotKeys) {
