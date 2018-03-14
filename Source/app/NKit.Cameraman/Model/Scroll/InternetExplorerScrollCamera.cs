@@ -86,6 +86,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
                                     Logger.Trace($"{body2.Com.clientWidth} * {body2.Com.clientHeight}");
                                     Logger.Trace($"{body2.Com.scrollWidth} * {body2.Com.scrollHeight}");
 
+
                                     // 原点移動
                                     window.Com.scroll(0, 0);
                                 }
