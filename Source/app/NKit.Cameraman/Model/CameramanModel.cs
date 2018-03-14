@@ -137,8 +137,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         IntPtr TargetWindowHandle { get; set; }
 
-        //TODO
-        IReadOnlyList<string> IgnoreWindowClasses { get; } = new List<string>();
         #endregion
 
         #region function
@@ -290,16 +288,16 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             var hWnd = WindowHandleUtility.GetView(mousePoint, CaptureMode);
             if(Form.Handle == hWnd) {
                 Form.Visible = false;
+                return;
             }
+
             if(hWnd == IntPtr.Zero) {
                 Form.Visible = false;
                 return;
             }
+
             Form.Visible = true;
             Form.Opacity = 1;
-
-            //TODO
-            //IgnoreWindowClasses
 
             var rect = WindowHandleUtility.GetViewArea(hWnd, CaptureMode);
             // 枠用にサイズ補正

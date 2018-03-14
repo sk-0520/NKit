@@ -23,6 +23,7 @@ namespace ContentTypeTextNet.NKit.Cameraman
 
         public static TimeSpan ScrollDelayTime => appConfig.Get("scroll-delay-time", s => TimeSpan.Parse(s));
         public static TimeSpan ScrollInternetExplorerInitializeTime => appConfig.Get("scroll-internet-explorer-initialize-time", s => TimeSpan.Parse(s));
+
         #endregion
     }
 }
