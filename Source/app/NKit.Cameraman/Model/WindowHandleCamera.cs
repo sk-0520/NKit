@@ -18,7 +18,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         #region property
 
-        IntPtr WindowHandle { get; }
+        protected IntPtr WindowHandle { get; }
         CaptureMode CaptureMode { get; }
 
         #endregion

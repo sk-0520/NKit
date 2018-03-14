@@ -120,7 +120,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 return camera.TaskShot();
             } else {
                 if(CaptureMode == CaptureMode.Scroll) {
-                    throw new NotImplementedException();
+                    var camera = new ScrollCamera(TargetWindowHandle);
+                    return camera.TaskShot();
                 } else {
                     var camera = new WindowHandleCamera(TargetWindowHandle, CaptureMode);
                     return camera.TaskShot();
