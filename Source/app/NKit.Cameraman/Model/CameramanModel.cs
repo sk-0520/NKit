@@ -125,9 +125,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             if(CaptureMode == CaptureMode.Screen) {
                 var camera = new ScreenCamera();
                 return camera.TaskShot();
-            } else {
+            } else if(TargetWindowHandle != IntPtr.Zero) {
                 if(CaptureMode == CaptureMode.Scroll) {
-
                     var waitTime = TimeSpan.Parse("0.00:00:01");
                     var camera = new ScrollCamera(TargetWindowHandle, waitTime);
                     return camera.TaskShot();
@@ -136,6 +135,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     return camera.TaskShot();
                 }
             }
+
+            throw new NotImplementedException();
         }
 
         /// <summary>
