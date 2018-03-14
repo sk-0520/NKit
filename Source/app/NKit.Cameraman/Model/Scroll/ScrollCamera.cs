@@ -9,9 +9,24 @@ using System.Windows.Forms;
 using ContentTypeTextNet.Library.PInvoke.Windows;
 using ContentTypeTextNet.NKit.Setting.Define;
 
-namespace ContentTypeTextNet.NKit.Cameraman.Model
+namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
 {
-    public class ScrollCamera : WindowHandleCamera
+    public abstract class ScrollCameraBase : WindowHandleCamera
+    {
+        public ScrollCameraBase(IntPtr hWnd, TimeSpan waitTime)
+            : base(hWnd, CaptureMode.TargetClient)
+        {
+            WaitTime = waitTime;
+        }
+
+        #region property
+
+        protected TimeSpan WaitTime { get; }
+
+        #endregion
+    }
+
+    public sealed class ScrollCamera : ScrollCameraBase
     {
         #region define
 
@@ -19,20 +34,17 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         const string WindowClass_InternetExplorer_Frame = "IEFrame";
         const string WindowClass_InternetExplorer_Server = "Internet Explorer_Server";
 
-
         enum ScrollWindowKind
         {
             Unknown,
             InternetExplorer,
         }
 
-
         #endregion
 
-        public ScrollCamera(IntPtr hWnd)
-            : base(hWnd, CaptureMode.TargetClient)
-        {
-        }
+        public ScrollCamera(IntPtr hWnd, TimeSpan waitTime)
+            : base(hWnd, waitTime)
+        { }
 
         #region property
 
@@ -76,7 +88,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     return ScrollWindowKind.InternetExplorer;
                 }
             }
-
             if(windowClassName == WindowClass_InternetExplorer_Server) {
                 TargetWindowHandle = WindowHandle;
                 return ScrollWindowKind.InternetExplorer;
@@ -88,7 +99,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         Image TaskShotInternetExplorer()
         {
-            return null;
+            var camera = new InternetExplorerScrollCamera(TargetWindowHandle, WaitTime);
+            return camera.TaskShot();
         }
 
         #endregion

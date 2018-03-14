@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ContentTypeTextNet.Library.PInvoke.Windows;
+using ContentTypeTextNet.NKit.Cameraman.Model.Scroll;
 using ContentTypeTextNet.NKit.Cameraman.View;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
@@ -120,7 +121,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 return camera.TaskShot();
             } else {
                 if(CaptureMode == CaptureMode.Scroll) {
-                    var camera = new ScrollCamera(TargetWindowHandle);
+                    var waitTime = TimeSpan.Parse("0.00:00:01");
+                    var camera = new ScrollCamera(TargetWindowHandle, waitTime);
                     return camera.TaskShot();
                 } else {
                     var camera = new WindowHandleCamera(TargetWindowHandle, CaptureMode);
