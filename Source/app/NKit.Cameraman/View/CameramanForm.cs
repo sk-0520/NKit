@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ContentTypeTextNet.NKit.Cameraman.Model;
+using ContentTypeTextNet.NKit.Common;
 
 namespace ContentTypeTextNet.NKit.Cameraman.View
 {
@@ -52,19 +53,42 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
         public void ShowStatus(IntPtr hWnd, Rectangle hWndRectangle)
         {
-            Location = new Point(
+            var newLocation = new Point(
                 hWndRectangle.X - Padding.Left,
                 hWndRectangle.Y - Padding.Top
             );
-            Size = new Size(
+            var newSize = new Size(
                 hWndRectangle.Width + Padding.Horizontal,
                 hWndRectangle.Height + Padding.Vertical
             );
 
-            InformationForm.Attach(hWnd, hWndRectangle);
+            if(Visible && newLocation == Location && newSize == Size) {
+                InformationForm.Attach(hWnd, hWndRectangle);
+                return;
+            }
 
-            Visible = true;
-            Opacity = 1;
+            Opacity = 0;
+            SuspendLayout();
+            using(new ActionDisposer(d => ResumeLayout())) {
+
+                Location = new Point(
+                    hWndRectangle.X - Padding.Left,
+                    hWndRectangle.Y - Padding.Top
+                );
+                Size = new Size(
+                    hWndRectangle.Width + Padding.Horizontal,
+                    hWndRectangle.Height + Padding.Vertical
+                );
+
+
+                Visible = true;
+                Opacity = 1;
+            }
+        }
+
+        public bool IsSelfHandle(IntPtr hWnd)
+        {
+            return Handle == hWnd || InformationForm.Handle == hWnd;
         }
 
         #endregion
@@ -74,5 +98,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             InformationForm = new InformationForm();
             InformationForm.Show(this);
         }
+
     }
 }

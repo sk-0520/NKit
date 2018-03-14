@@ -285,12 +285,19 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         void SelectViewAndFocus(Point mousePoint)
         {
             var hWnd = WindowHandleUtility.GetView(mousePoint, CaptureMode);
-            if(Form.Handle == hWnd) {
+
+            if(hWnd == IntPtr.Zero) {
                 Form.HideStatus();
                 return;
             }
 
-            if(hWnd == IntPtr.Zero) {
+            if(Form.IsSelfHandle(hWnd)) {
+                // 選ばれたのが自分とその関係者で前回選択ウィンドウが有効なら別段何もしない
+                if(TargetWindowHandle != IntPtr.Zero) {
+                    return;
+                }
+
+                // 自分じゃないし死んどく
                 Form.HideStatus();
                 return;
             }
