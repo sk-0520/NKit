@@ -45,6 +45,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "T4", "T4", "{99EBEF4A-19B0-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NKitApplication", "NKitApplication", "{27D60F2A-A517-4371-8A87-17F0B9B9EF37}"
 	ProjectSection(SolutionItems) = preProject
+		common\T4\NKitApplication\App.user.config.tt = common\T4\NKitApplication\App.user.config.tt
 		common\T4\NKitApplication\CliApplication.tt = common\T4\NKitApplication\CliApplication.tt
 		common\T4\NKitApplication\FormsApplication.tt = common\T4\NKitApplication\FormsApplication.tt
 	EndProjectSection

@@ -124,6 +124,15 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Content Include="%40NKit.Cameraman.user.config">
+      <DependentUpon>%40NKit.Cameraman.user.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="NKit.Cameraman.user.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest">
       <SubType>Designer</SubType>
@@ -170,6 +179,11 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="%40NKit.Cameraman.user.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>%40NKit.Cameraman.user.config</LastGenOutput>
+      <DependentUpon>App.config</DependentUpon>
+    </Content>
     <Content Include="Program.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Program.cs</LastGenOutput>

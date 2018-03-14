@@ -102,7 +102,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="%40NKit.Rocket.user.config">
+      <DependentUpon>%40NKit.Rocket.user.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </None>
     <None Include="App.config" />
+    <None Include="NKit.Rocket.exe.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
   </ItemGroup>
@@ -124,6 +132,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="%40NKit.Rocket.user.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>%40NKit.Rocket.user.config</LastGenOutput>
+      <DependentUpon>App.config</DependentUpon>
+    </Content>
     <Content Include="Program.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Program.cs</LastGenOutput>
