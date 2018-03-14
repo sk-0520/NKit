@@ -50,6 +50,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
                 return null;
             }
 
+            Thread.Sleep(1000);
+
             var IID_IHTMLDocument3 = typeof(IHTMLDocument3).GUID;
             IHTMLDocument2 rawDocument = null;
             foreach(var counter in new Counter(RetryCount)) {
@@ -85,6 +87,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
                         using(var document2 = ComModel.Create((IHTMLDocument2)webBrowser.Com.Document)) {
                             var body = ComModel.Create((IHTMLElement2)document2.Com.body);
                             Logger.Trace($"{body.Com.clientWidth} * {body.Com.clientHeight}");
+                            Logger.Trace($"{body.Com.scrollWidth} * {body.Com.scrollHeight}");
                         }
                     }
                 }

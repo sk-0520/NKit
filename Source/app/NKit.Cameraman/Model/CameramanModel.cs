@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -56,7 +57,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             }
             IsContinuation = continuationOption.HasValue();
 
-            if(CaptureMode != CaptureMode.Screen && !IsContinuation) {
+            var needKey = true;
+            if(CaptureMode == CaptureMode.Screen && !IsContinuation) {
+                needKey = false;
+            }
+
+            if(needKey) {
                 if(!shotKeyOption.HasValue() && !selectKeyOption.HasValue()) {
                     throw new ArgumentException("shot key!");
                 }
@@ -77,10 +83,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     throw new ArgumentException($"shot key: reserved {ExitKey}");
                 }
             }
-
         }
 
         #region property
+
 
         bool NowSelecting { get; set; }
 
@@ -121,6 +127,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 return camera.TaskShot();
             } else {
                 if(CaptureMode == CaptureMode.Scroll) {
+
                     var waitTime = TimeSpan.Parse("0.00:00:01");
                     var camera = new ScrollCamera(TargetWindowHandle, waitTime);
                     return camera.TaskShot();
