@@ -88,6 +88,10 @@
     <Compile Include="..\..\common\NKit.Common.Link\CommonUtility.cs">
       <Link>Common\CommonUtility.cs</Link>
     </Compile>
+    <Compile Include="Constants.Config.cs">
+      <DependentUpon>Constants.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Constants.cs" />
     <Compile Include="Model\CameraBase.cs" />
     <Compile Include="Model\CameramanModel.cs" />
     <Compile Include="Model\ScreenCamera.cs" />

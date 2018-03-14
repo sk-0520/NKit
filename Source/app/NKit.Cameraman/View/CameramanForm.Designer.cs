@@ -27,18 +27,18 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.hallArea = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
-            // panel1
+            // hallArea
             // 
-            this.panel1.BackColor = System.Drawing.Color.Black;
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(5, 5);
-            this.panel1.Margin = new System.Windows.Forms.Padding(0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(167, 52);
-            this.panel1.TabIndex = 0;
+            this.hallArea.BackColor = System.Drawing.Color.Black;
+            this.hallArea.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.hallArea.Location = new System.Drawing.Point(5, 5);
+            this.hallArea.Margin = new System.Windows.Forms.Padding(0);
+            this.hallArea.Name = "hallArea";
+            this.hallArea.Size = new System.Drawing.Size(167, 52);
+            this.hallArea.TabIndex = 0;
             // 
             // CameramanForm
             // 
@@ -46,7 +46,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Red;
             this.ClientSize = new System.Drawing.Size(177, 62);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.hallArea);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -66,7 +66,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel hallArea;
     }
 }
 

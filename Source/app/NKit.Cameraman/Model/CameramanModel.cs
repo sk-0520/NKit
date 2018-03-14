@@ -40,6 +40,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             var continuationOption = command.Option("--continuation", "one/continuation", CommandOptionType.NoValue);
             var shotKeyOption = command.Option("--photo_opportunity_key", "shot", CommandOptionType.SingleValue);
             var selectKeyOption = command.Option("--wait_opportunity_key", "select", CommandOptionType.SingleValue);
+            var cameraBorderColorOption = command.Option("--camera_border_color", "color", CommandOptionType.SingleValue);
+            var cameraBorderWidthOption = command.Option("--camera_border_width", "color", CommandOptionType.SingleValue);
 
             command.Execute(arguments);
 
@@ -83,6 +85,13 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     throw new ArgumentException($"shot key: reserved {ExitKey}");
                 }
             }
+
+            if(cameraBorderColorOption.HasValue()) {
+                BorderColor = ColorTranslator.FromHtml(cameraBorderColorOption.Value());
+            }
+            if(cameraBorderWidthOption.HasValue()) {
+                BorderWidth = int.Parse(cameraBorderWidthOption.Value());
+            }
         }
 
         #region property
@@ -101,8 +110,11 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         bool IsContinuation { get; }
 
-        Keys ShotKeys { get; set; } = Keys.None;
-        Keys SelectKeys { get; set; } = Keys.None;
+        Keys ShotKeys { get; } = Keys.None;
+        Keys SelectKeys { get; } = Keys.None;
+
+        public Color BorderColor { get; } = Constants.CameraBorderColor;
+        public int BorderWidth { get; } = Constants.CameraBorderWidth;
 
         CameramanForm Form { get; set; }
 
@@ -174,6 +186,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     Application.Run();
                 } else {
                     Form = form;
+
                     Application.Run(Form);
                 }
 
@@ -192,6 +205,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
             Form.Opacity = 0;
             Form.Visible = true;
+
+            SelectViewAndFocus(Cursor.Position);
         }
 
         void EndViewSelect()
@@ -252,6 +267,35 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             }
 
             Application.Exit();
+        }
+
+        void SelectViewAndFocus(Point mousePoint)
+        {
+            var hWnd = WindowHandleUtility.GetView(mousePoint, CaptureMode);
+            if(Form.Handle == hWnd) {
+                Form.Visible = false;
+            }
+            if(hWnd == IntPtr.Zero) {
+                Form.Visible = false;
+                return;
+            }
+            Form.Visible = true;
+            Form.Opacity = 1;
+
+            //TODO
+            //IgnoreWindowClasses
+
+            var rect = WindowHandleUtility.GetViewArea(hWnd, CaptureMode);
+            // 枠用にサイズ補正
+            rect.X -= Form.Padding.Left;
+            rect.Y -= Form.Padding.Top;
+            rect.Width += Form.Padding.Horizontal;
+            rect.Height += Form.Padding.Vertical;
+
+            Form.Location = rect.Location;
+            Form.Size = rect.Size;
+
+            TargetWindowHandle = hWnd;
         }
 
 
@@ -327,33 +371,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         private void HookEvents_MouseMove(object sender, MouseEventArgs e)
         {
-            TargetWindowHandle = IntPtr.Zero;
-
-            var hWnd = WindowHandleUtility.GetView(e.Location, CaptureMode);
-            if(Form.Handle == hWnd) {
-                Form.Visible = false;
-            }
-            if(hWnd == IntPtr.Zero) {
-                Form.Visible = false;
-                return;
-            }
-            Form.Visible = true;
-            Form.Opacity = 1;
-
-            //TODO
-            //IgnoreWindowClasses
-
-            var rect = WindowHandleUtility.GetViewArea(hWnd, CaptureMode);
-            // 枠用にサイズ補正
-            rect.X -= Form.Padding.Left;
-            rect.Y -= Form.Padding.Top;
-            rect.Width += Form.Padding.Horizontal;
-            rect.Height += Form.Padding.Vertical;
-
-            Form.Location = rect.Location;
-            Form.Size = rect.Size;
-
-            TargetWindowHandle = hWnd;
+            SelectViewAndFocus(e.Location);
         }
 
         private void HookEvents_MouseDown(object sender, MouseEventArgs e)

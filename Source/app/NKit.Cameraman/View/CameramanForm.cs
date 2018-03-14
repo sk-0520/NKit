@@ -25,9 +25,20 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         #endregion
 
         #region function
+
         public void SetModel(CameramanModel model)
         {
             Model = model;
+
+            Padding = new Padding(Model.BorderWidth);
+            BackColor = Model.BorderColor;
+            if(BackColor == TransparencyKey) {
+                var colors = new[] {
+                    Color.Black,
+                    Color.Wheat,
+                };
+                this.hallArea.BackColor = TransparencyKey = colors.First(c => c != TransparencyKey);
+            }
         }
 
         #endregion
