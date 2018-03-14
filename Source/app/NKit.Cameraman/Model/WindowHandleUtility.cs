@@ -12,7 +12,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 {
     public static class WindowHandleUtility
     {
-        #region define
+        #region PInvoke
         // PInvoke 待つの疲れた
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -34,7 +34,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             var podPoint = new POINT(point.X, point.Y);
             var hWnd = NativeMethods.WindowFromPoint(podPoint);
 
-            if(captureMode == CaptureMode.TargetControl) {
+            if(captureMode == CaptureMode.TargetControl || captureMode == CaptureMode.Scroll) {
                 return hWnd;
             }
 
@@ -48,7 +48,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
             NativeMethods.GetWindowRect(hWnd, out windowRect);
 
-            if(captureMode == CaptureMode.TargetClient) {
+            if(captureMode == CaptureMode.TargetControl || captureMode == CaptureMode.Scroll) {
                 RECT clientRect;
                 NativeMethods.GetClientRect(hWnd, out clientRect);
                 var top = new POINT(clientRect.Left, clientRect.Top);
@@ -73,7 +73,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             }
 
             var hWnd = NativeMethods.GetForegroundWindow();
-            if(captureMode != CaptureMode.TargetControl) {
+            if(captureMode != CaptureMode.TargetControl && captureMode != CaptureMode.Screen) {
                 return hWnd;
             }
 
