@@ -458,8 +458,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         private void HookEvents_MouseDown(object sender, MouseEventArgs e)
         {
-            if(TargetWindowHandle != IntPtr.Zero) {
-                CaptureSelect();
+            if(e.Button == MouseButtons.Middle || e.Button == MouseButtons.Right) {
+                if(TargetWindowHandle != IntPtr.Zero) {
+                    CaptureSelect();
+                }
             }
         }
 
