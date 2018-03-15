@@ -6,6 +6,7 @@
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 
+  xmlns:app_main_view_control="clr-namespace:ContentTypeTextNet.NKit.Main.View.Control"
   xmlns:app_main_view_capture="clr-namespace:ContentTypeTextNet.NKit.Main.View.Capture"
 
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
@@ -29,8 +30,8 @@
       </Grid.ColumnDefinitions>
 
       <Button Grid.Column="0" Command="{Binding AddNewGroupCommand}">add new group</Button>
-      <Button Grid.Column="1" >clipboard:screen</Button>
-      <Button Grid.Column="2" >clipboard:target</Button>
+      <Button Grid.Column="1" Command="{Binding CaptureControlCommand}" >clipboard:control</Button>
+      <Button Grid.Column="2" >clipboard:window</Button>
       <Button Grid.Column="3" >clipboard:scroll</Button>
     </Grid>
     <TabControl Grid.Row="1" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroupItem}">
@@ -51,7 +52,18 @@
     </TabControl>
 
     <Grid Grid.Row="2">
-      <TextBlock>ショートカットキーの設定とかかな</TextBlock>
+      <StackPanel Orientation="Horizontal">
+        <StackPanel>
+          <Label>select:</Label>
+          <app_main_view_control:KeySettingControl Key="{Binding SelectKey, Mode=TwoWay}" ModifierKeys="{Binding SelectModifierKeys, Mode=TwoWay}" />
+        </StackPanel>
+
+        <StackPanel>
+          <Label>shot:</Label>
+          <app_main_view_control:KeySettingControl Key="{Binding TakeShotKey, Mode=TwoWay}" ModifierKeys="{Binding TakeShotModifierKeys, Mode=TwoWay}" />
+        </StackPanel>
+
+      </StackPanel>
     </Grid>
   </Grid>
 </UserControl>

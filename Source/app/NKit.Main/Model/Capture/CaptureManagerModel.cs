@@ -25,6 +25,9 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         public ObservableCollection<CaptureGroupModel> Groups { get; }
 
+        public KeySetting SelectKeySetting => Setting.Capture.SelectKey;
+        public KeySetting TakeShotKeySetting => Setting.Capture.TakeShotKey;
+
         #endregion
 
         #region function

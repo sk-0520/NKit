@@ -118,6 +118,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -183,9 +184,13 @@
     <Compile Include="View\Control\FlagMatchSelectControl.xaml.cs">
       <DependentUpon>FlagMatchSelectControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Control\KeySettingControl.xaml.cs">
+      <DependentUpon>KeySettingControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Control\RunnableControl.xaml.cs">
       <DependentUpon>RunnableControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Converter\ModifierKeysToBooleanConverter.cs" />
     <Compile Include="View\NKit\NKitManagerControl.xaml.cs">
       <DependentUpon>NKitManagerControl.xaml</DependentUpon>
     </Compile>
@@ -198,6 +203,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Control\FlagMatchSelectControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Control\KeySettingControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

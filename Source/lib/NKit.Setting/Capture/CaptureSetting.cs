@@ -15,6 +15,9 @@ namespace ContentTypeTextNet.NKit.Setting.Capture
 
         IReadOnlyCollection<IReadOnlyCaptureGroupSetting> Groups { get; }
 
+        IReadOnlyKeySetting SelectKey { get; }
+        IReadOnlyKeySetting TakeShotKey { get; }
+
         #endregion
     }
 
@@ -27,6 +30,13 @@ namespace ContentTypeTextNet.NKit.Setting.Capture
         public Collection<CaptureGroupSetting> Groups { get; set; } = new Collection<CaptureGroupSetting>();
         IReadOnlyCollection<IReadOnlyCaptureGroupSetting> IReadOnlyCaptureSetting.Groups => Groups;
 
+        [DataMember]
+        public KeySetting SelectKey { get; set; } = new KeySetting();
+        IReadOnlyKeySetting IReadOnlyCaptureSetting.SelectKey => SelectKey;
+
+        [DataMember]
+        public KeySetting TakeShotKey { get; set; } = new KeySetting();
+        IReadOnlyKeySetting IReadOnlyCaptureSetting.TakeShotKey => TakeShotKey;
 
         #endregion
     }

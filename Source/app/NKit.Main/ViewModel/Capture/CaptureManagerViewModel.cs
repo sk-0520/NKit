@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 using ContentTypeTextNet.NKit.Main.Model.Capture;
+using ContentTypeTextNet.NKit.Setting.Capture;
 using Prism.Commands;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
@@ -41,6 +42,27 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             set { SetProperty(ref this._selectedGroupItem, value); }
         }
 
+        public Key SelectKey
+        {
+            get { return Model.SelectKeySetting.Key; }
+            set { SetPropertyValue(Model.SelectKeySetting, value, nameof(Model.SelectKeySetting.Key)); }
+        }
+        public ModifierKeys SelectModifierKeys
+        {
+            get { return Model.SelectKeySetting.ModifierKeys; }
+            set { SetPropertyValue(Model.SelectKeySetting, value, nameof(Model.SelectKeySetting.ModifierKeys)); }
+        }
+        public Key TakeShotKey
+        {
+            get { return Model.TakeShotKeySetting.Key; }
+            set { SetPropertyValue(Model.TakeShotKeySetting, value, nameof(Model.TakeShotKeySetting.Key)); }
+        }
+        public ModifierKeys TakeShotModifierKeys
+        {
+            get { return Model.TakeShotKeySetting.ModifierKeys; }
+            set { SetPropertyValue(Model.TakeShotKeySetting, value, nameof(Model.TakeShotKeySetting.ModifierKeys)); }
+        }
+
         #endregion
 
         #region command
@@ -64,6 +86,10 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             vm.Dispose();
             Model.RemoveGroupAt(index);
         });
+
+        public ICommand CaptureControlCommand => new DelegateCommand(
+            () => { }
+        );
 
         #endregion
 
