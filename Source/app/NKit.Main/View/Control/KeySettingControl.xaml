@@ -1,0 +1,29 @@
+<UserControl
+  x:Name="root"
+  x:Class="ContentTypeTextNet.NKit.Main.View.Control.KeySettingControl"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+  xmlns:system_windows_input="clr-namespace:System.Windows.Input;assembly=WindowsBase"
+
+  xmlns:app_main_view_converter="clr-namespace:ContentTypeTextNet.NKit.Main.View.Converter"
+  
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+  mc:Ignorable="d" 
+  d:DesignHeight="450"
+  d:DesignWidth="800"
+>
+  <UserControl.Resources>
+    <app_main_view_converter:ModifierKeysToBooleanConverter x:Key="ModifierKeysToBooleanConverter" />
+  </UserControl.Resources>
+  <Grid>
+    <StackPanel Orientation="Horizontal">
+      <ComboBox ItemsSource="{Binding ItemsSource, ElementName=root}" SelectedItem="{Binding Key, ElementName=root}" />
+      <StackPanel Orientation="Horizontal">
+        <CheckBox IsChecked="{Binding ModifierKeys, ElementName=root, Converter={StaticResource ModifierKeysToBooleanConverter}, ConverterParameter={x:Static system_windows_input:ModifierKeys.Control}}">ctrl</CheckBox>
+        <CheckBox IsChecked="{Binding ModifierKeys, ElementName=root, Converter={StaticResource ModifierKeysToBooleanConverter}, ConverterParameter={x:Static system_windows_input:ModifierKeys.Shift}}">shift</CheckBox>
+        <CheckBox IsChecked="{Binding ModifierKeys, ElementName=root, Converter={StaticResource ModifierKeysToBooleanConverter}, ConverterParameter={x:Static system_windows_input:ModifierKeys.Alt}}">alt</CheckBox>
+      </StackPanel>
+    </StackPanel>
+  </Grid>
+</UserControl>

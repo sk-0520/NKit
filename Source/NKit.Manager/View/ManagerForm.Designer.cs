@@ -52,6 +52,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.labelVersionHash = new System.Windows.Forms.Label();
             this.labelBuildType = new System.Windows.Forms.Label();
             this.commandTestExecute = new System.Windows.Forms.Button();
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.selectWorkspaceLoadToHide = new System.Windows.Forms.CheckBox();
             this.panelWorkspace.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
@@ -132,6 +134,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandWorkspaceDirectorySelect.TabIndex = 3;
             this.commandWorkspaceDirectorySelect.Text = "dir";
             this.commandWorkspaceDirectorySelect.UseVisualStyleBackColor = true;
+            this.commandWorkspaceDirectorySelect.Click += new System.EventHandler(this.commandWorkspaceDirectorySelect_Click);
             // 
             // inputWorkspaceName
             // 
@@ -280,11 +283,28 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandTestExecute.UseVisualStyleBackColor = true;
             this.commandTestExecute.Click += new System.EventHandler(this.commandTestExecute_Click);
             // 
+            // notifyIcon
+            // 
+            this.notifyIcon.Text = "notifyIcon";
+            this.notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
+            // 
+            // selectWorkspaceLoadToHide
+            // 
+            this.selectWorkspaceLoadToHide.AutoSize = true;
+            this.selectWorkspaceLoadToHide.Location = new System.Drawing.Point(204, 60);
+            this.selectWorkspaceLoadToHide.Name = "selectWorkspaceLoadToHide";
+            this.selectWorkspaceLoadToHide.Size = new System.Drawing.Size(86, 16);
+            this.selectWorkspaceLoadToHide.TabIndex = 5;
+            this.selectWorkspaceLoadToHide.Text = "load -> hide";
+            this.selectWorkspaceLoadToHide.UseVisualStyleBackColor = true;
+            this.selectWorkspaceLoadToHide.CheckedChanged += new System.EventHandler(this.selectWorkspaceLoadToHide_CheckedChanged);
+            // 
             // ManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(654, 266);
+            this.Controls.Add(this.selectWorkspaceLoadToHide);
             this.Controls.Add(this.commandTestExecute);
             this.Controls.Add(this.labelVersionHash);
             this.Controls.Add(this.labelBuildType);
@@ -305,6 +325,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ManagerForm_FormClosing);
             this.Load += new System.EventHandler(this.ManagerForm_Load);
             this.Shown += new System.EventHandler(this.ManagerForm_Shown);
+            this.SizeChanged += new System.EventHandler(this.ManagerForm_SizeChanged);
             this.panelWorkspace.ResumeLayout(false);
             this.panelWorkspace.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
@@ -339,6 +360,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.Label labelBuildType;
         private System.Windows.Forms.Label labelVersionNumber;
         private System.Windows.Forms.Button commandTestExecute;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.CheckBox selectWorkspaceLoadToHide;
     }
 }
 

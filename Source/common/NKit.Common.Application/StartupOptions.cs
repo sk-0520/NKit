@@ -16,6 +16,8 @@ namespace ContentTypeTextNet.NKit.Common
         public static string ApplicationId { get; private set; }
         public static string ExitEventName { get; private set; }
 
+        public static bool IsManaged { get; private set; }
+
 #if DEBUG
         static bool IsInitialized { get; set; } = false;
 #endif
@@ -32,13 +34,23 @@ namespace ContentTypeTextNet.NKit.Common
 #endif
             var cl = new CommandLineApplication(false);
 
-            var letsDieOption = cl.Option("--nkit_lets_die", "Let's die", CommandOptionType.NoValue);
-            var serviceUriOption = cl.Option("--nkit_service_uri", "service uri", CommandOptionType.SingleValue);
-            var applicationIdOption = cl.Option("--nkit_application_id", "application id", CommandOptionType.SingleValue);
-            var workspacePathOption = cl.Option("--nkit_workspace", "workspace path", CommandOptionType.SingleValue);
-            var exitEventNameOption = cl.Option("--nkit_exit_event_name", "exit event name", CommandOptionType.SingleValue);
+            var letsDieOption = cl.Option(CommonUtility.ManagedStartup.LetsDie, "Let's die", CommandOptionType.NoValue);
+            var serviceUriOption = cl.Option(CommonUtility.ManagedStartup.ServiceUri, "service uri", CommandOptionType.SingleValue);
+            var applicationIdOption = cl.Option(CommonUtility.ManagedStartup.ApplicationId, "application id", CommandOptionType.SingleValue);
+            var workspacePathOption = cl.Option(CommonUtility.ManagedStartup.WorkspacePath, "workspace path", CommandOptionType.SingleValue);
+            var exitEventNameOption = cl.Option(CommonUtility.ManagedStartup.ExitEventName, "exit event name", CommandOptionType.SingleValue);
 
-            cl.Execute(args);
+            var index = Array.IndexOf(args, CommonUtility.ManagedStartup.ExecuteFlag);
+            IsManaged = index != -1;
+
+            if(IsManaged && index < args.Length - 1) {
+                var nkitArgs = new string[args.Length - index - 1];
+                Array.Copy(args, index + 1, nkitArgs, 0, nkitArgs.Length);
+
+                cl.Execute(nkitArgs);
+            } else {
+                cl.Execute(args);
+            }
 
             LetsDie = letsDieOption.HasValue();
 

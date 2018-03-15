@@ -63,6 +63,15 @@ namespace ContentTypeTextNet.NKit.Main.Properties {
         /// <summary>
         ///   new group に類似しているローカライズされた文字列を検索します。
         /// </summary>
+        internal static string String_Capture_CaptureGroup_NewGroupName {
+            get {
+                return ResourceManager.GetString("String_Capture_CaptureGroup_NewGroupName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   new group に類似しているローカライズされた文字列を検索します。
+        /// </summary>
         internal static string String_Finder_FindGroup_NewGroupName {
             get {
                 return ResourceManager.GetString("String_Finder_FindGroup_NewGroupName", resourceCulture);

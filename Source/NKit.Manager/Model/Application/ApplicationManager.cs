@@ -44,19 +44,22 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         string AddNKitArguments(IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspaceItemSetting, string sourceArguments)
         {
-            //TODO: 重複は未考慮
-            //      エスケープシーケンスも知らない問題にしておく
             var list = new[] {
-                $"--nkit_service_uri",
+                sourceArguments != null && sourceArguments.IndexOf(CommonUtility.ManagedStartup.ExecuteFlag) != -1
+                    ? string.Empty
+                    : CommonUtility.ManagedStartup.ExecuteFlag
+                ,
+
+                CommonUtility.ManagedStartup.ServiceUri,
                 ProgramRelationUtility.EscapesequenceToArgument(activeWorkspace.ServiceUri.ToString()),
 
-                $"--nkit_workspace",
+                CommonUtility.ManagedStartup.WorkspacePath,
                 ProgramRelationUtility.EscapesequenceToArgument(workspaceItemSetting.DirectoryPath),
 
-                $"--nkit_application_id",
+                CommonUtility.ManagedStartup.ApplicationId,
                 ProgramRelationUtility.EscapesequenceToArgument(activeWorkspace.ApplicationId),
 
-                $"--nkit_exit_event_name",
+                CommonUtility.ManagedStartup.ExitEventName,
                 ProgramRelationUtility.EscapesequenceToArgument(activeWorkspace.ExitEventName),
             };
             var headArgs = string.Join(" ", list);
@@ -96,6 +99,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                     };
                     break;
 
+                case NKitApplicationKind.Cameraman:
+                    item = new NKitApplicationItem(targetApplication, LogFactory) {
+                        Arguments = AddNKitArguments(activeWorkspace, workspace, arguments),
+                    };
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }
@@ -104,6 +113,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             lock(this._itemsLocker) {
                 Items.Add(item);
             }
+            Logger.Debug(item.Path);
+            Logger.Debug(item.Arguments);
             item.Execute();
         }
 

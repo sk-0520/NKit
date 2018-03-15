@@ -82,7 +82,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
         TextSearchResult SearchNamePattern(FileSystemInfo fileSystemInfo)
         {
-            if(string.IsNullOrEmpty(FindGroupSetting.FileNameSearchPattern)) {
+            if(string.IsNullOrEmpty(Cache.Setting.FileNameSearchPattern)) {
                 return TextSearchResult.NotFound;
             }
 
@@ -203,6 +203,18 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         {
             var files = targetDirectory.EnumerateFiles(searchPattern, SearchOption.TopDirectoryOnly);
             foreach(var file in files) {
+                if(!Cache.Setting.FindDotFile) {
+                    if(file.Name.StartsWith(".")) {
+                        continue;
+                    }
+                }
+
+                if(!Cache.Setting.FindFileNameOnly) {
+                    if(string.IsNullOrEmpty(file.Extension)) {
+                        continue;
+                    }
+                }
+
                 yield return file;
             }
 
@@ -248,6 +260,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         protected override Task<PreparaResult<None>> PreparationCoreAsync(CancellationToken cancelToken)
         {
             if(string.IsNullOrEmpty(FindGroupSetting.RootDirectoryPath)) {
+                Logger.Warning("root dir is empty");
                 return GetDefaultPreparaValueAsync(false);
             }
 
@@ -255,6 +268,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             Cache.RootDirectoryPath = Environment.ExpandEnvironmentVariables(FindGroupSetting.RootDirectoryPath);
 
             if(!Directory.Exists(Cache.RootDirectoryPath)) {
+                Logger.Warning("expand root dir is empty");
                 return GetDefaultPreparaValueAsync(false);
             }
 

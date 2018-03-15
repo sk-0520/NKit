@@ -70,6 +70,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             set { ManagerSetting.Accepted = value; }
         }
 
+        public bool WorkspaceLoadToHide
+        {
+            get { return ManagerSetting.Workspace.WorkspaceLoadToHide; }
+            set { ManagerSetting.Workspace.WorkspaceLoadToHide = value; }
+        }
+
         public bool CanUpdate => UpdateManager.HasUpdate;
         public Version NewVersion => UpdateManager.NewVersion;
         public string ReleaseNoteValue => UpdateManager.ReleaseNoteValue;

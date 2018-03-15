@@ -104,6 +104,17 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { SetPropertyValue(Model.FindGroupSetting, value); }
         }
 
+        public bool FindDotFile
+        {
+            get { return Model.FindGroupSetting.FindDotFile; }
+            set { SetPropertyValue(Model.FindGroupSetting, value); }
+        }
+        public bool FindFileNameOnly
+        {
+            get { return Model.FindGroupSetting.FindFileNameOnly; }
+            set { SetPropertyValue(Model.FindGroupSetting, value); }
+        }
+
         public long FileSizeLimitMaximum
         {
             get { return Model.FindGroupSetting.FileSizeLimit.Tail; }

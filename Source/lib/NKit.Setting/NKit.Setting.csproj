@@ -44,12 +44,16 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Serialization" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\common\nkit.common.link\Setting.cs">
       <Link>Common\Setting.cs</Link>
     </Compile>
+    <Compile Include="Capture\CaptureGroupSetting.cs" />
+    <Compile Include="Capture\CaptureSetting.cs" />
     <Compile Include="Define\AssociationFileKind.cs" />
+    <Compile Include="Define\CaptureMode.cs" />
     <Compile Include="Define\FlagMatchKind.cs" />
     <Compile Include="Define\SearchPatternKind.cs" />
     <Compile Include="File\AssociationFileSetting.cs" />
@@ -57,6 +61,7 @@
     <Compile Include="Finder\FindContentSettings.cs" />
     <Compile Include="Finder\FinderSetting.cs" />
     <Compile Include="Finder\FindGroupSetting.cs" />
+    <Compile Include="KeySetting.cs" />
     <Compile Include="MainSetting.cs" />
     <Compile Include="NKit\NKitSetting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,7 +80,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

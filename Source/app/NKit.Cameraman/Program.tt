@@ -1,0 +1,15 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+
+<#
+    var defaultNamespace  = "ContentTypeTextNet.NKit.Cameraman";
+    var applicationKind   = "Cameraman";
+    var executeModelClass = "ContentTypeTextNet.NKit.Cameraman.Model.CameramanModel";
+    var executeFormClass  = "ContentTypeTextNet.NKit.Cameraman.View.InformationForm";
+    var showWindow        = false;
+#>
+<#@ include file="$(ProjectDir)\..\..\common\T4\NKitApplication\FormsApplication.tt" #>

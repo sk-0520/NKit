@@ -46,6 +46,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         protected Process Process { get; }
 
+        public string Path => Process.StartInfo.FileName;
+
         public string Arguments { get; set; }
         public string WorkingDirectoryPath { get; set; }
         public bool IsOutputReceive { get; set; }
@@ -180,6 +182,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
                 case NKitApplicationKind.Rocket:
                     return CommonUtility.GetRocketApplication(CommonUtility.GetApplicationDirectory()).FullName;
+
+                case NKitApplicationKind.Cameraman:
+                    return CommonUtility.GetCameramanApplication(CommonUtility.GetApplicationDirectory()).FullName;
 
                 default:
                     throw new NotImplementedException();

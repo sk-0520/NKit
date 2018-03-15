@@ -1,0 +1,6 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".config" encoding="utf-8" #>
+<#
+    var appName = "NKit";
+#>
+<#@ include file="$(ProjectDir)\..\common\T4\NKitApplication\App.user.config.tt" #>

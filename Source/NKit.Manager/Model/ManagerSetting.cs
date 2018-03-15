@@ -75,6 +75,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         [DataMember]
         public int ExecuteCount { get; set; }
 
+
+
         #endregion
     }
 }

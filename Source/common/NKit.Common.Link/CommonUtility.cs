@@ -69,12 +69,27 @@ namespace ContentTypeTextNet.NKit.Common
         public static string EnvironmentKeyUserDirectory => "NKIT_USER_DIR";
         public static string EnvironmentKeyDataDirectory => "NKIT_DATA_DIR";
 
+
         public static string AppAddress => "app";
         public static string LogAddress => "log";
 
         public static string WorkspaceSettingDirectoryName => "settings";
         public static string WorkspaceLogDirectoryName => "logs";
         public static string WorkspaceTemporaryDirectoryName => "temporary";
+
+        public struct ManagedStartup
+        {
+            #region property
+
+            public static string ExecuteFlag => "--nkit_managed_execute";
+            public static string LetsDie => "--nkit_lets_die";
+            public static string ServiceUri => "--nkit_service_uri";
+            public static string ApplicationId => "--nkit_application_id";
+            public static string WorkspacePath => "--nkit_workspace";
+            public static string ExitEventName => "--nkit_exit_event_name";
+
+            #endregion
+        }
 
         #endregion
 
@@ -192,6 +207,13 @@ namespace ContentTypeTextNet.NKit.Common
             return new FileInfo(path);
         }
 
-#endregion
+        public static FileInfo GetCameramanApplication(DirectoryInfo applicationDirectory)
+        {
+            var path = Path.Combine(applicationDirectory.FullName, "NKit.Cameraman.exe");
+            return new FileInfo(path);
+        }
+
+
+        #endregion
     }
 }

@@ -13,7 +13,7 @@ using Newtonsoft.Json.Converters;
 
 namespace ContentTypeTextNet.NKit.Setting.Finder
 {
-    public interface IReadOnlyFindGroupSetting : IReadOnlyGuidIdSetting
+    public interface IReadOnlyFindGroupSetting : IReadOnlyGuidSetting
     {
         #region property
 
@@ -52,6 +52,15 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         /// ファイル名検索パターン。
         /// </summary>
         string FileNameSearchPattern { get; }
+
+        /// <summary>
+        /// ファイル名の先頭が . で始まるファイルを検索するか。
+        /// </summary>
+        bool FindDotFile { get; }
+        /// <summary>
+        /// 拡張子のないファイル名のファイルを検索対象とするか。
+        /// </summary>
+        bool FindFileNameOnly { get; }
 
         /// <summary>
         /// ファイル検索に用いるファイルサイズの上下限を指定する。
@@ -102,7 +111,7 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
     }
 
     [Serializable, DataContract]
-    public class FindGroupSetting : GuidIdSettingBase, IReadOnlyFindGroupSetting
+    public class FindGroupSetting : GuidSettingBase, IReadOnlyFindGroupSetting
     {
         #region IReadOnlyFindGroupSetting
 
@@ -127,8 +136,14 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         public string FileNameSearchPattern { get; set; }
 
         [DataMember]
+        public bool FindDotFile { get; set; }
+        [DataMember]
+        public bool FindFileNameOnly { get; set; }
+
+        [DataMember]
         public Range<long> FileSizeLimit { get; set; }
         IReadOnlyRange<long> IReadOnlyFindGroupSetting.FileSizeLimit => FileSizeLimit;
+
 
         [DataMember]
         public bool FindFileProperty { get; set; }
