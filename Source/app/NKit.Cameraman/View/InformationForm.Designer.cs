@@ -182,6 +182,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "InformationForm";
             this.TopMost = true;
+            this.Shown += new System.EventHandler(this.InformationForm_Shown);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

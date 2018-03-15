@@ -60,7 +60,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.Text = "Form1";
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Black;
-            this.Shown += new System.EventHandler(this.CameramanForm_Shown);
             this.ResumeLayout(false);
 
         }

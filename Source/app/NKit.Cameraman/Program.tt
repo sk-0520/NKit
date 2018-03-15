@@ -9,7 +9,7 @@
     var defaultNamespace  = "ContentTypeTextNet.NKit.Cameraman";
     var applicationKind   = "Cameraman";
     var executeModelClass = "ContentTypeTextNet.NKit.Cameraman.Model.CameramanModel";
-    var executeFormClass  = "ContentTypeTextNet.NKit.Cameraman.View.CameramanForm";
+    var executeFormClass  = "ContentTypeTextNet.NKit.Cameraman.View.InformationForm";
     var showWindow        = false;
 #>
 <#@ include file="$(ProjectDir)\..\..\common\T4\NKitApplication\FormsApplication.tt" #>

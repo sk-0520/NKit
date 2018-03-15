@@ -28,7 +28,7 @@ namespace ContentTypeTextNet.NKit.Cameraman
         }
 
         /// <summary>
-        /// 繧｢繝励Μ繧ｱ繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ繝｡繧､繝ｳ 繧ｨ繝ｳ繝医Μ 繝昴う繝ｳ繝医〒縺吶�
+        /// アプリケーションのメイン エントリ ポイントです。
         /// </summary>
         [STAThread]
         static void Main(string[] args)
@@ -44,10 +44,10 @@ namespace ContentTypeTextNet.NKit.Cameraman
                 var logger = Log.CreateLogger();
 
                 logger.Information("!!START!!");
-                logger.Information($"this template compiled: 2018-03-14 13:02:42Z UTC");
+                logger.Information($"this template compiled: 2018-03-15 05:55:44Z UTC");
 
                 var model = new ContentTypeTextNet.NKit.Cameraman.Model.CameramanModel(args);
-                var form = new ContentTypeTextNet.NKit.Cameraman.View.CameramanForm();
+                var form = new ContentTypeTextNet.NKit.Cameraman.View.InformationForm();
                 form.SetModel(model);
 
                                 model.Execute(form);

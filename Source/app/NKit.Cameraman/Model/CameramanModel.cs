@@ -134,7 +134,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         TimeSpan ScrollInternetExplorerInitializeTime { get; } = Constants.ScrollInternetExplorerInitializeTime;
 
 
-        CameramanForm CameramanForm { get; set; }
+        InformationForm CameramanForm { get; set; }
 
         IKeyboardMouseEvents HookEvents { get; set; }
 
@@ -188,7 +188,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             }
         }
 
-        public void Execute(CameramanForm form)
+        public void Execute(InformationForm form)
         {
             if(CaptureMode == CaptureMode.Screen && !IsContinuation) {
                 CaptureScreen();
@@ -236,7 +236,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             TargetWindowHandle = IntPtr.Zero;
             NowSelecting = false;
 
-            CameramanForm.HideStatus();
+            CameramanForm.Detach();
 
             HookEvents.MouseMove -= HookEvents_MouseMove;
             HookEvents.MouseDown -= HookEvents_MouseDown;
@@ -295,7 +295,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             var hWnd = WindowHandleUtility.GetView(mousePoint, CaptureMode);
 
             if(hWnd == IntPtr.Zero) {
-                CameramanForm.HideStatus();
+                CameramanForm.Detach();
                 return;
             }
 
@@ -306,13 +306,13 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 }
 
                 // 自分じゃないし死んどく
-                CameramanForm.HideStatus();
+                CameramanForm.Detach();
                 return;
             }
 
             var rect = WindowHandleUtility.GetViewArea(hWnd, CaptureMode);
             // 枠用にサイズ補正
-            CameramanForm.ShowStatus(hWnd, rect);
+            CameramanForm.Attach(hWnd, rect);
 
             TargetWindowHandle = hWnd;
         }

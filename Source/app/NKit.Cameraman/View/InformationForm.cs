@@ -29,6 +29,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         public int WindowTextBufferLength { get; set; } = 256;
         public int WindowClassBufferLength { get; set; } = 256;
 
+        CameramanForm CameramanForm { get; set; } = new CameramanForm();
+
         #endregion
 
         #region function
@@ -36,6 +38,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         public void SetModel(CameramanModel model)
         {
             Model = model;
+
+            CameramanForm.SetModel(Model);
         }
 
 
@@ -62,13 +66,27 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
                 Opacity = 1;
                 Visible = true;
             }
+
+            CameramanForm.Attach(hWnd, hWndRectangle);
         }
 
         public void Detach()
         {
             Visible = false;
+
+            CameramanForm.Detach();
+        }
+
+        public bool IsSelfHandle(IntPtr hWnd)
+        {
+            return Handle == hWnd || CameramanForm.Handle == hWnd;
         }
 
         #endregion
+
+        private void InformationForm_Shown(object sender, EventArgs e)
+        {
+            CameramanForm.Show(this);
+        }
     }
 }

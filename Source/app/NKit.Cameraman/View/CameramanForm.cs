@@ -23,8 +23,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
         CameramanModel Model { get; set; }
 
-        InformationForm InformationForm { get; set; } = new InformationForm();
-
         #endregion
 
         #region function
@@ -42,18 +40,14 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
                 };
                 this.hallArea.BackColor = TransparencyKey = colors.First(c => c != TransparencyKey);
             }
-
-            InformationForm.SetModel(Model);
         }
 
-        public void HideStatus()
+        public void Detach()
         {
             Visible = false;
-
-            InformationForm.Detach();
         }
 
-        public void ShowStatus(IntPtr hWnd, Rectangle hWndRectangle)
+        public void Attach(IntPtr hWnd, Rectangle hWndRectangle)
         {
             var newLocation = new Point(
                 hWndRectangle.X - Padding.Left,
@@ -65,7 +59,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             );
 
             if(Visible && newLocation == Location && newSize == Size) {
-                InformationForm.Attach(hWnd, hWndRectangle);
                 return;
             }
 
@@ -88,17 +81,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             }
         }
 
-        public bool IsSelfHandle(IntPtr hWnd)
-        {
-            return Handle == hWnd || InformationForm.Handle == hWnd;
-        }
-
         #endregion
-
-        private void CameramanForm_Shown(object sender, EventArgs e)
-        {
-            InformationForm.Show(this);
-        }
-
     }
 }
