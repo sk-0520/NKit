@@ -487,13 +487,11 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
             // アップデート処理開始
             return UpdateManager.UpdateAsync().ContinueWith(t => {
-                // ダメだったら何食わぬ顔で元に戻す
-                if(!t.Result) {
-                    if(SelectedWorkspaceItem!=null) {
-                        WorkspaceState = WorkspaceState.Selecting;
-                    } else {
-                        WorkspaceState = WorkspaceState.None;
-                    }
+                // 正常完了で終了するにしても異常であろうと現在状態を変更
+                if(SelectedWorkspaceItem != null) {
+                    WorkspaceState = WorkspaceState.Selecting;
+                } else {
+                    WorkspaceState = WorkspaceState.None;
                 }
 
                 return t.Result;
