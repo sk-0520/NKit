@@ -88,7 +88,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         });
 
         public ICommand CaptureControlCommand => new DelegateCommand(
-            () => { }
+            () => { Model.CaptureControl(); }
         );
 
         #endregion

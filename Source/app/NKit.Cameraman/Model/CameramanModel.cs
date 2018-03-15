@@ -78,7 +78,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     SelectKeys = EnumUtility.Parse<Keys>(selectKeyOption.Value());
                 }
                 if(ShotKeys == Keys.None && SelectKeys == Keys.None) {
-                    throw new ArgumentException("shot key: none!");
+                    throw new ArgumentException("shot/select key: none!");
                 }
                 if(ShotKeys == SelectKeys) {
                     throw new ArgumentException("shot key: dup!");
@@ -337,6 +337,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         private void HookEvents_KeyDown(object sender, KeyEventArgs e)
         {
+            // 選択処理
             if(e.KeyCode == SelectKeys) {
                 if(!NowSelecting) {
                     Logger.Information("select");
@@ -351,6 +352,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     e.Handled = true;
                 }
             }
+
+            // キャプチャ処理
             if(e.KeyCode == ShotKeys) {
                 Logger.Information("shot");
                 if(CaptureMode == CaptureMode.Screen) {
@@ -375,6 +378,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     }
                 }
             }
+
+            // 終了処理
             if(e.KeyCode == ExitKey) {
                 e.Handled = true;
 

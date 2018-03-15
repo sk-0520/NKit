@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Setting;
 using ContentTypeTextNet.NKit.Setting.Capture;
+using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
 
 namespace ContentTypeTextNet.NKit.Main.Model.Capture
@@ -70,6 +71,31 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             }
 
             model.Dispose();
+        }
+
+        public void CaptureControl()
+        {
+            //Setting.Capture.SelectKey.Key | Setting.Capture.SelectKey.ModifierKeys
+            var args = new[] {
+                "--mode",
+                CaptureMode.TargetControl.ToString(),
+
+                "--clipboard",
+
+                "--wait_opportunity_key",
+                Setting.Capture.SelectKey.Key.ToString(),
+
+                //"--photo_opportunity_key",
+                ""
+
+
+            };
+            var arguments = string.Join(" ", args);
+            Logger.Trace(arguments);
+            using(var client = new NKitApplicationTalkerClient(NKitApplicationKind.Main, StartupOptions.ServiceUri)) {
+                client.Open();
+                client.WakeupApplication(NKitApplicationKind.Cameraman, arguments, string.Empty);
+            }
         }
 
         #endregion
