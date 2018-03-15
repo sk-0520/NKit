@@ -41,6 +41,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             var immediatelySelectOption = command.Option("--immediately_select", "start select", CommandOptionType.NoValue);
             var shotKeyOption = command.Option("--photo_opportunity_key", $"shot normal key + {Keys.Control}, {Keys.Shift}, {Keys.Alt}", CommandOptionType.SingleValue);
             var selectKeyOption = command.Option("--wait_opportunity_key", $"select normal key + {Keys.Control}, {Keys.Shift}, {Keys.Alt}", CommandOptionType.SingleValue);
+            var shotDelayTimeOption = command.Option("--photo_opportunity_delay_time", "shot deilay time", CommandOptionType.SingleValue);
             var cameraBorderColorOption = command.Option("--camera_border_color", "color", CommandOptionType.SingleValue);
             var cameraBorderWidthOption = command.Option("--camera_border_width", "color", CommandOptionType.SingleValue);
             var scrollDelayTimeOption = command.Option("--scroll_delay_time", "color", CommandOptionType.SingleValue);
@@ -90,6 +91,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 }
             }
 
+            if(shotDelayTimeOption.HasValue()) {
+                ShotDelayTime = TimeSpan.Parse(shotDelayTimeOption.Value());
+            }
+
             if(cameraBorderColorOption.HasValue()) {
                 BorderColor = ColorTranslator.FromHtml(cameraBorderColorOption.Value());
             }
@@ -105,6 +110,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     ScrollInternetExplorerInitializeTime = TimeSpan.Parse(scrollIeInitializeTimeOption.Value());
                 }
             }
+
         }
 
         #region property
@@ -126,6 +132,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         Keys ShotKeys { get; } = Keys.None;
         Keys SelectKeys { get; } = Keys.None;
+
+        TimeSpan ShotDelayTime { get; } = Constants.ShotDelayTime;
 
         public Color BorderColor { get; } = Constants.CameraBorderColor;
         public int BorderWidth { get; } = Constants.CameraBorderWidth;

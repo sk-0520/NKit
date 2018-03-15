@@ -18,6 +18,8 @@ namespace ContentTypeTextNet.NKit.Cameraman
 
         #region proeprty
 
+        public static TimeSpan ShotDelayTime => appConfig.Get("shot-delay-time", s => TimeSpan.Parse(s));
+
         public static Color CameraBorderColor => appConfig.Get("camera-border-color", s => ColorTranslator.FromHtml(s));
         public static int CameraBorderWidth => appConfig.Get("camera-border-width", s => int.Parse(s));
 
