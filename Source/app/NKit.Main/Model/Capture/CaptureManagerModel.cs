@@ -75,26 +75,27 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         public void CaptureControl()
         {
-            //Setting.Capture.SelectKey.Key | Setting.Capture.SelectKey.ModifierKeys
-            var args = new[] {
+            var arguments = new List<string>() {
                 "--mode",
-                CaptureMode.TargetControl.ToString(),
+                ProgramRelationUtility.EscapesequenceToArgument(CaptureMode.TargetControl.ToString()),
 
                 "--clipboard",
 
-                "--wait_opportunity_key",
-                Setting.Capture.SelectKey.Key.ToString(),
-
-                //"--photo_opportunity_key",
-                ""
-
-
+                "--immediately_start",
             };
-            var arguments = string.Join(" ", args);
-            Logger.Trace(arguments);
+
+            if(CaptureKeyUtility.CanSendKeySetting(Setting.Capture.TakeShotKey)) {
+                arguments.Add("--photo_opportunity_key");
+                arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(CaptureKeyUtility.ToCameramanArgumentKey(Setting.Capture.TakeShotKey)));
+            }
+            if(CaptureKeyUtility.CanSendKeySetting(Setting.Capture.SelectKey)) {
+                arguments.Add("--wait_opportunity_key");
+                arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(CaptureKeyUtility.ToCameramanArgumentKey(Setting.Capture.SelectKey)));
+            }
+
             using(var client = new NKitApplicationTalkerClient(NKitApplicationKind.Main, StartupOptions.ServiceUri)) {
                 client.Open();
-                client.WakeupApplication(NKitApplicationKind.Cameraman, arguments, string.Empty);
+                client.WakeupApplication(NKitApplicationKind.Cameraman, string.Join(" ", arguments), string.Empty);
             }
         }
 

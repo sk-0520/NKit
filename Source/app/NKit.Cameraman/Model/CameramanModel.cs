@@ -38,6 +38,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             var saveEventOption = command.Option("--save_event_name", "save event", CommandOptionType.SingleValue);
             var exitEventOption = command.Option("--exit_event_name", "exit event, pair --save_event_name", CommandOptionType.SingleValue);
             var continuationOption = command.Option("--continuation", "one/continuation", CommandOptionType.NoValue);
+            var immediatelySelectOption = command.Option("--immediately_select", "start select", CommandOptionType.NoValue);
             var shotKeyOption = command.Option("--photo_opportunity_key", $"shot normal key + {Keys.Control}, {Keys.Shift}, {Keys.Alt}", CommandOptionType.SingleValue);
             var selectKeyOption = command.Option("--wait_opportunity_key", $"select normal key + {Keys.Control}, {Keys.Shift}, {Keys.Alt}", CommandOptionType.SingleValue);
             var cameraBorderColorOption = command.Option("--camera_border_color", "color", CommandOptionType.SingleValue);
@@ -60,6 +61,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 ExitNoticeEvent = EventWaitHandle.OpenExisting(exitEventOption.Value());
             }
             IsContinuation = continuationOption.HasValue();
+            ImmediatelySelect = immediatelySelectOption.HasValue();
 
             var needKey = true;
             if(CaptureMode == CaptureMode.Screen && !IsContinuation) {
@@ -120,6 +122,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         EventWaitHandle ExitNoticeEvent { get; }
 
         bool IsContinuation { get; }
+        bool ImmediatelySelect { get; }
 
         Keys ShotKeys { get; } = Keys.None;
         Keys SelectKeys { get; } = Keys.None;
@@ -200,6 +203,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     Application.Run();
                 } else {
                     Form = form;
+                    if(ImmediatelySelect) {
+                        Form.Shown += Form_Shown;
+                    }
                     Application.Run(Form);
                 }
 
@@ -449,6 +455,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             if(TargetWindowHandle != IntPtr.Zero) {
                 CaptureSelect();
             }
+        }
+
+        private void Form_Shown(object sender, EventArgs e)
+        {
+            Form.Shown -= Form_Shown;
+            StartViewSelect();
         }
 
     }
