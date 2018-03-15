@@ -196,7 +196,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 HookEvents = Hook.GlobalEvents();
 
                 if(ShotKeys != Keys.None || SelectKeys != Keys.None) {
-                    HookEvents.KeyDown += HookEvents_KeyDown;
+                    HookKeyboardInput();
                 }
 
                 if(CaptureMode == CaptureMode.Screen) {
@@ -219,8 +219,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
             NowSelecting = true;
 
-            HookEvents.MouseMove += HookEvents_MouseMove;
-            HookEvents.MouseDown += HookEvents_MouseDown;
+            HookMouseInput();
 
             //Form.Opacity = 0;
             //Form.Visible = true;
@@ -238,8 +237,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
             CameramanForm.Detach();
 
-            HookEvents.MouseMove -= HookEvents_MouseMove;
-            HookEvents.MouseDown -= HookEvents_MouseDown;
+            UnhookMouseInput();
         }
 
         void CaptureScreen()
@@ -276,9 +274,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             Logger.Information("ばいばい");
 
             if(HookEvents != null) {
-                HookEvents.KeyDown -= HookEvents_KeyDown;
-                HookEvents.MouseMove -= HookEvents_MouseMove;
-                HookEvents.MouseDown -= HookEvents_MouseDown;
+                UnhookMouseInput();
+                UnhookKeyboardInput();
+
                 HookEvents.Dispose();
                 HookEvents = null;
             }
@@ -363,6 +361,31 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             return false;
         }
 
+        void HookKeyboardInput()
+        {
+            Logger.Debug("hook: ket input");
+            HookEvents.KeyDown += HookEvents_KeyDown;
+        }
+
+        void UnhookKeyboardInput()
+        {
+            Logger.Debug("unhook: key input");
+            HookEvents.KeyDown -= HookEvents_KeyDown;
+        }
+
+        void HookMouseInput()
+        {
+            Logger.Debug("hook: mouse input");
+            HookEvents.MouseMove += HookEvents_MouseMove;
+            HookEvents.MouseDown += HookEvents_MouseDown;
+        }
+
+        void UnhookMouseInput()
+        {
+            Logger.Debug("unhook: mouse input");
+            HookEvents.MouseMove -= HookEvents_MouseMove;
+            HookEvents.MouseDown -= HookEvents_MouseDown;
+        }
 
         #endregion
 
@@ -373,9 +396,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             if(!IsDisposed) {
                 if(disposing) {
                     if(HookEvents != null) {
-                        HookEvents.KeyDown -= HookEvents_KeyDown;
-                        HookEvents.MouseMove -= HookEvents_MouseMove;
-                        HookEvents.MouseDown -= HookEvents_MouseDown;
+                        UnhookMouseInput();
+                        UnhookKeyboardInput();
 
                         HookEvents.Dispose();
                         HookEvents = null;
