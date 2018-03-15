@@ -90,6 +90,12 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         public ICommand CaptureControlCommand => new DelegateCommand(
             () => { Model.CaptureControl(); }
         );
+        public ICommand CaptureWindowCommand => new DelegateCommand(
+            () => { Model.CaptureWindow(); }
+        );
+        public ICommand CaptureScrollCommand => new DelegateCommand(
+            () => { Model.CaptureScroll(); }
+        );
 
         #endregion
 

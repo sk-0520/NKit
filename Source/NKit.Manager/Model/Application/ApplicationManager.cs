@@ -110,6 +110,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             lock(this._itemsLocker) {
                 Items.Add(item);
             }
+            Logger.Debug(item.Path);
+            Logger.Debug(item.Arguments);
             item.Execute();
         }
 

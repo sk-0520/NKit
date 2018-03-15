@@ -73,15 +73,15 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             model.Dispose();
         }
 
-        public void CaptureControl()
+        void CaptureCore(CaptureMode captureMode)
         {
             var arguments = new List<string>() {
                 "--mode",
-                ProgramRelationUtility.EscapesequenceToArgument(CaptureMode.TargetControl.ToString()),
+                ProgramRelationUtility.EscapesequenceToArgument(captureMode.ToString()),
 
                 "--clipboard",
 
-                "--immediately_start",
+                "--immediately_select",
             };
 
             if(CaptureKeyUtility.CanSendKeySetting(Setting.Capture.TakeShotKey)) {
@@ -97,6 +97,19 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 client.Open();
                 client.WakeupApplication(NKitApplicationKind.Cameraman, string.Join(" ", arguments), string.Empty);
             }
+        }
+
+        public void CaptureControl()
+        {
+            CaptureCore(CaptureMode.Control);
+        }
+        public void CaptureWindow()
+        {
+            CaptureCore(CaptureMode.Window);
+        }
+        public void CaptureScroll()
+        {
+            CaptureCore(CaptureMode.Scroll);
         }
 
         #endregion

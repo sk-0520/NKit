@@ -46,6 +46,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         protected Process Process { get; }
 
+        public string Path => Process.StartInfo.FileName;
+
         public string Arguments { get; set; }
         public string WorkingDirectoryPath { get; set; }
         public bool IsOutputReceive { get; set; }

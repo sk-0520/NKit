@@ -26,7 +26,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 result.Add(keySetting.Key.ToString());
             }
 
-            if(keySetting.Key == Key.None) {
+            if(keySetting.ModifierKeys != ModifierKeys.None) {
                 result.Add(keySetting.ModifierKeys.ToString());
             }
 

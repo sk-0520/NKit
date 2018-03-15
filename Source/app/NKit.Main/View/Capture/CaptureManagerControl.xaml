@@ -31,8 +31,8 @@
 
       <Button Grid.Column="0" Command="{Binding AddNewGroupCommand}">add new group</Button>
       <Button Grid.Column="1" Command="{Binding CaptureControlCommand}" >clipboard:control</Button>
-      <Button Grid.Column="2" >clipboard:window</Button>
-      <Button Grid.Column="3" >clipboard:scroll</Button>
+      <Button Grid.Column="2" Command="{Binding CaptureWindowCommand}" >clipboard:window</Button>
+      <Button Grid.Column="3" Command="{Binding CaptureScrollCommand}" >clipboard:scroll</Button>
     </Grid>
     <TabControl Grid.Row="1" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroupItem}">
       <TabControl.ItemTemplate>
