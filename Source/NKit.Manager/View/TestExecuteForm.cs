@@ -75,15 +75,22 @@ namespace ContentTypeTextNet.NKit.Manager.View
             var appDir = CommonUtility.GetApplicationDirectory();
             var binDir = CommonUtility.GetBinaryDirectory();
 
+            var nkitDieArgs = $"{CommonUtility.ManagedStartup.ExecuteFlag} {CommonUtility.ManagedStartup.LetsDie}";
+
             ApplicationInfos.Add(new ApplicationInfo() {
                 Kind = NKitApplicationKind.Main,
                 Name = "main",
-                Arguments = "--nkit_lets_die",
+                Arguments = nkitDieArgs,
             });
             ApplicationInfos.Add(new ApplicationInfo() {
                 Kind = NKitApplicationKind.Rocket,
                 Name = "rocket",
-                Arguments = "--nkit_lets_die",
+                Arguments = nkitDieArgs,
+            });
+            ApplicationInfos.Add(new ApplicationInfo() {
+                Kind = NKitApplicationKind.Cameraman,
+                Name = "cameraman",
+                Arguments = nkitDieArgs,
             });
             ApplicationInfos.Add(new ApplicationInfo() {
                 Kind = NKitApplicationKind.Others,

@@ -39,7 +39,7 @@ namespace ContentTypeTextNet.NKit.Rocket
                 var logger = Log.CreateLogger();
 
                 logger.Information("!!START!!");
-                logger.Information($"this template compiled: 2018-03-13 01:51:10Z UTC");
+                logger.Information($"this template compiled: 2018-03-14 13:02:42Z UTC");
 
                 var model = new ContentTypeTextNet.NKit.Rocket.Model.RocketModel(args);
                 var result = model.Run(CancellationToken.None);

@@ -48,8 +48,12 @@
       <HintPath>..\..\packages\CommonServiceLocator.2.0.3\lib\net47\CommonServiceLocator.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ContentTypeTextNet.PInvoke, Version=1.0.6341.29050, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ContentTypeTextNet.PInvoke.1.0.0.26\lib\net46\ContentTypeTextNet.PInvoke.dll</HintPath>
+    <Reference Include="ContentTypeTextNet.PInvoke, Version=1.0.6646.26806, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ContentTypeTextNet.PInvoke.1.0.0.31\lib\net46\ContentTypeTextNet.PInvoke.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Gma.System.MouseKeyHook, Version=5.6.130.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MouseKeyHook.5.6.0\lib\net40\Gma.System.MouseKeyHook.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Hnx8.ReadJEnc, Version=1.3.0.821, Culture=neutral, processorArchitecture=MSIL">
@@ -114,6 +118,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -164,20 +169,45 @@
     <Compile Include="..\..\common\nkit.common.link\CommonUtility.cs">
       <Link>Common\CommonUtility.cs</Link>
     </Compile>
+    <Compile Include="Model\Capture\CaptureGroupModel.cs" />
+    <Compile Include="Model\Capture\CaptureKeyUtility.cs" />
     <Compile Include="Model\File\FilePropertySearchResult.cs" />
     <Compile Include="Model\Finder\FindGroupCache.cs" />
     <Compile Include="Model\NKit\NKitApplicationExecutor.cs" />
     <Compile Include="Model\XmlHtmlSearcher.cs" />
+    <Compile Include="ViewModel\Capture\CaptureGroupViewModel.cs" />
+    <Compile Include="View\Capture\CaptureGroupControl.xaml.cs">
+      <DependentUpon>CaptureGroupControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Capture\CaptureManagerControl.xaml.cs">
+      <DependentUpon>CaptureManagerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Control\FlagMatchSelectControl.xaml.cs">
       <DependentUpon>FlagMatchSelectControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Control\KeySettingControl.xaml.cs">
+      <DependentUpon>KeySettingControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Control\RunnableControl.xaml.cs">
       <DependentUpon>RunnableControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Converter\ModifierKeysToBooleanConverter.cs" />
     <Compile Include="View\NKit\NKitManagerControl.xaml.cs">
       <DependentUpon>NKitManagerControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\Capture\CaptureGroupControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Capture\CaptureManagerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Control\FlagMatchSelectControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Control\KeySettingControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -313,9 +343,8 @@
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
     </None>
-    <None Include="App.Release.config">
+    <None Include="NKit.Main.user.config">
       <DependentUpon>App.config</DependentUpon>
-      <IsTransformFile>True</IsTransformFile>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
@@ -344,6 +373,21 @@
       <Name>NKit.Utility</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="%40NKit.Main.user.config">
+      <DependentUpon>%40NKit.Main.user.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Content>
+    <Content Include="%40NKit.Main.user.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>%40NKit.Main.user.config</LastGenOutput>
+      <DependentUpon>App.config</DependentUpon>
+    </Content>
   </ItemGroup>
   <Import Project="..\..\common\NKit.Common.Application\NKit.Common.Application.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -27,7 +27,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
         #endregion
 
-        #region property
+        #region function
 
         FindGroupModel CreateGroupModel()
         {

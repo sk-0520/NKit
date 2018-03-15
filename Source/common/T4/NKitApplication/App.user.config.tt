@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- ユーザー用 <#= appName #>.config 上書きファイル -->
+<appSettings>
+	<!--
+	これは App.config(<#= appName #>.exe.config) をユーザー任意で上書きするためのファイルです。
+	本ファイルを有効にするにはファイル名から @ を削除してください。
+	@<#= appName #>.exe.user.config -> <#= appName #>.exe.user.config
+
+	基本的な書式は以下となります。
+	<add key="キー項目" value="値"/>
+
+	App.config にも言えることですがここで値を書き換えることで発生しうる
+	問題・挙動に対しては何も対応できません。
+	何かあって報告されても困ります。
+	-->
+</appSettings>

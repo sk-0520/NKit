@@ -146,7 +146,18 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="%40NKit.user.config">
+      <DependentUpon>%40NKit.user.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="App.config" />
+    <Content Include="%40NKit.user.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>%40NKit.user.config</LastGenOutput>
+      <DependentUpon>App.config</DependentUpon>
+    </Content>
     <Content Include="doc\release-notes\ver_0-0-1.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -156,6 +167,9 @@
     <Content Include="doc\release-notes\ver_0-0-3.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="NKit.exe.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
     <None Include="Properties\app.manifest" />
     <Content Include="etc\license\NKit.rtf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -173,6 +187,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

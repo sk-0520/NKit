@@ -15,6 +15,7 @@ namespace ContentTypeTextNet.NKit.Common
         Manager,
         Main,
         Rocket,
+        Cameraman,
     }
 
     [ServiceContract]
