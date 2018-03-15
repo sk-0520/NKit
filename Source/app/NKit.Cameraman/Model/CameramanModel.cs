@@ -38,8 +38,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             var saveEventOption = command.Option("--save_event_name", "save event", CommandOptionType.SingleValue);
             var exitEventOption = command.Option("--exit_event_name", "exit event, pair --save_event_name", CommandOptionType.SingleValue);
             var continuationOption = command.Option("--continuation", "one/continuation", CommandOptionType.NoValue);
-            var shotKeyOption = command.Option("--photo_opportunity_key", "shot", CommandOptionType.SingleValue);
-            var selectKeyOption = command.Option("--wait_opportunity_key", "select", CommandOptionType.SingleValue);
+            var shotKeyOption = command.Option("--photo_opportunity_key", $"shot normal key + {Keys.Control}, {Keys.Shift}, {Keys.Alt}", CommandOptionType.SingleValue);
+            var selectKeyOption = command.Option("--wait_opportunity_key", $"select normal key + {Keys.Control}, {Keys.Shift}, {Keys.Alt}", CommandOptionType.SingleValue);
             var cameraBorderColorOption = command.Option("--camera_border_color", "color", CommandOptionType.SingleValue);
             var cameraBorderWidthOption = command.Option("--camera_border_width", "color", CommandOptionType.SingleValue);
             var scrollDelayTimeOption = command.Option("--scroll_delay_time", "color", CommandOptionType.SingleValue);
@@ -311,6 +311,52 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             TargetWindowHandle = hWnd;
         }
 
+        bool CheckKey(KeyEventArgs e, Keys key)
+        {
+            var modMask = (Keys.Control | Keys.Shift | Keys.Alt);
+
+            var normalKey = key & ~modMask;
+            var modKeys = key & modMask;
+
+            if(normalKey == Keys.None && modKeys != Keys.None) {
+                // 装飾キーだけの可能性
+                var result = true;
+                if(modKeys.HasFlag(Keys.Control)) {
+                    result &= e.Control || e.KeyCode == Keys.LControlKey || e.KeyCode == Keys.RControlKey;
+                }
+                if(modKeys.HasFlag(Keys.Shift)) {
+                    result &= e.Shift || e.KeyCode == Keys.LShiftKey || e.KeyCode == Keys.RShiftKey;
+                }
+                if(modKeys.HasFlag(Keys.Alt)) {
+                    result &= e.Alt || e.KeyCode == Keys.LMenu || e.KeyCode == Keys.RMenu;
+                }
+                return result;
+            }
+
+            if(e.KeyCode == normalKey) {
+                // 装飾キーなし
+                if(modKeys == Keys.None) {
+                    return true;
+                }
+
+                var result = true;
+                // 装飾キー確認
+                if(modKeys.HasFlag(Keys.Shift)) {
+                    result &= e.Shift;
+                }
+                if(modKeys.HasFlag(Keys.Control)) {
+                    result &= e.Control;
+                }
+                if(modKeys.HasFlag(Keys.Alt)) {
+                    result &= e.Alt;
+                }
+
+                return result;
+            }
+
+            return false;
+        }
+
 
         #endregion
 
@@ -338,7 +384,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         private void HookEvents_KeyDown(object sender, KeyEventArgs e)
         {
             // 選択処理
-            if(e.KeyCode == SelectKeys) {
+            if(CheckKey(e, SelectKeys)) {
                 if(!NowSelecting) {
                     Logger.Information("select");
 
@@ -354,7 +400,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             }
 
             // キャプチャ処理
-            if(e.KeyCode == ShotKeys) {
+            if(CheckKey(e, ShotKeys)) {
                 Logger.Information("shot");
                 if(CaptureMode == CaptureMode.Screen) {
                     CaptureScreen();
@@ -380,7 +426,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             }
 
             // 終了処理
-            if(e.KeyCode == ExitKey) {
+            if(CheckKey(e, ExitKey)) {
                 e.Handled = true;
 
                 if(NowSelecting) {
