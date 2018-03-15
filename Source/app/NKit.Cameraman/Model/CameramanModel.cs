@@ -438,6 +438,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 if(NowSelecting) {
                     Logger.Information("exit select");
                     EndViewSelect();
+
+                    // 即時起動で継続使用しないのであれば選択待機よりは終了
+                    if(ImmediatelySelect && !IsContinuation) {
+                        Logger.Information("exit program ^_^");
+                        Exit();
+                    }
                 } else {
                     Logger.Information("exit program");
                     Exit();

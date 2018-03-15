@@ -28,7 +28,7 @@ namespace ContentTypeTextNet.NKit.Cameraman
         }
 
         /// <summary>
-        /// アプリケーションのメイン エントリ ポイントです。
+        /// 繧｢繝励Μ繧ｱ繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ繝｡繧､繝ｳ 繧ｨ繝ｳ繝医Μ 繝昴う繝ｳ繝医〒縺吶�
         /// </summary>
         [STAThread]
         static void Main(string[] args)

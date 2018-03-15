@@ -44,19 +44,22 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         string AddNKitArguments(IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspaceItemSetting, string sourceArguments)
         {
-            //TODO: 重複は未考慮
-            //      エスケープシーケンスも知らない問題にしておく
             var list = new[] {
-                $"--nkit_service_uri",
+                sourceArguments != null && sourceArguments.IndexOf(CommonUtility.ManagedStartup.ExecuteFlag) != -1
+                    ? string.Empty
+                    : CommonUtility.ManagedStartup.ExecuteFlag
+                ,
+
+                CommonUtility.ManagedStartup.ServiceUri,
                 ProgramRelationUtility.EscapesequenceToArgument(activeWorkspace.ServiceUri.ToString()),
 
-                $"--nkit_workspace",
+                CommonUtility.ManagedStartup.WorkspacePath,
                 ProgramRelationUtility.EscapesequenceToArgument(workspaceItemSetting.DirectoryPath),
 
-                $"--nkit_application_id",
+                CommonUtility.ManagedStartup.ApplicationId,
                 ProgramRelationUtility.EscapesequenceToArgument(activeWorkspace.ApplicationId),
 
-                $"--nkit_exit_event_name",
+                CommonUtility.ManagedStartup.ExitEventName,
                 ProgramRelationUtility.EscapesequenceToArgument(activeWorkspace.ExitEventName),
             };
             var headArgs = string.Join(" ", list);
