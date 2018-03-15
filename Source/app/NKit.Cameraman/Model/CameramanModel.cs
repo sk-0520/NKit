@@ -134,7 +134,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         TimeSpan ScrollInternetExplorerInitializeTime { get; } = Constants.ScrollInternetExplorerInitializeTime;
 
 
-        CameramanForm Form { get; set; }
+        CameramanForm CameramanForm { get; set; }
 
         IKeyboardMouseEvents HookEvents { get; set; }
 
@@ -202,11 +202,11 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 if(CaptureMode == CaptureMode.Screen) {
                     Application.Run();
                 } else {
-                    Form = form;
+                    CameramanForm = form;
                     if(ImmediatelySelect) {
-                        Form.Shown += Form_Shown;
+                        CameramanForm.Shown += Form_Shown;
                     }
-                    Application.Run(Form);
+                    Application.Run(CameramanForm);
                 }
 
             }
@@ -236,7 +236,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             TargetWindowHandle = IntPtr.Zero;
             NowSelecting = false;
 
-            Form.HideStatus();
+            CameramanForm.HideStatus();
 
             HookEvents.MouseMove -= HookEvents_MouseMove;
             HookEvents.MouseDown -= HookEvents_MouseDown;
@@ -295,24 +295,24 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             var hWnd = WindowHandleUtility.GetView(mousePoint, CaptureMode);
 
             if(hWnd == IntPtr.Zero) {
-                Form.HideStatus();
+                CameramanForm.HideStatus();
                 return;
             }
 
-            if(Form.IsSelfHandle(hWnd)) {
+            if(CameramanForm.IsSelfHandle(hWnd)) {
                 // 選ばれたのが自分とその関係者で前回選択ウィンドウが有効なら別段何もしない
                 if(TargetWindowHandle != IntPtr.Zero) {
                     return;
                 }
 
                 // 自分じゃないし死んどく
-                Form.HideStatus();
+                CameramanForm.HideStatus();
                 return;
             }
 
             var rect = WindowHandleUtility.GetViewArea(hWnd, CaptureMode);
             // 枠用にサイズ補正
-            Form.ShowStatus(hWnd, rect);
+            CameramanForm.ShowStatus(hWnd, rect);
 
             TargetWindowHandle = hWnd;
         }
@@ -467,7 +467,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         private void Form_Shown(object sender, EventArgs e)
         {
-            Form.Shown -= Form_Shown;
+            CameramanForm.Shown -= Form_Shown;
             StartViewSelect();
         }
 
