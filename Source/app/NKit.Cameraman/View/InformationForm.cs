@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ContentTypeTextNet.Library.PInvoke.Windows;
+using ContentTypeTextNet.NKit.Cameraman.Model;
 using ContentTypeTextNet.NKit.Common;
 
 namespace ContentTypeTextNet.NKit.Cameraman.View
@@ -23,6 +24,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
         #region property
 
+        CameramanModel Model {get;set;}
         public Point OffsetPoint { get; set; } = new Point(32, 32);
         public int WindowTextBufferLength { get; set; } = 256;
         public int WindowClassBufferLength { get; set; } = 256;
@@ -30,6 +32,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         #endregion
 
         #region function
+
+        public void SetModel(CameramanModel model)
+        {
+            Model = model;
+        }
+
 
         public void Attach(IntPtr hWnd, Rectangle hWndRectangle)
         {

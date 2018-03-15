@@ -31,12 +31,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.labelHandle = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.labelSize = new System.Windows.Forms.Label();
             this.labelLocation = new System.Windows.Forms.Label();
             this.labelCaption = new System.Windows.Forms.Label();
-            this.labelHandle = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.labelClass = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -98,6 +98,24 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(335, 143);
             this.tableLayoutPanel1.TabIndex = 5;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 48);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(38, 12);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "handle";
+            // 
+            // labelHandle
+            // 
+            this.labelHandle.AutoSize = true;
+            this.labelHandle.Location = new System.Drawing.Point(54, 48);
+            this.labelHandle.Name = "labelHandle";
+            this.labelHandle.Size = new System.Drawing.Size(38, 12);
+            this.labelHandle.TabIndex = 4;
+            this.labelHandle.Text = "handle";
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -133,24 +151,6 @@
             this.labelCaption.Size = new System.Drawing.Size(35, 12);
             this.labelCaption.TabIndex = 0;
             this.labelCaption.Text = "label1";
-            // 
-            // labelHandle
-            // 
-            this.labelHandle.AutoSize = true;
-            this.labelHandle.Location = new System.Drawing.Point(54, 48);
-            this.labelHandle.Name = "labelHandle";
-            this.labelHandle.Size = new System.Drawing.Size(38, 12);
-            this.labelHandle.TabIndex = 4;
-            this.labelHandle.Text = "handle";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 48);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(38, 12);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "handle";
             // 
             // labelClass
             // 

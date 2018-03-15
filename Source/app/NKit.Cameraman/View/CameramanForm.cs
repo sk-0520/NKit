@@ -23,7 +23,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
         CameramanModel Model { get; set; }
 
-        InformationForm InformationForm { get; set; }
+        InformationForm InformationForm { get; set; } = new InformationForm();
 
         #endregion
 
@@ -42,6 +42,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
                 };
                 this.hallArea.BackColor = TransparencyKey = colors.First(c => c != TransparencyKey);
             }
+
+            InformationForm.SetModel(Model);
         }
 
         public void HideStatus()
@@ -95,7 +97,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
         private void CameramanForm_Shown(object sender, EventArgs e)
         {
-            InformationForm = new InformationForm();
             InformationForm.Show(this);
         }
 
