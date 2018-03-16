@@ -305,6 +305,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         private async void commandCheckUpdate_Click(object sender, EventArgs e)
         {
+            this.commandExecuteUpdate.Enabled = false;
             await Worker.CheckUpdateAsync(this.commandCheckUpdate);
             RefreshControls();
             if(Worker.CanUpdate) {
