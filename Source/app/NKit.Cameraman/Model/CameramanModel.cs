@@ -24,87 +24,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
     {
         public CameramanModel(string[] arguments)
         {
-            var command = new CommandLineApplication(false);
-
-            var modeOption = command.Option("--mode", "mode", CommandOptionType.SingleValue);
-            var clipboardOption = command.Option("--clipboard", "use clipboard", CommandOptionType.NoValue);
-            var saveDirOption = command.Option("--save_directory", "save directory", CommandOptionType.SingleValue);
-            var saveEventOption = command.Option("--save_event_name", "save event", CommandOptionType.SingleValue);
-            var exitEventOption = command.Option("--exit_event_name", "exit event, pair --save_event_name", CommandOptionType.SingleValue);
-            var continuationOption = command.Option("--continuation", "one/continuation", CommandOptionType.NoValue);
-            var immediatelySelectOption = command.Option("--immediately_select", "start select", CommandOptionType.NoValue);
-            var shotKeyOption = command.Option("--photo_opportunity_key", $"shot normal key + {Keys.Control}, {Keys.Shift}, {Keys.Alt}", CommandOptionType.SingleValue);
-            var selectKeyOption = command.Option("--wait_opportunity_key", $"select normal key + {Keys.Control}, {Keys.Shift}, {Keys.Alt}", CommandOptionType.SingleValue);
-            var shotDelayTimeOption = command.Option("--photo_opportunity_delay_time", "shot deilay time", CommandOptionType.SingleValue);
-            var cameraBorderColorOption = command.Option("--camera_border_color", "color", CommandOptionType.SingleValue);
-            var cameraBorderWidthOption = command.Option("--camera_border_width", "color", CommandOptionType.SingleValue);
-            var scrollDelayTimeOption = command.Option("--scroll_delay_time", "color", CommandOptionType.SingleValue);
-            var scrollIeInitializeTimeOption = command.Option("--scroll_ie_init_time", "color", CommandOptionType.SingleValue);
-
-            command.Execute(arguments);
-
-            CaptureMode = EnumUtility.Parse<CaptureMode>(modeOption.Value());
-            IsEnabledClipboard = clipboardOption.HasValue();
-            if(saveDirOption.HasValue()) {
-                SaveDirectory = new DirectoryInfo(saveDirOption.Value());
-            }
-            if(saveEventOption.HasValue()) {
-                if(!exitEventOption.HasValue()) {
-                    throw new ArgumentException("--save_event_name, --exit_event_name");
-                }
-                SaveNoticeEvent = EventWaitHandle.OpenExisting(saveEventOption.Value());
-                ExitNoticeEvent = EventWaitHandle.OpenExisting(exitEventOption.Value());
-            }
-            IsContinuation = continuationOption.HasValue();
-            ImmediatelySelect = immediatelySelectOption.HasValue();
-
-            var needKey = true;
-            if(CaptureMode == CaptureMode.Screen && !IsContinuation) {
-                needKey = false;
-            }
-
-            if(needKey) {
-                if(!shotKeyOption.HasValue() && !selectKeyOption.HasValue()) {
-                    throw new ArgumentException("shot key!");
-                }
-
-                if(shotKeyOption.HasValue()) {
-                    ShotKeys = EnumUtility.Parse<Keys>(shotKeyOption.Value());
-                }
-                if(selectKeyOption.HasValue()) {
-                    SelectKeys = EnumUtility.Parse<Keys>(selectKeyOption.Value());
-                }
-                if(ShotKeys == Keys.None && SelectKeys == Keys.None) {
-                    throw new ArgumentException("shot/select key: none!");
-                }
-                if(ShotKeys == SelectKeys) {
-                    throw new ArgumentException("shot key: dup!");
-                }
-                if(ShotKeys.HasFlag(ExitKey) || SelectKeys.HasFlag(ExitKey)) {
-                    throw new ArgumentException($"shot key: reserved {ExitKey}");
-                }
-            }
-
-            if(shotDelayTimeOption.HasValue()) {
-                ShotDelayTime = TimeSpan.Parse(shotDelayTimeOption.Value());
-            }
-
-            if(cameraBorderColorOption.HasValue()) {
-                BorderColor = ColorTranslator.FromHtml(cameraBorderColorOption.Value());
-            }
-            if(cameraBorderWidthOption.HasValue()) {
-                BorderWidth = int.Parse(cameraBorderWidthOption.Value());
-            }
-
-            if(CaptureMode == CaptureMode.Scroll) {
-                if(scrollDelayTimeOption.HasValue()) {
-                    ScrollDelayTime = TimeSpan.Parse(scrollDelayTimeOption.Value());
-                }
-                if(scrollIeInitializeTimeOption.HasValue()) {
-                    ScrollInternetExplorerInitializeTime = TimeSpan.Parse(scrollIeInitializeTimeOption.Value());
-                }
-            }
-
+            Bag = new CameramanBag(arguments);
         }
 
         #region property
@@ -113,29 +33,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         bool NowSelecting { get; set; }
 
-        CaptureMode CaptureMode { get; }
-
-        bool IsEnabledClipboard { get; }
-
-        DirectoryInfo SaveDirectory { get; }
-
-        EventWaitHandle SaveNoticeEvent { get; }
-        EventWaitHandle ExitNoticeEvent { get; }
-
-        public bool IsContinuation { get; }
-        public bool ImmediatelySelect { get; }
-
-        public Keys ShotKeys { get; } = Keys.None;
-        public Keys SelectKeys { get; } = Keys.None;
-
-        TimeSpan ShotDelayTime { get; } = Constants.ShotDelayTime;
-
-        public Color BorderColor { get; } = Constants.CameraBorderColor;
-        public int BorderWidth { get; } = Constants.CameraBorderWidth;
-
-        TimeSpan ScrollDelayTime { get; } = Constants.ScrollDelayTime;
-        TimeSpan ScrollInternetExplorerInitializeTime { get; } = Constants.ScrollInternetExplorerInitializeTime;
-
+        public CameramanBag Bag { get; }
 
         InformationForm CameramanForm { get; set; }
 
@@ -149,18 +47,18 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         CameraBase GetCammera(IntPtr hWnd)
         {
-            if(CaptureMode == CaptureMode.Screen) {
+            if(Bag.CaptureMode == CaptureMode.Screen) {
                 return new ScreenCamera();
             }
 
             Debug.Assert(hWnd != IntPtr.Zero);
-            if(CaptureMode == CaptureMode.Scroll) {
-                return new ScrollCamera(hWnd, ScrollDelayTime) {
-                    ScrollInternetExplorerInitializeTime = ScrollInternetExplorerInitializeTime,
+            if(Bag.CaptureMode == CaptureMode.Scroll) {
+                return new ScrollCamera(hWnd, Bag.ScrollDelayTime) {
+                    ScrollInternetExplorerInitializeTime = Bag.ScrollInternetExplorerInitializeTime,
                 };
             }
 
-            return new WindowHandleCamera(hWnd, CaptureMode);
+            return new WindowHandleCamera(hWnd, Bag.CaptureMode);
 
             throw new NotImplementedException();
         }
@@ -182,33 +80,33 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         /// <param name="image"></param>
         void Develop(Image image)
         {
-            if(IsEnabledClipboard) {
+            if(Bag.IsEnabledClipboard) {
                 Clipboard.SetImage(image);
             }
-            if(SaveDirectory != null) {
+            if(Bag.SaveDirectory != null) {
                 var fileName = $"{DateTime.Now: yyyyMMdd_HHmmss}.png";
-                var filePath = Path.Combine(SaveDirectory.FullName, fileName);
+                var filePath = Path.Combine(Bag.SaveDirectory.FullName, fileName);
                 image.Save(filePath, ImageFormat.Png);
             }
 
-            if(SaveNoticeEvent != null) {
-                SaveNoticeEvent.Set();
+            if(Bag.SaveNoticeEvent != null) {
+                Bag.SaveNoticeEvent.Set();
             }
         }
 
         public void Execute(InformationForm form)
         {
-            if(CaptureMode == CaptureMode.Screen && !IsContinuation) {
+            if(Bag.CaptureMode == CaptureMode.Screen && !Bag.IsContinuation) {
                 CaptureScreen();
                 Exit();
             } else {
                 HookEvents = Hook.GlobalEvents();
 
-                if(ShotKeys != Keys.None || SelectKeys != Keys.None) {
+                if(Bag.ShotKeys != Keys.None || Bag.SelectKeys != Keys.None) {
                     HookKeyboardInput();
                 }
 
-                if(CaptureMode == CaptureMode.Screen) {
+                if(Bag.CaptureMode == CaptureMode.Screen) {
                     Application.Run();
                 } else {
                     CameramanForm = form;
@@ -281,10 +179,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
             HookEvents.Dispose();
 
-            Thread.Sleep(ShotDelayTime);
+            Thread.Sleep(Bag.ShotDelayTime);
             captureAction();
 
-            if(IsContinuation) {
+            if(Bag.IsContinuation) {
                 // 継続するなら前提条件としてキー入力が可能となっているのでキーフック開始
                 HookEvents = Hook.GlobalEvents();
                 HookKeyboardInput();
@@ -307,8 +205,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 HookEvents = null;
             }
 
-            if(ExitNoticeEvent != null) {
-                ExitNoticeEvent.Set();
+            if(Bag.ExitNoticeEvent != null) {
+                Bag.ExitNoticeEvent.Set();
             }
 
             Application.Exit();
@@ -316,7 +214,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         void SelectViewAndFocus(Point mousePoint)
         {
-            var hWnd = WindowHandleUtility.GetView(mousePoint, CaptureMode);
+            var hWnd = WindowHandleUtility.GetView(mousePoint, Bag.CaptureMode);
 
             if(hWnd == IntPtr.Zero) {
                 CameramanForm.Detach();
@@ -334,7 +232,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 return;
             }
 
-            var rect = WindowHandleUtility.GetViewArea(hWnd, CaptureMode);
+            var rect = WindowHandleUtility.GetViewArea(hWnd, Bag.CaptureMode);
             // 枠用にサイズ補正
             CameramanForm.Attach(hWnd, rect);
 
@@ -438,7 +336,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         private void HookEvents_KeyDown(object sender, KeyEventArgs e)
         {
             // 選択処理
-            if(CheckInputKey(e, SelectKeys)) {
+            if(CheckInputKey(e, Bag.SelectKeys)) {
                 if(!NowSelecting) {
                     Logger.Information("select");
 
@@ -454,9 +352,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             }
 
             // キャプチャ処理
-            if(CheckInputKey(e, ShotKeys)) {
+            if(CheckInputKey(e, Bag.ShotKeys)) {
                 Logger.Information("shot");
-                if(CaptureMode == CaptureMode.Screen) {
+                if(Bag.CaptureMode == CaptureMode.Screen) {
                     CaptureInHooking(CaptureScreen);
                 } else {
                     if(NowSelecting) {
@@ -467,7 +365,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                         }
                     } else {
                         // 今時点でアクティブなやつからキャプチャ
-                        var hWnd = WindowHandleUtility.GetActiveWindow(CaptureMode);
+                        var hWnd = WindowHandleUtility.GetActiveWindow(Bag.CaptureMode);
                         if(hWnd != IntPtr.Zero) {
                             Logger.Debug("window handle!");
                             TargetWindowHandle = hWnd;
@@ -488,7 +386,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     EndSelectView();
 
                     // 即時起動で継続使用しないのであれば選択待機よりは終了
-                    if(ImmediatelySelect && !IsContinuation) {
+                    if(Bag.ImmediatelySelect && !Bag.IsContinuation) {
                         Logger.Information("exit program ^_^");
                         Exit();
                     }
@@ -516,7 +414,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         private void Form_Shown(object sender, EventArgs e)
         {
             CameramanForm.Shown -= Form_Shown;
-            if(ImmediatelySelect) {
+            if(Bag.ImmediatelySelect) {
                 StartSelectView();
             } else {
                 CameramanForm.ShowNavigation();

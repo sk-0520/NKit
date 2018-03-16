@@ -47,10 +47,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         {
             Model = model;
 
-            this.labelSelectKey.Text = model.SelectKeys.ToString();
-            this.labelTakeShotKey.Text = model.ShotKeys.ToString();
+            this.labelSelectKey.Text = model.Bag.SelectKeys.ToString();
+            this.labelTakeShotKey.Text = model.Bag.ShotKeys.ToString();
             this.linkExitKey.Text = model.ExitKey.ToString();
-            this.labelContinuation.Text = model.IsContinuation.ToString();
+            this.labelContinuation.Text = model.Bag.IsContinuation.ToString();
         }
         #endregion
 

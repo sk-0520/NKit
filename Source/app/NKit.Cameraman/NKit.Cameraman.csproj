@@ -93,6 +93,7 @@
     </Compile>
     <Compile Include="Constants.cs" />
     <Compile Include="Model\CameraBase.cs" />
+    <Compile Include="Model\CameramanBag.cs" />
     <Compile Include="Model\CameramanModel.cs" />
     <Compile Include="Model\ScreenCamera.cs" />
     <Compile Include="Model\Scroll\ScrollCamera.cs" />
