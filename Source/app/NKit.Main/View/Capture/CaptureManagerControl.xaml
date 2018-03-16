@@ -9,8 +9,8 @@
   xmlns:app_main_view_control="clr-namespace:ContentTypeTextNet.NKit.Main.View.Control"
   xmlns:app_main_view_capture="clr-namespace:ContentTypeTextNet.NKit.Main.View.Capture"
 
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-  mc:Ignorable="d" 
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  mc:Ignorable="d"
   d:DesignHeight="450"
   d:DesignWidth="800"
 >
@@ -61,6 +61,16 @@
         <StackPanel>
           <Label>shot:</Label>
           <app_main_view_control:KeySettingControl Key="{Binding TakeShotKey, Mode=TwoWay}" ModifierKeys="{Binding TakeShotModifierKeys, Mode=TwoWay}" />
+        </StackPanel>
+
+        <StackPanel>
+          <CheckBox IsChecked="{Binding IsEnabledHideHeader}">hide header(default: *)</CheckBox>
+          <TextBox Text="{Binding HideHeaderElement}" />
+        </StackPanel>
+
+        <StackPanel>
+          <CheckBox IsChecked="{Binding IsEnabledHideFooter}">hide footer(default: *)</CheckBox>
+          <TextBox Text="{Binding HideFooterElement}" />
         </StackPanel>
 
       </StackPanel>
