@@ -96,8 +96,10 @@
     <Compile Include="Model\CameramanBag.cs" />
     <Compile Include="Model\CameramanModel.cs" />
     <Compile Include="Model\ScreenCamera.cs" />
+    <Compile Include="Model\Scroll\InternetExplorer\ElementStocker.cs" />
+    <Compile Include="Model\Scroll\InternetExplorer\InternetExplorerWrapper.cs" />
     <Compile Include="Model\Scroll\ScrollCamera.cs" />
-    <Compile Include="Model\Scroll\InternetExplorerScrollCamera.cs" />
+    <Compile Include="Model\Scroll\InternetExplorer\InternetExplorerScrollCamera.cs" />
     <Compile Include="Model\WindowHandleCamera.cs" />
     <Compile Include="Model\WindowHandleUtility.cs" />
     <Compile Include="Program.cs">

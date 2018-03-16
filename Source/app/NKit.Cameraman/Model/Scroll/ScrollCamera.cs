@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ContentTypeTextNet.Library.PInvoke.Windows;
+using ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer;
 using ContentTypeTextNet.NKit.Setting.Define;
 
 namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll

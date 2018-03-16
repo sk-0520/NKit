@@ -1,96 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Library.PInvoke.Windows;
-using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Utility.Model;
 using ContentTypeTextNet.NKit.Utility.Model.Unmanaged;
 using mshtml;
 using SHDocVw;
 
-namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
+namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 {
-    public class InternetExplorerScrollCamera : ScrollCameraBase
-    {
-        public InternetExplorerScrollCamera(IntPtr hWnd, TimeSpan delayTime)
-            : base(hWnd, delayTime)
-        { }
-
-        #region property
-
-        public TimeSpan SendMessageWaitTime { get; set; }
-        public TimeSpan DocumentWaitTime { get; set; }
-
-        #endregion
-
-        #region function
-        #endregion
-
-        #region WindowHandleCamera
-
-        protected override Image TakeShotCore()
-        {
-            using(var ie = new InternetExplorerWrapper(WindowHandle)) {
-                ie.SendMessageWaitTime = SendMessageWaitTime;
-                ie.DocumentWaitTime = DocumentWaitTime;
-
-                if(!ie.Initialize()) {
-                    Logger.Warning($"{nameof(InternetExplorerWrapper)}.{nameof(InternetExplorerWrapper.Initialize)}: failure");
-                    return null;
-                }
-
-                var scale = ie.GetScale();
-                var clientSize = ie.GetClientSize();
-                var scrollSize = ie.GetScrollSize();
-
-                // キャプチャ取得用の画像作成
-                var blockSize = new Size((int)(clientSize.Width * scale.X), (int)(clientSize.Height * scale.Y));
-                var imageSize = new Size((int)(scrollSize.Width * scale.X), (int)(scrollSize.Height * scale.Y));
-                var bitmap = new Bitmap(imageSize.Width, imageSize.Height);
-                using(var g = Graphics.FromImage(bitmap)) {
-                    // 一番上(0, 0)から順次取得
-                    for(var imageX = 0; imageX < imageSize.Width; imageX += blockSize.Width) {
-                        for(var imageY = 0; imageY < imageSize.Height; imageY += blockSize.Height) {
-                            // スクロールの位置と貼り付け先画像位置は一致しない(特に最後の方)ので補正
-                            var diffPoint = new Point(
-                                imageX + blockSize.Width < imageSize.Width ? 0 : imageSize.Width - (imageX + blockSize.Width),
-                                imageY + blockSize.Height < imageSize.Height ? 0 : imageSize.Height - (imageY + blockSize.Height)
-                            );
-                            var diffSize = new Size(
-                                blockSize.Width + diffPoint.X,
-                                blockSize.Height + diffPoint.Y
-                            );
-
-                            ie.ScrollTo((int)(imageX / scale.X), (int)(imageY / scale.Y));
-                            Wait();
-
-                            // スクロール中にウィンドウを動かすバカのために毎度毎度座標を取得する
-                            NativeMethods.GetWindowRect(WindowHandle, out var rect);
-                            g.CopyFromScreen(rect.Left - diffPoint.X, rect.Top - diffPoint.Y, imageX, imageY, diffSize);
-                            Logger.Trace($"{imageX} * {imageY}, {diffPoint}, {diffSize}");
-#if DEBUG
-                            g.DrawString($"{imageX} * {imageY}, {diffPoint}, {diffSize}", SystemFonts.DialogFont, SystemBrushes.ActiveCaption, new PointF(imageX, imageY));
-                            g.DrawLine(SystemPens.AppWorkspace, imageX, imageY, imageX + diffSize.Width, imageY + diffSize.Height);
-#endif
-                        }
-                    }
-                }
-                return bitmap;
-            }
-
-
-            //return null;
-        }
-
-        #endregion
-    }
-
     public class InternetExplorerWrapper : ModelBase
     {
         #region define
@@ -108,8 +30,16 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
 
         IntPtr ServerWindowHandle { get; }
 
+        /// <summary>
+        /// IE 取得の待ち時間。
+        /// </summary>
         public TimeSpan SendMessageWaitTime { get; set; }
+        /// <summary>
+        /// IE からドキュメント取得する際の待機時間。
+        /// <para><see cref="SendMessageWaitTime"/>は処理待ち時間であってこれは処理前の待機となる。</para>
+        /// </summary>
         public TimeSpan DocumentWaitTime { get; set; }
+
 
         ComModel<IHTMLDocument2> HtmlDocument { get; set; }
         ComModel<IHTMLWindow2> HtmlWindow { get; set; }
@@ -189,7 +119,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
             Logger.Information($"d: {HtmlScreen2.Com.deviceXDPI} * {HtmlScreen2.Com.deviceYDPI}");
             Logger.Information($"l: {HtmlScreen2.Com.logicalXDPI} * {HtmlScreen2.Com.logicalYDPI}");
 
-
             return true;
         }
 
@@ -236,6 +165,18 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
             HtmlWindow.Com.scrollBy(x, y);
         }
 
+        public ComModel<IHTMLElementCollection> GetElementsByTagName(string tagName)
+        {
+            return ComModel.Create(Body2.Com.getElementsByTagName(tagName));
+        }
+
+        public IEnumerable<ComModel<THTMLElement>> CollctionToElements<THTMLElement>(ComModel<IHTMLElementCollection> collection)
+        {
+            return collection.Com
+                .Cast<THTMLElement>()
+                .Select(elm => ComModel.Create(elm))
+            ;
+        }
 
         #endregion
 
@@ -263,5 +204,4 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
 
         #endregion
     }
-
 }
