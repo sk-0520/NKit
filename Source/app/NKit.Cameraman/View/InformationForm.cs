@@ -86,7 +86,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
         private void InformationForm_Shown(object sender, EventArgs e)
         {
-            CameramanForm.Show(this);
+            CameramanForm.Show();
         }
     }
 }

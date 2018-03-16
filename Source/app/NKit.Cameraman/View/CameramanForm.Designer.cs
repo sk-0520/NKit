@@ -58,7 +58,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Form1";
-            this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Black;
             this.ResumeLayout(false);
 
