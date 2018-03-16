@@ -29,8 +29,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         #region property
 
-        public Keys ExitKey { get; } = Keys.Escape;
-
         bool NowSelecting { get; set; }
 
         public CameramanBag Bag { get; }
@@ -193,7 +191,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             }
         }
 
-        void Exit()
+        public void Exit()
         {
             Logger.Information("ばいばい");
 
@@ -378,7 +376,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             }
 
             // 終了処理
-            if(CheckInputKey(e, ExitKey)) {
+            if(CheckInputKey(e,Bag.ExitKey)) {
                 e.Handled = true;
 
                 if(NowSelecting) {

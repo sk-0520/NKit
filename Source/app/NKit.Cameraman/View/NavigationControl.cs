@@ -49,7 +49,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
             this.labelSelectKey.Text = model.Bag.SelectKeys.ToString();
             this.labelTakeShotKey.Text = model.Bag.ShotKeys.ToString();
-            this.linkExitKey.Text = model.ExitKey.ToString();
+            this.linkExitKey.Text = model.Bag.ExitKey.ToString();
             this.labelContinuation.Text = model.Bag.IsContinuation.ToString();
         }
         #endregion
@@ -62,6 +62,11 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         private void controls_MouseLeave(object sender, EventArgs e)
         {
             OnMouseLeave(e);
+        }
+
+        private void linkExitKey_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Model.Exit();
         }
     }
 }

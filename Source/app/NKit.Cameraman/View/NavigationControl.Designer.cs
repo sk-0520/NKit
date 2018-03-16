@@ -163,6 +163,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.linkExitKey.TabIndex = 3;
             this.linkExitKey.TabStop = true;
             this.linkExitKey.Text = "linkLabel1";
+            this.linkExitKey.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkExitKey_LinkClicked);
             // 
             // NavigationControl
             // 
