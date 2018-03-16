@@ -95,8 +95,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
                 area.Right - Size.Width - margin.Width,
                 area.Bottom - Size.Height - margin.Height
             );
-            var windowArea = RectangleToScreen(new Rectangle(new Point(), Size));
-            SetNavigationOpacity(windowArea.Contains(Cursor.Position));
+            SetNavigationOpacity(ContainsCursorInWindow());
             Visible = true;
         }
 
@@ -106,6 +105,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
                 ? NavigationMouseInOpacity
                 : NavigationMouseOutOpacity
             ;
+        }
+
+        bool ContainsCursorInWindow()
+        {
+            var windowArea = RectangleToScreen(new Rectangle(new Point(), Size));
+            return windowArea.Contains(Cursor.Position);
         }
 
 
@@ -145,14 +150,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
         private void InformationForm_MouseEnter(object sender, EventArgs e)
         {
-            // うごかない
             SetNavigationOpacity(true);
         }
 
         private void InformationForm_MouseLeave(object sender, EventArgs e)
         {
-            // うごかない２
-            SetNavigationOpacity(false);
+            SetNavigationOpacity(ContainsCursorInWindow());
         }
     }
 }

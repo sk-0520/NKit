@@ -40,6 +40,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.navigationControl.Name = "navigationControl";
             this.navigationControl.Size = new System.Drawing.Size(335, 143);
             this.navigationControl.TabIndex = 0;
+            this.navigationControl.MouseEnter += new System.EventHandler(this.InformationForm_MouseEnter);
+            this.navigationControl.MouseLeave += new System.EventHandler(this.InformationForm_MouseLeave);
             // 
             // windowStatusControl
             // 
@@ -52,8 +54,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.windowStatusControl.TabIndex = 1;
             this.windowStatusControl.WindowClassBufferLength = 256;
             this.windowStatusControl.WindowTextBufferLength = 256;
-            this.windowStatusControl.MouseEnter += new System.EventHandler(this.InformationForm_MouseEnter);
-            this.windowStatusControl.MouseLeave += new System.EventHandler(this.InformationForm_MouseLeave);
             // 
             // InformationForm
             // 

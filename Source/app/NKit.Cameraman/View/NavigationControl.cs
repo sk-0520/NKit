@@ -16,6 +16,11 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         public NavigationControl()
         {
             InitializeComponent();
+
+            foreach(var control in GetChildrenControls(this, true)) {
+                control.MouseEnter += controls_MouseEnter;
+                control.MouseLeave += controls_MouseLeave;
+            }
         }
 
         #region property
@@ -25,15 +30,38 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         #endregion
 
         #region function
+
+        static IEnumerable<Control> GetChildrenControls(Control target, bool recursive)
+        {
+            foreach(Control control in target.Controls) {
+                yield return control;
+                if(recursive) {
+                    foreach(var child in  GetChildrenControls(control, recursive)) {
+                        yield return child;
+                    }
+                }
+            }
+        }
+
         public void SetModel(CameramanModel model)
         {
             Model = model;
 
             this.labelSelectKey.Text = model.SelectKeys.ToString();
             this.labelTakeShotKey.Text = model.ShotKeys.ToString();
-            this.labelExitKey.Text = model.ExitKey.ToString();
+            this.linkExitKey.Text = model.ExitKey.ToString();
             this.labelContinuation.Text = model.IsContinuation.ToString();
         }
         #endregion
+
+        private void controls_MouseEnter(object sender, EventArgs e)
+        {
+            OnMouseEnter(e);
+        }
+
+        private void controls_MouseLeave(object sender, EventArgs e)
+        {
+            OnMouseLeave(e);
+        }
     }
 }
