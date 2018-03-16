@@ -26,14 +26,13 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         {
             Element = ComModel.Create((IHTMLElement)element.Com);
             Element2 = element;
-            using(var style = ComModel.Create(Element2.Com.currentStyle)) {
-                foreach(var property in stringProperties) {
-                    var value = (string)style.Com.getAttribute(property);
-                    StockStyle[property] = value;
-                }
 
-                StockStyle[nameof(style.Com.position)] = style.Com.position;
-                StockStyle[nameof(style.Com.display)] = style.Com.display;
+            Style = ComModel.Create(Element.Com.style);
+            CurrentStyle = ComModel.Create(Element2.Com.currentStyle);
+
+            foreach(var property in stringProperties) {
+                var value = (string)CurrentStyle.Com.getAttribute(property);
+                StockStyle[property] = value;
             }
         }
 
@@ -41,6 +40,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 
         public ComModel<IHTMLElement> Element { get; }
         public ComModel<IHTMLElement2> Element2 { get; }
+
+        public ComModel<IHTMLStyle> Style { get; }
+        public ComModel<IHTMLCurrentStyle> CurrentStyle { get; }
 
         public IDictionary<string, string> StockStyle { get; } = new Dictionary<string, string>();
 
@@ -65,7 +67,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
     /// かなり現定期的なリスト。
     /// <para>面倒なことは全部面倒見させる</para>
     /// </summary>
-    public class ElementStockerList: Collection<ElementStocker>, IDisposable
+    public class ElementStockerList : Collection<ElementStocker>, IDisposable
     {
         public ElementStockerList()
         { }
@@ -89,12 +91,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         /// <para>既に存在する要素は<see cref="IDisposable.Dispose"/>後にクリアされる</para>
         /// </summary>
         /// <param name="items"></param>
-        public void SetRange(IEnumerable<ComModel<IHTMLElement2>> items)
+        public void SetRange(IEnumerable<ElementStocker> items)
         {
             DisposeItems();
             Clear();
 
-            foreach(var item in items.Select(i => new ElementStocker(i))) {
+            foreach(var item in items) {
                 Add(item);
             }
         }

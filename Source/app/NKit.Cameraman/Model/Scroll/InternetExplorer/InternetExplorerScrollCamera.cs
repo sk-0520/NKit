@@ -38,17 +38,13 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 
         #region function
 
-        bool IsFixed(ComModel<IHTMLElement2> element2)
+        bool IsFixed(IHTMLCurrentStyle currentStyle)
         {
-            using(var style = ComModel.Create(element2.Com.currentStyle)) {
-                return style.Com.position == "fixed";
-            }
+            return currentStyle.position == "fixed";
         }
-        bool IsShow(ComModel<IHTMLElement2> element2)
+        bool IsShow(IHTMLCurrentStyle currentStyle)
         {
-            using(var style = ComModel.Create(element2.Com.currentStyle)) {
-                return style.Com.display != "none";
-            }
+            return currentStyle.display != "none";
         }
 
         void SetStyleCore(ComModel<IHTMLElement> element, IEnumerable<KeyValuePair<string, string>> pairs)
@@ -88,46 +84,43 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
             #endregion
         }
 
-        IEnumerable<ComModel<IHTMLElement2>> GetFixedElements(InternetExplorerWrapper ie, IEnumerable<TagClass> tagClassItems)
+        IEnumerable<ElementStocker> GetFixedElements(InternetExplorerWrapper ie, IEnumerable<TagClass> tagClassItems)
         {
             foreach(var tagClass in tagClassItems) {
                 using(var collection = ie.GetElementsByTagName(tagClass.TagName)) {
-                    foreach(var targetElement2 in ie.CollctionToElements<IHTMLElement2>(collection)) {
-                        using(var targetElement = ComModel.Create((IHTMLElement)targetElement2.Com)) {
-                            if(tagClass.HasClass) {
-                                if(string.IsNullOrEmpty(targetElement.Com.className)) {
-                                    targetElement2.Dispose();
-                                    continue;
-                                }
-                                if(Array.IndexOf(targetElement.Com.className.Split(' '), tagClass.ClassName) == -1) {
-                                    targetElement2.Dispose();
-                                    continue;
-                                }
-                            }
+                    foreach(var stocker in ie.CollctionToElements<IHTMLElement2>(collection).Select(elm2 => new ElementStocker(elm2))) {
 
-                            // 対象が固定されていれば子を考慮する必要なし
-                            if(IsFixed(targetElement2)) {
-                                yield return targetElement2;
+                        if(tagClass.HasClass) {
+                            if(string.IsNullOrEmpty(stocker.Element.Com.className)) {
                                 continue;
                             }
-
-                            // 子の固定状況を確認する
-                            // あんまりやる気ないけど、一応
-                            using(var children = ComModel.Create((IHTMLElementCollection)targetElement.Com.all)) {
-                                foreach(var childElement in ie.CollctionToElements<IHTMLElement2>(children)) {
-                                    if(IsFixed(childElement)) {
-                                        yield return childElement;
-                                        continue;
-                                    }
-
-                                    // いらない子
-                                    childElement.Dispose();
-                                }
+                            if(Array.IndexOf(stocker.Element.Com.className.Split(' '), tagClass.ClassName) == -1) {
+                                continue;
                             }
                         }
 
-                        // いらない指定タグ要素
-                        targetElement2.Dispose();
+                        // 対象が固定されていれば子を考慮する必要なし
+                        if(IsFixed(stocker.CurrentStyle.Com)) {
+                            yield return stocker;
+                            continue;
+                        }
+
+                        // 子の固定状況を確認する
+                        // あんまりやる気ないけど、一応
+                        using(var children = ComModel.Create((IHTMLElementCollection)stocker.Element.Com.all)) {
+                            foreach(var childStocker in ie.CollctionToElements<IHTMLElement2>(children).Select(elm2 => new ElementStocker(elm2))) {
+                                if(IsFixed(childStocker.CurrentStyle.Com)) {
+                                    yield return childStocker;
+                                    continue;
+                                }
+
+                                // いらない子
+                                childStocker.Dispose();
+                            }
+                        }
+
+                        // いらない要素
+                        stocker.Dispose();
                     }
                 }
             }
