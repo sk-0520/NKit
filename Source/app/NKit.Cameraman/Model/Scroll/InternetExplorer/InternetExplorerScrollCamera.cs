@@ -106,6 +106,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                     if(element2 != null) {
                         var stocker = new ElementStocker(element2);
                         if(IsFixed(stocker.CurrentStyle.Com)) {
+                            Logger.Debug($"get id result time: {stopwatchId.Elapsed}");
                             yield return stocker;
                             continue;
                         }
@@ -118,9 +119,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                 using(var collection = ie.GetElementsByTagName(targetElement.TagName)) {
                     Logger.Debug($"get tag time: {stopwatchTag.Elapsed}");
 
-                var stopwatchStock = Stopwatch.StartNew();
-                    foreach(var stocker in ie.CollctionToElements<IHTMLElement2>(collection).Select(elm2 => new ElementStocker(elm2))) {
-                    Logger.Debug($"get stock time: {stopwatchTag.Elapsed}");
+                    foreach(var element2 in ie.CollctionToElements<IHTMLElement2>(collection)) {
+                        var stopwatchStock = Stopwatch.StartNew();
+                        var stocker = new ElementStocker(element2);
+                        Logger.Debug($"get stock time: {stopwatchStock.Elapsed}");
 
                         if(targetElement.HasId) {
                             var id = stocker.Element.Com.getAttribute("id");
@@ -146,6 +148,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 
                         // 対象が固定されていれば子を考慮する必要なし
                         if(IsFixed(stocker.CurrentStyle.Com)) {
+                            Logger.Debug($"get stock result time: {stopwatchTag.Elapsed}");
                             yield return stocker;
                             continue;
                         }

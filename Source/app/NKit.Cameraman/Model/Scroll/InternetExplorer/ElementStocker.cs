@@ -1,4 +1,4 @@
-//#define NEED_DEBUG
+#define NEED_DEBUG
 #if NEED_DEBUG
 #   if DEBUG
 #   elif BETA
