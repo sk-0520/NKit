@@ -2,7 +2,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyVersion("0.0.6.*")]
+[assembly: AssemblyVersion("0.0.7.*")]
 
 #region 変わらない人々
 
