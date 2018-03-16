@@ -170,6 +170,15 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
             return ComModel.Create(Body2.Com.getElementsByTagName(tagName));
         }
 
+        public ComModel<THTMLElement> GetElementById<THTMLElement>(string id)
+        {
+            var element = (THTMLElement)Document3.Com.getElementById(id);
+            if(element == null) {
+                return null;
+            }
+            return ComModel.Create(element);
+        }
+
         public IEnumerable<ComModel<THTMLElement>> CollctionToElements<THTMLElement>(ComModel<IHTMLElementCollection> collection)
         {
             return collection.Com

@@ -59,57 +59,73 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
             SetStyleCore(stocker, new[] { new KeyValuePair<string, string>(property, value) });
         }
 
-        struct TagClass
+        struct TargetElement
         {
-            static Regex Splitter = new Regex(@"(?<TAG>[\w\-]+)(#(?<ID>[\w\-]+))?(\.(?<CLASS>[\w\-]+))?", RegexOptions.ExplicitCapture);
-            public TagClass(string tagProperty)
+            static Regex Splitter = new Regex(@"(?<TAG>[\w\-]+)?(#(?<ID>[\w\-]+))?(\.(?<CLASS>[\w\-]+))?", RegexOptions.ExplicitCapture);
+            public TargetElement(string tagProperty)
             {
                 var match = Splitter.Match(tagProperty);
                 TagName = match.Groups["TAG"].Value;
                 Id = match.Groups["ID"].Value;
-                ClassName = match.Groups["CLASS"].Value;
+                Class = match.Groups["CLASS"].Value;
             }
 
             #region property
 
             public string TagName { get; }
             public string Id { get; }
-            public string ClassName { get; }
+            public string Class { get; }
 
+            public bool HasTag => TagName != string.Empty;
             public bool HasId => Id != string.Empty;
-            public bool HasClass => ClassName != string.Empty;
+            public bool HasClass => Class != string.Empty;
+
+            public bool IsEnabled => HasId || HasTag || (HasTag && HasClass);
 
             #endregion
         }
 
-        IEnumerable<ElementStocker> GetFixedElementsCore(InternetExplorerWrapper ie, TagClass tagClassItems, ElementStocker parentStocker)
+        IEnumerable<ElementStocker> GetFixedElementsCore(InternetExplorerWrapper ie, TargetElement targetElements, ElementStocker parentStocker)
         {
             throw new NotImplementedException();
         }
 
-        IEnumerable<ElementStocker> GetFixedElements(InternetExplorerWrapper ie, IEnumerable<TagClass> tagClassItems)
+        IEnumerable<ElementStocker> GetFixedElements(InternetExplorerWrapper ie, IEnumerable<TargetElement> targetElements)
         {
-            foreach(var tagClass in tagClassItems) {
-                using(var collection = ie.GetElementsByTagName(tagClass.TagName)) {
+            foreach(var targetElement in targetElements.Where(t => t.IsEnabled)) {
+                if(targetElement.HasId && !targetElement.HasTag) {
+                    var element2 = ie.GetElementById<IHTMLElement2>(targetElement.Id);
+                    if(element2 != null) {
+                        var stocker = new ElementStocker(element2);
+                        if(IsFixed(stocker.CurrentStyle.Com)) {
+                            yield return stocker;
+                            continue;
+                        }
+                        stocker.Dispose();
+                    }
+                    continue;
+                }
+
+                using(var collection = ie.GetElementsByTagName(targetElement.TagName)) {
                     foreach(var stocker in ie.CollctionToElements<IHTMLElement2>(collection).Select(elm2 => new ElementStocker(elm2))) {
 
-                        if(tagClass.HasId) {
+                        if(targetElement.HasId) {
                             var id = stocker.Element.Com.getAttribute("id");
                             if(string.IsNullOrEmpty(id)) {
                                 stocker.Dispose();
                                 continue;
                             }
-                            if(!string.Equals(id, tagClass.Id ,StringComparison.InvariantCultureIgnoreCase)) {
+                            if(!string.Equals(id, targetElement.Id, StringComparison.InvariantCultureIgnoreCase)) {
                                 stocker.Dispose();
                                 continue;
                             }
                         }
-                        if(tagClass.HasClass) {
+                        if(targetElement.HasClass) {
                             if(string.IsNullOrEmpty(stocker.Element.Com.className)) {
                                 stocker.Dispose();
                                 continue;
                             }
-                            if(Array.IndexOf(stocker.Element.Com.className.Split(' '), tagClass.ClassName) == -1) {
+                            if(Array.IndexOf(stocker.Element.Com.className.Split(' '), targetElement.Class) == -1) {
                                 stocker.Dispose();
                                 continue;
                             }
@@ -119,20 +135,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                         if(IsFixed(stocker.CurrentStyle.Com)) {
                             yield return stocker;
                             continue;
-                        }
-
-                        // 子の固定状況を確認する
-                        // あんまりやる気ないけど、一応
-                        using(var children = ComModel.Create((IHTMLElementCollection)stocker.Element.Com.all)) {
-                            foreach(var childStocker in ie.CollctionToElements<IHTMLElement2>(children).Select(elm2 => new ElementStocker(elm2))) {
-                                if(IsFixed(childStocker.CurrentStyle.Com)) {
-                                    yield return childStocker;
-                                    continue;
-                                }
-
-                                // いらない子
-                                childStocker.Dispose();
-                            }
                         }
 
                         // いらない要素
@@ -177,8 +179,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                 var clientSize = ie.GetClientSize();
                 var scrollSize = ie.GetScrollSize();
 
-                IReadOnlyList<TagClass> headerTagClassItems = HideFixedInHeader ? Constants.HideHeaderTagClassItems.Select(s => new TagClass(s)).ToList() : null;
-                IReadOnlyList<TagClass> footerTagClassItems = HideFixedInHeader ? Constants.HideFooterTagClassItems.Select(s => new TagClass(s)).ToList() : null;
+                IReadOnlyList<TargetElement> headerTagClassItems = HideFixedInHeader ? Constants.HideHeaderTagClassItems.Select(s => new TargetElement(s)).ToList() : null;
+                IReadOnlyList<TargetElement> footerTagClassItems = HideFixedInHeader ? Constants.HideFooterTagClassItems.Select(s => new TargetElement(s)).ToList() : null;
 
 
                 // キャプチャ取得用の画像作成
@@ -224,12 +226,14 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                                 NativeMethods.GetWindowRect(WindowHandle, out var rect);
                                 g.CopyFromScreen(rect.Left - diffPoint.X, rect.Top - diffPoint.Y, imageX, imageY, diffSize);
                                 Logger.Trace($"{imageX} * {imageY}, {diffPoint}, {diffSize}");
-#if DEBUG
-                                g.DrawString($"{imageX} * {imageY}, {diffPoint}, {diffSize}", SystemFonts.DialogFont, SystemBrushes.ActiveCaption, new PointF(imageX, imageY));
-                                g.DrawLine(SystemPens.AppWorkspace, imageX, imageY, imageX + diffSize.Width, imageY + diffSize.Height);
-#endif
+
+                                if(Constants.ScrollInternetExplorerDebug) {
+                                    g.DrawString($"{imageX} * {imageY}, {diffPoint}, {diffSize}", SystemFonts.DialogFont, SystemBrushes.ActiveCaption, new PointF(imageX, imageY));
+                                    g.DrawLine(SystemPens.AppWorkspace, imageX, imageY, imageX + diffSize.Width, imageY + diffSize.Height);
+                                }
+
+                                // 毎回取得する代わりに毎回戻してあげないともう何が何だか
                                 if(headerStockItems.Any()) {
-                                    // 毎回取得する代わりに毎回戻してあげないともう何が何だか
                                     ShowStockItems(headerStockItems);
                                 }
                                 if(footerStockItems.Any()) {

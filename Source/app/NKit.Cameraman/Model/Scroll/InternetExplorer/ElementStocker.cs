@@ -34,6 +34,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                 var value = (string)CurrentStyle.Com.getAttribute(property);
                 StockStyle[property] = value;
             }
+
+#if DEBUG
+            D = new DEBUG(this);
+#endif
         }
 
         #region property
@@ -45,6 +49,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         public ComModel<IHTMLCurrentStyle> CurrentStyle { get; }
 
         public IDictionary<string, string> StockStyle { get; } = new Dictionary<string, string>();
+
+#if DEBUG
+        DEBUG D { get; }
+#endif
 
         #endregion
 
@@ -62,6 +70,35 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 
         #endregion
     }
+
+#if DEBUG
+    // COM の中身をデバッガで見るの一苦労なんすよ
+    public class DEBUG
+    {
+        public DEBUG(ElementStocker es)
+        {
+            Urn = es.Element2.Com.tagUrn;
+            TagName = es.Element.Com.tagName;
+            Id = es.Element.Com.getAttribute("id");
+            ClassName = es.Element.Com.getAttribute("className");
+
+            var styleType = typeof(IHTMLCurrentStyle);
+            foreach(var prop in styleType.GetProperties()) {
+                Style[prop.Name] = Convert.ToString(prop.GetValue(es.Element2.Com.currentStyle));
+            }
+        }
+
+        #region property
+
+        public string Urn { get; }
+        public string TagName { get; }
+        public string Id { get; }
+        public string ClassName { get; }
+        public IDictionary<string, string> Style { get; } = new Dictionary<string, string>();
+
+        #endregion
+    }
+#endif
 
     /// <summary>
     /// かなり現定期的なリスト。

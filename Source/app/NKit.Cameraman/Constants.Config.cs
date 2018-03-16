@@ -26,6 +26,8 @@ namespace ContentTypeTextNet.NKit.Cameraman
         public static TimeSpan ScrollDelayTime => appConfig.Get("scroll-delay-time", s => TimeSpan.Parse(s));
         public static TimeSpan ScrollInternetExplorerInitializeTime => appConfig.Get("scroll-internet-explorer-initialize-time", s => TimeSpan.Parse(s));
 
+        public static bool ScrollInternetExplorerDebug => appConfig.Get("scroll-internet-explorer-debug", s => bool.Parse(s));
+
         public static IEnumerable<string> HideHeaderTagClassItems => appConfig.Get("hide-header-tag-class-items", s => s.Split(',').Select(ss => ss.Trim()));
         public static IEnumerable<string> HideFooterTagClassItems => appConfig.Get("hide-footer-tag-class-items", s => s.Split(',').Select(ss => ss.Trim()));
 
