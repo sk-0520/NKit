@@ -117,6 +117,18 @@
     <Compile Include="View\InformationForm.Designer.cs">
       <DependentUpon>InformationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\NavigationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\NavigationControl.Designer.cs">
+      <DependentUpon>NavigationControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\WindowStatusControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\WindowStatusControl.Designer.cs">
+      <DependentUpon>WindowStatusControl.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="View\CameramanForm.resx">
       <DependentUpon>CameramanForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -138,6 +150,12 @@
     </Content>
     <EmbeddedResource Include="View\InformationForm.resx">
       <DependentUpon>InformationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\NavigationControl.resx">
+      <DependentUpon>NavigationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\WindowStatusControl.resx">
+      <DependentUpon>WindowStatusControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="NKit.Cameraman.user.config">
       <DependentUpon>App.config</DependentUpon>

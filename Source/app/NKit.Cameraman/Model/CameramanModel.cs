@@ -22,12 +22,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 {
     public class CameramanModel : ModelBase
     {
-        #region define
-
-        static Keys ExitKey { get; } = Keys.Escape;
-
-        #endregion
-
         public CameramanModel(string[] arguments)
         {
             var command = new CommandLineApplication(false);
@@ -115,6 +109,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         #region property
 
+        public Keys ExitKey { get; } = Keys.Escape;
 
         bool NowSelecting { get; set; }
 
@@ -127,11 +122,11 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         EventWaitHandle SaveNoticeEvent { get; }
         EventWaitHandle ExitNoticeEvent { get; }
 
-        bool IsContinuation { get; }
-        bool ImmediatelySelect { get; }
+        public bool IsContinuation { get; }
+        public bool ImmediatelySelect { get; }
 
-        Keys ShotKeys { get; } = Keys.None;
-        Keys SelectKeys { get; } = Keys.None;
+        public Keys ShotKeys { get; } = Keys.None;
+        public Keys SelectKeys { get; } = Keys.None;
 
         TimeSpan ShotDelayTime { get; } = Constants.ShotDelayTime;
 
@@ -288,6 +283,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 // 継続するなら前提条件としてキー入力が可能となっているのでキーフック開始
                 HookEvents = Hook.GlobalEvents();
                 HookKeyboardInput();
+
+                CameramanForm.ShowNavigation();
             } else {
                 Exit();
             }
