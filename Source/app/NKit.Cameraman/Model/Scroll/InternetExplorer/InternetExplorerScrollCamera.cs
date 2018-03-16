@@ -205,7 +205,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         IReadOnlyList<TargetElement> SplitTargetElements(string source)
         {
             return source
-                .Split(':')
+                .Split(',')
                 .Select(s => s.Trim())
                 .Select(s => new TargetElement(s))
                 .ToList()
@@ -274,7 +274,11 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                                 var stockItems = headerStockItems.Concat(footerStockItems).ToList();
                                 HideStockItems(stockItems);
 
-                                WaitMinus(stopwatch.Elapsed);
+                                if(DelayTime <= stopwatch.Elapsed) {
+                                    WaitMinus(TimeSpan.FromMilliseconds(DelayTime.TotalMilliseconds / 2));
+                                } else {
+                                    WaitMinus(stopwatch.Elapsed);
+                                }
 
                                 // スクロール中にウィンドウを動かすバカのために毎度毎度座標を取得する
                                 NativeMethods.GetWindowRect(WindowHandle, out var rect);
