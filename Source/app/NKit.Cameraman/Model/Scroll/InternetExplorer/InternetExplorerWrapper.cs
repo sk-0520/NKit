@@ -49,10 +49,11 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 
         ComModel<IHTMLDocument2> Document2 { get; set; }
         ComModel<IHTMLDocument3> Document3 { get; set; }
+        //ComModel<IHTMLDocument7> Document7 { get; set; } ないんかい！
 
         ComModel<IHTMLElement2> Body2 { get; set; }
-        ComModel<IHTMLElement2> Body3_2 { get; set; }
-        ComModel<IHTMLElement3> Body3_3 { get; set; }
+        ComModel<IHTMLElement2> Body3FromElement2 { get; set; }
+        ComModel<IHTMLElement3> Body3FromElement3 { get; set; }
 
 
         #endregion
@@ -104,13 +105,13 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
             Document3 = ComModel.Create((IHTMLDocument3)WebBrowser.Com.Document);
 
             Body2 = ComModel.Create((IHTMLElement2)Document2.Com.body);
-            Body3_2 = ComModel.Create((IHTMLElement2)Document3.Com.documentElement);
-            Body3_3 = ComModel.Create((IHTMLElement3)Document3.Com.documentElement);
+            Body3FromElement2 = ComModel.Create((IHTMLElement2)Document3.Com.documentElement);
+            Body3FromElement3 = ComModel.Create((IHTMLElement3)Document3.Com.documentElement);
 
             Logger.Information($"c: {Body2.Com.clientWidth} * {Body2.Com.clientHeight}");
             Logger.Information($"s: {Body2.Com.scrollWidth} * {Body2.Com.scrollHeight}");
-            Logger.Information($"c: {Body3_2.Com.clientWidth} * {Body3_2.Com.clientHeight}");
-            Logger.Information($"s: {Body3_2.Com.scrollWidth} * {Body3_2.Com.scrollHeight}");
+            Logger.Information($"c: {Body3FromElement2.Com.clientWidth} * {Body3FromElement2.Com.clientHeight}");
+            Logger.Information($"s: {Body3FromElement2.Com.scrollWidth} * {Body3FromElement2.Com.scrollHeight}");
 
 
             Logger.Information($"*: {HtmlScreen.Com.width} * {HtmlScreen.Com.height}");
@@ -125,15 +126,15 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         public Size GetClientSize()
         {
             return new Size(
-                Body3_2.Com.clientWidth,
-                Body3_2.Com.clientHeight
+                Body3FromElement2.Com.clientWidth,
+                Body3FromElement2.Com.clientHeight
             );
         }
         public Size GetScrollSize()
         {
             return new Size(
-                Body3_2.Com.scrollWidth,
-                Body3_2.Com.scrollHeight
+                Body3FromElement2.Com.scrollWidth,
+                Body3FromElement2.Com.scrollHeight
             );
         }
 
@@ -194,8 +195,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         protected override void Dispose(bool disposing)
         {
             if(!IsDisposed) {
-                Body3_3?.Dispose();
-                Body3_2?.Dispose();
+                Body3FromElement3?.Dispose();
+                Body3FromElement2?.Dispose();
                 Body2?.Dispose();
 
                 Document3?.Dispose();
