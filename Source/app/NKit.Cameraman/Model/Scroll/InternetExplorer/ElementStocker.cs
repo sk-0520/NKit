@@ -24,30 +24,30 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
     {
         #region variable
 
-        ComModel<IHTMLElement> _element;
+        ComModel<IHTMLElement2> _element2;
         ComModel<IHTMLStyle> _style;
         ComModel<IHTMLCurrentStyle> _currentStyle;
 
         #endregion
 
-        public ElementStocker(ComModel<IHTMLElement2> element)
+        public ElementStocker(ComModel<IHTMLElement> element)
         {
-            Element2 = element;
+            Element = element;
         }
 
         #region property
 
-        public ComModel<IHTMLElement> Element
+        public ComModel<IHTMLElement> Element { get; }
+        public ComModel<IHTMLElement2> Element2
         {
             get
             {
-                if(this._element == null) {
-                    this._element = ComModel.Create((IHTMLElement)Element2.Com);
+                if(this._element2 == null) {
+                    this._element2 = ComModel.Create((IHTMLElement2)Element.Com);
                 }
-                return this._element;
+                return this._element2;
             }
         }
-        public ComModel<IHTMLElement2> Element2 { get; }
 
         public ComModel<IHTMLStyle> Style
         {
@@ -86,7 +86,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
             if(!IsDisposed) {
                 this._currentStyle?.Dispose();
                 this._style?.Dispose();
-                this._element?.Dispose();
+                this._element2?.Dispose();
                 Element2.Dispose();
             }
 

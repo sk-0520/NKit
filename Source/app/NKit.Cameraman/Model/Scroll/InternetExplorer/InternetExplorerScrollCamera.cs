@@ -101,11 +101,11 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                 // getElementById で済むやつを先に対応
                 if(targetElement.HasId && !targetElement.HasTag) {
                     var stopwatchId = Stopwatch.StartNew();
-                    var element2 = ie.GetElementById<IHTMLElement2>(targetElement.Id);
+                    var element = ie.GetElementById<IHTMLElement>(targetElement.Id);
                     Logger.Debug($"get id time: {stopwatchId.Elapsed}");
 
-                    if(element2 != null) {
-                        var stocker = new ElementStocker(element2);
+                    if(element != null) {
+                        var stocker = new ElementStocker(element);
                         if(IsFixed(stocker.CurrentStyle.Com)) {
                             Logger.Debug($"get id result time: {stopwatchId.Elapsed}");
                             yield return stocker;
@@ -121,14 +121,14 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                 using(var collection = ie.GetElementsByTagName(targetElement.TagName)) {
                     Logger.Debug($"get tag time: {stopwatchTag.Elapsed}");
 
-                    foreach(var element2 in ie.CollctionToElements<IHTMLElement2>(collection)) {
+                    foreach(var element in ie.CollctionToElements<IHTMLElement>(collection)) {
                         var stopwatchStock = Stopwatch.StartNew();
-                        var stocker = new ElementStocker(element2);
+                        var stocker = new ElementStocker(element);
 
                         Logger.Debug($"get stock time: {stopwatchStock.Elapsed}");
 
                         if(targetElement.HasId) {
-                            var id = stocker.Element.Com.getAttribute("id");
+                            var id = stocker.Element.Com.id;
                             if(string.IsNullOrEmpty(id)) {
                                 Logger.Debug($"get stock id empty: {stopwatchStock.Elapsed}");
                                 stocker.Dispose();
@@ -141,6 +141,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                             }
                         }
                         if(targetElement.HasClass) {
+                            // これがクッソみたいに遅い
                             var className = stocker.Element.Com.className;
                             if(string.IsNullOrEmpty(className)) {
                                 stocker.Dispose();
