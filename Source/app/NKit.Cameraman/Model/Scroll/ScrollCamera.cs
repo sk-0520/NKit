@@ -83,6 +83,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
         IntPtr TargetWindowHandle { get; set; }
 
         public TimeSpan ScrollInternetExplorerInitializeTime { get; set; }
+        public bool ScrollInternetExplorerHideFixedHeader { get; set; }
+        public string ScrollInternetExplorerHideFixedHeaderElements { get; set; }
+        public bool ScrollInternetExplorerHideFixedFooter { get; set; }
+        public string ScrollInternetExplorerHideFixedFooterElements { get; set; }
 
         #endregion
 
@@ -132,6 +136,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
             using(var camera = new InternetExplorerScrollCamera(TargetWindowHandle, DelayTime) {
                 SendMessageWaitTime = ScrollInternetExplorerInitializeTime,
                 DocumentWaitTime = ScrollInternetExplorerInitializeTime,
+
+                HideFixedHeader = ScrollInternetExplorerHideFixedHeader,
+                HideFixedHeaderElements = ScrollInternetExplorerHideFixedHeaderElements,
+
+                HideFixedFooter = ScrollInternetExplorerHideFixedFooter,
+                HideFixedFooterElements = ScrollInternetExplorerHideFixedFooterElements,
             }) {
                 return camera.TakeShot();
             }

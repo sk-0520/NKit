@@ -61,12 +61,21 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         /// <summary>
         /// スクロール中にヘッダーと思しきものが固定表示なら非表示にするか。
         /// </summary>
-        bool HideFixedInHeader { get; set; } = true;
-
+        public bool HideFixedHeader { get; set; } = true;
+        /// <summary>
+        /// スクロール中に隠すヘッダー要素設定。
+        /// <para><seealso cref="TargetElement"/>を参照。</para>
+        /// </summary>
+        public string HideFixedHeaderElements { get; set; } = Constants.HideHeaderTagClassItems;
         /// <summary>
         /// スクロール中にフッターと思しきものが固定表示なら非表示にするか。
         /// </summary>
-        bool HideFixedInFooter { get; set; } = true;
+        public bool HideFixedFooter { get; set; } = true;
+        /// <summary>
+        /// スクロール中に隠すフッター要素設定。
+        /// <para><seealso cref="TargetElement"/>を参照。</para>
+        /// </summary>
+        public string HideFixedFooterElements { get; set; } = Constants.HideFooterTagClassItems;
 
         #endregion
 
@@ -193,6 +202,15 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
             }
         }
 
+        IReadOnlyList<TargetElement> SplitTargetElements(string source)
+        {
+            return source
+                .Split(':')
+                .Select(s => s.Trim())
+                .Select(s => new TargetElement(s))
+                .ToList()
+            ;
+        }
 
         #endregion
 
@@ -213,8 +231,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                 var clientSize = ie.GetClientSize();
                 var scrollSize = ie.GetScrollSize();
 
-                IReadOnlyList<TargetElement> headerTagClassItems = HideFixedInHeader ? Constants.HideHeaderTagClassItems.Select(s => new TargetElement(s)).ToList() : null;
-                IReadOnlyList<TargetElement> footerTagClassItems = HideFixedInHeader ? Constants.HideFooterTagClassItems.Select(s => new TargetElement(s)).ToList() : null;
+                IReadOnlyList<TargetElement> headerTagClassItems = HideFixedHeader ? SplitTargetElements(HideFixedHeaderElements) : null;
+                IReadOnlyList<TargetElement> footerTagClassItems = HideFixedFooter ? SplitTargetElements(HideFixedFooterElements) : null;
 
 
                 // キャプチャ取得用の画像作成
@@ -240,14 +258,14 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                             using(var headerStockItems = new ElementStockerList())
                             using(var footerStockItems = new ElementStockerList()) {
                                 var stopwatch = Stopwatch.StartNew();
-                                if(HideFixedInHeader) {
+                                if(HideFixedHeader) {
                                     // 最上位以外をスクロール中ならヘッダ要素を隠す
                                     if(0 < imageY) {
                                         // スクロール毎に取得しないと世の中わけわからんことがいっぱいで死にたい
                                         headerStockItems.SetRange(GetFixedElements(ie, headerTagClassItems));
                                     }
                                 }
-                                if(HideFixedInFooter) {
+                                if(HideFixedFooter) {
                                     // スクロール中ならフッタ要素を隠す
                                     if(imageY + blockSize.Height < imageSize.Height) {
                                         footerStockItems.SetRange(GetFixedElements(ie, footerTagClassItems));

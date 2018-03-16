@@ -28,8 +28,8 @@ namespace ContentTypeTextNet.NKit.Cameraman
 
         public static bool ScrollInternetExplorerDebug => appConfig.Get("scroll-internet-explorer-debug", s => bool.Parse(s));
 
-        public static IEnumerable<string> HideHeaderTagClassItems => appConfig.Get("hide-header-tag-class-items", s => s.Split(',').Select(ss => ss.Trim()));
-        public static IEnumerable<string> HideFooterTagClassItems => appConfig.Get("hide-footer-tag-class-items", s => s.Split(',').Select(ss => ss.Trim()));
+        public static string HideHeaderTagClassItems => appConfig.Get("hide-header-tag-class-items");
+        public static string HideFooterTagClassItems => appConfig.Get("hide-footer-tag-class-items");
 
         #endregion
     }

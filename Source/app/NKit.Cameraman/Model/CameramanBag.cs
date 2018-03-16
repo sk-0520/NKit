@@ -34,6 +34,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             var cameraBorderWidthOption = command.Option("--camera_border_width", "color", CommandOptionType.SingleValue);
             var scrollDelayTimeOption = command.Option("--scroll_delay_time", "color", CommandOptionType.SingleValue);
             var scrollIeInitializeTimeOption = command.Option("--scroll_ie_init_time", "color", CommandOptionType.SingleValue);
+            var scrollIeHideFixedHeader = command.Option("--scroll_ie_hide_header", "value * is default", CommandOptionType.SingleValue);
+            var scrollIeHideFixedFooter = command.Option("--scroll_ie_hide_footer", "value * is default", CommandOptionType.SingleValue);
 
             command.Execute(arguments);
 
@@ -98,6 +100,15 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     ScrollInternetExplorerInitializeTime = TimeSpan.Parse(scrollIeInitializeTimeOption.Value());
                 }
             }
+
+            if(scrollIeHideFixedHeader.HasValue()) {
+                ScrollInternetExplorerHideFixedHeader = true;
+                ScrollInternetExplorerHideFixedHeaderElements = scrollIeHideFixedHeader.Value().Replace("*", Constants.HideHeaderTagClassItems);
+            }
+            if(scrollIeHideFixedFooter.HasValue()) {
+                ScrollInternetExplorerHideFixedFooter = true;
+                ScrollInternetExplorerHideFixedFooterElements = scrollIeHideFixedFooter.Value().Replace("*", Constants.HideFooterTagClassItems);
+            }
         }
 
         #region property
@@ -128,6 +139,11 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         public TimeSpan ScrollDelayTime { get; } = Constants.ScrollDelayTime;
         public TimeSpan ScrollInternetExplorerInitializeTime { get; } = Constants.ScrollInternetExplorerInitializeTime;
 
+        public bool ScrollInternetExplorerHideFixedHeader { get; } = false;
+        public string ScrollInternetExplorerHideFixedHeaderElements { get; }
+
+        public bool ScrollInternetExplorerHideFixedFooter { get; } = false;
+        public string ScrollInternetExplorerHideFixedFooterElements { get; }
 
         #endregion
     }
