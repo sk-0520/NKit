@@ -59,10 +59,13 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         public TimeSpan DocumentWaitTime { get; set; }
 
         /// <summary>
-        /// スクロール中に header 要素(と子要素) が固定表示なら非表示にするか。
+        /// スクロール中にヘッダーと思しきものが固定表示なら非表示にするか。
         /// </summary>
         bool HideFixedInHeader { get; set; } = true;
 
+        /// <summary>
+        /// スクロール中にフッターと思しきものが固定表示なら非表示にするか。
+        /// </summary>
         bool HideFixedInFooter { get; set; } = true;
 
         #endregion
@@ -182,7 +185,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         void ShowStockItems(IEnumerable<ElementStocker> items)
         {
             var filterdItems = items
-                //.Where(i => !IsShow(i.CurrentStyle.Com))
+                .Where(i => !IsShow(i.CurrentStyle.Com))
                 .Where(i => i.StockStyle.ContainsKey("display"))
             ;
             foreach(var item in filterdItems) {
@@ -236,6 +239,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 
                             using(var headerStockItems = new ElementStockerList())
                             using(var footerStockItems = new ElementStockerList()) {
+                                var stopwatch = Stopwatch.StartNew();
                                 if(HideFixedInHeader) {
                                     // 最上位以外をスクロール中ならヘッダ要素を隠す
                                     if(0 < imageY) {
@@ -252,7 +256,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                                 var stockItems = headerStockItems.Concat(footerStockItems).ToList();
                                 HideStockItems(stockItems);
 
-                                Wait();
+                                WaitMinus(stopwatch.Elapsed);
 
                                 // スクロール中にウィンドウを動かすバカのために毎度毎度座標を取得する
                                 NativeMethods.GetWindowRect(WindowHandle, out var rect);
