@@ -147,28 +147,33 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         #region function
 
+        CameraBase GetCammera(IntPtr hWnd)
+        {
+            if(CaptureMode == CaptureMode.Screen) {
+                return new ScreenCamera();
+            }
+
+            Debug.Assert(hWnd != IntPtr.Zero);
+            if(CaptureMode == CaptureMode.Scroll) {
+                return new ScrollCamera(hWnd, ScrollDelayTime) {
+                    ScrollInternetExplorerInitializeTime = ScrollInternetExplorerInitializeTime,
+                };
+            }
+
+            return new WindowHandleCamera(hWnd, CaptureMode);
+
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// 撮影。
         /// </summary>
         /// <returns></returns>
         Image TakeShot(IntPtr hWnd)
         {
-            if(CaptureMode == CaptureMode.Screen) {
-                var camera = new ScreenCamera();
-                return camera.TakeShot();
-            } else if(hWnd != IntPtr.Zero) {
-                if(CaptureMode == CaptureMode.Scroll) {
-                    var camera = new ScrollCamera(hWnd, ScrollDelayTime) {
-                        ScrollInternetExplorerInitializeTime = ScrollInternetExplorerInitializeTime,
-                    };
-                    return camera.TakeShot();
-                } else {
-                    var camera = new WindowHandleCamera(hWnd, CaptureMode);
-                    return camera.TakeShot();
-                }
+            using(var cammera = GetCammera(hWnd)) {
+                return cammera.TakeShot();
             }
-
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -207,7 +212,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     Application.Run();
                 } else {
                     CameramanForm = form;
-                        CameramanForm.Shown += Form_Shown;
+                    CameramanForm.Shown += Form_Shown;
                     Application.Run(CameramanForm);
                 }
 
@@ -244,8 +249,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         void CaptureScreen()
         {
-            var image = TakeShot(TargetWindowHandle);
-            Develop(image);
+            using(var image = TakeShot(TargetWindowHandle)) {
+                Develop(image);
+            }
         }
 
         void CaptureSelect()
@@ -258,8 +264,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 EndSelectView();
             }
 
-            var image = TakeShot(hWnd);
-            Develop(image);
+            using(var image = TakeShot(hWnd)) {
+                Develop(image);
+            }
         }
 
         /// <summary>
