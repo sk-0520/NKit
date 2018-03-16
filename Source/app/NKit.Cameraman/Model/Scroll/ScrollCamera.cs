@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ContentTypeTextNet.Library.PInvoke.Windows;
+using ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer;
 using ContentTypeTextNet.NKit.Setting.Define;
 
 namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
@@ -28,9 +29,26 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
 
         #region function
 
+        /// <summary>
+        /// 設定時間待機する。
+        /// </summary>
         protected void Wait()
         {
             Thread.Sleep(DelayTime);
+        }
+
+        /// <summary>
+        /// 指定した時間を設定時間から差し引いた時間だけ待機する
+        /// </summary>
+        /// <param name="minusTime"></param>
+        protected void WaitMinus(TimeSpan minusTime)
+        {
+            // 設定時間より長い時間なら待つ必要なし
+            if(DelayTime < minusTime) {
+                return;
+            }
+
+            Thread.Sleep(DelayTime - minusTime);
         }
 
         #endregion
@@ -65,6 +83,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
         IntPtr TargetWindowHandle { get; set; }
 
         public TimeSpan ScrollInternetExplorerInitializeTime { get; set; }
+        public bool ScrollInternetExplorerHideFixedHeader { get; set; }
+        public string ScrollInternetExplorerHideFixedHeaderElements { get; set; }
+        public bool ScrollInternetExplorerHideFixedFooter { get; set; }
+        public string ScrollInternetExplorerHideFixedFooterElements { get; set; }
 
         #endregion
 
@@ -114,6 +136,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
             using(var camera = new InternetExplorerScrollCamera(TargetWindowHandle, DelayTime) {
                 SendMessageWaitTime = ScrollInternetExplorerInitializeTime,
                 DocumentWaitTime = ScrollInternetExplorerInitializeTime,
+
+                HideFixedHeader = ScrollInternetExplorerHideFixedHeader,
+                HideFixedHeaderElements = ScrollInternetExplorerHideFixedHeaderElements,
+
+                HideFixedFooter = ScrollInternetExplorerHideFixedFooter,
+                HideFixedFooterElements = ScrollInternetExplorerHideFixedFooterElements,
             }) {
                 return camera.TakeShot();
             }

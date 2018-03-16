@@ -29,6 +29,28 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         public KeySetting SelectKeySetting => Setting.Capture.SelectKey;
         public KeySetting TakeShotKeySetting => Setting.Capture.TakeShotKey;
 
+        public bool ScrollInternetExplorerIsEnabledHideFixedHeader
+        {
+            get { return Setting.Capture.ScrollInternetExplorerIsEnabledHideFixedHeader; }
+            set { Setting.Capture.ScrollInternetExplorerIsEnabledHideFixedHeader = value; }
+        }
+        public string ScrollInternetExplorerHideFixedHeaderElements
+        {
+            get { return Setting.Capture.ScrollInternetExplorerHideFixedHeaderElements; }
+            set { Setting.Capture.ScrollInternetExplorerHideFixedHeaderElements = value; }
+        }
+
+        public bool ScrollInternetExplorerIsEnabledHideFixedFooter
+        {
+            get { return Setting.Capture.ScrollInternetExplorerIsEnabledHideFixedFooter; }
+            set { Setting.Capture.ScrollInternetExplorerIsEnabledHideFixedFooter = value; }
+        }
+        public string ScrollInternetExplorerHideFixedFooterElements
+        {
+            get { return Setting.Capture.ScrollInternetExplorerHideFixedFooterElements; }
+            set { Setting.Capture.ScrollInternetExplorerHideFixedFooterElements = value; }
+        }
+
         #endregion
 
         #region function
@@ -83,6 +105,25 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
                 "--immediately_select",
             };
+
+            if(ScrollInternetExplorerIsEnabledHideFixedHeader) {
+                arguments.Add("--scroll_ie_hide_header");
+
+                if(string.IsNullOrWhiteSpace( ScrollInternetExplorerHideFixedHeaderElements)) {
+                    arguments.Add("*");
+                } else {
+                    arguments.Add(ScrollInternetExplorerHideFixedHeaderElements);
+                }
+            }
+            if(ScrollInternetExplorerIsEnabledHideFixedFooter) {
+                arguments.Add("--scroll_ie_hide_footer");
+
+                if(string.IsNullOrWhiteSpace(ScrollInternetExplorerHideFixedFooterElements)) {
+                    arguments.Add("*");
+                } else {
+                    arguments.Add(ScrollInternetExplorerHideFixedFooterElements);
+                }
+            }
 
             if(CaptureKeyUtility.CanSendKeySetting(Setting.Capture.TakeShotKey)) {
                 arguments.Add("--photo_opportunity_key");

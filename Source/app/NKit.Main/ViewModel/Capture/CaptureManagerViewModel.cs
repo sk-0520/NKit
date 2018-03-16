@@ -63,6 +63,29 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             set { SetPropertyValue(Model.TakeShotKeySetting, value, nameof(Model.TakeShotKeySetting.ModifierKeys)); }
         }
 
+        public bool IsEnabledHideHeader
+        {
+            get { return Model.ScrollInternetExplorerIsEnabledHideFixedHeader; }
+            set { SetPropertyValue(Model, value, nameof(Model.ScrollInternetExplorerIsEnabledHideFixedHeader)); }
+        }
+        public string HideHeaderElement
+        {
+            get { return Model.ScrollInternetExplorerHideFixedHeaderElements; }
+            set { SetPropertyValue(Model, value, nameof(Model.ScrollInternetExplorerHideFixedHeaderElements)); }
+        }
+
+        public bool IsEnabledHideFooter
+        {
+            get { return Model.ScrollInternetExplorerIsEnabledHideFixedFooter; }
+            set { SetPropertyValue(Model, value, nameof(Model.ScrollInternetExplorerIsEnabledHideFixedFooter)); }
+        }
+
+        public string HideFooterElement
+        {
+            get { return Model.ScrollInternetExplorerHideFixedFooterElements; }
+            set { SetPropertyValue(Model, value, nameof(Model.ScrollInternetExplorerHideFixedFooterElements)); }
+        }
+
         #endregion
 
         #region command

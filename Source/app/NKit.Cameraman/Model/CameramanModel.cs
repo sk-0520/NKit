@@ -53,6 +53,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             if(Bag.CaptureMode == CaptureMode.Scroll) {
                 return new ScrollCamera(hWnd, Bag.ScrollDelayTime) {
                     ScrollInternetExplorerInitializeTime = Bag.ScrollInternetExplorerInitializeTime,
+
+                    ScrollInternetExplorerHideFixedHeader = Bag.ScrollInternetExplorerHideFixedHeader,
+                    ScrollInternetExplorerHideFixedHeaderElements = Bag.ScrollInternetExplorerHideFixedHeaderElements,
+
+                    ScrollInternetExplorerHideFixedFooter = Bag.ScrollInternetExplorerHideFixedFooter,
+                    ScrollInternetExplorerHideFixedFooterElements = Bag.ScrollInternetExplorerHideFixedFooterElements,
                 };
             }
 
