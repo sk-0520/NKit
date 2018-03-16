@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Library.PInvoke.Windows;
@@ -32,7 +33,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         /// </summary>
         bool HideFixedInHeader { get; set; } = true;
 
-        bool HideFixedInFooter { get; set; } = !true;
+        bool HideFixedInFooter { get; set; } = true;
 
         #endregion
 
@@ -47,41 +48,43 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
             return currentStyle.display != "none";
         }
 
-        void SetStyleCore(ComModel<IHTMLElement> element, IEnumerable<KeyValuePair<string, string>> pairs)
+        void SetStyleCore(ElementStocker stocker, IEnumerable<KeyValuePair<string, string>> pairs)
         {
-            using(var style = ComModel.Create(element.Com.style)) {
-                foreach(var pair in pairs) {
-                    style.Com.setAttribute(pair.Key, pair.Value);
-                }
+            foreach(var pair in pairs) {
+                stocker.Style.Com.setAttribute(pair.Key, pair.Value);
             }
         }
-        void SetStyle(ComModel<IHTMLElement> element, string property, string value)
+        void SetStyle(ElementStocker stocker, string property, string value)
         {
-            SetStyleCore(element, new[] { new KeyValuePair<string, string>(property, value) });
+            SetStyleCore(stocker, new[] { new KeyValuePair<string, string>(property, value) });
         }
 
         struct TagClass
         {
+            static Regex Splitter = new Regex(@"(?<TAG>[\w\-]+)(#(?<ID>[\w\-]+))?(\.(?<CLASS>[\w\-]+))?", RegexOptions.ExplicitCapture);
             public TagClass(string tagProperty)
             {
-                var items = tagProperty.Split('.');
-                TagName = items[0];
-
-                if(items.Length == 1) {
-                    ClassName = null;
-                } else {
-                    ClassName = items[1];
-                }
+                var match = Splitter.Match(tagProperty);
+                TagName = match.Groups["TAG"].Value;
+                Id = match.Groups["ID"].Value;
+                ClassName = match.Groups["CLASS"].Value;
             }
 
             #region property
 
             public string TagName { get; }
+            public string Id { get; }
             public string ClassName { get; }
 
-            public bool HasClass => ClassName != null;
+            public bool HasId => Id != string.Empty;
+            public bool HasClass => ClassName != string.Empty;
 
             #endregion
+        }
+
+        IEnumerable<ElementStocker> GetFixedElementsCore(InternetExplorerWrapper ie, TagClass tagClassItems, ElementStocker parentStocker)
+        {
+            throw new NotImplementedException();
         }
 
         IEnumerable<ElementStocker> GetFixedElements(InternetExplorerWrapper ie, IEnumerable<TagClass> tagClassItems)
@@ -90,11 +93,24 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                 using(var collection = ie.GetElementsByTagName(tagClass.TagName)) {
                     foreach(var stocker in ie.CollctionToElements<IHTMLElement2>(collection).Select(elm2 => new ElementStocker(elm2))) {
 
+                        if(tagClass.HasId) {
+                            var id = stocker.Element.Com.getAttribute("id");
+                            if(string.IsNullOrEmpty(id)) {
+                                stocker.Dispose();
+                                continue;
+                            }
+                            if(!string.Equals(id, tagClass.Id ,StringComparison.InvariantCultureIgnoreCase)) {
+                                stocker.Dispose();
+                                continue;
+                            }
+                        }
                         if(tagClass.HasClass) {
                             if(string.IsNullOrEmpty(stocker.Element.Com.className)) {
+                                stocker.Dispose();
                                 continue;
                             }
                             if(Array.IndexOf(stocker.Element.Com.className.Split(' '), tagClass.ClassName) == -1) {
+                                stocker.Dispose();
                                 continue;
                             }
                         }
@@ -129,15 +145,15 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         void HideStockItems(IEnumerable<ElementStocker> items)
         {
             // 表示要素に限定して処理していく
-            foreach(var item in items/*.Where(i => IsShow(i.Element2))*/) {
-                SetStyle(item.Element, "display", "none");
+            foreach(var item in items.Where(i => IsShow(i.CurrentStyle.Com))) {
+                SetStyle(item, "display", "none");
             }
         }
 
         void ShowStockItems(IEnumerable<ElementStocker> items)
         {
-            foreach(var item in items/*.Where(i => !IsShow(i.Element2))*/) {
-                SetStyle(item.Element, "display", item.StockStyle["display"]);
+            foreach(var item in items.Where(i => !IsShow(i.CurrentStyle.Com))) {
+                SetStyle(item, "display", item.StockStyle["display"]);
             }
         }
 
@@ -197,8 +213,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                                 }
                                 if(HideFixedInFooter) {
                                     if(imageY + blockSize.Height < imageSize.Height) {
-                                        headerStockItems.SetRange(GetFixedElements(ie, footerTagClassItems));
-                                        HideStockItems(headerStockItems);
+                                        footerStockItems.SetRange(GetFixedElements(ie, footerTagClassItems));
+                                        HideStockItems(footerStockItems);
                                     }
                                 }
 
@@ -215,6 +231,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                                 if(headerStockItems.Any()) {
                                     // 毎回取得する代わりに毎回戻してあげないともう何が何だか
                                     ShowStockItems(headerStockItems);
+                                }
+                                if(footerStockItems.Any()) {
+                                    ShowStockItems(footerStockItems);
                                 }
                             }
                         }
