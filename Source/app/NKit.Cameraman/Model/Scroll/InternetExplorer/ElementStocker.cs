@@ -1,4 +1,4 @@
-#define NEED_DEBUG
+//#define NEED_DEBUG
 #if NEED_DEBUG
 #   if DEBUG
 #   elif BETA
@@ -65,6 +65,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         protected override void Dispose(bool disposing)
         {
             if(!IsDisposed) {
+                CurrentStyle.Dispose();
+                Style.Dispose();
                 Element2.Dispose();
                 Element.Dispose();
             }

@@ -122,6 +122,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                     foreach(var element2 in ie.CollctionToElements<IHTMLElement2>(collection)) {
                         var stopwatchStock = Stopwatch.StartNew();
                         var stocker = new ElementStocker(element2);
+
                         Logger.Debug($"get stock time: {stopwatchStock.Elapsed}");
 
                         if(targetElement.HasId) {
@@ -140,7 +141,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                                 stocker.Dispose();
                                 continue;
                             }
-                            if(Array.IndexOf(stocker.Element.Com.className.Split(' '), targetElement.Class) == -1) {
+                            if(!stocker.Element.Com.className.Split(' ').Any(s => string.Equals(s, targetElement.Class, StringComparison.InvariantCultureIgnoreCase))) {
                                 stocker.Dispose();
                                 continue;
                             }
