@@ -110,18 +110,18 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 arguments.Add("--scroll_ie_hide_header");
 
                 if(string.IsNullOrWhiteSpace( ScrollInternetExplorerHideFixedHeaderElements)) {
-                    arguments.Add("*");
+                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument("*"));
                 } else {
-                    arguments.Add(ScrollInternetExplorerHideFixedHeaderElements);
+                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(ScrollInternetExplorerHideFixedHeaderElements));
                 }
             }
             if(ScrollInternetExplorerIsEnabledHideFixedFooter) {
                 arguments.Add("--scroll_ie_hide_footer");
 
                 if(string.IsNullOrWhiteSpace(ScrollInternetExplorerHideFixedFooterElements)) {
-                    arguments.Add("*");
+                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument("*"));
                 } else {
-                    arguments.Add(ScrollInternetExplorerHideFixedFooterElements);
+                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(ScrollInternetExplorerHideFixedFooterElements));
                 }
             }
 
