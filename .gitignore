@@ -22,5 +22,6 @@ TemporaryGeneratedFile_*
 Thumbs.db
 .vs/
 *.tss
+*.vspx
 
 *.lnk

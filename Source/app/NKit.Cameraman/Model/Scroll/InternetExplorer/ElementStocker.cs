@@ -1,4 +1,4 @@
-//#define NEED_DEBUG
+#define NEED_DEBUG
 #if NEED_DEBUG
 #   if DEBUG
 #   elif BETA
@@ -22,40 +22,59 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 {
     public class ElementStocker : DisposerBase
     {
-        #region define
+        #region variable
 
-        static string[] stringProperties = new[] {
-            nameof(IHTMLStyle.position),
-            nameof(IHTMLStyle.display),
-        };
+        ComModel<IHTMLElement> _element;
+        ComModel<IHTMLStyle> _style;
+        ComModel<IHTMLCurrentStyle> _currentStyle;
 
         #endregion
 
         public ElementStocker(ComModel<IHTMLElement2> element)
         {
-            Element = ComModel.Create((IHTMLElement)element.Com);
             Element2 = element;
-
-            Style = ComModel.Create(Element.Com.style);
-            CurrentStyle = ComModel.Create(Element2.Com.currentStyle);
-
-#if NEED_DEBUG
-            D = new DEBUG(this);
-#endif
         }
 
         #region property
 
-        public ComModel<IHTMLElement> Element { get; }
+        public ComModel<IHTMLElement> Element
+        {
+            get
+            {
+                if(this._element == null) {
+                    this._element = ComModel.Create((IHTMLElement)Element2.Com);
+                }
+                return this._element;
+            }
+        }
         public ComModel<IHTMLElement2> Element2 { get; }
 
-        public ComModel<IHTMLStyle> Style { get; }
-        public ComModel<IHTMLCurrentStyle> CurrentStyle { get; }
+        public ComModel<IHTMLStyle> Style
+        {
+            get
+            {
+                if(this._style == null) {
+                    this._style = ComModel.Create(Element.Com.style);
+                }
+                return this._style;
+            }
+        }
+
+        public ComModel<IHTMLCurrentStyle> CurrentStyle
+        {
+            get
+            {
+                if(this._currentStyle == null) {
+                    this._currentStyle = ComModel.Create(Element2.Com.currentStyle);
+                }
+                return this._currentStyle;
+            }
+        }
 
         public IDictionary<string, string> StockStyle { get; } = new Dictionary<string, string>();
 
 #if NEED_DEBUG
-        DEBUG D { get; }
+        DEBUG DEBUG => new DEBUG(this);
 #endif
 
         #endregion
@@ -65,10 +84,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         protected override void Dispose(bool disposing)
         {
             if(!IsDisposed) {
-                CurrentStyle.Dispose();
-                Style.Dispose();
+                this._currentStyle?.Dispose();
+                this._style?.Dispose();
+                this._element?.Dispose();
                 Element2.Dispose();
-                Element.Dispose();
             }
 
             base.Dispose(disposing);
@@ -77,6 +96,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         #endregion
     }
 
+#if NEED_DEBUG
     // COM の中身をデバッガで見るの一苦労なんすよ
     public class DEBUG
     {
@@ -103,6 +123,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 
         #endregion
     }
+#endif
 
     /// <summary>
     /// かなり現定期的なリスト。

@@ -98,6 +98,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         {
             var stopwatchAll = Stopwatch.StartNew();
             foreach(var targetElement in targetElements.Where(t => t.IsEnabled)) {
+                // getElementById で済むやつを先に対応
                 if(targetElement.HasId && !targetElement.HasTag) {
                     var stopwatchId = Stopwatch.StartNew();
                     var element2 = ie.GetElementById<IHTMLElement2>(targetElement.Id);
@@ -111,6 +112,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                             continue;
                         }
                         stocker.Dispose();
+                        Logger.Debug($"get id result none: {stopwatchId.Elapsed}");
                     }
                     continue;
                 }
@@ -128,26 +130,30 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                         if(targetElement.HasId) {
                             var id = stocker.Element.Com.getAttribute("id");
                             if(string.IsNullOrEmpty(id)) {
+                                Logger.Debug($"get stock id empty: {stopwatchStock.Elapsed}");
                                 stocker.Dispose();
                                 continue;
                             }
                             if(!string.Equals(id, targetElement.Id, StringComparison.InvariantCultureIgnoreCase)) {
+                                Logger.Debug($"get stock id unmatch: {stopwatchStock.Elapsed}");
                                 stocker.Dispose();
                                 continue;
                             }
                         }
                         if(targetElement.HasClass) {
-                            if(string.IsNullOrEmpty(stocker.Element.Com.className)) {
+                            var className = stocker.Element.Com.className;
+                            if(string.IsNullOrEmpty(className)) {
                                 stocker.Dispose();
+                                Logger.Debug($"get stock class empty: {stopwatchStock.Elapsed}");
                                 continue;
                             }
-                            if(!stocker.Element.Com.className.Split(' ').Any(s => string.Equals(s, targetElement.Class, StringComparison.InvariantCultureIgnoreCase))) {
+                            if(!className.Split(' ').Any(s => string.Equals(s, targetElement.Class, StringComparison.InvariantCultureIgnoreCase))) {
                                 stocker.Dispose();
+                                Logger.Debug($"get stock class unmatch: {stopwatchStock.Elapsed}");
                                 continue;
                             }
                         }
 
-                        // 対象が固定されていれば子を考慮する必要なし
                         if(IsFixed(stocker.CurrentStyle.Com)) {
                             Logger.Debug($"get stock result time: {stopwatchTag.Elapsed}");
                             yield return stocker;
@@ -156,6 +162,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 
                         // いらない要素
                         stocker.Dispose();
+                        Logger.Debug($"get stock result none: {stopwatchStock.Elapsed}");
                     }
                 }
             }
