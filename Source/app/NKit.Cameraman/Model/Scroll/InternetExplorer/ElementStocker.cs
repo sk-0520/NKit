@@ -1,3 +1,12 @@
+//#define NEED_DEBUG
+#if NEED_DEBUG
+#   if DEBUG
+#   elif BETA
+#   else
+#       error Release! defined NEED_DEBUG
+#   endif
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,12 +39,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
             Style = ComModel.Create(Element.Com.style);
             CurrentStyle = ComModel.Create(Element2.Com.currentStyle);
 
-            foreach(var property in stringProperties) {
-                var value = (string)CurrentStyle.Com.getAttribute(property);
-                StockStyle[property] = value;
-            }
-
-#if DEBUG
+#if NEED_DEBUG
             D = new DEBUG(this);
 #endif
         }
@@ -50,7 +54,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 
         public IDictionary<string, string> StockStyle { get; } = new Dictionary<string, string>();
 
-#if DEBUG
+#if NEED_DEBUG
         DEBUG D { get; }
 #endif
 
@@ -71,7 +75,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         #endregion
     }
 
-#if DEBUG
     // COM の中身をデバッガで見るの一苦労なんすよ
     public class DEBUG
     {
@@ -98,7 +101,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 
         #endregion
     }
-#endif
 
     /// <summary>
     /// かなり現定期的なリスト。

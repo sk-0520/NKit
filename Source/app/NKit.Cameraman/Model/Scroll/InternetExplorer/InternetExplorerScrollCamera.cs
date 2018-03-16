@@ -19,6 +19,36 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 {
     public class InternetExplorerScrollCamera : ScrollCameraBase
     {
+        #region define
+
+        struct TargetElement
+        {
+            static readonly Regex Splitter = new Regex(@"(?<TAG>[\w\-]+)?(#(?<ID>[\w\-]+))?(\.(?<CLASS>[\w\-]+))?", RegexOptions.ExplicitCapture);
+            public TargetElement(string tagProperty)
+            {
+                var match = Splitter.Match(tagProperty);
+                TagName = match.Groups["TAG"].Value;
+                Id = match.Groups["ID"].Value;
+                Class = match.Groups["CLASS"].Value;
+            }
+
+            #region property
+
+            public string TagName { get; }
+            public string Id { get; }
+            public string Class { get; }
+
+            public bool HasTag => TagName != string.Empty;
+            public bool HasId => Id != string.Empty;
+            public bool HasClass => Class != string.Empty;
+
+            public bool IsEnabled => HasId || HasTag || (HasTag && HasClass);
+
+            #endregion
+        }
+
+        #endregion
+
         public InternetExplorerScrollCamera(IntPtr hWnd, TimeSpan delayTime)
             : base(hWnd, delayTime)
         { }
@@ -59,32 +89,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
             SetStyleCore(stocker, new[] { new KeyValuePair<string, string>(property, value) });
         }
 
-        struct TargetElement
-        {
-            static Regex Splitter = new Regex(@"(?<TAG>[\w\-]+)?(#(?<ID>[\w\-]+))?(\.(?<CLASS>[\w\-]+))?", RegexOptions.ExplicitCapture);
-            public TargetElement(string tagProperty)
-            {
-                var match = Splitter.Match(tagProperty);
-                TagName = match.Groups["TAG"].Value;
-                Id = match.Groups["ID"].Value;
-                Class = match.Groups["CLASS"].Value;
-            }
-
-            #region property
-
-            public string TagName { get; }
-            public string Id { get; }
-            public string Class { get; }
-
-            public bool HasTag => TagName != string.Empty;
-            public bool HasId => Id != string.Empty;
-            public bool HasClass => Class != string.Empty;
-
-            public bool IsEnabled => HasId || HasTag || (HasTag && HasClass);
-
-            #endregion
-        }
-
         IEnumerable<ElementStocker> GetFixedElementsCore(InternetExplorerWrapper ie, TargetElement targetElements, ElementStocker parentStocker)
         {
             throw new NotImplementedException();
@@ -92,9 +96,13 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 
         IEnumerable<ElementStocker> GetFixedElements(InternetExplorerWrapper ie, IEnumerable<TargetElement> targetElements)
         {
+            var stopwatchAll = Stopwatch.StartNew();
             foreach(var targetElement in targetElements.Where(t => t.IsEnabled)) {
                 if(targetElement.HasId && !targetElement.HasTag) {
+                    var stopwatchId = Stopwatch.StartNew();
                     var element2 = ie.GetElementById<IHTMLElement2>(targetElement.Id);
+                    Logger.Debug($"get id time: {stopwatchId.Elapsed}");
+
                     if(element2 != null) {
                         var stocker = new ElementStocker(element2);
                         if(IsFixed(stocker.CurrentStyle.Com)) {
@@ -106,8 +114,13 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                     continue;
                 }
 
+                var stopwatchTag = Stopwatch.StartNew();
                 using(var collection = ie.GetElementsByTagName(targetElement.TagName)) {
+                    Logger.Debug($"get tag time: {stopwatchTag.Elapsed}");
+
+                var stopwatchStock = Stopwatch.StartNew();
                     foreach(var stocker in ie.CollctionToElements<IHTMLElement2>(collection).Select(elm2 => new ElementStocker(elm2))) {
+                    Logger.Debug($"get stock time: {stopwatchTag.Elapsed}");
 
                         if(targetElement.HasId) {
                             var id = stocker.Element.Com.getAttribute("id");
@@ -142,19 +155,25 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                     }
                 }
             }
+            Logger.Information($"get all time: {stopwatchAll.Elapsed}");
         }
 
         void HideStockItems(IEnumerable<ElementStocker> items)
         {
             // 表示要素に限定して処理していく
-            foreach(var item in items.Where(i => IsShow(i.CurrentStyle.Com))) {
+            var filterdItems = items.Where(i => IsShow(i.CurrentStyle.Com));
+            foreach(var item in filterdItems) {
                 SetStyle(item, "display", "none");
             }
         }
 
         void ShowStockItems(IEnumerable<ElementStocker> items)
         {
-            foreach(var item in items.Where(i => !IsShow(i.CurrentStyle.Com))) {
+            var filterdItems = items
+                .Where(i => !IsShow(i.CurrentStyle.Com))
+                .Where(i => i.StockStyle.ContainsKey("display"))
+            ;
+            foreach(var item in filterdItems) {
                 SetStyle(item, "display", item.StockStyle["display"]);
             }
         }
@@ -206,19 +225,20 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                             using(var headerStockItems = new ElementStockerList())
                             using(var footerStockItems = new ElementStockerList()) {
                                 if(HideFixedInHeader) {
+                                    // 最上位以外をスクロール中ならヘッダ要素を隠す
                                     if(0 < imageY) {
-                                        // スクロール中ならヘッダ要素を隠す
                                         // スクロール毎に取得しないと世の中わけわからんことがいっぱいで死にたい
                                         headerStockItems.SetRange(GetFixedElements(ie, headerTagClassItems));
-                                        HideStockItems(headerStockItems);
                                     }
                                 }
                                 if(HideFixedInFooter) {
+                                    // スクロール中ならフッタ要素を隠す
                                     if(imageY + blockSize.Height < imageSize.Height) {
                                         footerStockItems.SetRange(GetFixedElements(ie, footerTagClassItems));
-                                        HideStockItems(footerStockItems);
                                     }
                                 }
+                                var stockItems = headerStockItems.Concat(footerStockItems).ToList();
+                                HideStockItems(stockItems);
 
                                 Wait();
 
@@ -233,11 +253,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                                 }
 
                                 // 毎回取得する代わりに毎回戻してあげないともう何が何だか
-                                if(headerStockItems.Any()) {
-                                    ShowStockItems(headerStockItems);
-                                }
-                                if(footerStockItems.Any()) {
-                                    ShowStockItems(footerStockItems);
+                                if(stockItems.Any()) {
+                                    ShowStockItems(stockItems);
                                 }
                             }
                         }
