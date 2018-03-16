@@ -115,24 +115,24 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
                 SendMessageWaitTime = ScrollInternetExplorerInitializeTime,
                 DocumentWaitTime = ScrollInternetExplorerInitializeTime,
             };
-            return camera.TaskShot();
+            return camera.TakeShot();
         }
 
         #endregion
 
         #region WindowHandleCamera
 
-        protected override Image TaskShotCore()
+        protected override Image TakeShotCore()
         {
             // 自身がスクロール可能なウィンドウか調査
             var kind = GetScrollWindowKind();
 
             switch(kind) {
                 case ScrollWindowKind.Unknown:
-                    return base.TaskShotCore();
+                    return base.TakeShotCore();
 
                 case ScrollWindowKind.InternetExplorer:
-                    return TaskShotInternetExplorer() ?? base.TaskShotCore();
+                    return TaskShotInternetExplorer() ?? base.TakeShotCore();
 
                 default:
                     throw new NotImplementedException();

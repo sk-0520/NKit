@@ -25,7 +25,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         #region CameraBase
 
-        protected override Image TaskShotCore()
+        protected override Image TakeShotCore()
         {
             var area = WindowHandleUtility.GetViewArea(WindowHandle, CaptureMode);
 

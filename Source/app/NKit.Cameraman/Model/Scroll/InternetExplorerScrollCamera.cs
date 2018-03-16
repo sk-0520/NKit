@@ -22,16 +22,19 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
             : base(hWnd, delayTime)
         { }
 
-        #region nproperty
+        #region property
 
         public TimeSpan SendMessageWaitTime { get; set; }
         public TimeSpan DocumentWaitTime { get; set; }
 
         #endregion
 
+        #region function
+        #endregion
+
         #region WindowHandleCamera
 
-        protected override Image TaskShotCore()
+        protected override Image TakeShotCore()
         {
             using(var ie = new InternetExplorerWrapper(WindowHandle)) {
                 ie.SendMessageWaitTime = SendMessageWaitTime;
@@ -42,10 +45,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
                     return null;
                 }
 
-                // IE が取得出来たらまずは一番上まで移動する
-                ie.ScrollTo(0, 0);
-                Wait();
-
                 var scale = ie.GetScale();
                 var clientSize = ie.GetClientSize();
                 var scrollSize = ie.GetScrollSize();
@@ -55,6 +54,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
                 var imageSize = new Size((int)(scrollSize.Width * scale.X), (int)(scrollSize.Height * scale.Y));
                 var bitmap = new Bitmap(imageSize.Width, imageSize.Height);
                 using(var g = Graphics.FromImage(bitmap)) {
+                    // 一番上(0, 0)から順次取得
                     for(var imageX = 0; imageX < imageSize.Width; imageX += blockSize.Width) {
                         for(var imageY = 0; imageY < imageSize.Height; imageY += blockSize.Height) {
                             // スクロールの位置と貼り付け先画像位置は一致しない(特に最後の方)ので補正
@@ -74,9 +74,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
                             NativeMethods.GetWindowRect(WindowHandle, out var rect);
                             g.CopyFromScreen(rect.Left - diffPoint.X, rect.Top - diffPoint.Y, imageX, imageY, diffSize);
 #if DEBUG
+                            Logger.Trace($"{imageX} * {imageY}, {diffPoint}, {diffSize}");
                             g.DrawString($"{imageX} * {imageY}, {diffPoint}, {diffSize}", SystemFonts.DialogFont, SystemBrushes.ActiveCaption, new PointF(imageX, imageY));
 #endif
-
                         }
                     }
                 }

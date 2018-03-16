@@ -160,16 +160,16 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         {
             if(CaptureMode == CaptureMode.Screen) {
                 var camera = new ScreenCamera();
-                return camera.TaskShot();
+                return camera.TakeShot();
             } else if(hWnd != IntPtr.Zero) {
                 if(CaptureMode == CaptureMode.Scroll) {
                     var camera = new ScrollCamera(hWnd, ScrollDelayTime) {
                         ScrollInternetExplorerInitializeTime = ScrollInternetExplorerInitializeTime,
                     };
-                    return camera.TaskShot();
+                    return camera.TakeShot();
                 } else {
                     var camera = new WindowHandleCamera(hWnd, CaptureMode);
-                    return camera.TaskShot();
+                    return camera.TakeShot();
                 }
             }
 
@@ -200,6 +200,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         {
             if(CaptureMode == CaptureMode.Screen && !IsContinuation) {
                 CaptureScreen();
+                Exit();
             } else {
                 HookEvents = Hook.GlobalEvents();
 
@@ -220,7 +221,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             }
         }
 
-        void StartViewSelect()
+        void StartSelectView()
         {
             Logger.Debug("start selecting");
             Debug.Assert(!NowSelecting);
@@ -235,7 +236,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             SelectViewAndFocus(Cursor.Position);
         }
 
-        void EndViewSelect()
+        void EndSelectView()
         {
             Logger.Debug("end selecting");
             Debug.Assert(NowSelecting);
@@ -252,10 +253,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         {
             var image = TakeShot(TargetWindowHandle);
             Develop(image);
-
-            if(!IsContinuation) {
-                Exit();
-            }
         }
 
         void CaptureSelect()
@@ -265,14 +262,33 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             // 選択してたら選択終了するんでウィンドウハンドル消えちゃうので退避
             var hWnd = TargetWindowHandle;
             if(NowSelecting) {
-                EndViewSelect();
+                EndSelectView();
             }
 
             var image = TakeShot(hWnd);
             Develop(image);
+        }
 
+        /// <summary>
+        /// フック中にキャプチャする処理。
+        /// </summary>
+        /// <param name="captureAction"></param>
+        /// <returns></returns>
+        void CaptureInHooking(Action captureAction)
+        {
+            UnhookMouseInput();
+            UnhookKeyboardInput();
 
-            if(!IsContinuation) {
+            HookEvents.Dispose();
+
+            Thread.Sleep(ShotDelayTime);
+            captureAction();
+
+            if(IsContinuation) {
+                // 継続するなら前提条件としてキー入力が可能となっているのでキーフック開始
+                HookEvents = Hook.GlobalEvents();
+                HookKeyboardInput();
+            } else {
                 Exit();
             }
         }
@@ -323,7 +339,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             TargetWindowHandle = hWnd;
         }
 
-        bool CheckKey(KeyEventArgs e, Keys key)
+        bool CheckInputKey(KeyEventArgs e, Keys key)
         {
             var modMask = (Keys.Control | Keys.Shift | Keys.Alt);
 
@@ -420,30 +436,30 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         private void HookEvents_KeyDown(object sender, KeyEventArgs e)
         {
             // 選択処理
-            if(CheckKey(e, SelectKeys)) {
+            if(CheckInputKey(e, SelectKeys)) {
                 if(!NowSelecting) {
                     Logger.Information("select");
 
                     e.Handled = true;
-                    StartViewSelect();
+                    StartSelectView();
                 } else {
                     Logger.Information("select shot!");
                     if(TargetWindowHandle != IntPtr.Zero) {
-                        CaptureSelect();
+                        CaptureInHooking(CaptureSelect);
                     }
                     e.Handled = true;
                 }
             }
 
             // キャプチャ処理
-            if(CheckKey(e, ShotKeys)) {
+            if(CheckInputKey(e, ShotKeys)) {
                 Logger.Information("shot");
                 if(CaptureMode == CaptureMode.Screen) {
-                    CaptureScreen();
+                    CaptureInHooking(CaptureScreen);
                 } else {
                     if(NowSelecting) {
                         if(TargetWindowHandle != IntPtr.Zero) {
-                            CaptureSelect();
+                            CaptureInHooking(CaptureSelect);
                         } else {
                             Logger.Warning("window handle: no select");
                         }
@@ -453,7 +469,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                         if(hWnd != IntPtr.Zero) {
                             Logger.Debug("window handle!");
                             TargetWindowHandle = hWnd;
-                            CaptureSelect();
+                            CaptureInHooking(CaptureSelect);
                         } else {
                             Logger.Debug("window handle is null");
                         }
@@ -462,12 +478,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             }
 
             // 終了処理
-            if(CheckKey(e, ExitKey)) {
+            if(CheckInputKey(e, ExitKey)) {
                 e.Handled = true;
 
                 if(NowSelecting) {
                     Logger.Information("exit select");
-                    EndViewSelect();
+                    EndSelectView();
 
                     // 即時起動で継続使用しないのであれば選択待機よりは終了
                     if(ImmediatelySelect && !IsContinuation) {
@@ -488,9 +504,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         private void HookEvents_MouseDown(object sender, MouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Middle || e.Button == MouseButtons.Right) {
+            if(e.Button == MouseButtons.Left) {
                 if(TargetWindowHandle != IntPtr.Zero) {
-                    CaptureSelect();
+                    CaptureInHooking(CaptureSelect);
                 }
             }
         }
@@ -498,7 +514,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         private void Form_Shown(object sender, EventArgs e)
         {
             CameramanForm.Shown -= Form_Shown;
-            StartViewSelect();
+            StartSelectView();
         }
 
     }
