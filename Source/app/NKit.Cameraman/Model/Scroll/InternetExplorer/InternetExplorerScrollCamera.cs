@@ -32,7 +32,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         /// </summary>
         bool HideFixedInHeader { get; set; } = true;
 
-        bool HideFixedInFooter { get; set; }
+        bool HideFixedInFooter { get; set; } = true;
 
         #endregion
 
@@ -154,12 +154,19 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 
                             ie.ScrollTo((int)(imageX / scale.X), (int)(imageY / scale.Y));
 
-                            using(var headerStockItems = new ElementStockerList()) {
+                            using(var headerStockItems = new ElementStockerList())
+                            using(var footerStockItems = new ElementStockerList()) {
                                 if(HideFixedInHeader) {
                                     if(0 < imageY) {
                                         // スクロール中ならヘッダ要素を隠す
                                         // スクロール毎に取得しないと世の中わけわからんことがいっぱいで死にたい
                                         headerStockItems.SetRange(GetFixedElements(ie, "HEADER"));
+                                        HideStockItems(headerStockItems);
+                                    }
+                                }
+                                if(HideFixedInFooter) {
+                                    if(imageY + blockSize.Height < imageSize.Height) {
+                                        headerStockItems.SetRange(GetFixedElements(ie, "FOOTER"));
                                         HideStockItems(headerStockItems);
                                     }
                                 }
