@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ContentTypeTextNet.Library.PInvoke.Windows;
 using ContentTypeTextNet.NKit.Cameraman.Model;
 using ContentTypeTextNet.NKit.Common;
 
@@ -31,8 +32,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         {
             Model = model;
 
-            Padding = new Padding(Model.BorderWidth);
-            BackColor = Model.BorderColor;
+            Padding = new Padding(Model.Bag.BorderWidth);
+            BackColor = Model.Bag.BorderColor;
             if(BackColor == TransparencyKey) {
                 var colors = new[] {
                     Color.Black,
@@ -75,6 +76,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
                     hWndRectangle.Height + Padding.Vertical
                 );
 
+                // とりあえず前面に移動させる
+                NativeMethods.SetWindowPos(Handle, new IntPtr((int)HWND.HWND_NOTOPMOST), 0, 0, 0, 0, SWP.SWP_NOMOVE | SWP.SWP_NOSIZE);
 
                 Visible = true;
                 Opacity = 1;

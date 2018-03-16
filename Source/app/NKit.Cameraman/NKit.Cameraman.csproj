@@ -11,6 +11,8 @@
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -93,10 +95,13 @@
     </Compile>
     <Compile Include="Constants.cs" />
     <Compile Include="Model\CameraBase.cs" />
+    <Compile Include="Model\CameramanBag.cs" />
     <Compile Include="Model\CameramanModel.cs" />
     <Compile Include="Model\ScreenCamera.cs" />
+    <Compile Include="Model\Scroll\InternetExplorer\ElementStocker.cs" />
+    <Compile Include="Model\Scroll\InternetExplorer\InternetExplorerWrapper.cs" />
     <Compile Include="Model\Scroll\ScrollCamera.cs" />
-    <Compile Include="Model\Scroll\InternetExplorerScrollCamera.cs" />
+    <Compile Include="Model\Scroll\InternetExplorer\InternetExplorerScrollCamera.cs" />
     <Compile Include="Model\WindowHandleCamera.cs" />
     <Compile Include="Model\WindowHandleUtility.cs" />
     <Compile Include="Program.cs">
@@ -116,6 +121,18 @@
     </Compile>
     <Compile Include="View\InformationForm.Designer.cs">
       <DependentUpon>InformationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\NavigationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\NavigationControl.Designer.cs">
+      <DependentUpon>NavigationControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\WindowStatusControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\WindowStatusControl.Designer.cs">
+      <DependentUpon>WindowStatusControl.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="View\CameramanForm.resx">
       <DependentUpon>CameramanForm.cs</DependentUpon>
@@ -139,6 +156,16 @@
     <EmbeddedResource Include="View\InformationForm.resx">
       <DependentUpon>InformationForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\NavigationControl.resx">
+      <DependentUpon>NavigationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\WindowStatusControl.resx">
+      <DependentUpon>WindowStatusControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="App.Debug.config">
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
     <None Include="NKit.Cameraman.user.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
@@ -148,7 +175,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <TransformOnBuild>true</TransformOnBuild>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\lib\NKit.Package\NKit.Package.csproj">
@@ -203,4 +232,11 @@
   </ItemGroup>
   <Import Project="..\..\common\NKit.Common.Application\NKit.Common.Application.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\packages\Microsoft.VisualStudio.SlowCheetah.3.0.61\build\Microsoft.VisualStudio.SlowCheetah.targets" Condition="Exists('..\..\packages\Microsoft.VisualStudio.SlowCheetah.3.0.61\build\Microsoft.VisualStudio.SlowCheetah.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Microsoft.VisualStudio.SlowCheetah.3.0.61\build\Microsoft.VisualStudio.SlowCheetah.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.VisualStudio.SlowCheetah.3.0.61\build\Microsoft.VisualStudio.SlowCheetah.targets'))" />
+  </Target>
 </Project>

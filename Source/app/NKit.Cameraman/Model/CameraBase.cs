@@ -21,15 +21,15 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         /// 設定に基づいてキャプチャ取得。
         /// </summary>
         /// <returns></returns>
-        protected abstract Image TaskShotCore();
+        protected abstract Image TakeShotCore();
 
         /// <summary>
         /// 設定に基づいてキャプチャ取得。
         /// </summary>
         /// <returns></returns>
-        public Image TaskShot()
+        public Image TakeShot()
         {
-            return TaskShotCore();
+            return TakeShotCore();
         }
 
         #endregion
