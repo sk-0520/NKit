@@ -111,11 +111,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
 
         Image TaskShotInternetExplorer()
         {
-            var camera = new InternetExplorerScrollCamera(TargetWindowHandle, DelayTime) {
+            using(var camera = new InternetExplorerScrollCamera(TargetWindowHandle, DelayTime) {
                 SendMessageWaitTime = ScrollInternetExplorerInitializeTime,
                 DocumentWaitTime = ScrollInternetExplorerInitializeTime,
-            };
-            return camera.TakeShot();
+            }) {
+                return camera.TakeShot();
+            }
         }
 
         #endregion

@@ -73,9 +73,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
                             // スクロール中にウィンドウを動かすバカのために毎度毎度座標を取得する
                             NativeMethods.GetWindowRect(WindowHandle, out var rect);
                             g.CopyFromScreen(rect.Left - diffPoint.X, rect.Top - diffPoint.Y, imageX, imageY, diffSize);
-#if DEBUG
                             Logger.Trace($"{imageX} * {imageY}, {diffPoint}, {diffSize}");
+#if DEBUG
                             g.DrawString($"{imageX} * {imageY}, {diffPoint}, {diffSize}", SystemFonts.DialogFont, SystemBrushes.ActiveCaption, new PointF(imageX, imageY));
+                            g.DrawLine(SystemPens.AppWorkspace, imageX, imageY, imageX + diffSize.Width, imageY + diffSize.Height);
 #endif
                         }
                     }
@@ -107,8 +108,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
 
         IntPtr ServerWindowHandle { get; }
 
-        public TimeSpan SendMessageWaitTime { get; set; } 
-        public TimeSpan DocumentWaitTime { get; set; } 
+        public TimeSpan SendMessageWaitTime { get; set; }
+        public TimeSpan DocumentWaitTime { get; set; }
 
         ComModel<IHTMLDocument2> HtmlDocument { get; set; }
         ComModel<IHTMLWindow2> HtmlWindow { get; set; }

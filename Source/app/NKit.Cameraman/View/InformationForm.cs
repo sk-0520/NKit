@@ -24,10 +24,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
         #region property
 
-        CameramanModel Model {get;set;}
+        CameramanModel Model { get; set; }
         public Point OffsetPoint { get; set; } = new Point(32, 32);
-        public int WindowTextBufferLength { get; set; } = 256;
-        public int WindowClassBufferLength { get; set; } = 256;
+
+        public double WindowStateOpacity { get; set; } = 1;
+        public double NavigationMouseInOpacity { get; set; } = 0.9;
+        public double NavigationMouseOutOpacity { get; set; } = 0.5;
 
         CameramanForm CameramanForm { get; set; } = new CameramanForm();
 
@@ -40,6 +42,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             Model = model;
 
             CameramanForm.SetModel(Model);
+            this.navigationControl.SetModel(Model);
         }
 
 
@@ -47,24 +50,17 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         {
             SuspendLayout();
             using(new ActionDisposer(d => ResumeLayout())) {
+                Visible = true;
+                Opacity = WindowStateOpacity;
+
                 var nowOffset = Cursor.Position;
                 nowOffset.Offset(OffsetPoint);
                 Location = nowOffset;
 
-                var textBuffer = new StringBuilder(WindowTextBufferLength);
-                NativeMethods.GetWindowText(hWnd, textBuffer, textBuffer.Capacity);
+                this.windowStatusControl.Attach(hWnd, hWndRectangle);
 
-                var classBuffer = new StringBuilder(WindowClassBufferLength);
-                NativeMethods.GetClassName(hWnd, classBuffer, textBuffer.Capacity);
-
-                this.labelCaption.Text = textBuffer.ToString();
-                this.labelLocation.Text = hWndRectangle.Location.ToString();
-                this.labelSize.Text = hWndRectangle.Size.ToString();
-                this.labelClass.Text = classBuffer.ToString();
-                this.labelHandle.Text = hWnd.ToString();
-
-                Opacity = 1;
-                Visible = true;
+                this.navigationControl.Visible = false;
+                this.windowStatusControl.Visible = true;
             }
 
             CameramanForm.Attach(hWnd, hWndRectangle);
@@ -72,9 +68,72 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
         public void Detach()
         {
-            Visible = false;
-
             CameramanForm.Detach();
+
+            this.windowStatusControl.Visible = false;
+            this.navigationControl.Visible = false;
+
+            Visible = false;
+        }
+
+        public void ShowNavigation()
+        {
+            SuspendLayout();
+            using(new ActionDisposer(d => ResumeLayout())) {
+                this.windowStatusControl.Visible = false;
+                this.navigationControl.Visible = true;
+            }
+
+            // デスクトップのどっかに配置させる
+            //ArrangementNavigation(Cursor.Position);
+            var margin = new Size(
+                NativeMethods.GetSystemMetrics(SM.SM_CXSMSIZE),
+                NativeMethods.GetSystemMetrics(SM.SM_CYSMSIZE)
+            );
+            var area = Screen.PrimaryScreen.WorkingArea;
+            Location = new Point(
+                area.Right - Size.Width - margin.Width,
+                area.Bottom - Size.Height - margin.Height
+            );
+            SetNavigationOpacity(ContainsCursorInWindow());
+            Visible = true;
+        }
+
+        void SetNavigationOpacity(bool isMouseIn)
+        {
+            Opacity = isMouseIn
+                ? NavigationMouseInOpacity
+                : NavigationMouseOutOpacity
+            ;
+        }
+
+        bool ContainsCursorInWindow()
+        {
+            var windowArea = RectangleToScreen(new Rectangle(new Point(), Size));
+            return windowArea.Contains(Cursor.Position);
+        }
+
+
+        [Obsolete]
+        void ArrangementNavigation(Point cursorPosition)
+        {
+            var area = Screen.PrimaryScreen.WorkingArea;
+            // プライマリスクリーンに配置するけど一応それ以外のディスプレイにも配置可能な想定にしておく。
+            // ちょっとくらい余白入れてもいいかも
+
+            if((area.X + area.Width) / 2 < cursorPosition.X) {
+                // 左側
+                Location = new Point(
+                    area.X,
+                    area.Bottom - Size.Height
+                );
+            } else {
+                // 右側
+                Location = new Point(
+                    area.Right - Size.Width,
+                    area.Bottom - Size.Height
+                );
+            }
         }
 
         public bool IsSelfHandle(IntPtr hWnd)
@@ -87,6 +146,16 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         private void InformationForm_Shown(object sender, EventArgs e)
         {
             CameramanForm.Show();
+        }
+
+        private void InformationForm_MouseEnter(object sender, EventArgs e)
+        {
+            SetNavigationOpacity(true);
+        }
+
+        private void InformationForm_MouseLeave(object sender, EventArgs e)
+        {
+            SetNavigationOpacity(ContainsCursorInWindow());
         }
     }
 }
