@@ -133,7 +133,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                 var clientSize = ie.GetClientSize();
                 var scrollSize = ie.GetScrollSize();
 
-                IList<ElementStocker> headerStockItems = null;
 
                 // キャプチャ取得用の画像作成
                 var blockSize = new Size((int)(clientSize.Width * scale.X), (int)(clientSize.Height * scale.Y));
@@ -155,47 +154,36 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 
                             ie.ScrollTo((int)(imageX / scale.X), (int)(imageY / scale.Y));
 
-                            if(HideFixedInHeader) {
-                                if(0 < imageY) {
-                                    // スクロール中ならヘッダ要素を隠す
-
-                                    if(headerStockItems != null) {
-                                        foreach(var item in headerStockItems) {
-                                            item.Dispose();
-                                        }
+                            using(var headerStockItems = new ElementStockerList()) {
+                                if(HideFixedInHeader) {
+                                    if(0 < imageY) {
+                                        // スクロール中ならヘッダ要素を隠す
+                                        // スクロール毎に取得しないと世の中わけわからんことがいっぱいで死にたい
+                                        headerStockItems.SetRange(GetFixedElements(ie, "HEADER"));
+                                        HideStockItems(headerStockItems);
                                     }
+                                }
 
-                                    // スクロール毎に取得しないと世の中わけわからんことがいっぱいで死にたい
-                                    headerStockItems = GetFixedElements(ie, "HEADER")
-                                        .Select(elm => new ElementStocker(elm))
-                                        .ToList()
-                                    ;
-                                    HideStockItems(headerStockItems);
-                                } else if(headerStockItems != null) {
-                                    // 先頭なら隠したヘッダ要素を復帰させる
+                                Wait();
+
+                                // スクロール中にウィンドウを動かすバカのために毎度毎度座標を取得する
+                                NativeMethods.GetWindowRect(WindowHandle, out var rect);
+                                g.CopyFromScreen(rect.Left - diffPoint.X, rect.Top - diffPoint.Y, imageX, imageY, diffSize);
+                                Logger.Trace($"{imageX} * {imageY}, {diffPoint}, {diffSize}");
+#if DEBUG
+                                g.DrawString($"{imageX} * {imageY}, {diffPoint}, {diffSize}", SystemFonts.DialogFont, SystemBrushes.ActiveCaption, new PointF(imageX, imageY));
+                                g.DrawLine(SystemPens.AppWorkspace, imageX, imageY, imageX + diffSize.Width, imageY + diffSize.Height);
+#endif
+                                if(headerStockItems.Any()) {
+                                    // 毎回取得する代わりに毎回戻してあげないともう何が何だか
                                     ShowStockItems(headerStockItems);
                                 }
                             }
-
-                            Wait();
-
-                            // スクロール中にウィンドウを動かすバカのために毎度毎度座標を取得する
-                            NativeMethods.GetWindowRect(WindowHandle, out var rect);
-                            g.CopyFromScreen(rect.Left - diffPoint.X, rect.Top - diffPoint.Y, imageX, imageY, diffSize);
-                            Logger.Trace($"{imageX} * {imageY}, {diffPoint}, {diffSize}");
-#if DEBUG
-                            g.DrawString($"{imageX} * {imageY}, {diffPoint}, {diffSize}", SystemFonts.DialogFont, SystemBrushes.ActiveCaption, new PointF(imageX, imageY));
-                            g.DrawLine(SystemPens.AppWorkspace, imageX, imageY, imageX + diffSize.Width, imageY + diffSize.Height);
-#endif
                         }
                     }
                 }
 
-                if(headerStockItems != null) {
-                    foreach(var item in headerStockItems) {
-                        item.Dispose();
-                    }
-                }
+
 
                 return bitmap;
             }
