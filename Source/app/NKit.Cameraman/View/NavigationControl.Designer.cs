@@ -34,10 +34,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.label4 = new System.Windows.Forms.Label();
             this.labelTakeShotKey = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.labelSelectKey = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.labelContinuation = new System.Windows.Forms.Label();
             this.linkExitKey = new System.Windows.Forms.LinkLabel();
+            this.linkSelectKey = new System.Windows.Forms.LinkLabel();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -118,7 +118,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             // 
             this.flowLayoutPanel1.AutoSize = true;
             this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanel1.Controls.Add(this.labelSelectKey);
+            this.flowLayoutPanel1.Controls.Add(this.linkSelectKey);
             this.flowLayoutPanel1.Controls.Add(this.label5);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(73, 0);
@@ -126,15 +126,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(120, 24);
             this.flowLayoutPanel1.TabIndex = 2;
-            // 
-            // labelSelectKey
-            // 
-            this.labelSelectKey.AutoSize = true;
-            this.labelSelectKey.Location = new System.Drawing.Point(3, 0);
-            this.labelSelectKey.Name = "labelSelectKey";
-            this.labelSelectKey.Size = new System.Drawing.Size(80, 12);
-            this.labelSelectKey.TabIndex = 1;
-            this.labelSelectKey.Text = "labelSelectKey";
             // 
             // label5
             // 
@@ -165,6 +156,17 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.linkExitKey.Text = "linkLabel1";
             this.linkExitKey.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkExitKey_LinkClicked);
             // 
+            // linkSelectKey
+            // 
+            this.linkSelectKey.AutoSize = true;
+            this.linkSelectKey.Location = new System.Drawing.Point(3, 0);
+            this.linkSelectKey.Name = "linkSelectKey";
+            this.linkSelectKey.Size = new System.Drawing.Size(74, 12);
+            this.linkSelectKey.TabIndex = 3;
+            this.linkSelectKey.TabStop = true;
+            this.linkSelectKey.Text = "linkSelectKey";
+            this.linkSelectKey.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkSelectKey_LinkClicked);
+            // 
             // NavigationControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -190,9 +192,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label labelTakeShotKey;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Label labelSelectKey;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label labelContinuation;
         private System.Windows.Forms.LinkLabel linkExitKey;
+        private System.Windows.Forms.LinkLabel linkSelectKey;
     }
 }

@@ -29,7 +29,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         #region property
 
-        bool NowSelecting { get; set; }
+        public bool NowSelecting { get; private set; }
 
         public CameramanBag Bag { get; }
 
@@ -121,7 +121,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             }
         }
 
-        void StartSelectView()
+        public void StartSelectView()
         {
             Logger.Debug("start selecting");
             Debug.Assert(!NowSelecting);

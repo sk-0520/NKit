@@ -47,7 +47,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         {
             Model = model;
 
-            this.labelSelectKey.Text = model.Bag.SelectKeys.ToString();
+            this.linkSelectKey.Text = model.Bag.SelectKeys.ToString();
             this.labelTakeShotKey.Text = model.Bag.ShotKeys.ToString();
             this.linkExitKey.Text = model.Bag.ExitKey.ToString();
             this.labelContinuation.Text = model.Bag.IsContinuation.ToString();
@@ -67,6 +67,13 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         private void linkExitKey_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Model.Exit();
+        }
+
+        private void linkSelectKey_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if(!Model.NowSelecting) {
+                Model.StartSelectView();
+            }
         }
     }
 }
