@@ -75,7 +75,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(150, 150);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(231, 150);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // label2
@@ -83,9 +83,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(3, 24);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(27, 12);
+            this.label2.Size = new System.Drawing.Size(43, 12);
             this.label2.TabIndex = 0;
-            this.label2.Text = "shot";
+            this.label2.Text = "capture";
             // 
             // label3
             // 
@@ -110,9 +110,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.labelTakeShotKey.AutoSize = true;
             this.labelTakeShotKey.Location = new System.Drawing.Point(76, 24);
             this.labelTakeShotKey.Name = "labelTakeShotKey";
-            this.labelTakeShotKey.Size = new System.Drawing.Size(96, 12);
+            this.labelTakeShotKey.Size = new System.Drawing.Size(88, 12);
             this.labelTakeShotKey.TabIndex = 1;
-            this.labelTakeShotKey.Text = "labelTakeShotKey";
+            this.labelTakeShotKey.Text = "labelCaptureKey";
             // 
             // flowLayoutPanel1
             // 
@@ -124,7 +124,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.flowLayoutPanel1.Location = new System.Drawing.Point(73, 0);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(86, 24);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(120, 24);
             this.flowLayoutPanel1.TabIndex = 2;
             // 
             // labelSelectKey
@@ -141,9 +141,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(3, 12);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(35, 12);
+            this.label5.Size = new System.Drawing.Size(114, 12);
             this.label5.TabIndex = 2;
-            this.label5.Text = "label5";
+            this.label5.Text = "double press: capture";
             // 
             // labelContinuation
             // 
@@ -170,6 +170,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "NavigationControl";
+            this.Size = new System.Drawing.Size(231, 150);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);

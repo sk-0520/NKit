@@ -207,9 +207,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     Application.Run();
                 } else {
                     CameramanForm = form;
-                    if(ImmediatelySelect) {
                         CameramanForm.Shown += Form_Shown;
-                    }
                     Application.Run(CameramanForm);
                 }
 
@@ -511,7 +509,11 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         private void Form_Shown(object sender, EventArgs e)
         {
             CameramanForm.Shown -= Form_Shown;
-            StartSelectView();
+            if(ImmediatelySelect) {
+                StartSelectView();
+            } else {
+                CameramanForm.ShowNavigation();
+            }
         }
 
     }
