@@ -112,42 +112,42 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
             foreach(var targetElement in targetElements.Where(t => t.IsEnabled)) {
                 // getElementById で済むやつを先に対応
                 if(targetElement.HasId && !targetElement.HasTag) {
-                    var stopwatchId = Stopwatch.StartNew();
+                    //var stopwatchId = Stopwatch.StartNew();
                     var element = ie.GetElementById<IHTMLElement>(targetElement.Id);
-                    Logger.Debug($"get id time: {stopwatchId.Elapsed}");
+                    //Logger.Debug($"get id time: {stopwatchId.Elapsed}");
 
                     if(element != null) {
                         var stocker = new ElementStocker(element);
                         if(IsFixed(stocker.CurrentStyle.Com)) {
-                            Logger.Debug($"get id result time: {stopwatchId.Elapsed}");
+                            //Logger.Debug($"get id result time: {stopwatchId.Elapsed}");
                             yield return stocker;
                             continue;
                         }
                         stocker.Dispose();
-                        Logger.Debug($"get id result none: {stopwatchId.Elapsed}");
+                        //Logger.Debug($"get id result none: {stopwatchId.Elapsed}");
                     }
                     continue;
                 }
 
-                var stopwatchTag = Stopwatch.StartNew();
+                //var stopwatchTag = Stopwatch.StartNew();
                 using(var collection = ie.GetElementsByTagName(targetElement.TagName)) {
-                    Logger.Debug($"get tag time: {stopwatchTag.Elapsed}");
+                    //Logger.Debug($"get tag time: {stopwatchTag.Elapsed}");
 
                     foreach(var element in ie.CollctionToElements<IHTMLElement>(collection)) {
-                        var stopwatchStock = Stopwatch.StartNew();
+                        //var stopwatchStock = Stopwatch.StartNew();
                         var stocker = new ElementStocker(element);
 
-                        Logger.Debug($"get stock time: {stopwatchStock.Elapsed}");
+                        //Logger.Debug($"get stock time: {stopwatchStock.Elapsed}");
 
                         if(targetElement.HasId) {
                             var id = stocker.Element.Com.id;
                             if(string.IsNullOrEmpty(id)) {
-                                Logger.Debug($"get stock id empty: {stopwatchStock.Elapsed}");
+                                //Logger.Debug($"get stock id empty: {stopwatchStock.Elapsed}");
                                 stocker.Dispose();
                                 continue;
                             }
                             if(!string.Equals(id, targetElement.Id, StringComparison.InvariantCultureIgnoreCase)) {
-                                Logger.Debug($"get stock id unmatch: {stopwatchStock.Elapsed}");
+                                //Logger.Debug($"get stock id unmatch: {stopwatchStock.Elapsed}");
                                 stocker.Dispose();
                                 continue;
                             }
@@ -157,25 +157,25 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                             var className = stocker.Element.Com.className;
                             if(string.IsNullOrEmpty(className)) {
                                 stocker.Dispose();
-                                Logger.Debug($"get stock class empty: {stopwatchStock.Elapsed}");
+                                //Logger.Debug($"get stock class empty: {stopwatchStock.Elapsed}");
                                 continue;
                             }
                             if(!className.Split(' ').Any(s => string.Equals(s, targetElement.Class, StringComparison.InvariantCultureIgnoreCase))) {
                                 stocker.Dispose();
-                                Logger.Debug($"get stock class unmatch: {stopwatchStock.Elapsed}");
+                                //Logger.Debug($"get stock class unmatch: {stopwatchStock.Elapsed}");
                                 continue;
                             }
                         }
 
                         if(IsFixed(stocker.CurrentStyle.Com)) {
-                            Logger.Debug($"get stock result time: {stopwatchTag.Elapsed}");
+                            //Logger.Debug($"get stock result time: {stopwatchTag.Elapsed}");
                             yield return stocker;
                             continue;
                         }
 
                         // いらない要素
                         stocker.Dispose();
-                        Logger.Debug($"get stock result none: {stopwatchStock.Elapsed}");
+                        //Logger.Debug($"get stock result none: {stopwatchStock.Elapsed}");
                     }
                 }
             }
