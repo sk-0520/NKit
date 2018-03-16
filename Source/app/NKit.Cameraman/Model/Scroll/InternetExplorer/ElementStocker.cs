@@ -22,11 +22,22 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 {
     public class ElementStocker : DisposerBase
     {
+        #region define
+
+        static string[] stringProperties = new[] {
+            nameof(IHTMLStyle.position),
+            nameof(IHTMLStyle.display),
+        };
+
+        #endregion
+
         #region variable
 
         ComModel<IHTMLElement2> _element2;
         ComModel<IHTMLStyle> _style;
         ComModel<IHTMLCurrentStyle> _currentStyle;
+
+        Dictionary<string, string> _stockStyle { get; } = new Dictionary<string, string>();
 
         #endregion
 
@@ -66,12 +77,15 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
             {
                 if(this._currentStyle == null) {
                     this._currentStyle = ComModel.Create(Element2.Com.currentStyle);
+                    foreach(var prop in stringProperties) {
+                        this._stockStyle[prop] = (string)this._currentStyle.Com.getAttribute(prop);
+                    }
                 }
                 return this._currentStyle;
             }
         }
 
-        public IDictionary<string, string> StockStyle { get; } = new Dictionary<string, string>();
+        public IReadOnlyDictionary<string, string> StockStyle => this._stockStyle;
 
 #if NEED_DEBUG
         DEBUG DEBUG => new DEBUG(this);

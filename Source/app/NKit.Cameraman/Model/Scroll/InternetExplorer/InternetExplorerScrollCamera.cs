@@ -182,7 +182,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         void ShowStockItems(IEnumerable<ElementStocker> items)
         {
             var filterdItems = items
-                .Where(i => !IsShow(i.CurrentStyle.Com))
+                //.Where(i => !IsShow(i.CurrentStyle.Com))
                 .Where(i => i.StockStyle.ContainsKey("display"))
             ;
             foreach(var item in filterdItems) {
