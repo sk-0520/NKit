@@ -32,7 +32,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         /// </summary>
         bool HideFixedInHeader { get; set; } = true;
 
-        bool HideFixedInFooter { get; set; } = true;
+        bool HideFixedInFooter { get; set; } = !true;
 
         #endregion
 
@@ -41,8 +41,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         bool IsFixed(ComModel<IHTMLElement2> element2)
         {
             using(var style = ComModel.Create(element2.Com.currentStyle)) {
-                //Logger.Debug($"{element.Com.parentElement.tagName}/{element.Com.tagName}: {style.Com.position}");
-                //Logger.Debug($"{element.Com.parentElement.tagName}/{element.Com.tagName}: {style.Com.display}");
                 return style.Com.position == "fixed";
             }
         }
@@ -66,34 +64,71 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
             SetStyleCore(element, new[] { new KeyValuePair<string, string>(property, value) });
         }
 
-        IEnumerable<ComModel<IHTMLElement2>> GetFixedElements(InternetExplorerWrapper ie, string tagName)
+        struct TagClass
         {
-            using(var collection = ie.GetElementsByTagName(tagName)) {
-                foreach(var targetElement in ie.CollctionToElements<IHTMLElement2>(collection)) {
-                    // 対象が固定されていれば子を考慮する必要なし
-                    if(IsFixed(targetElement)) {
-                        yield return targetElement;
-                        continue;
-                    }
+            public TagClass(string tagProperty)
+            {
+                var items = tagProperty.Split('.');
+                TagName = items[0];
 
-                    // 子の固定状況を確認する
-                    // あんまりやる気ないけど、一応
-                    using(var castedTargetElement = ComModel.Create((IHTMLElement)targetElement.Com)) {
-                        using(var children = ComModel.Create((IHTMLElementCollection)castedTargetElement.Com.all)) {
-                            foreach(var childElement in ie.CollctionToElements<IHTMLElement2>(children)) {
-                                if(IsFixed(childElement)) {
-                                    yield return childElement;
+                if(items.Length == 1) {
+                    ClassName = null;
+                } else {
+                    ClassName = items[1];
+                }
+            }
+
+            #region property
+
+            public string TagName { get; }
+            public string ClassName { get; }
+
+            public bool HasClass => ClassName != null;
+
+            #endregion
+        }
+
+        IEnumerable<ComModel<IHTMLElement2>> GetFixedElements(InternetExplorerWrapper ie, IEnumerable<TagClass> tagClassItems)
+        {
+            foreach(var tagClass in tagClassItems) {
+                using(var collection = ie.GetElementsByTagName(tagClass.TagName)) {
+                    foreach(var targetElement2 in ie.CollctionToElements<IHTMLElement2>(collection)) {
+                        using(var targetElement = ComModel.Create((IHTMLElement)targetElement2.Com)) {
+                            if(tagClass.HasClass) {
+                                if(string.IsNullOrEmpty(targetElement.Com.className)) {
+                                    targetElement2.Dispose();
                                     continue;
                                 }
+                                if(Array.IndexOf(targetElement.Com.className.Split(' '), tagClass.ClassName) == -1) {
+                                    targetElement2.Dispose();
+                                    continue;
+                                }
+                            }
 
-                                // いらない子
-                                childElement.Dispose();
+                            // 対象が固定されていれば子を考慮する必要なし
+                            if(IsFixed(targetElement2)) {
+                                yield return targetElement2;
+                                continue;
+                            }
+
+                            // 子の固定状況を確認する
+                            // あんまりやる気ないけど、一応
+                            using(var children = ComModel.Create((IHTMLElementCollection)targetElement.Com.all)) {
+                                foreach(var childElement in ie.CollctionToElements<IHTMLElement2>(children)) {
+                                    if(IsFixed(childElement)) {
+                                        yield return childElement;
+                                        continue;
+                                    }
+
+                                    // いらない子
+                                    childElement.Dispose();
+                                }
                             }
                         }
-                    }
 
-                    // いらない指定タグ要素
-                    targetElement.Dispose();
+                        // いらない指定タグ要素
+                        targetElement2.Dispose();
+                    }
                 }
             }
         }
@@ -101,14 +136,14 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
         void HideStockItems(IEnumerable<ElementStocker> items)
         {
             // 表示要素に限定して処理していく
-            foreach(var item in items.Where(i => IsShow(i.Element2))) {
+            foreach(var item in items/*.Where(i => IsShow(i.Element2))*/) {
                 SetStyle(item.Element, "display", "none");
             }
         }
 
         void ShowStockItems(IEnumerable<ElementStocker> items)
         {
-            foreach(var item in items.Where(i => !IsShow(i.Element2))) {
+            foreach(var item in items/*.Where(i => !IsShow(i.Element2))*/) {
                 SetStyle(item.Element, "display", item.StockStyle["display"]);
             }
         }
@@ -132,6 +167,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                 var scale = ie.GetScale();
                 var clientSize = ie.GetClientSize();
                 var scrollSize = ie.GetScrollSize();
+
+                IReadOnlyList<TagClass> headerTagClassItems = HideFixedInHeader ? Constants.HideHeaderTagClassItems.Select(s => new TagClass(s)).ToList() : null;
+                IReadOnlyList<TagClass> footerTagClassItems = HideFixedInHeader ? Constants.HideFooterTagClassItems.Select(s => new TagClass(s)).ToList() : null;
 
 
                 // キャプチャ取得用の画像作成
@@ -160,13 +198,13 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
                                     if(0 < imageY) {
                                         // スクロール中ならヘッダ要素を隠す
                                         // スクロール毎に取得しないと世の中わけわからんことがいっぱいで死にたい
-                                        headerStockItems.SetRange(GetFixedElements(ie, "HEADER"));
+                                        headerStockItems.SetRange(GetFixedElements(ie, headerTagClassItems));
                                         HideStockItems(headerStockItems);
                                     }
                                 }
                                 if(HideFixedInFooter) {
                                     if(imageY + blockSize.Height < imageSize.Height) {
-                                        headerStockItems.SetRange(GetFixedElements(ie, "FOOTER"));
+                                        headerStockItems.SetRange(GetFixedElements(ie, footerTagClassItems));
                                         HideStockItems(headerStockItems);
                                     }
                                 }
