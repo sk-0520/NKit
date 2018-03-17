@@ -23,8 +23,16 @@ namespace ContentTypeTextNet.NKit.Common
     {
         #region function
 
+        /// <summary>
+        /// NKit プログラムを起動する。
+        /// </summary>
+        /// <param name="sender">起動要求プログラム。</param>
+        /// <param name="target">起動対象プログラム。</param>
+        /// <param name="arguments">引数。</param>
+        /// <param name="workingDirectoryPath">作業ディレクトリパス。</param>
+        /// <returns>管理 ID。 0 は無効ID。</returns>
         [OperationContract]
-        void WakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath);
+        int WakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath);
 
         #endregion
     }

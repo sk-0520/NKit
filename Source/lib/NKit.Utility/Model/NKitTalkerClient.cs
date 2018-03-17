@@ -126,9 +126,9 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         #region function
 
-        public void WakeupApplication(NKitApplicationKind targetApplication, string arguments, string workingDirectoryPath)
+        public int WakeupApplication(NKitApplicationKind targetApplication, string arguments, string workingDirectoryPath)
         {
-            Host.WakeupApplication(SenderApplication, targetApplication, arguments, workingDirectoryPath);
+            return Host.WakeupApplication(SenderApplication, targetApplication, arguments, workingDirectoryPath);
         }
 
         #endregion

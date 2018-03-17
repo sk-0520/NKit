@@ -9,7 +9,7 @@ using ContentTypeTextNet.NKit.Utility.Model;
 
 namespace ContentTypeTextNet.NKit.Main.Model
 {
-    public class ApplicationSwitcher: ModelBase
+    public class ApplicationSwitcher : ModelBase
     {
         public ApplicationSwitcher(Uri serviceUri)
         {
@@ -51,12 +51,14 @@ namespace ContentTypeTextNet.NKit.Main.Model
             }
         }
 
-        public void WakeupApplication(NKitApplicationKind targetApplication, string arguments, string workingDirectoryPath)
+        public int WakeupApplication(NKitApplicationKind targetApplication, string arguments, string workingDirectoryPath)
         {
+            var manageId = 0;
+
             Swicther.DoSwitch(
                 ApplicationClient,
                 timestamp => {
-                    ApplicationClient.WakeupApplication(targetApplication, arguments, workingDirectoryPath);
+                    manageId = ApplicationClient.WakeupApplication(targetApplication, arguments, workingDirectoryPath);
                 },
                 (timestamp, talkerException) => {
                     // あくまで起動させるだけで管理まではしない
@@ -76,8 +78,13 @@ namespace ContentTypeTextNet.NKit.Main.Model
                     executor.RunAsync(CancellationToken.None).ContinueWith(t => {
                         Log.Out.Information($"local execute end: {targetApplication}, {t.Result}");
                     });
+
+                    // どうしようもないしね
+                    manageId = -1;
                 }
             );
+
+            return manageId;
         }
 
         #endregion

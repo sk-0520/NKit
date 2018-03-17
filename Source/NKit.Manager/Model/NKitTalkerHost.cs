@@ -111,6 +111,11 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         public string Arguments { get; set; }
         public string WorkingDirectoryPath { get; set; }
 
+        /// <summary>
+        /// 起動後の管理ID。
+        /// </summary>
+        public int ManageId { get; set; }
+
         #endregion
     }
 
@@ -130,7 +135,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         #region function
 
 
-        void OnWakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
+        int OnWakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
         {
             if(ApplicationWakeup != null) {
                 var e = new TalkApplicationWakeupEventArgs(sender) {
@@ -139,16 +144,20 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                     WorkingDirectoryPath = workingDirectoryPath,
                 };
                 ApplicationWakeup(this, e);
+
+                return e.ManageId;
             }
+
+            return 0;
         }
 
         #endregion
 
         #region INKitApplicationTalker
 
-        public void WakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
+        public int WakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
         {
-            OnWakeupApplication(sender, target, arguments, workingDirectoryPath);
+            return OnWakeupApplication(sender, target, arguments, workingDirectoryPath);
         }
 
         #endregion
