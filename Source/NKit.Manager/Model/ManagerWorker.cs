@@ -556,7 +556,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         private void NKitApplicationTasker_ApplicationWakeup(object sender, TalkApplicationWakeupEventArgs e)
         {
-            ApplicationManager.ExecuteNKitApplication(e.SenderApplication, e.TargetApplication, ActiveWorkspace, SelectedWorkspaceItem, e.Arguments, e.WorkingDirectoryPath);
+
+            var manageId = ApplicationManager.ExecuteNKitApplication(e.SenderApplication, e.TargetApplication, ActiveWorkspace, SelectedWorkspaceItem, e.Arguments, e.WorkingDirectoryPath);
+            e.ManageId = manageId;
         }
 
         private void NKitLoggingTalkerHost_LoggingWrite(object sender, TalkLoggingWriteEventArgs e)

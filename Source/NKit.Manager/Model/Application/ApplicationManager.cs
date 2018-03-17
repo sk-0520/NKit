@@ -53,7 +53,20 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         #region function
 
-        string AddNKitArguments(IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspaceItemSetting, string sourceArguments)
+        IReadOnlyDictionary<string, string> CreateNKitArguments(IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspaceItemSetting)
+        {
+            var result = new Dictionary<string, string>() {
+                //[CommonUtility.ManagedStartup.ExecuteFlag] = string.Empty,
+                [CommonUtility.ManagedStartup.ServiceUri] = activeWorkspace.ServiceUri.ToString(),
+                [CommonUtility.ManagedStartup.WorkspacePath] = workspaceItemSetting.DirectoryPath,
+                [CommonUtility.ManagedStartup.ApplicationId] = activeWorkspace.ApplicationId,
+                [CommonUtility.ManagedStartup.ExitEventName] = activeWorkspace.ExitEventName,
+            };
+
+            return result;
+        }
+
+        string AddNKitArguments(string sourceArguments, IReadOnlyDictionary<string, string> nkitArguments)
         {
             var list = new[] {
                 sourceArguments != null && sourceArguments.IndexOf(CommonUtility.ManagedStartup.ExecuteFlag) != -1
@@ -62,16 +75,16 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 ,
 
                 CommonUtility.ManagedStartup.ServiceUri,
-                ProgramRelationUtility.EscapesequenceToArgument(activeWorkspace.ServiceUri.ToString()),
+                ProgramRelationUtility.EscapesequenceToArgument(nkitArguments[CommonUtility.ManagedStartup.ServiceUri]) ,
 
                 CommonUtility.ManagedStartup.WorkspacePath,
-                ProgramRelationUtility.EscapesequenceToArgument(workspaceItemSetting.DirectoryPath),
+                ProgramRelationUtility.EscapesequenceToArgument(nkitArguments[CommonUtility.ManagedStartup.WorkspacePath]),
 
                 CommonUtility.ManagedStartup.ApplicationId,
-                ProgramRelationUtility.EscapesequenceToArgument(activeWorkspace.ApplicationId),
+                ProgramRelationUtility.EscapesequenceToArgument(nkitArguments[CommonUtility.ManagedStartup.ApplicationId]),
 
                 CommonUtility.ManagedStartup.ExitEventName,
-                ProgramRelationUtility.EscapesequenceToArgument(activeWorkspace.ExitEventName),
+                ProgramRelationUtility.EscapesequenceToArgument(nkitArguments[CommonUtility.ManagedStartup.ExitEventName]),
             };
             var headArgs = string.Join(" ", list);
 
@@ -84,16 +97,18 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 MainApplication.Exited -= MainApplication_Exited;
             }
 
+            var nkitArgs = CreateNKitArguments(activeWorkspace, workspaceItemSetting);
             MainApplication = new NKitApplicationItem(NKitApplicationKind.Main, LogFactory) {
-                Arguments = AddNKitArguments(activeWorkspace, workspaceItemSetting, string.Empty)
+                Arguments = AddNKitArguments(string.Empty, nkitArgs)
             };
+            Logger.Debug($"unmanage main, Path: {MainApplication.Path}, Arguments: {MainApplication.Arguments}");
 
             MainApplication.Exited += MainApplication_Exited;
 
             MainApplication.Execute();
         }
 
-        void ExecuteManageItem(ApplicationItem item)
+        uint ExecuteManageItem(ApplicationItem item)
         {
             item.Exited += Item_Exited;
 
@@ -110,6 +125,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             Logger.Debug($"ID: {manageItem.ManageId}, Path: {manageItem.ApplicationItem.Path}, Arguments: {manageItem.ApplicationItem.Arguments}");
 
             item.Execute();
+
+            return manageItem.ManageId;
         }
 
         void ExitedManageItem(ApplicationItem item)
@@ -132,26 +149,28 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             }
         }
 
-        public void ExecuteNKitApplication(NKitApplicationKind senderApplication, NKitApplicationKind targetApplication, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
+        public uint ExecuteNKitApplication(NKitApplicationKind senderApplication, NKitApplicationKind targetApplication, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
         {
             ApplicationItem item = null;
+
+            var nkitArgs = CreateNKitArguments(activeWorkspace, workspace);
 
             switch(targetApplication) {
                 case NKitApplicationKind.Main: // 通常処理として起動する可能性あり(想定する用途としては初回一括起動)
                     item = new NKitApplicationItem(targetApplication, LogFactory) {
-                        Arguments = AddNKitArguments(activeWorkspace, workspace, arguments),
+                        Arguments = AddNKitArguments(arguments, nkitArgs),
                     };
                     break;
 
                 case NKitApplicationKind.Rocket:
                     item = new NKitApplicationItem(targetApplication, LogFactory) {
-                        Arguments = AddNKitArguments(activeWorkspace, workspace, arguments),
+                        Arguments = AddNKitArguments(arguments, nkitArgs),
                     };
                     break;
 
                 case NKitApplicationKind.Cameraman:
                     item = new NKitApplicationItem(targetApplication, LogFactory) {
-                        Arguments = AddNKitArguments(activeWorkspace, workspace, arguments),
+                        Arguments = AddNKitArguments(arguments, nkitArgs),
                     };
                     break;
 
@@ -159,10 +178,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                     throw new NotImplementedException();
             }
 
-            ExecuteManageItem(item);
+            return ExecuteManageItem(item);
         }
 
-        public void ExecuteOtherApplication(NKitApplicationKind senderApplication, string programPath, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
+        public uint ExecuteOtherApplication(NKitApplicationKind senderApplication, string programPath, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
         {
             var item = new ApplicationItem(programPath) {
                 Arguments = arguments,
@@ -171,7 +190,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 IsOutputReceive = true,
             };
 
-            ExecuteManageItem(item);
+            return ExecuteManageItem(item);
         }
 
         public void ShutdownAllApplications()
