@@ -69,5 +69,27 @@ namespace ContentTypeTextNet.NKit.Manager.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   &lt;!DOCTYPE html&gt;
+        ///&lt;html&gt;
+        ///	&lt;head&gt;
+        ///		&lt;meta charset=&quot;UTF-8&quot; /&gt;
+        ///	&lt;/head&gt;
+        ///	&lt;body&gt;
+        ///		&lt;h1&gt;
+        ///			&lt;strong&gt;${VERSION}&lt;/strong&gt;
+        ///			&lt;time&gt;${TIMESTAMP}&lt;/time&gt;
+        ///		&lt;/h1&gt;
+        ///		&lt;div id=&quot;content&quot;&gt;${CONTENT}&lt;/div&gt;
+        ///	&lt;/body&gt;
+        ///&lt;/html&gt;
+        /// に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string File_ReleaseNoteMarkdown {
+            get {
+                return ResourceManager.GetString("File_ReleaseNoteMarkdown", resourceCulture);
+            }
+        }
     }
 }

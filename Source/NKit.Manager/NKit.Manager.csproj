@@ -154,6 +154,7 @@
       <AutoGen>True</AutoGen>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\File\ReleaseNoteMarkdown.html" />
     <None Include="App.config" />
     <Content Include="%40NKit.user.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
