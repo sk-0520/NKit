@@ -405,21 +405,17 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                 return;
             }
             var workspaceDirPath = Environment.ExpandEnvironmentVariables(SelectedWorkspaceItem.DirectoryPath);
-            if(Directory.Exists(workspaceDirPath)) {
-                //TODO: ワークスペースチェック
-            } else {
-                // 何やってるか忘れないために冗長に書いとく
-                try {
-                    Directory.CreateDirectory(workspaceDirPath);
-                } catch(DirectoryNotFoundException ex) {
-                    Logger.Error(ex);
-                    Logger.Warning("drive!");
-                    return;
-                }
-                Directory.CreateDirectory(Path.Combine(workspaceDirPath, CommonUtility.WorkspaceSettingDirectoryName));
-                Directory.CreateDirectory(Path.Combine(workspaceDirPath, CommonUtility.WorkspaceLogDirectoryName));
-                Directory.CreateDirectory(Path.Combine(workspaceDirPath, CommonUtility.WorkspaceTemporaryDirectoryName));
+            // 何やってるか忘れないために冗長に書いとく
+            try {
+                Directory.CreateDirectory(workspaceDirPath);
+            } catch(DirectoryNotFoundException ex) {
+                Logger.Error(ex);
+                Logger.Warning("drive!");
+                return;
             }
+            Directory.CreateDirectory(Path.Combine(workspaceDirPath, CommonUtility.WorkspaceSettingDirectoryName));
+            Directory.CreateDirectory(Path.Combine(workspaceDirPath, CommonUtility.WorkspaceLogDirectoryName));
+            Directory.CreateDirectory(Path.Combine(workspaceDirPath, CommonUtility.WorkspaceTemporaryDirectoryName));
 
             // ワークスペースにログ出力開始
             if(SelectedWorkspaceItem.Logging) {
