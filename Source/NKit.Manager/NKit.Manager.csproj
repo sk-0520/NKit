@@ -154,7 +154,16 @@
       <AutoGen>True</AutoGen>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\File\ReleaseNoteMarkdown.html" />
+    <Content Include="Resources\File\exclude\marked.js.txt" />
+    <Content Include="Resources\File\ReleaseNoteMarkdown.html">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReleaseNoteMarkdown.tt</DependentUpon>
+    </Content>
+    <Content Include="Resources\File\ReleaseNoteMarkdown.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ReleaseNoteMarkdown.html</LastGenOutput>
+    </Content>
     <None Include="App.config" />
     <Content Include="%40NKit.user.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
