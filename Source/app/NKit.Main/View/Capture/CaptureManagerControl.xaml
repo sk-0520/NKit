@@ -6,6 +6,8 @@
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 
+  xmlns:app_utility_view_converter="clr-namespace:ContentTypeTextNet.NKit.Utility.View.Converter;assembly=NKit.Utility"
+
   xmlns:app_main_view_control="clr-namespace:ContentTypeTextNet.NKit.Main.View.Control"
   xmlns:app_main_view_capture="clr-namespace:ContentTypeTextNet.NKit.Main.View.Capture"
 
@@ -14,6 +16,9 @@
   d:DesignHeight="450"
   d:DesignWidth="800"
 >
+  <UserControl.Resources>
+    <app_utility_view_converter:LogicalNotConverter x:Key="LogicalNotConverter" />
+  </UserControl.Resources>
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
@@ -30,9 +35,9 @@
       </Grid.ColumnDefinitions>
 
       <Button Grid.Column="0" Command="{Binding AddNewGroupCommand}">add new group</Button>
-      <Button Grid.Column="1" Command="{Binding CaptureControlCommand}" >clipboard:control</Button>
-      <Button Grid.Column="2" Command="{Binding CaptureWindowCommand}" >clipboard:window</Button>
-      <Button Grid.Column="3" Command="{Binding CaptureScrollCommand}" >clipboard:scroll</Button>
+      <Button Grid.Column="1" Command="{Binding SimpleCaptureControlCommand}" IsEnabled="{Binding NowCapturing, Converter={StaticResource LogicalNotConverter}}" >clipboard:control</Button>
+      <Button Grid.Column="2" Command="{Binding SimpleCaptureWindowCommand}" IsEnabled="{Binding NowCapturing, Converter={StaticResource LogicalNotConverter}}" >clipboard:window</Button>
+      <Button Grid.Column="3" Command="{Binding SimpleCaptureScrollCommand}" IsEnabled="{Binding NowCapturing, Converter={StaticResource LogicalNotConverter}}" >clipboard:scroll</Button>
     </Grid>
     <TabControl Grid.Row="1" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroupItem}">
       <TabControl.ItemTemplate>

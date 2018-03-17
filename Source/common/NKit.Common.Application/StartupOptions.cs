@@ -38,7 +38,7 @@ namespace ContentTypeTextNet.NKit.Common
             var serviceUriOption = cl.Option(CommonUtility.ManagedStartup.ServiceUri, "service uri", CommandOptionType.SingleValue);
             var applicationIdOption = cl.Option(CommonUtility.ManagedStartup.ApplicationId, "application id", CommandOptionType.SingleValue);
             var workspacePathOption = cl.Option(CommonUtility.ManagedStartup.WorkspacePath, "workspace path", CommandOptionType.SingleValue);
-            var exitEventNameOption = cl.Option(CommonUtility.ManagedStartup.ExitEventName, "exit event name", CommandOptionType.SingleValue);
+            var exitEventNameOption = cl.Option(CommonUtility.ManagedStartup.GroupSuicideEventName, "exit event name", CommandOptionType.SingleValue);
 
             var index = Array.IndexOf(args, CommonUtility.ManagedStartup.ExecuteFlag);
             IsManaged = index != -1;

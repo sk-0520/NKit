@@ -80,6 +80,7 @@
     <Compile Include="Define\WorkspaceState.cs" />
     <Compile Include="Model\Application\ApplicationItem.cs" />
     <Compile Include="Model\Application\ApplicationManager.cs" />
+    <Compile Include="Model\Application\ManageItem.cs" />
     <Compile Include="Model\Application\Setting\ApplicationSetting.cs" />
     <Compile Include="Model\CommandLine.cs" />
     <Compile Include="Model\DisplayItem.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Model\ManagerWorker.cs" />
     <Compile Include="Model\AcceptVersion.cs" />
     <Compile Include="Model\NKitTalkerHost.cs" />
+    <Compile Include="Model\SystemWebBrowserUtility.cs" />
     <Compile Include="Model\Update\UpdateManager.cs" />
     <Compile Include="Model\Workspace\Setting\WorkspaceItemSetting.cs" />
     <Compile Include="Model\Workspace\Setting\WorkspaceSetting.cs" />
@@ -152,6 +154,16 @@
       <AutoGen>True</AutoGen>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\File\exclude\marked.js.txt" />
+    <Content Include="Resources\File\ReleaseNoteMarkdown.html">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReleaseNoteMarkdown.tt</DependentUpon>
+    </Content>
+    <Content Include="Resources\File\ReleaseNoteMarkdown.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ReleaseNoteMarkdown.html</LastGenOutput>
+    </Content>
     <None Include="App.config" />
     <Content Include="%40NKit.user.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -174,6 +186,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="doc\release-notes\ver_0-0-6.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="doc\release-notes\ver_0-0-7.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="NKit.exe.config">

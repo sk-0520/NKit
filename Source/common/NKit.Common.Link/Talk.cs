@@ -18,13 +18,52 @@ namespace ContentTypeTextNet.NKit.Common
         Cameraman,
     }
 
+    [Serializable, DataContract]
+    public class NKitApplicationStatus
+    {
+        #region property
+
+        [DataMember]
+        public bool IsEnabled { get; set; }
+
+        [DataMember]
+        public bool Running { get; set; }
+        [DataMember]
+        public bool Exited { get; set; }
+        [DataMember]
+        public string ExitedEventName { get; set; }
+
+        #endregion
+    }
+
     [ServiceContract]
     public interface INKitApplicationTalker
     {
         #region function
 
+        /// <summary>
+        /// NKit プログラムを起動する準備を行う。
+        /// </summary>
+        /// <param name="sender">起動要求プログラム。</param>
+        /// <param name="target">起動対象プログラム。</param>
+        /// <param name="arguments">引数。</param>
+        /// <param name="workingDirectoryPath">作業ディレクトリパス。</param>
+        /// <returns>管理 ID。 0 は無効ID。</returns>
         [OperationContract]
-        void WakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath);
+        uint PreparateApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath);
+
+        /// <summary>
+        /// <see cref="PreparateApplication"/>で準備したプログラムを起動する。
+        /// <para>このメソッドが呼べるならマネージャ側でイベント等は構築済み。</para>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="manageId"></param>
+        /// <returns>起動できたかどうか。</returns>
+        [OperationContract]
+        bool WakeupApplication(NKitApplicationKind sender, uint manageId);
+
+        [OperationContract]
+        NKitApplicationStatus GetStatus(NKitApplicationKind sender, uint manageId);
 
         #endregion
     }

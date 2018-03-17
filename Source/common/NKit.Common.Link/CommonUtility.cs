@@ -81,12 +81,39 @@ namespace ContentTypeTextNet.NKit.Common
         {
             #region property
 
+            /// <summary>
+            /// 管理用フラグ。
+            /// <para><seealso cref="Microsoft.Extensions.CommandLineUtils.CommandLineApplication"/>が謎パラメータ受け取ると解析終わってまうんすよ。</para>
+            /// </summary>
             public static string ExecuteFlag => "--nkit_managed_execute";
+            /// <summary>
+            /// すぐ死んでほしい場合につけておくとすぐ死ぬ。
+            /// </summary>
             public static string LetsDie => "--nkit_lets_die";
+            /// <summary>
+            /// マネージャのサービスエントリポイント。
+            /// </summary>
             public static string ServiceUri => "--nkit_service_uri";
+            /// <summary>
+            /// マネージャのアプリケーションID(タスクバーボタン結合用)。
+            /// </summary>
             public static string ApplicationId => "--nkit_application_id";
+            /// <summary>
+            /// 現在処理中のワークスペースディレクトリパス。
+            /// </summary>
             public static string WorkspacePath => "--nkit_workspace";
-            public static string ExitEventName => "--nkit_exit_event_name";
+            /// <summary>
+            /// マネージャから送られてくる集団自殺示唆イベント。
+            /// <para>このシグナルが立ったら問答無用で死ぬこと。</para>
+            /// <para>ワークスペースの終了なんかに使用する。</para>
+            /// </summary>
+            public static string GroupSuicideEventName => "--nkit_group_suicide_event_name";
+            /// <summary>
+            /// マネージャから送られてくる単独自殺示唆イベント。
+            /// <para>このシグナルが立ったら問答無用で死ぬこと。</para>
+            /// <para>孤独にひっそりと死ぬ。</para>
+            /// </summary>
+            public static string AloneSuicideEventName => "--nkit_alone_suicide_event_name";
 
             #endregion
         }

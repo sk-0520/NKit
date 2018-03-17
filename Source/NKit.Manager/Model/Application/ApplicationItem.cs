@@ -54,6 +54,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         public bool CreateWindow { get; set; }
 
         public bool IsRunning { get; private set; }
+        public bool IsExited { get; private set; }
 
         protected List<ApplicationOutput> _outputMessages;
 
@@ -125,6 +126,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             Process.ErrorDataReceived -= Process_ErrorDataReceived;
 
             IsRunning = false;
+            IsExited = false;
 
             if(Exited != null) {
                 Exited(this, e);

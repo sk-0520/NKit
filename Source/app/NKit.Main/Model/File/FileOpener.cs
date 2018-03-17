@@ -190,9 +190,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
                 ProgramRelationUtility.EscapesequenceToArgument(parameter.Document.Page.ToString()),
             };
             var arguments = string.Join(" ", args);
-            using(var client = new NKitApplicationTalkerClient(NKitApplicationKind.Main, StartupOptions.ServiceUri)) {
-                client.Open();
-                client.WakeupApplication(NKitApplicationKind.Rocket, arguments, string.Empty);
+            using(var client = new ApplicationSwitcher(StartupOptions.ServiceUri)) {
+                client.Initialize();
+                var manageId = client.PreparateApplication(NKitApplicationKind.Rocket, arguments, string.Empty);
+                client.WakeupApplication(manageId);
             }
         }
 
@@ -219,9 +220,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             };
             var arguments = string.Join(" ", args);
 
-            using(var client = new NKitApplicationTalkerClient(NKitApplicationKind.Main, StartupOptions.ServiceUri)) {
-                client.Open();
-                client.WakeupApplication(NKitApplicationKind.Rocket, arguments, string.Empty);
+            using(var client = new ApplicationSwitcher(StartupOptions.ServiceUri)) {
+                client.Initialize();
+                var manageId = client.PreparateApplication(NKitApplicationKind.Rocket, arguments, string.Empty);
+                client.WakeupApplication(manageId);
             }
         }
 

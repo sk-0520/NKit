@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Manager.Model.Log;
@@ -22,6 +23,23 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         #endregion
 
+        #region variable
+
+        /// <summary>
+        /// 現在の最大ID。
+        /// <para>オーバーフロー？ ないない。</para>
+        /// <para>実運用でそこまで起動することもないでしょ。。。</para>
+        /// </summary>
+        uint _manageIdSequence = 0;
+        object _manageLock = new object();
+
+        /// <summary>
+        /// うおー、こっち int しか無理なんかよ。
+        /// </summary>
+        int _exitedSequence = 0;
+
+        #endregion
+
         public ApplicationManager(IApplicationLogFactory logFactory)
         {
             LogFactory = logFactory;
@@ -35,14 +53,35 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         IApplicationLogFactory LogFactory { get; }
         ILogger Logger { get; }
 
-        object _itemsLocker = new object();
-        IList<ApplicationItem> Items { get; } = new List<ApplicationItem>();
+        IList<ManageItem> ManageItems { get; } = new List<ManageItem>();
+
+        EventWaitHandle GroupSuicideEvent { get; set; }
 
         #endregion
 
         #region function
 
-        string AddNKitArguments(IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspaceItemSetting, string sourceArguments)
+        string CreateExitedEventName(IReadOnlyActiveWorkspace activeWorkspace)
+        {
+            var number = Interlocked.Increment(ref this._exitedSequence);
+            return $"cttn-nkit-exited-{activeWorkspace.BaseId}-{number}";
+        }
+
+        IReadOnlyDictionary<string, string> CreateNKitArguments(IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspaceItemSetting)
+        {
+            var result = new Dictionary<string, string>() {
+                //[CommonUtility.ManagedStartup.ExecuteFlag] = string.Empty,
+                [CommonUtility.ManagedStartup.ServiceUri] = activeWorkspace.ServiceUri.ToString(),
+                [CommonUtility.ManagedStartup.WorkspacePath] = workspaceItemSetting.DirectoryPath,
+                [CommonUtility.ManagedStartup.ApplicationId] = activeWorkspace.ApplicationId,
+                [CommonUtility.ManagedStartup.GroupSuicideEventName] = activeWorkspace.GroupSuicideEventName,
+                [CommonUtility.ManagedStartup.AloneSuicideEventName] = $"cttn-nkit-alone-suicide-{activeWorkspace.BaseId}-{Guid.NewGuid()}",
+            };
+
+            return result;
+        }
+
+        string AddNKitArguments(string sourceArguments, IReadOnlyDictionary<string, string> nkitArguments)
         {
             var list = new[] {
                 sourceArguments != null && sourceArguments.IndexOf(CommonUtility.ManagedStartup.ExecuteFlag) != -1
@@ -51,20 +90,20 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 ,
 
                 CommonUtility.ManagedStartup.ServiceUri,
-                ProgramRelationUtility.EscapesequenceToArgument(activeWorkspace.ServiceUri.ToString()),
+                ProgramRelationUtility.EscapesequenceToArgument(nkitArguments[CommonUtility.ManagedStartup.ServiceUri]) ,
 
                 CommonUtility.ManagedStartup.WorkspacePath,
-                ProgramRelationUtility.EscapesequenceToArgument(workspaceItemSetting.DirectoryPath),
+                ProgramRelationUtility.EscapesequenceToArgument(nkitArguments[CommonUtility.ManagedStartup.WorkspacePath]),
 
                 CommonUtility.ManagedStartup.ApplicationId,
-                ProgramRelationUtility.EscapesequenceToArgument(activeWorkspace.ApplicationId),
+                ProgramRelationUtility.EscapesequenceToArgument(nkitArguments[CommonUtility.ManagedStartup.ApplicationId]),
 
-                CommonUtility.ManagedStartup.ExitEventName,
-                ProgramRelationUtility.EscapesequenceToArgument(activeWorkspace.ExitEventName),
+                CommonUtility.ManagedStartup.GroupSuicideEventName,
+                ProgramRelationUtility.EscapesequenceToArgument(nkitArguments[CommonUtility.ManagedStartup.GroupSuicideEventName]),
             };
             var headArgs = string.Join(" ", list);
 
-            return  sourceArguments + " " + headArgs;
+            return sourceArguments + " " + headArgs;
         }
 
         public void ExecuteMainApplication(IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspaceItemSetting)
@@ -73,35 +112,83 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 MainApplication.Exited -= MainApplication_Exited;
             }
 
+            var nkitArgs = CreateNKitArguments(activeWorkspace, workspaceItemSetting);
             MainApplication = new NKitApplicationItem(NKitApplicationKind.Main, LogFactory) {
-                Arguments = AddNKitArguments(activeWorkspace, workspaceItemSetting, string.Empty)
+                Arguments = AddNKitArguments(string.Empty, nkitArgs)
             };
+            Logger.Debug($"unmanage main, Path: {MainApplication.Path}, Arguments: {MainApplication.Arguments}");
+
+            GroupSuicideEvent = new EventWaitHandle(false, EventResetMode.ManualReset, activeWorkspace.GroupSuicideEventName);
 
             MainApplication.Exited += MainApplication_Exited;
 
             MainApplication.Execute();
         }
 
-        public void ExecuteNKitApplication(NKitApplicationKind senderApplication, NKitApplicationKind targetApplication, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
+        uint PreparateManageItem(ApplicationItem item, string exitedEventName, IReadOnlyDictionary<string, string> nkitArgs)
+        {
+            item.Exited += Item_Exited;
+
+            Logger.Debug(item.Path);
+            Logger.Debug(item.Arguments);
+
+            ManageItem manageItem = null;
+            lock(this._manageLock) {
+                var manageId = ++this._manageIdSequence;
+                manageItem = new ManageItem(manageId, item, exitedEventName, nkitArgs);
+                ManageItems.Add(manageItem);
+            }
+
+            Logger.Debug($"ID: {manageItem.ManageId}, Path: {manageItem.ApplicationItem.Path}, Arguments: {manageItem.ApplicationItem.Arguments}");
+
+            //item.Execute();
+
+            return manageItem.ManageId;
+        }
+
+        void ExitedManageItem(ApplicationItem item)
+        {
+            item.Exited -= Item_Exited;
+
+            // 削除するわけでもないしロックいるか？
+            //lock(this._manageLock) {
+            var manageItem = ManageItems.FirstOrDefault(i => i.ApplicationItem == item);
+            if(manageItem != null) {
+                Logger.Information($"item exited: {item.Path}, {item.Arguments}");
+                manageItem.Exited();
+            } else {
+                Logger.Warning($"unknown item exited: {item.Path}, {item.Arguments}");
+            }
+            //}
+
+            if(ApplicationExited != null) {
+                ApplicationExited(this, EventArgs.Empty);
+            }
+        }
+
+        public uint PreparateNKitApplication(NKitApplicationKind senderApplication, NKitApplicationKind targetApplication, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
         {
             ApplicationItem item = null;
+
+            var exitedEventName = CreateExitedEventName(activeWorkspace);
+            var nkitArgs = CreateNKitArguments(activeWorkspace, workspace);
 
             switch(targetApplication) {
                 case NKitApplicationKind.Main: // 通常処理として起動する可能性あり(想定する用途としては初回一括起動)
                     item = new NKitApplicationItem(targetApplication, LogFactory) {
-                        Arguments = AddNKitArguments(activeWorkspace, workspace, arguments),
+                        Arguments = AddNKitArguments(arguments, nkitArgs),
                     };
                     break;
 
                 case NKitApplicationKind.Rocket:
                     item = new NKitApplicationItem(targetApplication, LogFactory) {
-                        Arguments = AddNKitArguments(activeWorkspace, workspace, arguments),
+                        Arguments = AddNKitArguments(arguments, nkitArgs),
                     };
                     break;
 
                 case NKitApplicationKind.Cameraman:
                     item = new NKitApplicationItem(targetApplication, LogFactory) {
-                        Arguments = AddNKitArguments(activeWorkspace, workspace, arguments),
+                        Arguments = AddNKitArguments(arguments, nkitArgs),
                     };
                     break;
 
@@ -109,31 +196,66 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                     throw new NotImplementedException();
             }
 
-            item.Exited += Item_Exited;
-            lock(this._itemsLocker) {
-                Items.Add(item);
-            }
-            Logger.Debug(item.Path);
-            Logger.Debug(item.Arguments);
-            item.Execute();
+            return PreparateManageItem(item, exitedEventName, nkitArgs);
         }
 
-        public void ExecuteOtherApplication(NKitApplicationKind senderApplication, string programPath, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
+        public uint PreparateOtherApplication(NKitApplicationKind senderApplication, string programPath, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
         {
+            var exitedEventName = CreateExitedEventName(activeWorkspace);
             var item = new ApplicationItem(programPath) {
                 Arguments = arguments,
                 WorkingDirectoryPath = workingDirectoryPath,
                 CreateWindow = false,
                 IsOutputReceive = true,
             };
-            item.Exited += Item_Exited;
-            lock(this._itemsLocker) {
-                Items.Add(item);
-            }
-            item.Execute();
+
+            return PreparateManageItem(item, exitedEventName, new Dictionary<string, string>());
         }
 
-        public void ShutdownOthersApplications()
+        bool TryGetManageItem(uint manageId, out ManageItem result)
+        {
+            ManageItem manageItem = null;
+            lock(this._manageLock) {
+                manageItem = ManageItems.FirstOrDefault(i => i.ManageId == manageId);
+            }
+            result = manageItem;
+
+            return result != null;
+        }
+
+        public bool WakeupNKitApplication(NKitApplicationKind senderApplication, uint manageId)
+        {
+            if(TryGetManageItem(manageId, out var manageItem)) {
+                //TODO: 起動状態とかもう死んでるとか調べた方がいい
+
+                manageItem.ApplicationItem.Execute();
+                return true;
+            }
+
+            return false;
+        }
+
+        public NKitApplicationStatus GetStatus(NKitApplicationKind senderApplication, uint manageId)
+        {
+            if(TryGetManageItem(manageId, out var manageItem)) {
+                //TODO: 起動状態とかもう死んでるとか調べた方がいい
+
+                var result = new NKitApplicationStatus() {
+                    IsEnabled = true,
+                    Running = manageItem.ApplicationItem.IsRunning,
+                    Exited = manageItem.ApplicationItem.IsExited,
+                    ExitedEventName = manageItem.ExitedEventName,
+                };
+
+                return result;
+            }
+
+            return new NKitApplicationStatus() {
+                IsEnabled = false,
+            };
+        }
+
+        public void ShutdownAllApplications()
         {
 
         }
@@ -142,25 +264,19 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         private void MainApplication_Exited(object sender, EventArgs e)
         {
-            ShutdownOthersApplications();
+            ShutdownAllApplications();
 
             if(MainApplicationExited != null) {
                 MainApplicationExited(sender, e);
             }
+
+            GroupSuicideEvent.Dispose();
         }
 
         private void Item_Exited(object sender, EventArgs e)
         {
-            var item = (ApplicationItem)sender;
-            item.Exited -= Item_Exited;
-
-            lock(this._itemsLocker) {
-                Items.Remove(item);
-            }
-
-            if(ApplicationExited != null) {
-                ApplicationExited(this, e);
-            }
+            ExitedManageItem((ApplicationItem)sender);
         }
+
     }
 }

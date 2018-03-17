@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using ContentTypeTextNet.NKit.Main.Model.Capture;
@@ -29,6 +30,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
                 SelectedGroupItem = GroupViewModels[0];
             }
             Groups = CollectionViewSource.GetDefaultView(GroupViewModels);
+
+            Model.PropertyChanged += Model_PropertyChanged;
         }
 
         #region property
@@ -41,6 +44,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             get { return this._selectedGroupItem; }
             set { SetProperty(ref this._selectedGroupItem, value); }
         }
+
+        public bool NowCapturing => Model.NowCapturing;
 
         public Key SelectKey
         {
@@ -110,19 +115,48 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             Model.RemoveGroupAt(index);
         });
 
-        public ICommand CaptureControlCommand => new DelegateCommand(
-            () => { Model.CaptureControl(); }
+        public ICommand SimpleCaptureControlCommand => new DelegateCommand(
+            () => { Model.SimpleCaptureControl(); },
+            () => !NowCapturing
         );
-        public ICommand CaptureWindowCommand => new DelegateCommand(
-            () => { Model.CaptureWindow(); }
+        public ICommand SimpleCaptureWindowCommand => new DelegateCommand(
+            () => { Model.SimpleCaptureWindow(); },
+            () => !NowCapturing
         );
-        public ICommand CaptureScrollCommand => new DelegateCommand(
-            () => { Model.CaptureScroll(); }
+        public ICommand SimpleCaptureScrollCommand => new DelegateCommand(
+            () => { Model.SimpleCaptureScroll(); },
+            () => !NowCapturing
         );
 
         #endregion
 
         #region function
+
+
         #endregion
+
+        #region ManagerViewModelBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if(!IsDisposed) {
+                if(disposing) {
+                    Model.PropertyChanged -= Model_PropertyChanged;
+                }
+            }
+            base.Dispose(disposing);
+        }
+
+        #endregion
+
+        private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == nameof(Model.NowCapturing)) {
+                //Application.Current.Dispatcher.Invoke(() => {
+                    RaisePropertyChanged(nameof(NowCapturing));
+                    //CommandManager.InvalidateRequerySuggested();
+                //});
+            }
+        }
     }
 }
