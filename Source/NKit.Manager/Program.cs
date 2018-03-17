@@ -18,6 +18,17 @@ namespace ContentTypeTextNet.NKit.Manager
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            try {
+                var ieVersion = SystemWebBrowserUtility.GetInternetExplorerVersion();
+                SystemWebBrowserUtility.SetUsingBrowserVersionForExecutingAssembly(ieVersion);
+                MainCore();
+            } finally {
+                SystemWebBrowserUtility.ResetUsingBrowserVersionForExecutingAssembly();
+            }
+        }
+
+        static void MainCore()
+        {
             var worker = new ManagerWorker();
             worker.Initialize();
             var logger = worker.CreateLogger("ENTRY");

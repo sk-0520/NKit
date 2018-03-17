@@ -28,13 +28,13 @@
         private void InitializeComponent()
         {
             this.commandClose = new System.Windows.Forms.Button();
-            this.viewReleaseNote = new System.Windows.Forms.RichTextBox();
+            this.viewReleaseNote = new System.Windows.Forms.WebBrowser();
             this.SuspendLayout();
             // 
             // commandClose
             // 
             this.commandClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.commandClose.Location = new System.Drawing.Point(156, 277);
+            this.commandClose.Location = new System.Drawing.Point(146, 269);
             this.commandClose.Name = "commandClose";
             this.commandClose.Size = new System.Drawing.Size(75, 23);
             this.commandClose.TabIndex = 0;
@@ -44,12 +44,11 @@
             // 
             // viewReleaseNote
             // 
-            this.viewReleaseNote.Location = new System.Drawing.Point(38, 44);
+            this.viewReleaseNote.Location = new System.Drawing.Point(12, 12);
+            this.viewReleaseNote.MinimumSize = new System.Drawing.Size(20, 20);
             this.viewReleaseNote.Name = "viewReleaseNote";
-            this.viewReleaseNote.ReadOnly = true;
-            this.viewReleaseNote.Size = new System.Drawing.Size(391, 203);
+            this.viewReleaseNote.Size = new System.Drawing.Size(421, 259);
             this.viewReleaseNote.TabIndex = 1;
-            this.viewReleaseNote.Text = "";
             // 
             // ReleaseNoteForm
             // 
@@ -57,9 +56,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.commandClose;
-            this.ClientSize = new System.Drawing.Size(465, 312);
-            this.Controls.Add(this.viewReleaseNote);
+            this.ClientSize = new System.Drawing.Size(482, 312);
             this.Controls.Add(this.commandClose);
+            this.Controls.Add(this.viewReleaseNote);
             this.Name = "ReleaseNoteForm";
             this.Text = "ReleaseNoteForm";
             this.ResumeLayout(false);
@@ -69,6 +68,6 @@
         #endregion
 
         private System.Windows.Forms.Button commandClose;
-        private System.Windows.Forms.RichTextBox viewReleaseNote;
+        private System.Windows.Forms.WebBrowser viewReleaseNote;
     }
 }
