@@ -12,7 +12,7 @@ using ContentTypeTextNet.NKit.Common;
 
 namespace ContentTypeTextNet.NKit.Utility.Model
 {
-    public abstract class NKitTalkerClientBase<TChannel> : DisposerBase
+    public abstract class NKitTalkerClientBase : DisposerBase
     {
         public NKitTalkerClientBase(NKitApplicationKind senderApplication, Uri serviceUri, string address)
         {
@@ -23,20 +23,24 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         #region property
 
-        public bool IsOpend
-        {
-            get
-            {
-                if(Channel == null) {
-                    return false;
-                }
-                return Channel.State == CommunicationState.Opened;
-            }
-        }
         protected NKitApplicationKind SenderApplication { get; }
 
         public Uri ServiceUri { get; }
         public string Address { get; }
+
+        public abstract bool IsOpend {get;}
+
+        #endregion
+
+    }
+
+    public abstract class NKitTalkerClientBase<TChannel> : NKitTalkerClientBase
+    {
+        public NKitTalkerClientBase(NKitApplicationKind senderApplication, Uri serviceUri, string address)
+            :base(senderApplication, serviceUri, address)
+        { }
+
+        #region property
 
         ChannelFactory<TChannel> Channel { get; set; }
         protected TChannel Host { get; private set; }
@@ -72,6 +76,21 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                 // ログ出力通そうと思ったけどなんかクッソおかしなことになりそうだったのでやめた
                 Console.Error.WriteLine(ex);
                 Channel.Abort();
+            }
+        }
+
+        #endregion
+
+        #region NKitTalkerClientBase
+
+        public override bool IsOpend
+        {
+            get
+            {
+                if(Channel == null) {
+                    return false;
+                }
+                return Channel.State == CommunicationState.Opened;
             }
         }
 
@@ -115,9 +134,9 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         #endregion
     }
 
-    public class NKitLoggingtalkerClient : NKitTalkerClientBase<INKitLoggingTalker>
+    public class NKitLoggingTalkerClient : NKitTalkerClientBase<INKitLoggingTalker>
     {
-        public NKitLoggingtalkerClient(NKitApplicationKind senderApplication, Uri serviceUri)
+        public NKitLoggingTalkerClient(NKitApplicationKind senderApplication, Uri serviceUri)
             : base(senderApplication, serviceUri, CommonUtility.LogAddress)
         { }
 
@@ -132,6 +151,46 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             Host.Write(timestamp, SenderApplication, logKind, subject, message, detail, processId, threadid, callerMemberName, callerFilePath, callerLineNumber);
         }
 
+
+        #endregion
+    }
+
+    public delegate void TakerSwicthDelegate(DateTime timestamp);
+    public delegate void LocalSwicthDelegate(DateTime timestamp, Exception takerException);
+
+    public class NKitTakerSwicher
+    {
+        #region property
+
+        protected DateTime LastErrorTimestamp { get; private set; } = DateTime.MinValue;
+        public TimeSpan RetrySpan { get; set; } = TimeSpan.FromMinutes(10);
+
+        #endregion
+
+        #region function
+
+        protected void DoSwitch(NKitTalkerClientBase client, TakerSwicthDelegate taker, LocalSwicthDelegate local)
+        {
+            var timestamp = DateTime.Now;
+            Exception takerException = null;
+
+            if(client != null) {
+                if(LastErrorTimestamp + RetrySpan < timestamp) {
+                    try {
+                        taker(timestamp);
+                        return;
+                    } catch(CommunicationException ex) {
+                        takerException = ex;
+                    }
+                    LastErrorTimestamp = timestamp;
+                }
+            }
+
+            // WCF死んだ場合の処理
+            if(takerException != null) {
+                local(timestamp, takerException);
+            }
+        }
 
         #endregion
     }

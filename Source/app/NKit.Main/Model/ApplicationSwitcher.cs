@@ -25,6 +25,15 @@ namespace ContentTypeTextNet.NKit.Main.Model
 
         #region function
 
+        public void WakeupApplication(NKitApplicationKind targetApplication, string arguments, string workingDirectoryPath)
+        {
+            if(ApplicationClient != null) {
+
+            }
+
+            ApplicationClient.WakeupApplication(targetApplication, arguments, workingDirectoryPath);
+        }
+
         #endregion
     }
 }

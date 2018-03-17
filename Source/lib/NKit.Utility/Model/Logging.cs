@@ -140,14 +140,14 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         {
             SenderApplication = senderApplication;
             if(serviceUri != null) {
-                LoggingClient = new NKitLoggingtalkerClient(SenderApplication, serviceUri);
+                LoggingClient = new NKitLoggingTalkerClient(SenderApplication, serviceUri);
             }
         }
 
         #region property
 
         NKitApplicationKind SenderApplication { get; }
-        NKitLoggingtalkerClient LoggingClient { get; }
+        NKitLoggingTalkerClient LoggingClient { get; }
 
         public DateTime LastErrorTimestamp { get; set; } = DateTime.MinValue;
         public TimeSpan RetrySpan { get; set; } = TimeSpan.FromMinutes(10);
