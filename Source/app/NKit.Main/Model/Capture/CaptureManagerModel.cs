@@ -134,8 +134,8 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(CaptureKeyUtility.ToCameramanArgumentKey(Setting.Capture.SelectKey)));
             }
 
-            using(var client = new NKitApplicationTalkerClient(NKitApplicationKind.Main, StartupOptions.ServiceUri)) {
-                client.Open();
+            using(var client = new ApplicationSwitcher(StartupOptions.ServiceUri)) {
+                client.Initialize();
                 client.WakeupApplication(NKitApplicationKind.Cameraman, string.Join(" ", arguments), string.Empty);
             }
         }
