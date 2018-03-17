@@ -31,7 +31,7 @@ namespace ContentTypeTextNet.NKit.Common
         [DataMember]
         public bool Exited { get; set; }
         [DataMember]
-        public string AloneSuicideEventName { get; set; }
+        public string ExitedEventName { get; set; }
 
         #endregion
     }

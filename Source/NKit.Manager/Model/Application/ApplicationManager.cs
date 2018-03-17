@@ -33,6 +33,11 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         uint _manageIdSequence = 0;
         object _manageLock = new object();
 
+        /// <summary>
+        /// うおー、こっち int しか無理なんかよ。
+        /// </summary>
+        int _exitedSequence = 0;
+
         #endregion
 
         public ApplicationManager(IApplicationLogFactory logFactory)
@@ -55,6 +60,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         #endregion
 
         #region function
+
+        string CreateExitedEventName(IReadOnlyActiveWorkspace activeWorkspace)
+        {
+            var number = Interlocked.Increment(ref this._exitedSequence);
+            return $"cttn-nkit-exited-{activeWorkspace.BaseId}-{number}";
+        }
 
         IReadOnlyDictionary<string, string> CreateNKitArguments(IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspaceItemSetting)
         {
@@ -114,7 +125,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             MainApplication.Execute();
         }
 
-        uint PreparateManageItem(ApplicationItem item, IReadOnlyDictionary<string, string> nkitArgs)
+        uint PreparateManageItem(ApplicationItem item, string exitedEventName, IReadOnlyDictionary<string, string> nkitArgs)
         {
             item.Exited += Item_Exited;
 
@@ -124,7 +135,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             ManageItem manageItem = null;
             lock(this._manageLock) {
                 var manageId = ++this._manageIdSequence;
-                manageItem = new ManageItem(manageId, item, nkitArgs);
+                manageItem = new ManageItem(manageId, item, exitedEventName, nkitArgs);
                 ManageItems.Add(manageItem);
             }
 
@@ -159,6 +170,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         {
             ApplicationItem item = null;
 
+            var exitedEventName = CreateExitedEventName(activeWorkspace);
             var nkitArgs = CreateNKitArguments(activeWorkspace, workspace);
 
             switch(targetApplication) {
@@ -184,11 +196,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                     throw new NotImplementedException();
             }
 
-            return PreparateManageItem(item, nkitArgs);
+            return PreparateManageItem(item, exitedEventName, nkitArgs);
         }
 
         public uint PreparateOtherApplication(NKitApplicationKind senderApplication, string programPath, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
         {
+            var exitedEventName = CreateExitedEventName(activeWorkspace);
             var item = new ApplicationItem(programPath) {
                 Arguments = arguments,
                 WorkingDirectoryPath = workingDirectoryPath,
@@ -196,7 +209,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 IsOutputReceive = true,
             };
 
-            return PreparateManageItem(item,new Dictionary<string, string>());
+            return PreparateManageItem(item, exitedEventName, new Dictionary<string, string>());
         }
 
         bool TryGetManageItem(uint manageId, out ManageItem result)
@@ -231,7 +244,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                     IsEnabled = true,
                     Running = manageItem.ApplicationItem.IsRunning,
                     Exited = manageItem.ApplicationItem.IsExited,
-                    AloneSuicideEventName = manageItem.AloneSuicideEventName,
+                    ExitedEventName = manageItem.ExitedEventName,
                 };
 
                 return result;

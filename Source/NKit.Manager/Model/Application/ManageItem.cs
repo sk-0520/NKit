@@ -10,7 +10,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 {
     public class ManageItem
     {
-        public ManageItem(uint manageId, ApplicationItem applicationItem, IReadOnlyDictionary<string, string> nkitArguments)
+        public ManageItem(uint manageId, ApplicationItem applicationItem, string exitedEventName, IReadOnlyDictionary<string, string> nkitArguments)
         {
             ManageId = manageId;
             ApplicationItem = applicationItem;
@@ -19,26 +19,21 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             if(NKitArguments.TryGetValue(CommonUtility.ManagedStartup.AloneSuicideEventName, out var name)) {
                 AloneSuicideEvent = new EventWaitHandle(false, EventResetMode.AutoReset, name);
             }
+
+            ExitedEventName = exitedEventName;
+            ExitedEvent = new EventWaitHandle(false, EventResetMode.ManualReset, ExitedEventName);
         }
 
         #region property
 
-        public uint ManageId {get;}
+        public uint ManageId { get; }
         public ApplicationItem ApplicationItem { get; }
         public IReadOnlyDictionary<string, string> NKitArguments { get; }
 
-        public EventWaitHandle AloneSuicideEvent { get; }
+        EventWaitHandle AloneSuicideEvent { get; }
+        EventWaitHandle ExitedEvent { get; }
 
-        public string AloneSuicideEventName
-        {
-            get
-            {
-                if(NKitArguments.TryGetValue(CommonUtility.ManagedStartup.AloneSuicideEventName, out var name)) {
-                    return name;
-                }
-                return string.Empty;
-            }
-        }
+        public string ExitedEventName { get; }
 
         #endregion
 
@@ -49,6 +44,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         /// </summary>
         public void Exited()
         {
+            ExitedEvent.Set();
         }
 
         #endregion

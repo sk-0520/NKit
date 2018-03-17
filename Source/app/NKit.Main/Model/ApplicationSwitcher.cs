@@ -152,8 +152,11 @@ namespace ContentTypeTextNet.NKit.Main.Model
                     if(talkerException != null) {
                         Logger.Error(talkerException);
                     }
+                    // TODO: 内部的な監視がいるかも。。。だりぃ
                     // しらねーよ
-                    result = new NKitApplicationStatus();
+                    result = new NKitApplicationStatus() {
+                        IsEnabled = true,
+                    };
                 }
             );
 

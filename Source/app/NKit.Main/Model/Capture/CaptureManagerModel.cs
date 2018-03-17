@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Setting;
 using ContentTypeTextNet.NKit.Setting.Capture;
@@ -14,6 +17,12 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 {
     public class CaptureManagerModel : ManagerModelBase
     {
+        #region variable
+
+        bool _nowCapturing;
+
+        #endregion
+
         public CaptureManagerModel(MainSetting setting)
             : base(setting)
         {
@@ -50,6 +59,15 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             get { return Setting.Capture.ScrollInternetExplorerHideFixedFooterElements; }
             set { Setting.Capture.ScrollInternetExplorerHideFixedFooterElements = value; }
         }
+
+        public bool NowCapturing
+        {
+            get { return this._nowCapturing; }
+            set { SetProperty(ref this._nowCapturing, value); }
+        }
+
+        CancellationTokenSource CaptureCancel { get; set; }
+        TimeSpan CaptureExitPollingTime { get; set; } = TimeSpan.FromSeconds(30);
 
         #endregion
 
@@ -95,7 +113,43 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             model.Dispose();
         }
 
-        void CaptureCore(CaptureMode captureMode)
+        void Capture(string arguments, string workingDirectoryPath)
+        {
+            Debug.Assert(!NowCapturing);
+
+            using(var client = new ApplicationSwitcher(StartupOptions.ServiceUri)) {
+                client.Initialize();
+                var manageId = client.PreparateApplication(NKitApplicationKind.Cameraman, arguments, workingDirectoryPath);
+                var status = client.GetStatusApplication(manageId);
+                //if(status.IsEnabled) {
+                if(!string.IsNullOrEmpty(status.ExitedEventName)) {
+                    var cameramanExitEvent = EventWaitHandle.OpenExisting(status.ExitedEventName);
+                    CaptureCancel = new CancellationTokenSource();
+                    var token = CaptureCancel.Token;
+                    Task.Run(() => {
+                        while(true) {
+                            var result = cameramanExitEvent.WaitOne(CaptureExitPollingTime);
+                            if(result) {
+                                Logger.Debug("capture exit!");
+                                break;
+                            }
+                            token.ThrowIfCancellationRequested();
+                            Logger.Debug("capture continue!");
+                        }
+                    }, CaptureCancel.Token).ContinueWith(_ => {
+                        NowCapturing = false;
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
+                }
+
+                if(client.WakeupApplication(manageId)) {
+                    NowCapturing = true;
+                }
+
+                //}
+            }
+        }
+
+        void SimpleCaptureCore(CaptureMode captureMode)
         {
             var arguments = new List<string>() {
                 "--mode",
@@ -109,7 +163,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             if(ScrollInternetExplorerIsEnabledHideFixedHeader) {
                 arguments.Add("--scroll_ie_hide_header");
 
-                if(string.IsNullOrWhiteSpace( ScrollInternetExplorerHideFixedHeaderElements)) {
+                if(string.IsNullOrWhiteSpace(ScrollInternetExplorerHideFixedHeaderElements)) {
                     arguments.Add(ProgramRelationUtility.EscapesequenceToArgument("*"));
                 } else {
                     arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(ScrollInternetExplorerHideFixedHeaderElements));
@@ -134,25 +188,20 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(CaptureKeyUtility.ToCameramanArgumentKey(Setting.Capture.SelectKey)));
             }
 
-            using(var client = new ApplicationSwitcher(StartupOptions.ServiceUri)) {
-                client.Initialize();
-                var manageId = client.PreparateApplication(NKitApplicationKind.Cameraman, string.Join(" ", arguments), string.Empty);
-                var status = client.GetStatusApplication(manageId);
-                client.WakeupApplication(manageId);
-            }
+            Capture(string.Join(" ", arguments), string.Empty);
         }
 
-        public void CaptureControl()
+        public void SimpleCaptureControl()
         {
-            CaptureCore(CaptureMode.Control);
+            SimpleCaptureCore(CaptureMode.Control);
         }
-        public void CaptureWindow()
+        public void SimpleCaptureWindow()
         {
-            CaptureCore(CaptureMode.Window);
+            SimpleCaptureCore(CaptureMode.Window);
         }
-        public void CaptureScroll()
+        public void SimpleCaptureScroll()
         {
-            CaptureCore(CaptureMode.Scroll);
+            SimpleCaptureCore(CaptureMode.Scroll);
         }
 
         #endregion
