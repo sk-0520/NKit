@@ -64,7 +64,7 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
 
         #region ApplicationModelBase
 
-        protected override PreparaResult<int> PreparationCore(CancellationToken cancelToken)
+        protected override PreparaResult<int> PreparateCore(CancellationToken cancelToken)
         {
             var optionKind = CommandLineApplication.Option("--kind", $"{nameof(AssociationFileKind)}", CommandOptionType.SingleValue);
             var optionPath = CommandLineApplication.Option("--path", $"file path", CommandOptionType.SingleValue);
@@ -105,7 +105,7 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
                     break;
             }
 
-            return base.PreparationCore(cancelToken);
+            return base.PreparateCore(cancelToken);
         }
 
         protected override int RunCore(CancellationToken cancelToken)

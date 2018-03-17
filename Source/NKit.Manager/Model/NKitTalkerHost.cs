@@ -99,9 +99,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         #endregion
     }
 
-    public class TalkApplicationWakeupEventArgs : TalkEventArgs
+    public class TalkApplicationPreparateEventArgs : TalkEventArgs
     {
-        public TalkApplicationWakeupEventArgs(NKitApplicationKind senderApplication)
+        public TalkApplicationPreparateEventArgs(NKitApplicationKind senderApplication)
             : base(senderApplication)
         { }
 
@@ -111,6 +111,47 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         public string Arguments { get; set; }
         public string WorkingDirectoryPath { get; set; }
 
+        /// <summary>
+        /// 管理ID。
+        /// </summary>
+        public uint ManageId { get; set; }
+
+        #endregion
+    }
+
+    public class TalkApplicationWakeupEventArgs : TalkEventArgs
+    {
+        public TalkApplicationWakeupEventArgs(NKitApplicationKind senderApplication)
+            : base(senderApplication)
+        { }
+
+        #region property
+
+        /// <summary>
+        /// 管理ID。
+        /// </summary>
+        public uint ManageId { get; set; }
+
+        public bool Success { get; set; }
+
+        #endregion
+    }
+
+    public class TalkApplicationStatusEventArgs: TalkEventArgs
+    {
+        public TalkApplicationStatusEventArgs(NKitApplicationKind senderApplication)
+            : base(senderApplication)
+        { }
+
+        #region property
+
+        /// <summary>
+        /// 管理ID。
+        /// </summary>
+        public uint ManageId { get; set; }
+
+        public NKitApplicationStatus Status { get; set; } = new NKitApplicationStatus();
+
         #endregion
     }
 
@@ -118,8 +159,11 @@ namespace ContentTypeTextNet.NKit.Manager.Model
     public class NKitApplicationTalkerHost : NKitTalkerHostBase<INKitApplicationTalker>, INKitApplicationTalker
     {
         #region event
+        // イベント対応はほんとミスった
 
+        public event EventHandler<TalkApplicationPreparateEventArgs> ApplicationPreparate;
         public event EventHandler<TalkApplicationWakeupEventArgs> ApplicationWakeup;
+        public event EventHandler<TalkApplicationStatusEventArgs> ApplicationStatus;
 
         #endregion
 
@@ -130,25 +174,71 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         #region function
 
 
-        void OnWakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
+        uint OnPreparateApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
         {
-            if(ApplicationWakeup != null) {
-                var e = new TalkApplicationWakeupEventArgs(sender) {
+            if(ApplicationPreparate != null) {
+                var e = new TalkApplicationPreparateEventArgs(sender) {
                     TargetApplication = target,
                     Arguments = arguments,
                     WorkingDirectoryPath = workingDirectoryPath,
                 };
-                ApplicationWakeup(this, e);
+                ApplicationPreparate(this, e);
+
+                return e.ManageId;
             }
+
+            return 0;
+        }
+
+        bool OnWakeupApplication(NKitApplicationKind sender, uint manageId)
+        {
+            if(ApplicationWakeup != null) {
+                var e = new TalkApplicationWakeupEventArgs(sender) {
+                    ManageId = manageId,
+                };
+
+                ApplicationWakeup(this, e);
+
+                return e.Success;
+            }
+
+            return false;
+        }
+
+        private NKitApplicationStatus OnGetStatus(NKitApplicationKind sender, uint manageId)
+        {
+            if(ApplicationStatus != null) {
+                var e = new TalkApplicationStatusEventArgs(sender) {
+                    ManageId = manageId,
+                };
+
+                ApplicationStatus(this, e);
+
+                return e.Status;
+            }
+
+            return new NKitApplicationStatus() {
+                IsEnabled = false,
+            };
         }
 
         #endregion
 
         #region INKitApplicationTalker
 
-        public void WakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
+        public uint PreparateApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
         {
-            OnWakeupApplication(sender, target, arguments, workingDirectoryPath);
+            return OnPreparateApplication(sender, target, arguments, workingDirectoryPath);
+        }
+
+        public bool WakeupApplication(NKitApplicationKind sender, uint manageId)
+        {
+            return OnWakeupApplication(sender, manageId);
+        }
+
+        public NKitApplicationStatus GetStatus(NKitApplicationKind sender, uint manageId)
+        {
+            return OnGetStatus(sender, manageId);
         }
 
         #endregion
@@ -177,7 +267,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         #endregion
     }
 
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode =ConcurrencyMode.Multiple)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class NKitLoggingTalkerHost : NKitTalkerHostBase<INKitLoggingTalker>, INKitLoggingTalker
     {
         #region event

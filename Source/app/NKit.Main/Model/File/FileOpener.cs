@@ -192,7 +192,8 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             var arguments = string.Join(" ", args);
             using(var client = new ApplicationSwitcher(StartupOptions.ServiceUri)) {
                 client.Initialize();
-                client.WakeupApplication(NKitApplicationKind.Rocket, arguments, string.Empty);
+                var manageId = client.PreparateApplication(NKitApplicationKind.Rocket, arguments, string.Empty);
+                client.WakeupApplication(manageId);
             }
         }
 
@@ -221,7 +222,8 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
             using(var client = new ApplicationSwitcher(StartupOptions.ServiceUri)) {
                 client.Initialize();
-                client.WakeupApplication(NKitApplicationKind.Rocket, arguments, string.Empty);
+                var manageId = client.PreparateApplication(NKitApplicationKind.Rocket, arguments, string.Empty);
+                client.WakeupApplication(manageId);
             }
         }
 

@@ -9,8 +9,20 @@ using ContentTypeTextNet.NKit.Utility.Model;
 
 namespace ContentTypeTextNet.NKit.Main.Model
 {
-    public class ApplicationSwitcher: ModelBase
+    public class ApplicationSwitcher : ModelBase
     {
+        #region define
+
+        class LocalApplicationInfo
+        {
+            public NKitApplicationKind TargetApplication { get; set; }
+            public string Arguments { get; set; }
+            public string WorkingDirectoryPath { get; set; }
+            public ActionCliApplicationExecutor Executor { get; set; }
+        }
+
+        #endregion
+
         public ApplicationSwitcher(Uri serviceUri)
         {
             if(serviceUri != null) {
@@ -22,6 +34,8 @@ namespace ContentTypeTextNet.NKit.Main.Model
 
         NKitApplicationTalkerClient ApplicationClient { get; }
         NKitTalkerSwicher Swicther { get; } = new NKitTalkerSwicher();
+
+        IDictionary<uint, LocalApplicationInfo> LocalApplicationInfos { get; } = new Dictionary<uint, LocalApplicationInfo>();
 
         #endregion
 
@@ -51,18 +65,22 @@ namespace ContentTypeTextNet.NKit.Main.Model
             }
         }
 
-        public void WakeupApplication(NKitApplicationKind targetApplication, string arguments, string workingDirectoryPath)
+        public uint PreparateApplication(NKitApplicationKind targetApplication, string arguments, string workingDirectoryPath)
         {
+            var manageId = 0u;
+
             Swicther.DoSwitch(
                 ApplicationClient,
                 timestamp => {
-                    ApplicationClient.WakeupApplication(targetApplication, arguments, workingDirectoryPath);
+                    manageId = ApplicationClient.PreparateApplication(targetApplication, arguments, workingDirectoryPath);
                 },
                 (timestamp, talkerException) => {
-                    // あくまで起動させるだけで管理まではしない
+                    // あくまで起動準備させるだけで管理まではしない
+                    // どうしようもないしね
                     if(talkerException != null) {
                         Logger.Error(talkerException);
                     }
+
                     var appPath = GetApplicationPath(targetApplication);
                     var executor = new ActionCliApplicationExecutor(appPath, arguments) {
                         ReceivedOutput = e => {
@@ -72,12 +90,77 @@ namespace ContentTypeTextNet.NKit.Main.Model
                             Log.Out.Error(e.Data);
                         }
                     };
-                    Logger.Information($"local execute start: {targetApplication}, {arguments}");
-                    executor.RunAsync(CancellationToken.None).ContinueWith(t => {
-                        Log.Out.Information($"local execute end: {targetApplication}, {t.Result}");
-                    });
+                    Logger.Information($"local execute: {targetApplication}, {arguments}");
+
+                    var info = new LocalApplicationInfo() {
+                        Arguments = arguments,
+                        TargetApplication = targetApplication,
+                        WorkingDirectoryPath = workingDirectoryPath,
+                        Executor = executor,
+                    };
+
+                    var id = LocalApplicationInfos.Any()
+                        ? LocalApplicationInfos.Max(p => p.Key) + 1
+                        : 1
+                    ;
+                    LocalApplicationInfos[id] = info;
+
+                    manageId = id;
                 }
             );
+
+            return manageId;
+        }
+
+        public bool WakeupApplication(uint manageId)
+        {
+            var result = false;
+
+            Swicther.DoSwitch(
+                ApplicationClient,
+                timestamp => {
+                    result = ApplicationClient.WakeupApplication(manageId);
+                },
+                (timestamp, talkerException) => {
+                    // あくまで起動させるだけで管理まではしない
+                    if(talkerException != null) {
+                        Logger.Error(talkerException);
+                    }
+
+                    var info = LocalApplicationInfos[manageId];
+                    info.Executor.RunAsync(CancellationToken.None).ContinueWith(t => {
+                        Log.Out.Information($"local execute end: {info.TargetApplication}, {t.Result}");
+                    });
+                    result = true;
+                }
+            );
+
+            return result;
+        }
+
+        public NKitApplicationStatus GetStatusApplication(uint manageId)
+        {
+            NKitApplicationStatus result = null;
+
+            Swicther.DoSwitch(
+                ApplicationClient,
+                timestamp => {
+                    result = ApplicationClient.GetStatus(manageId);
+                },
+                (timestamp, talkerException) => {
+                    // あくまで起動させるだけで管理まではしない
+                    if(talkerException != null) {
+                        Logger.Error(talkerException);
+                    }
+                    // TODO: 内部的な監視がいるかも。。。だりぃ
+                    // しらねーよ
+                    result = new NKitApplicationStatus() {
+                        IsEnabled = true,
+                    };
+                }
+            );
+
+            return result;
         }
 
         #endregion
