@@ -51,9 +51,9 @@ namespace ContentTypeTextNet.NKit.Main.Model
             }
         }
 
-        public int WakeupApplication(NKitApplicationKind targetApplication, string arguments, string workingDirectoryPath)
+        public uint WakeupApplication(NKitApplicationKind targetApplication, string arguments, string workingDirectoryPath)
         {
-            var manageId = 0;
+            var manageId = 0u;
 
             Swicther.DoSwitch(
                 ApplicationClient,
@@ -80,7 +80,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
                     });
 
                     // どうしようもないしね
-                    manageId = -1;
+                    manageId = uint.MaxValue;
                 }
             );
 

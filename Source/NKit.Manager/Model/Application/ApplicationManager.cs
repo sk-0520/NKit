@@ -22,6 +22,18 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         #endregion
 
+        #region variable
+
+        /// <summary>
+        /// 現在の最大ID。
+        /// <para>オーバーフロー？ ないない。</para>
+        /// <para>実運用でそこまで起動することもないでしょ。。。</para>
+        /// </summary>
+        uint _manageIdSequence = 0;
+        object _manageLock = new object();
+
+        #endregion
+
         public ApplicationManager(IApplicationLogFactory logFactory)
         {
             LogFactory = logFactory;
@@ -35,8 +47,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         IApplicationLogFactory LogFactory { get; }
         ILogger Logger { get; }
 
-        object _itemsLocker = new object();
-        IList<ApplicationItem> Items { get; } = new List<ApplicationItem>();
+        IList<ManageItem> ManageItems { get; } = new List<ManageItem>();
 
         #endregion
 
@@ -64,7 +75,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             };
             var headArgs = string.Join(" ", list);
 
-            return  sourceArguments + " " + headArgs;
+            return sourceArguments + " " + headArgs;
         }
 
         public void ExecuteMainApplication(IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspaceItemSetting)
@@ -80,6 +91,45 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             MainApplication.Exited += MainApplication_Exited;
 
             MainApplication.Execute();
+        }
+
+        void ExecuteManageItem(ApplicationItem item)
+        {
+            item.Exited += Item_Exited;
+
+            Logger.Debug(item.Path);
+            Logger.Debug(item.Arguments);
+
+            ManageItem manageItem = null;
+            lock(this._manageLock) {
+                var manageId = ++this._manageIdSequence;
+                manageItem = new ManageItem(manageId, item);
+                ManageItems.Add(manageItem);
+            }
+
+            Logger.Debug($"ID: {manageItem.ManageId}, Path: {manageItem.ApplicationItem.Path}, Arguments: {manageItem.ApplicationItem.Arguments}");
+
+            item.Execute();
+        }
+
+        void ExitedManageItem(ApplicationItem item)
+        {
+            item.Exited -= Item_Exited;
+
+            // 削除するわけでもないしロックいるか？
+            //lock(this._manageLock) {
+            var manageItem = ManageItems.FirstOrDefault(i => i.ApplicationItem == item);
+            if(manageItem != null) {
+                Logger.Information($"item exited: {item.Path}, {item.Arguments}");
+                manageItem.Exited();
+            } else {
+                Logger.Warning($"unknown item exited: {item.Path}, {item.Arguments}");
+            }
+            //}
+
+            if(ApplicationExited != null) {
+                ApplicationExited(this, EventArgs.Empty);
+            }
         }
 
         public void ExecuteNKitApplication(NKitApplicationKind senderApplication, NKitApplicationKind targetApplication, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
@@ -109,13 +159,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                     throw new NotImplementedException();
             }
 
-            item.Exited += Item_Exited;
-            lock(this._itemsLocker) {
-                Items.Add(item);
-            }
-            Logger.Debug(item.Path);
-            Logger.Debug(item.Arguments);
-            item.Execute();
+            ExecuteManageItem(item);
         }
 
         public void ExecuteOtherApplication(NKitApplicationKind senderApplication, string programPath, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
@@ -126,14 +170,11 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 CreateWindow = false,
                 IsOutputReceive = true,
             };
-            item.Exited += Item_Exited;
-            lock(this._itemsLocker) {
-                Items.Add(item);
-            }
-            item.Execute();
+
+            ExecuteManageItem(item);
         }
 
-        public void ShutdownOthersApplications()
+        public void ShutdownAllApplications()
         {
 
         }
@@ -142,7 +183,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         private void MainApplication_Exited(object sender, EventArgs e)
         {
-            ShutdownOthersApplications();
+            ShutdownAllApplications();
 
             if(MainApplicationExited != null) {
                 MainApplicationExited(sender, e);
@@ -151,16 +192,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         private void Item_Exited(object sender, EventArgs e)
         {
-            var item = (ApplicationItem)sender;
-            item.Exited -= Item_Exited;
-
-            lock(this._itemsLocker) {
-                Items.Remove(item);
-            }
-
-            if(ApplicationExited != null) {
-                ApplicationExited(this, e);
-            }
+            ExitedManageItem((ApplicationItem)sender);
         }
     }
 }

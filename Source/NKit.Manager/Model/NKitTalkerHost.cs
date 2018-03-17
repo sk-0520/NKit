@@ -114,7 +114,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         /// <summary>
         /// 起動後の管理ID。
         /// </summary>
-        public int ManageId { get; set; }
+        public uint ManageId { get; set; }
 
         #endregion
     }
@@ -135,7 +135,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         #region function
 
 
-        int OnWakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
+        uint OnWakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
         {
             if(ApplicationWakeup != null) {
                 var e = new TalkApplicationWakeupEventArgs(sender) {
@@ -155,7 +155,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         #region INKitApplicationTalker
 
-        public int WakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
+        public uint WakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
         {
             return OnWakeupApplication(sender, target, arguments, workingDirectoryPath);
         }

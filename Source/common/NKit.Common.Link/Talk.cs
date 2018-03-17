@@ -32,7 +32,7 @@ namespace ContentTypeTextNet.NKit.Common
         /// <param name="workingDirectoryPath">作業ディレクトリパス。</param>
         /// <returns>管理 ID。 0 は無効ID。</returns>
         [OperationContract]
-        int WakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath);
+        uint WakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath);
 
         #endregion
     }
