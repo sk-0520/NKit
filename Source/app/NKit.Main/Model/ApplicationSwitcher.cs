@@ -21,7 +21,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
         #region property
 
         NKitApplicationTalkerClient ApplicationClient { get; }
-        NKitTakerSwicher Swicther { get; } = new NKitTakerSwicher();
+        NKitTalkerSwicher Swicther { get; } = new NKitTalkerSwicher();
 
         #endregion
 

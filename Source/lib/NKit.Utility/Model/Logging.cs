@@ -149,7 +149,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         NKitApplicationKind SenderApplication { get; }
         NKitLoggingTalkerClient LoggingClient { get; }
 
-        NKitTakerSwicher Swicther { get; } = new NKitTakerSwicher();
+        NKitTalkerSwicher Swicther { get; } = new NKitTalkerSwicher();
         public NKitTalkerSwicherBase SwictherSetting => Swicther;
 
         #endregion

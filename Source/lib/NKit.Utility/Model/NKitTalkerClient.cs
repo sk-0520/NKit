@@ -168,7 +168,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         #endregion
     }
 
-    public class NKitTakerSwicher: NKitTalkerSwicherBase
+    public class NKitTalkerSwicher: NKitTalkerSwicherBase
     {
         #region function
 
