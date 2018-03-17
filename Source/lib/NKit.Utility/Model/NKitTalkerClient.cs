@@ -158,18 +158,21 @@ namespace ContentTypeTextNet.NKit.Utility.Model
     public delegate void TakerSwicthDelegate(DateTime timestamp);
     public delegate void LocalSwicthDelegate(DateTime timestamp, Exception takerException);
 
-    public class NKitTakerSwicher
+    public class NKitTakerSwicherBase
     {
         #region property
 
-        protected DateTime LastErrorTimestamp { get; private set; } = DateTime.MinValue;
+        public DateTime LastErrorTimestamp { get; set; } = DateTime.MinValue;
         public TimeSpan RetrySpan { get; set; } = TimeSpan.FromMinutes(10);
 
         #endregion
+    }
 
+    public class NKitTakerSwicher: NKitTakerSwicherBase
+    {
         #region function
 
-        protected void DoSwitch(NKitTalkerClientBase client, TakerSwicthDelegate taker, LocalSwicthDelegate local)
+        public void DoSwitch(NKitTalkerClientBase client, TakerSwicthDelegate taker, LocalSwicthDelegate local)
         {
             var timestamp = DateTime.Now;
             Exception takerException = null;
@@ -186,8 +189,8 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                 }
             }
 
-            // WCF死んだ場合の処理
-            if(takerException != null) {
+            // WCF死んだか、単体で動いている場合
+            if(client == null || takerException != null) {
                 local(timestamp, takerException);
             }
         }

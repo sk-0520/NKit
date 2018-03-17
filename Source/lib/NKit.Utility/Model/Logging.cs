@@ -149,8 +149,8 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         NKitApplicationKind SenderApplication { get; }
         NKitLoggingTalkerClient LoggingClient { get; }
 
-        public DateTime LastErrorTimestamp { get; set; } = DateTime.MinValue;
-        public TimeSpan RetrySpan { get; set; } = TimeSpan.FromMinutes(10);
+        NKitTakerSwicher Swicther { get; } = new NKitTakerSwicher();
+        public NKitTakerSwicherBase SwictherSetting => Swicther;
 
         #endregion
 
@@ -165,38 +165,31 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         void Write(NKitLogKind logKind, string subject, string message, string detail, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
-            var timestamp = DateTime.Now;
+            Swicther.DoSwitch(
+                LoggingClient,
+                timestamp => {
+                    LoggingClient.Write(logKind, subject, message, detail, callerMemberName, callerFilePath, callerLineNumber);
+                },
+                (timestamp, takerException) => {
+                    var writeValue = $"@ {timestamp} {SenderApplication} {logKind} {subject} {message} {detail}";
+                    switch(logKind) {
+                        case NKitLogKind.Trace:
+                        case NKitLogKind.Debug:
+                        case NKitLogKind.Information:
+                            Trace.WriteLine(writeValue);
+                            break;
 
-            Exception writeException = null;
-            if(LoggingClient != null) {
-                if(LastErrorTimestamp + RetrySpan < timestamp) {
-                    try {
-                        LoggingClient.Write(logKind, subject, message, detail, callerMemberName, callerFilePath, callerLineNumber);
-                        return;
-                    } catch(CommunicationException ex) {
-                        writeException = ex;
+                        default:
+                            Trace.TraceError(writeValue);
+                            break;
                     }
-                    LastErrorTimestamp = timestamp;
+
+                    // WCF死んだ場合の処理
+                    if(takerException != null) {
+                        Write(NKitLogKind.Error, nameof(LogSwitcher), takerException.Message, takerException.ToString(), $"{nameof(Write)}/{callerMemberName}", callerFilePath, callerLineNumber);
+                    }
                 }
-            }
-
-            var writeValue = $"@ {timestamp} {SenderApplication} {logKind} {subject} {message} {detail}";
-            switch(logKind) {
-                case NKitLogKind.Trace:
-                case NKitLogKind.Debug:
-                case NKitLogKind.Information:
-                    Trace.WriteLine(writeValue);
-                    break;
-
-                default:
-                    Trace.TraceError(writeValue);
-                    break;
-            }
-
-            // WCF死んだ場合の処理
-            if(writeException != null) {
-                Write(NKitLogKind.Error, nameof(LogSwitcher), writeException.Message, writeException.ToString(), $"{nameof(Write)}/{callerMemberName}", callerFilePath, callerLineNumber);
-            }
+            );
         }
 
         void WriteMessage(NKitLogKind logKind, string subject, string message, string callerMemberName, string callerFilePath, int callerLineNumber)
@@ -250,10 +243,11 @@ namespace ContentTypeTextNet.NKit.Utility.Model
     {
         static Log()
         {
-            LogFactory = new LogSwitcher(NKitApplicationKind.Others, null) {
-                LastErrorTimestamp = DateTime.MaxValue,
-                RetrySpan = TimeSpan.Zero,
-            };
+            var factory = new LogSwitcher(NKitApplicationKind.Others, null);
+            factory.SwictherSetting.LastErrorTimestamp = DateTime.MaxValue;
+            factory.SwictherSetting.RetrySpan = TimeSpan.Zero;
+
+            LogFactory = factory;
             Out = LogFactory.CreateLogger("{OUT}");
         }
 
