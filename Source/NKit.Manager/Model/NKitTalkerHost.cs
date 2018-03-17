@@ -119,7 +119,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         #endregion
     }
 
-    public class TalkApplicationWakeupEventArgs: TalkEventArgs
+    public class TalkApplicationWakeupEventArgs : TalkEventArgs
     {
         public TalkApplicationWakeupEventArgs(NKitApplicationKind senderApplication)
             : base(senderApplication)
@@ -137,13 +137,33 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         #endregion
     }
 
+    public class TalkApplicationStatusEventArgs: TalkEventArgs
+    {
+        public TalkApplicationStatusEventArgs(NKitApplicationKind senderApplication)
+            : base(senderApplication)
+        { }
+
+        #region property
+
+        /// <summary>
+        /// 管理ID。
+        /// </summary>
+        public uint ManageId { get; set; }
+
+        public NKitApplicationStatus Status { get; set; } = new NKitApplicationStatus();
+
+        #endregion
+    }
+
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class NKitApplicationTalkerHost : NKitTalkerHostBase<INKitApplicationTalker>, INKitApplicationTalker
     {
         #region event
+        // イベント対応はほんとミスった
 
         public event EventHandler<TalkApplicationPreparateEventArgs> ApplicationPreparate;
         public event EventHandler<TalkApplicationWakeupEventArgs> ApplicationWakeup;
+        public event EventHandler<TalkApplicationStatusEventArgs> ApplicationStatus;
 
         #endregion
 
@@ -185,6 +205,23 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             return false;
         }
 
+        private NKitApplicationStatus OnGetStatus(NKitApplicationKind sender, uint manageId)
+        {
+            if(ApplicationStatus != null) {
+                var e = new TalkApplicationStatusEventArgs(sender) {
+                    ManageId = manageId,
+                };
+
+                ApplicationStatus(this, e);
+
+                return e.Status;
+            }
+
+            return new NKitApplicationStatus() {
+                IsEnabled = false,
+            };
+        }
+
         #endregion
 
         #region INKitApplicationTalker
@@ -199,7 +236,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             return OnWakeupApplication(sender, manageId);
         }
 
-
+        public NKitApplicationStatus GetStatus(NKitApplicationKind sender, uint manageId)
+        {
+            return OnGetStatus(sender, manageId);
+        }
 
         #endregion
     }
@@ -227,7 +267,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         #endregion
     }
 
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode =ConcurrencyMode.Multiple)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class NKitLoggingTalkerHost : NKitTalkerHostBase<INKitLoggingTalker>, INKitLoggingTalker
     {
         #region event

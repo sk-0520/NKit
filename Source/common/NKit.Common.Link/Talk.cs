@@ -18,6 +18,24 @@ namespace ContentTypeTextNet.NKit.Common
         Cameraman,
     }
 
+    [Serializable, DataContract]
+    public class NKitApplicationStatus
+    {
+        #region property
+
+        [DataMember]
+        public bool IsEnabled { get; set; }
+
+        [DataMember]
+        public bool Running { get; set; }
+        [DataMember]
+        public bool Exited { get; set; }
+        [DataMember]
+        public string AloneSuicideEventName { get; set; }
+
+        #endregion
+    }
+
     [ServiceContract]
     public interface INKitApplicationTalker
     {
@@ -43,6 +61,9 @@ namespace ContentTypeTextNet.NKit.Common
         /// <returns>起動できたかどうか。</returns>
         [OperationContract]
         bool WakeupApplication(NKitApplicationKind sender, uint manageId);
+
+        [OperationContract]
+        NKitApplicationStatus GetStatus(NKitApplicationKind sender, uint manageId);
 
         #endregion
     }

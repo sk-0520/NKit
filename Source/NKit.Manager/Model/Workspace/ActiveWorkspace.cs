@@ -11,6 +11,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace
     {
         #region property
 
+        string BaseId { get; }
+
         /// <summary>
         /// あぷりけーしょんあいでぃー。
         /// </summary>
@@ -43,6 +45,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace
         #endregion
 
         #region IReadOnlyActiveWorkspace
+
+        public string BaseId { get; set; }
 
         public string ApplicationId { get; set; }
         /// <summary>

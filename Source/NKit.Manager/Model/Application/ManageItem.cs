@@ -29,6 +29,17 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         public EventWaitHandle AloneSuicideEvent { get; }
 
+        public string AloneSuicideEventName
+        {
+            get
+            {
+                if(NKitArguments.TryGetValue(CommonUtility.ManagedStartup.AloneSuicideEventName, out var name)) {
+                    return name;
+                }
+                return string.Empty;
+            }
+        }
+
         #endregion
 
         #region function

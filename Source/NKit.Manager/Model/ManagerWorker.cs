@@ -438,12 +438,14 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
             // 起動処理
             var aboutId = DateTime.Now.ToFileTime().ToString();
+            ActiveWorkspace.BaseId = aboutId;
             ActiveWorkspace.ServiceUri = new Uri($"net.pipe://localhost/cttn-nkit-{aboutId}");
             ActiveWorkspace.GroupSuicideEventName = $"cttn-nkit-group-suicide-{aboutId}";
 
             NKitApplicationTalkerHost = new NKitApplicationTalkerHost(ActiveWorkspace.ServiceUri, CommonUtility.AppAddress);
             NKitApplicationTalkerHost.ApplicationPreparate += NKitApplicationTalker_ApplicationPreparate;
             NKitApplicationTalkerHost.ApplicationWakeup += NKitApplicationTalkerHost_ApplicationWakeup;
+            NKitApplicationTalkerHost.ApplicationStatus += NKitApplicationTalkerHost_ApplicationStatus;
             NKitApplicationTalkerHost.Open();
 
             NKitLoggingTalkerHost = new NKitLoggingTalkerHost(ActiveWorkspace.ServiceUri, CommonUtility.LogAddress);
@@ -456,6 +458,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
             SaveSetting();
         }
+
 
         public bool CheckCanExit()
         {
@@ -517,6 +520,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                     if(NKitApplicationTalkerHost != null) {
                         NKitApplicationTalkerHost.ApplicationPreparate -= NKitApplicationTalker_ApplicationPreparate;
                         NKitApplicationTalkerHost.ApplicationWakeup -= NKitApplicationTalkerHost_ApplicationWakeup;
+                        NKitApplicationTalkerHost.ApplicationStatus -= NKitApplicationTalkerHost_ApplicationStatus;
                         NKitApplicationTalkerHost.Dispose();
                     }
                     if(NKitLoggingTalkerHost != null) {
@@ -541,6 +545,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         {
             NKitApplicationTalkerHost.ApplicationPreparate -= NKitApplicationTalker_ApplicationPreparate;
             NKitApplicationTalkerHost.ApplicationWakeup -= NKitApplicationTalkerHost_ApplicationWakeup;
+            NKitApplicationTalkerHost.ApplicationStatus -= NKitApplicationTalkerHost_ApplicationStatus;
             NKitApplicationTalkerHost.Dispose();
 
             NKitLoggingTalkerHost.LoggingWrite -= NKitLoggingTalkerHost_LoggingWrite;
@@ -567,6 +572,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         {
             var success = ApplicationManager.WakeupNKitApplication(e.SenderApplication, e.ManageId);
             e.Success = success;
+        }
+
+        private void NKitApplicationTalkerHost_ApplicationStatus(object sender, TalkApplicationStatusEventArgs e)
+        {
+            var status = ApplicationManager.GetStatus(e.SenderApplication, e.ManageId);
+            e.Status = status;
         }
 
         private void NKitLoggingTalkerHost_LoggingWrite(object sender, TalkLoggingWriteEventArgs e)

@@ -136,6 +136,11 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             return Host.WakeupApplication(SenderApplication, manageId);
         }
 
+        public NKitApplicationStatus GetStatus(uint manageId)
+        {
+            return Host.GetStatus(SenderApplication, manageId);
+        }
+
         #endregion
     }
 

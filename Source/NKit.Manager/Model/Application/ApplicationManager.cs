@@ -64,6 +64,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 [CommonUtility.ManagedStartup.WorkspacePath] = workspaceItemSetting.DirectoryPath,
                 [CommonUtility.ManagedStartup.ApplicationId] = activeWorkspace.ApplicationId,
                 [CommonUtility.ManagedStartup.GroupSuicideEventName] = activeWorkspace.GroupSuicideEventName,
+                [CommonUtility.ManagedStartup.AloneSuicideEventName] = $"cttn-nkit-alone-suicide-{activeWorkspace.BaseId}-{Guid.NewGuid()}",
             };
 
             return result;
@@ -198,22 +199,47 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             return PreparateManageItem(item,new Dictionary<string, string>());
         }
 
-        public bool WakeupNKitApplication(NKitApplicationKind senderApplication, uint manageId)
+        bool TryGetManageItem(uint manageId, out ManageItem result)
         {
             ManageItem manageItem = null;
             lock(this._manageLock) {
                 manageItem = ManageItems.FirstOrDefault(i => i.ManageId == manageId);
             }
+            result = manageItem;
 
-            if(manageItem == null) {
-                return false;
+            return result != null;
+        }
+
+        public bool WakeupNKitApplication(NKitApplicationKind senderApplication, uint manageId)
+        {
+            if(TryGetManageItem(manageId, out var manageItem)) {
+                //TODO: 起動状態とかもう死んでるとか調べた方がいい
+
+                manageItem.ApplicationItem.Execute();
+                return true;
             }
 
-            //TODO: 起動状態とかもう死んでるとか調べた方がいい
+            return false;
+        }
 
-            manageItem.ApplicationItem.Execute();
+        public NKitApplicationStatus GetStatus(NKitApplicationKind senderApplication, uint manageId)
+        {
+            if(TryGetManageItem(manageId, out var manageItem)) {
+                //TODO: 起動状態とかもう死んでるとか調べた方がいい
 
-            return true;
+                var result = new NKitApplicationStatus() {
+                    IsEnabled = true,
+                    Running = manageItem.ApplicationItem.IsRunning,
+                    Exited = manageItem.ApplicationItem.IsExited,
+                    AloneSuicideEventName = manageItem.AloneSuicideEventName,
+                };
+
+                return result;
+            }
+
+            return new NKitApplicationStatus() {
+                IsEnabled = false,
+            };
         }
 
         public void ShutdownAllApplications()

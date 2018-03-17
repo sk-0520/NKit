@@ -137,6 +137,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             using(var client = new ApplicationSwitcher(StartupOptions.ServiceUri)) {
                 client.Initialize();
                 var manageId = client.PreparateApplication(NKitApplicationKind.Cameraman, string.Join(" ", arguments), string.Empty);
+                var status = client.GetStatusApplication(manageId);
                 client.WakeupApplication(manageId);
             }
         }

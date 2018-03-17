@@ -138,6 +138,28 @@ namespace ContentTypeTextNet.NKit.Main.Model
             return result;
         }
 
+        public NKitApplicationStatus GetStatusApplication(uint manageId)
+        {
+            NKitApplicationStatus result = null;
+
+            Swicther.DoSwitch(
+                ApplicationClient,
+                timestamp => {
+                    result = ApplicationClient.GetStatus(manageId);
+                },
+                (timestamp, talkerException) => {
+                    // あくまで起動させるだけで管理まではしない
+                    if(talkerException != null) {
+                        Logger.Error(talkerException);
+                    }
+                    // しらねーよ
+                    result = new NKitApplicationStatus();
+                }
+            );
+
+            return result;
+        }
+
         #endregion
     }
 }
