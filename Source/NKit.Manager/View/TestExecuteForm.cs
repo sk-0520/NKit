@@ -164,7 +164,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
             var dummyActiveWorkspace = new ActiveWorkspace() {
                 ApplicationId = "🐁",
-                ExitEventName = "🐂",
+                GroupSuicideEventName = "🐂",
                 LogFilePath = "🐅",
                 LogWriter = null,
                 ServiceUri = new Uri("http://127.0.0.1"),

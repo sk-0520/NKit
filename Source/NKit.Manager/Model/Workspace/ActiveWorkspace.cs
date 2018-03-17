@@ -22,9 +22,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace
         Uri ServiceUri { get; }
 
         /// <summary>
-        /// 終了イベント名。
+        /// ワークスペース終了イベント名。
         /// </summary>
-        string ExitEventName { get; }
+        string GroupSuicideEventName { get; }
 
 
         #endregion
@@ -53,7 +53,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace
         /// <summary>
         /// 終了イベント名。
         /// </summary>
-        public string ExitEventName { get; set; }
+        public string GroupSuicideEventName { get; set; }
 
         #endregion
     }

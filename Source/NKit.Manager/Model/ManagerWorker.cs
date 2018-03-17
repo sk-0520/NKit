@@ -439,7 +439,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             // 起動処理
             var aboutId = DateTime.Now.ToFileTime().ToString();
             ActiveWorkspace.ServiceUri = new Uri($"net.pipe://localhost/cttn-nkit-{aboutId}");
-            ActiveWorkspace.ExitEventName = $"exit-{aboutId}";
+            ActiveWorkspace.GroupSuicideEventName = $"cttn-nkit-group-suicide-{aboutId}";
 
             NKitApplicationTalkerHost = new NKitApplicationTalkerHost(ActiveWorkspace.ServiceUri, CommonUtility.AppAddress);
             NKitApplicationTalkerHost.ApplicationWakeup += NKitApplicationTasker_ApplicationWakeup;

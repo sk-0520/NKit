@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Manager.Model.Log;
@@ -49,6 +50,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         IList<ManageItem> ManageItems { get; } = new List<ManageItem>();
 
+        EventWaitHandle GroupSuicideEvent { get; set; }
+
         #endregion
 
         #region function
@@ -60,7 +63,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 [CommonUtility.ManagedStartup.ServiceUri] = activeWorkspace.ServiceUri.ToString(),
                 [CommonUtility.ManagedStartup.WorkspacePath] = workspaceItemSetting.DirectoryPath,
                 [CommonUtility.ManagedStartup.ApplicationId] = activeWorkspace.ApplicationId,
-                [CommonUtility.ManagedStartup.ExitEventName] = activeWorkspace.ExitEventName,
+                [CommonUtility.ManagedStartup.GroupSuicideEventName] = activeWorkspace.GroupSuicideEventName,
             };
 
             return result;
@@ -83,8 +86,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 CommonUtility.ManagedStartup.ApplicationId,
                 ProgramRelationUtility.EscapesequenceToArgument(nkitArguments[CommonUtility.ManagedStartup.ApplicationId]),
 
-                CommonUtility.ManagedStartup.ExitEventName,
-                ProgramRelationUtility.EscapesequenceToArgument(nkitArguments[CommonUtility.ManagedStartup.ExitEventName]),
+                CommonUtility.ManagedStartup.GroupSuicideEventName,
+                ProgramRelationUtility.EscapesequenceToArgument(nkitArguments[CommonUtility.ManagedStartup.GroupSuicideEventName]),
             };
             var headArgs = string.Join(" ", list);
 
@@ -103,12 +106,14 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             };
             Logger.Debug($"unmanage main, Path: {MainApplication.Path}, Arguments: {MainApplication.Arguments}");
 
+            GroupSuicideEvent = new EventWaitHandle(false, EventResetMode.ManualReset, activeWorkspace.GroupSuicideEventName);
+
             MainApplication.Exited += MainApplication_Exited;
 
             MainApplication.Execute();
         }
 
-        uint ExecuteManageItem(ApplicationItem item)
+        uint ExecuteManageItem(ApplicationItem item, IReadOnlyDictionary<string, string> nkitArgs)
         {
             item.Exited += Item_Exited;
 
@@ -118,7 +123,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             ManageItem manageItem = null;
             lock(this._manageLock) {
                 var manageId = ++this._manageIdSequence;
-                manageItem = new ManageItem(manageId, item);
+                manageItem = new ManageItem(manageId, item, nkitArgs);
                 ManageItems.Add(manageItem);
             }
 
@@ -178,7 +183,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                     throw new NotImplementedException();
             }
 
-            return ExecuteManageItem(item);
+            return ExecuteManageItem(item, nkitArgs);
         }
 
         public uint ExecuteOtherApplication(NKitApplicationKind senderApplication, string programPath, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
@@ -190,7 +195,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 IsOutputReceive = true,
             };
 
-            return ExecuteManageItem(item);
+            return ExecuteManageItem(item,new Dictionary<string, string>());
         }
 
         public void ShutdownAllApplications()
@@ -207,6 +212,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             if(MainApplicationExited != null) {
                 MainApplicationExited(sender, e);
             }
+
+            GroupSuicideEvent.Dispose();
         }
 
         private void Item_Exited(object sender, EventArgs e)
