@@ -92,6 +92,7 @@
     <Compile Include="Model\ManagerWorker.cs" />
     <Compile Include="Model\AcceptVersion.cs" />
     <Compile Include="Model\NKitTalkerHost.cs" />
+    <Compile Include="Model\SystemWebBrowserUtility.cs" />
     <Compile Include="Model\Update\UpdateManager.cs" />
     <Compile Include="Model\Workspace\Setting\WorkspaceItemSetting.cs" />
     <Compile Include="Model\Workspace\Setting\WorkspaceSetting.cs" />
