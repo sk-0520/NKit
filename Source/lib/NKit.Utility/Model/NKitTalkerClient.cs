@@ -155,10 +155,10 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         #endregion
     }
 
-    public delegate void TakerSwicthDelegate(DateTime timestamp);
+    public delegate void TalkerSwicthDelegate(DateTime timestamp);
     public delegate void LocalSwicthDelegate(DateTime timestamp, Exception takerException);
 
-    public class NKitTakerSwicherBase
+    public class NKitTalkerSwicherBase
     {
         #region property
 
@@ -168,30 +168,30 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         #endregion
     }
 
-    public class NKitTakerSwicher: NKitTakerSwicherBase
+    public class NKitTakerSwicher: NKitTalkerSwicherBase
     {
         #region function
 
-        public void DoSwitch(NKitTalkerClientBase client, TakerSwicthDelegate taker, LocalSwicthDelegate local)
+        public void DoSwitch(NKitTalkerClientBase client, TalkerSwicthDelegate talker, LocalSwicthDelegate local)
         {
             var timestamp = DateTime.Now;
-            Exception takerException = null;
+            Exception talkerException = null;
 
             if(client != null) {
                 if(LastErrorTimestamp + RetrySpan < timestamp) {
                     try {
-                        taker(timestamp);
+                        talker(timestamp);
                         return;
                     } catch(CommunicationException ex) {
-                        takerException = ex;
+                        talkerException = ex;
                     }
                     LastErrorTimestamp = timestamp;
                 }
             }
 
-            // WCF死んだか、単体で動いている場合
-            if(client == null || takerException != null) {
-                local(timestamp, takerException);
+            // WCFが死んだか、単体で動いている場合
+            if(client == null || talkerException != null) {
+                local(timestamp, talkerException);
             }
         }
 

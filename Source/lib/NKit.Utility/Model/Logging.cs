@@ -150,7 +150,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         NKitLoggingTalkerClient LoggingClient { get; }
 
         NKitTakerSwicher Swicther { get; } = new NKitTakerSwicher();
-        public NKitTakerSwicherBase SwictherSetting => Swicther;
+        public NKitTalkerSwicherBase SwictherSetting => Swicther;
 
         #endregion
 
@@ -170,7 +170,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                 timestamp => {
                     LoggingClient.Write(logKind, subject, message, detail, callerMemberName, callerFilePath, callerLineNumber);
                 },
-                (timestamp, takerException) => {
+                (timestamp, talkerException) => {
                     var writeValue = $"@ {timestamp} {SenderApplication} {logKind} {subject} {message} {detail}";
                     switch(logKind) {
                         case NKitLogKind.Trace:
@@ -184,9 +184,9 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                             break;
                     }
 
-                    // WCF死んだ場合の処理
-                    if(takerException != null) {
-                        Write(NKitLogKind.Error, nameof(LogSwitcher), takerException.Message, takerException.ToString(), $"{nameof(Write)}/{callerMemberName}", callerFilePath, callerLineNumber);
+                    // WCF死んだ旨をログ出力
+                    if(talkerException != null) {
+                        Write(NKitLogKind.Error, nameof(LogSwitcher), talkerException.Message, talkerException.ToString(), $"{nameof(Write)}/{callerMemberName}", callerFilePath, callerLineNumber);
                     }
                 }
             );
