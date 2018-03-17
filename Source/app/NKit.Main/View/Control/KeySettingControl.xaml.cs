@@ -25,14 +25,16 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
         {
             InitializeComponent();
 
-            var alphabet = Enumerable.Range((int)Key.A, Key.Z - Key.A + 1).Cast<Key>();
-            var numbers = Enumerable.Range((int)Key.D0, Key.D9 - Key.D0 + 1).Cast<Key>();
-            var function = Enumerable.Range((int)Key.F1, Key.F22 - Key.F1 + 1).Cast<Key>();
+            var alphabet = GetKeysRange(Key.A, Key.Z);
+            var numbersDigitals = GetKeysRange(Key.D0, Key.D9);
+            var numbersPads = GetKeysRange(Key.NumPad0, Key.NumPad9);
+            var function = GetKeysRange(Key.F1, Key.F22);
 
             var keys = new List<Key>();
             keys.Add(Key.None);
             keys.AddRange(alphabet);
-            keys.AddRange(numbers);
+            keys.AddRange(numbersDigitals);
+            keys.AddRange(numbersPads);
             keys.AddRange(function);
 
             ItemsSource = new ObservableCollection<Key>(keys);
@@ -64,7 +66,6 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
         #endregion
 
         #endregion
-
 
         #region Key
 
@@ -107,6 +108,15 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             (d as KeySettingControl).ModifierKeys = (ModifierKeys)e.NewValue;
         }
 
+
+        #endregion
+
+        #region function
+
+        static IEnumerable<Key> GetKeysRange(Key startKey, Key endKey)
+        {
+            return Enumerable.Range((int)startKey, endKey - startKey + 1).Cast<Key>();
+        }
 
         #endregion
 
