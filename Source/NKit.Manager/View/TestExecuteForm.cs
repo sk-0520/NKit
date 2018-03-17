@@ -184,11 +184,13 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
                     SetState(listVuewItems.stateItem, info, TestState.Testing);
 
+                    uint manageId = 0;
                     if(info.Kind == NKitApplicationKind.Others) {
-                        Manager.ExecuteOtherApplication(NKitApplicationKind.Manager, info.File.FullName, dummyActiveWorkspace, dummyWorkspaceSetting, info.Arguments, workDirPath);
+                        manageId = Manager.PreparateOtherApplication(NKitApplicationKind.Manager, info.File.FullName, dummyActiveWorkspace, dummyWorkspaceSetting, info.Arguments, workDirPath);
                     } else {
-                        Manager.ExecuteNKitApplication(NKitApplicationKind.Manager, info.Kind, dummyActiveWorkspace, dummyWorkspaceSetting, info.Arguments, workDirPath);
+                        manageId = Manager.PreparateNKitApplication(NKitApplicationKind.Manager, info.Kind, dummyActiveWorkspace, dummyWorkspaceSetting, info.Arguments, workDirPath);
                     }
+                    Manager.WakeupNKitApplication(NKitApplicationKind.Manager, manageId);
 
                     if(ExitEvent.WaitOne(Constants.TestExecuteWait)) {
                         // 無事に死んだ

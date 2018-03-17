@@ -99,9 +99,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         #endregion
     }
 
-    public class TalkApplicationWakeupEventArgs : TalkEventArgs
+    public class TalkApplicationPreparateEventArgs : TalkEventArgs
     {
-        public TalkApplicationWakeupEventArgs(NKitApplicationKind senderApplication)
+        public TalkApplicationPreparateEventArgs(NKitApplicationKind senderApplication)
             : base(senderApplication)
         { }
 
@@ -112,9 +112,27 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         public string WorkingDirectoryPath { get; set; }
 
         /// <summary>
-        /// 起動後の管理ID。
+        /// 管理ID。
         /// </summary>
         public uint ManageId { get; set; }
+
+        #endregion
+    }
+
+    public class TalkApplicationWakeupEventArgs: TalkEventArgs
+    {
+        public TalkApplicationWakeupEventArgs(NKitApplicationKind senderApplication)
+            : base(senderApplication)
+        { }
+
+        #region property
+
+        /// <summary>
+        /// 管理ID。
+        /// </summary>
+        public uint ManageId { get; set; }
+
+        public bool Success { get; set; }
 
         #endregion
     }
@@ -124,6 +142,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
     {
         #region event
 
+        public event EventHandler<TalkApplicationPreparateEventArgs> ApplicationPreparate;
         public event EventHandler<TalkApplicationWakeupEventArgs> ApplicationWakeup;
 
         #endregion
@@ -135,15 +154,15 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         #region function
 
 
-        uint OnWakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
+        uint OnPreparateApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
         {
-            if(ApplicationWakeup != null) {
-                var e = new TalkApplicationWakeupEventArgs(sender) {
+            if(ApplicationPreparate != null) {
+                var e = new TalkApplicationPreparateEventArgs(sender) {
                     TargetApplication = target,
                     Arguments = arguments,
                     WorkingDirectoryPath = workingDirectoryPath,
                 };
-                ApplicationWakeup(this, e);
+                ApplicationPreparate(this, e);
 
                 return e.ManageId;
             }
@@ -151,14 +170,36 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             return 0;
         }
 
+        bool OnWakeupApplication(NKitApplicationKind sender, uint manageId)
+        {
+            if(ApplicationWakeup != null) {
+                var e = new TalkApplicationWakeupEventArgs(sender) {
+                    ManageId = manageId,
+                };
+
+                ApplicationWakeup(this, e);
+
+                return e.Success;
+            }
+
+            return false;
+        }
+
         #endregion
 
         #region INKitApplicationTalker
 
-        public uint WakeupApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
+        public uint PreparateApplication(NKitApplicationKind sender, NKitApplicationKind target, string arguments, string workingDirectoryPath)
         {
-            return OnWakeupApplication(sender, target, arguments, workingDirectoryPath);
+            return OnPreparateApplication(sender, target, arguments, workingDirectoryPath);
         }
+
+        public bool WakeupApplication(NKitApplicationKind sender, uint manageId)
+        {
+            return OnWakeupApplication(sender, manageId);
+        }
+
+
 
         #endregion
     }

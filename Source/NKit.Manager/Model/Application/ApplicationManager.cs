@@ -113,7 +113,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             MainApplication.Execute();
         }
 
-        uint ExecuteManageItem(ApplicationItem item, IReadOnlyDictionary<string, string> nkitArgs)
+        uint PreparateManageItem(ApplicationItem item, IReadOnlyDictionary<string, string> nkitArgs)
         {
             item.Exited += Item_Exited;
 
@@ -129,7 +129,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
             Logger.Debug($"ID: {manageItem.ManageId}, Path: {manageItem.ApplicationItem.Path}, Arguments: {manageItem.ApplicationItem.Arguments}");
 
-            item.Execute();
+            //item.Execute();
 
             return manageItem.ManageId;
         }
@@ -154,7 +154,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             }
         }
 
-        public uint ExecuteNKitApplication(NKitApplicationKind senderApplication, NKitApplicationKind targetApplication, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
+        public uint PreparateNKitApplication(NKitApplicationKind senderApplication, NKitApplicationKind targetApplication, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
         {
             ApplicationItem item = null;
 
@@ -183,10 +183,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                     throw new NotImplementedException();
             }
 
-            return ExecuteManageItem(item, nkitArgs);
+            return PreparateManageItem(item, nkitArgs);
         }
 
-        public uint ExecuteOtherApplication(NKitApplicationKind senderApplication, string programPath, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
+        public uint PreparateOtherApplication(NKitApplicationKind senderApplication, string programPath, IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspace, string arguments, string workingDirectoryPath)
         {
             var item = new ApplicationItem(programPath) {
                 Arguments = arguments,
@@ -195,7 +195,25 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 IsOutputReceive = true,
             };
 
-            return ExecuteManageItem(item,new Dictionary<string, string>());
+            return PreparateManageItem(item,new Dictionary<string, string>());
+        }
+
+        public bool WakeupNKitApplication(NKitApplicationKind senderApplication, uint manageId)
+        {
+            ManageItem manageItem = null;
+            lock(this._manageLock) {
+                manageItem = ManageItems.FirstOrDefault(i => i.ManageId == manageId);
+            }
+
+            if(manageItem == null) {
+                return false;
+            }
+
+            //TODO: 起動状態とかもう死んでるとか調べた方がいい
+
+            manageItem.ApplicationItem.Execute();
+
+            return true;
         }
 
         public void ShutdownAllApplications()
@@ -220,5 +238,6 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         {
             ExitedManageItem((ApplicationItem)sender);
         }
+
     }
 }
