@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -27,6 +28,9 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         public IReadOnlyCaptureSetting CaptureSetting { get; }
         public IReadOnlyNKitSetting NKitSetting { get; }
 
+        EventWaitHandle SaveNoticeEvent { get; set; }
+        Task SaveNoticePolling { get; set; }
+
         #endregion
 
         #region RunnableAsyncModel
@@ -38,7 +42,34 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         protected override Task<None> RunCoreAsync(CancellationToken cancelToken)
         {
-            throw new NotImplementedException();
+            var savedEventName = "TEST";
+            var waitTime = TimeSpan.FromMinutes(1);
+            SaveNoticeEvent = new EventWaitHandle(false, EventResetMode.AutoReset, savedEventName);
+
+            var saveNoticeCancel = new CancellationTokenSource();
+            var saveNoticeCancelToken = saveNoticeCancel.Token;
+
+            SaveNoticePolling = Task.Run(() => {
+                while(true) {
+                    var isSaved = SaveNoticeEvent.WaitOne(waitTime);
+                    saveNoticeCancelToken.ThrowIfCancellationRequested();
+                    if(isSaved) {
+                        // 保存された画像をうんぬんかんぬん。
+                        Logger.Information("saved image!");
+                    }
+                    cancelToken.ThrowIfCancellationRequested();
+                }
+            }, saveNoticeCancelToken);
+
+            var dir = Directory.CreateDirectory(@"x:\nkit-screen2");
+            return Manager.CaptureAsync(Setting.Define.CaptureMode.Control, true, true, true, savedEventName, dir, CaptureSetting.Scroll, cancelToken).ContinueWith(_ => {
+                // 頭バグってきた
+                saveNoticeCancel.Cancel();
+                SaveNoticeEvent.Set();
+
+                SaveNoticeEvent.Dispose();
+                return None.Void;
+            });
         }
 
         #endregion

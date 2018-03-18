@@ -94,12 +94,15 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             model.Dispose();
         }
 
-        void CaptureCore(string arguments, string workingDirectoryPath)
+        Task CaptureCoreAsync(string arguments, string workingDirectoryPath, CancellationToken cancelToken)
         {
             Debug.Assert(!NowCapturing);
 
             using(var client = new ApplicationSwitcher(StartupOptions.ServiceUri)) {
                 client.Initialize();
+
+                var executeTask = Task.CompletedTask;
+
                 var manageId = client.PreparateApplication(NKitApplicationKind.Cameraman, arguments, workingDirectoryPath);
                 var status = client.GetStatusApplication(manageId);
                 //if(status.IsEnabled) {
@@ -107,7 +110,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                     var cameramanExitEvent = EventWaitHandle.OpenExisting(status.ExitedEventName);
                     CaptureCancel = new CancellationTokenSource();
                     var token = CaptureCancel.Token;
-                    Task.Run(() => {
+                    executeTask = Task.Run(() => {
                         while(true) {
                             var result = cameramanExitEvent.WaitOne(CaptureExitPollingTime);
                             if(result) {
@@ -126,12 +129,14 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                     NowCapturing = true;
                 }
 
+                return executeTask;
+
                 //}
             }
         }
 
         // 引数がなぁ、多いのなぁ
-        public void Capture(CaptureMode captureMode, bool isEnabledClipboard, bool isImmediateSelect, bool isContinuation, string savedEventName, DirectoryInfo saveDirectory, IReadOnlyScrollCaptureSetting scrollSetting)
+        public Task CaptureAsync(CaptureMode captureMode, bool isEnabledClipboard, bool isImmediateSelect, bool isContinuation, string savedEventName, DirectoryInfo saveDirectory, IReadOnlyScrollCaptureSetting scrollSetting, CancellationToken cancelToken)
         {
             var arguments = new List<string>() {
                 "--mode",
@@ -149,6 +154,22 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             if(isContinuation) {
                 arguments.Add("--continuation");
 
+            }
+
+            if(saveDirectory != null) {
+                arguments.Add("--save_directory");
+                arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(saveDirectory.FullName));
+
+                arguments.Add("--save_file_name_format");
+                arguments.Add(ProgramRelationUtility.EscapesequenceToArgument("${YYYY}-${MM}-${DD}_${hh24}-${mm}-${ss}_${FFF}.${EXT}"));
+
+                arguments.Add("--save_image_kind");
+                arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(ImageKind.Png.ToString()));
+            }
+
+            if(!string.IsNullOrWhiteSpace(savedEventName)) {
+                arguments.Add("--save_event_name");
+                arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(savedEventName));
             }
 
             if(scrollSetting.InternetExplorer.Header.IsEnabled) {
@@ -179,12 +200,12 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(CaptureKeyUtility.ToCameramanArgumentKey(Setting.Capture.SelectKey)));
             }
 
-            CaptureCore(string.Join(" ", arguments), string.Empty);
+            return CaptureCoreAsync(string.Join(" ", arguments), string.Empty, cancelToken);
         }
 
         public void SimpleCapture(CaptureMode captureMode)
         {
-            Capture(captureMode, true, true, false, default(string), default(DirectoryInfo), Setting.Capture.Scroll);
+            CaptureAsync(captureMode, true, true, false, default(string), default(DirectoryInfo), Setting.Capture.Scroll, CancellationToken.None);
         }
 
         #endregion
