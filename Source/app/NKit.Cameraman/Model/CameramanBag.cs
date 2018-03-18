@@ -20,7 +20,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         {
             var command = new CommandLineApplication(false);
 
-            var modeOption = command.Option("--mode", "mode", CommandOptionType.SingleValue);
+            var targetOption = command.Option("--target", "target", CommandOptionType.SingleValue);
             var clipboardOption = command.Option("--clipboard", "use clipboard", CommandOptionType.NoValue);
             var saveDirOption = command.Option("--save_directory", "save directory", CommandOptionType.SingleValue);
             var saveFileNameFormatOption = command.Option("--save_file_name_format", "save file name format, extension is ${EXT}", CommandOptionType.SingleValue);
@@ -40,7 +40,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
             command.Execute(arguments);
 
-            CaptureMode = EnumUtility.Parse<Setting.Define.CaptureMode>(modeOption.Value());
+            CaptureTarget = EnumUtility.Parse<Setting.Define.CaptureTarget>(targetOption.Value());
             IsEnabledClipboard = clipboardOption.HasValue();
             if(saveDirOption.HasValue()) {
                 SaveDirectory = new DirectoryInfo(saveDirOption.Value());
@@ -61,7 +61,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             ImmediatelySelect = immediatelySelectOption.HasValue();
 
             var needKey = true;
-            if(CaptureMode == Setting.Define.CaptureMode.Screen && !IsContinuation) {
+            if(CaptureTarget == Setting.Define.CaptureTarget.Screen && !IsContinuation) {
                 needKey = false;
             }
 
@@ -98,7 +98,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 BorderWidth = int.Parse(cameraBorderWidthOption.Value());
             }
 
-            if(CaptureMode == Setting.Define.CaptureMode.Scroll) {
+            if(CaptureTarget == Setting.Define.CaptureTarget.Scroll) {
                 if(scrollDelayTimeOption.HasValue()) {
                     ScrollDelayTime = TimeSpan.Parse(scrollDelayTimeOption.Value());
                 }
@@ -122,7 +122,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         public bool NowSelecting { get; set; }
 
-        public Setting.Define.CaptureMode CaptureMode { get; }
+        public Setting.Define.CaptureTarget CaptureTarget { get; }
 
         public bool IsEnabledClipboard { get; }
 

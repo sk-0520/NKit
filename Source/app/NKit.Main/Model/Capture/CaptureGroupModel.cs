@@ -118,7 +118,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 : CaptureSetting.Scroll
             ;
             var dir = GetCaptureDirectory();
-            return Manager.CaptureAsync(GroupSetting.CaptureMode, GroupSetting.IsEnabledClipboard, GroupSetting.IsImmediateSelect, true, savedEventName, dir, scrollSetting, cancelToken).ContinueWith(_ => {
+            return Manager.CaptureAsync(GroupSetting.CaptureTarget, GroupSetting.IsEnabledClipboard, GroupSetting.IsImmediateSelect, true, savedEventName, dir, scrollSetting, cancelToken).ContinueWith(_ => {
                 // 頭バグってきた
                 saveNoticeCancel.Cancel();
                 SaveNoticeEvent.Set();

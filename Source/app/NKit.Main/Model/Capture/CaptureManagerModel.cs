@@ -136,11 +136,11 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         }
 
         // 引数がなぁ、多いのなぁ
-        public Task CaptureAsync(CaptureMode captureMode, bool isEnabledClipboard, bool isImmediateSelect, bool isContinuation, string savedEventName, DirectoryInfo saveDirectory, IReadOnlyScrollCaptureSetting scrollSetting, CancellationToken cancelToken)
+        public Task CaptureAsync(CaptureTarget captureTarget, bool isEnabledClipboard, bool isImmediateSelect, bool isContinuation, string savedEventName, DirectoryInfo saveDirectory, IReadOnlyScrollCaptureSetting scrollSetting, CancellationToken cancelToken)
         {
             var arguments = new List<string>() {
-                "--mode",
-                ProgramRelationUtility.EscapesequenceToArgument(captureMode.ToString()),
+                "--target",
+                ProgramRelationUtility.EscapesequenceToArgument(captureTarget.ToString()),
             };
 
             if(isEnabledClipboard) {
@@ -203,9 +203,9 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             return CaptureCoreAsync(string.Join(" ", arguments), string.Empty, cancelToken);
         }
 
-        public void SimpleCapture(CaptureMode captureMode)
+        public void SimpleCapture(CaptureTarget captureTarget)
         {
-            CaptureAsync(captureMode, true, true, false, default(string), default(DirectoryInfo), Setting.Capture.Scroll, CancellationToken.None);
+            CaptureAsync(captureTarget, true, true, false, default(string), default(DirectoryInfo), Setting.Capture.Scroll, CancellationToken.None);
         }
 
         #endregion

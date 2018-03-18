@@ -67,12 +67,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         #region function
 
-        public static IntPtr GetView(Point point, CaptureMode captureMode)
+        public static IntPtr GetView(Point point, CaptureTarget captureTarget)
         {
             var podPoint = new POINT(point.X, point.Y);
             var hWnd = NativeMethods.WindowFromPoint(podPoint);
 
-            if(captureMode == CaptureMode.Control) {
+            if(captureTarget == CaptureTarget.Control) {
                 return hWnd;
             }
 
@@ -80,13 +80,13 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             return NativeMethods.GetAncestor(hWnd, GA.GA_ROOT);
         }
 
-        public static Rectangle GetViewArea(IntPtr hWnd, CaptureMode captureMode)
+        public static Rectangle GetViewArea(IntPtr hWnd, CaptureTarget captureTarget)
         {
             RECT windowRect;
 
             NativeMethods.GetWindowRect(hWnd, out windowRect);
 
-            if(captureMode == CaptureMode.Client) {
+            if(captureTarget == CaptureTarget.Client) {
                 RECT clientRect;
                 NativeMethods.GetClientRect(hWnd, out clientRect);
                 var top = new POINT(clientRect.Left, clientRect.Top);
@@ -104,14 +104,14 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             return result;
         }
 
-        public static IntPtr GetActiveWindow(CaptureMode captureMode)
+        public static IntPtr GetActiveWindow(CaptureTarget captureTarget)
         {
-            if(captureMode == CaptureMode.Screen) {
-                throw new ArgumentException(nameof(captureMode));
+            if(captureTarget == CaptureTarget.Screen) {
+                throw new ArgumentException(nameof(captureTarget));
             }
 
             var hWnd = NativeMethods.GetForegroundWindow();
-            if(captureMode != CaptureMode.Control) {
+            if(captureTarget != CaptureTarget.Control) {
                 return hWnd;
             }
 

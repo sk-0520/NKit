@@ -39,11 +39,11 @@
 
           <Label>capture mode:</Label>
           <StackPanel>
-            <RadioButton IsChecked="{Binding CaptureMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureMode.Screen}}" Content="Screen" />
-            <RadioButton IsChecked="{Binding CaptureMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureMode.Window}}" Content="Window" />
-            <RadioButton IsChecked="{Binding CaptureMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureMode.Client}}" Content="Client" />
-            <RadioButton IsChecked="{Binding CaptureMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureMode.Control}}" Content="Control" />
-            <RadioButton IsChecked="{Binding CaptureMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureMode.Scroll}}" Content="Scroll" />
+            <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Screen}}" Content="Screen" />
+            <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Window}}" Content="Window" />
+            <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Client}}" Content="Client" />
+            <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Control}}" Content="Control" />
+            <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Scroll}}" Content="Scroll" />
           </StackPanel>
 
           <CheckBox IsChecked="{Binding IsImmediateSelect}">IsImmediateSelect</CheckBox>

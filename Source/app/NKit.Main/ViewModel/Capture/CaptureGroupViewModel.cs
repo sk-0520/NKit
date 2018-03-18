@@ -26,9 +26,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             set { SetPropertyValue(Model.GroupSetting, value); }
         }
 
-        public CaptureMode CaptureMode
+        public CaptureTarget CaptureTarget
         {
-            get { return Model.GroupSetting.CaptureMode; }
+            get { return Model.GroupSetting.CaptureTarget; }
             set { SetPropertyValue(Model.GroupSetting, value); }
         }
 

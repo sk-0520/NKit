@@ -15,7 +15,7 @@ namespace ContentTypeTextNet.NKit.Setting.Capture
 
         string GroupName { get; }
 
-        CaptureMode CaptureMode { get; }
+        CaptureTarget CaptureTarget { get; }
 
         bool IsEnabledClipboard { get; }
         /// <summary>
@@ -41,7 +41,7 @@ namespace ContentTypeTextNet.NKit.Setting.Capture
         public string GroupName { get; set; }
 
         [DataMember]
-        public CaptureMode CaptureMode { get; set; } = CaptureMode.Window;
+        public CaptureTarget CaptureTarget { get; set; } = CaptureTarget.Window;
 
         [DataMember]
         public bool IsEnabledClipboard { get; set; } = true;
