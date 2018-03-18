@@ -15,6 +15,10 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         { }
 
         #region property
+
+        public string FileName => Model.ImageFile.Name;
+        public string FilePath => Model.ImageFile.FullName;
+
         #endregion
 
         #region command

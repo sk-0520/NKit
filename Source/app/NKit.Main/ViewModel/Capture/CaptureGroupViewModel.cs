@@ -131,6 +131,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
                             .ToList()
                         ;
                         ItemViewModels.AddRange(vms);
+                        Items.MoveCurrentToLast();
                         break;
                 }
             });
