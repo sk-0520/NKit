@@ -229,7 +229,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             }
         }
 
-        T LoadXmlObject<T>(string path)
+        internal static T LoadXmlObject<T>(string path)
         {
             using(var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read)) {
                 using(var reader = XmlReader.Create(stream)) {

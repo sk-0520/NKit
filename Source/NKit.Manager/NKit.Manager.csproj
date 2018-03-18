@@ -93,6 +93,7 @@
     <Compile Include="Model\AcceptVersion.cs" />
     <Compile Include="Model\NKitTalkerHost.cs" />
     <Compile Include="Model\SystemWebBrowserUtility.cs" />
+    <Compile Include="Model\ThirdPartyLicense.cs" />
     <Compile Include="Model\Update\UpdateManager.cs" />
     <Compile Include="Model\Workspace\Setting\WorkspaceItemSetting.cs" />
     <Compile Include="Model\Workspace\Setting\WorkspaceSetting.cs" />
@@ -152,6 +153,9 @@
     <EmbeddedResource Include="View\TestExecuteForm.resx">
       <DependentUpon>TestExecuteForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\ThirdPartyLicenseControl.resx">
+      <DependentUpon>ThirdPartyLicenseControl.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="%40NKit.user.config">
@@ -160,7 +164,9 @@
       <AutoGen>True</AutoGen>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="doc\license\third-party.xml" />
+    <Content Include="doc\license\third-party.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\File\exclude\marked.js.txt" />
     <Content Include="Resources\File\ReleaseNoteMarkdown.html">
       <AutoGen>True</AutoGen>

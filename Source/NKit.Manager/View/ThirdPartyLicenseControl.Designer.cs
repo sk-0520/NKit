@@ -27,8 +27,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // ThirdPartyLicenseControl
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Name = "ThirdPartyLicenseControl";
+            this.Load += new System.EventHandler(this.ThirdPartyLicenseControl_Load);
+            this.ResumeLayout(false);
+
         }
 
         #endregion
