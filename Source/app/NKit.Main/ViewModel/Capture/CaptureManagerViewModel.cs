@@ -115,15 +115,15 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         });
 
         public ICommand SimpleCaptureControlCommand => new DelegateCommand(
-            () => { Model.SimpleCaptureControl(); },
+            () => { Model.SimpleCapture(Setting.Define.CaptureMode.Control); },
             () => !NowCapturing
         );
         public ICommand SimpleCaptureWindowCommand => new DelegateCommand(
-            () => { Model.SimpleCaptureWindow(); },
+            () => { Model.SimpleCapture(Setting.Define.CaptureMode.Window); },
             () => !NowCapturing
         );
         public ICommand SimpleCaptureScrollCommand => new DelegateCommand(
-            () => { Model.SimpleCaptureScroll(); },
+            () => { Model.SimpleCapture(Setting.Define.CaptureMode.Scroll); },
             () => !NowCapturing
         );
 

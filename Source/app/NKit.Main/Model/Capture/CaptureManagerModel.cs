@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -93,7 +94,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             model.Dispose();
         }
 
-        void Capture(string arguments, string workingDirectoryPath)
+        void CaptureCore(string arguments, string workingDirectoryPath)
         {
             Debug.Assert(!NowCapturing);
 
@@ -129,33 +130,43 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             }
         }
 
-        void SimpleCaptureCore(CaptureMode captureMode)
+        // 引数がなぁ、多いのなぁ
+        public void Capture(CaptureMode captureMode, bool isEnabledClipboard, bool isImmediateSelect, bool isContinuation, string savedEventName, DirectoryInfo saveDirectory, IReadOnlyScrollCaptureSetting scrollSetting)
         {
             var arguments = new List<string>() {
                 "--mode",
                 ProgramRelationUtility.EscapesequenceToArgument(captureMode.ToString()),
-
-                "--clipboard",
-
-                "--immediately_select",
             };
 
-            if(Setting.Capture.Scroll.InternetExplorer.Header.IsEnabled) {
+            if(isEnabledClipboard) {
+                arguments.Add("--clipboard");
+            }
+
+            if(isImmediateSelect) {
+                arguments.Add("--immediately_select");
+            }
+
+            if(isContinuation) {
+                arguments.Add("--continuation");
+
+            }
+
+            if(scrollSetting.InternetExplorer.Header.IsEnabled) {
                 arguments.Add("--scroll_ie_hide_header");
 
-                if(string.IsNullOrWhiteSpace(Setting.Capture.Scroll.InternetExplorer.Header.HideElements)) {
+                if(string.IsNullOrWhiteSpace(scrollSetting.InternetExplorer.Header.HideElements)) {
                     arguments.Add(ProgramRelationUtility.EscapesequenceToArgument("*"));
                 } else {
-                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(Setting.Capture.Scroll.InternetExplorer.Header.HideElements));
+                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(scrollSetting.InternetExplorer.Header.HideElements));
                 }
             }
-            if(Setting.Capture.Scroll.InternetExplorer.Footer.IsEnabled) {
+            if(scrollSetting.InternetExplorer.Footer.IsEnabled) {
                 arguments.Add("--scroll_ie_hide_footer");
 
-                if(string.IsNullOrWhiteSpace(Setting.Capture.Scroll.InternetExplorer.Footer.HideElements)) {
+                if(string.IsNullOrWhiteSpace(scrollSetting.InternetExplorer.Footer.HideElements)) {
                     arguments.Add(ProgramRelationUtility.EscapesequenceToArgument("*"));
                 } else {
-                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(Setting.Capture.Scroll.InternetExplorer.Footer.HideElements));
+                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(scrollSetting.InternetExplorer.Footer.HideElements));
                 }
             }
 
@@ -168,20 +179,12 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(CaptureKeyUtility.ToCameramanArgumentKey(Setting.Capture.SelectKey)));
             }
 
-            Capture(string.Join(" ", arguments), string.Empty);
+            CaptureCore(string.Join(" ", arguments), string.Empty);
         }
 
-        public void SimpleCaptureControl()
+        public void SimpleCapture(CaptureMode captureMode)
         {
-            SimpleCaptureCore(CaptureMode.Control);
-        }
-        public void SimpleCaptureWindow()
-        {
-            SimpleCaptureCore(CaptureMode.Window);
-        }
-        public void SimpleCaptureScroll()
-        {
-            SimpleCaptureCore(CaptureMode.Scroll);
+            Capture(captureMode, true, true, false, default(string), default(DirectoryInfo), Setting.Capture.Scroll);
         }
 
         #endregion
