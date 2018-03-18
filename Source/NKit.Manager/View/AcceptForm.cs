@@ -97,7 +97,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 }
             }
 
-            var nkitLicensePath = Path.Combine(CommonUtility.GetEtcDirectory().FullName, "license", "NKit.rtf");
+            var nkitLicensePath = Path.Combine(CommonUtility.GetDocumentDirectory().FullName, "license", "NKit.rtf");
             this.viewLicense.LoadFile(nkitLicensePath);
 
             RefreshReadState();

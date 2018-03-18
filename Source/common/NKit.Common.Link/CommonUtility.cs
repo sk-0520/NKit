@@ -13,6 +13,7 @@ namespace ContentTypeTextNet.NKit.Common
         static string BinaryDirectoryName { get; } = "bin";
         static string ApplicationDirectoryName { get; } = "app";
         static string EtcDirectoryName { get; } = "etc";
+        static string DocumentDirectoryName { get; } = "doc";
 
         static string BinaryBusyboxDirectoryName { get; } = "busybox";
 
@@ -209,6 +210,17 @@ namespace ContentTypeTextNet.NKit.Common
         public static DirectoryInfo GetEtcDirectoryForApplication()
         {
             var libDirPath = Path.Combine(GetRootDirectoryForApplication().FullName, EtcDirectoryName);
+            return new DirectoryInfo(libDirPath);
+        }
+
+        public static DirectoryInfo GetDocumentDirectory(params string[] args)
+        {
+            var libDirPath = Path.Combine(GetRootDirectory(args).FullName, DocumentDirectoryName);
+            return new DirectoryInfo(libDirPath);
+        }
+        public static DirectoryInfo GetDocumentDirectoryForApplication()
+        {
+            var libDirPath = Path.Combine(GetRootDirectoryForApplication().FullName, DocumentDirectoryName);
             return new DirectoryInfo(libDirPath);
         }
 
