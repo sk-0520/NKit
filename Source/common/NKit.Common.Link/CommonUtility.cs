@@ -273,29 +273,29 @@ namespace ContentTypeTextNet.NKit.Common
             }
 
             var timstampFormats = new[] {
-                new { NKit = "Y", Clr = "y" },
+                //new { NKit = "Y", Clr = "y" },
                 new { NKit = "YY", Clr = "yy" },
-                new { NKit = "YYY", Clr = "yyy" },
+                //new { NKit = "YYY", Clr = "yyy" },
                 new { NKit = "YYYY", Clr = "yyyy" },
 
-                new { NKit = "M", Clr = "M" },
+                //new { NKit = "M", Clr = "M" },
                 new { NKit = "MM", Clr = "MM" },
                 new { NKit = "MMM", Clr = "MMM" },
                 new { NKit = "MMMM", Clr = "MMMM" },
 
-                new { NKit = "D", Clr = "d" },
+                //new { NKit = "D", Clr = "d" },
                 new { NKit = "DD", Clr = "dd" },
                 new { NKit = "DDD", Clr = "ddd" },
 
-                new { NKit = "h12", Clr = "h" },
+                //new { NKit = "h12", Clr = "h" },
                 new { NKit = "hh12", Clr = "hh" },
-                new { NKit = "h24", Clr = "H" },
+                //new { NKit = "h24", Clr = "H" },
                 new { NKit = "hh24", Clr = "HH" },
 
                 new { NKit = "m", Clr = "m" },
                 new { NKit = "mm", Clr = "mm" },
 
-                new { NKit = "s", Clr = "s" },
+                //new { NKit = "s", Clr = "s" },
                 new { NKit = "ss", Clr = "ss" },
 
                 new { NKit = "f", Clr = "f" },
@@ -319,12 +319,12 @@ namespace ContentTypeTextNet.NKit.Common
                 }
             }
 
-            var regex = new Regex(@"\${(\.+?)}");
+            var regex = new Regex(@"\${(.+?)}");
             return regex.Replace(source, m => {
                 if(!m.Success) {
                     return m.Value;
                 }
-                var key = m.Groups[0].Value;
+                var key = m.Groups[1].Value;
                 if(string.IsNullOrEmpty(key)) {
                     return m.Value;
                 }
@@ -361,7 +361,7 @@ namespace ContentTypeTextNet.NKit.Common
                 return source;
             }
 
-            return ReplaceNKitText(source, utcTimestamp, customMap);
+            return ReplaceNKitTextCore(source, utcTimestamp, customMap);
         }
 
         #endregion

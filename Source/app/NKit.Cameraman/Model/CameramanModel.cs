@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using ContentTypeTextNet.Library.PInvoke.Windows;
 using ContentTypeTextNet.NKit.Cameraman.Model.Scroll;
 using ContentTypeTextNet.NKit.Cameraman.View;
+using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
 using Gma.System.MouseKeyHook;
@@ -78,6 +79,17 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             }
         }
 
+        static (string ext, ImageFormat format) GetSaveFormatInfo(ImageKind kind)
+        {
+            switch(kind) {
+                case ImageKind.Png:
+                    return ("png", ImageFormat.Png);
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         /// <summary>
         /// 現像。
         /// </summary>
@@ -88,9 +100,15 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 Clipboard.SetImage(image);
             }
             if(Bag.SaveDirectory != null) {
-                var fileName = $"{DateTime.Now: yyyyMMdd_HHmmss}.png";
+                var info = GetSaveFormatInfo(Bag.SaveImageKind);
+
+                var map = new Dictionary<string, string>() {
+                    ["EXT"] = info.ext,
+                };
+
+                var fileName = CommonUtility.ReplaceNKitText(Bag.SaveFileNameFormat, DateTime.UtcNow, map);
                 var filePath = Path.Combine(Bag.SaveDirectory.FullName, fileName);
-                image.Save(filePath, ImageFormat.Png);
+                image.Save(filePath, info.format);
             }
 
             if(Bag.SaveNoticeEvent != null) {
@@ -207,10 +225,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
                 HookEvents.Dispose();
                 HookEvents = null;
-            }
-
-            if(Bag.ExitNoticeEvent != null) {
-                Bag.ExitNoticeEvent.Set();
             }
 
             Application.Exit();
