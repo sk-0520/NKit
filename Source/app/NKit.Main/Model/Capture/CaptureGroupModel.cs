@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         EventWaitHandle SaveNoticeEvent { get; set; }
         Task SaveNoticePolling { get; set; }
 
-        public ObservableCollection<CaptureImageModel> FileItems { get; } = new ObservableCollection<CaptureImageModel>();
+        public ObservableCollection<CaptureImageModel> Items { get; } = new ObservableCollection<CaptureImageModel>();
 
         #endregion
 

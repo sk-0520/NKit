@@ -78,7 +78,7 @@
     <Grid Grid.Column="2" >
       <ScrollViewer>
         <StackPanel>
-          <ItemsControl ItemsSource="{Binding FileItems}">
+          <ItemsControl ItemsSource="{Binding Items}">
             <ItemsControl.ItemTemplate>
               <DataTemplate>
                 <TextBlock Text="{Binding}" />
