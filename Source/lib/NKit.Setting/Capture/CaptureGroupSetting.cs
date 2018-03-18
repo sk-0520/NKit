@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
+using ContentTypeTextNet.NKit.Setting.Define;
 
 namespace ContentTypeTextNet.NKit.Setting.Capture
 {
@@ -14,10 +15,13 @@ namespace ContentTypeTextNet.NKit.Setting.Capture
 
         string GroupName { get; }
 
+        CaptureMode CaptureMode { get; }
+
+        bool IsEnabledClipboard { get; }
         /// <summary>
         /// 開始時に即時選択状態に移行するか。
         /// </summary>
-        bool ImmediateSelect { get; }
+        bool IsImmediateSelect { get; }
 
         /// <summary>
         /// このグループでのスクロール設定を標準設定より優先するか。
@@ -37,10 +41,16 @@ namespace ContentTypeTextNet.NKit.Setting.Capture
         public string GroupName { get; set; }
 
         [DataMember]
-        public bool ImmediateSelect { get; set; }
+        public CaptureMode CaptureMode { get; set; } = CaptureMode.Window;
 
         [DataMember]
-        public bool OverwriteScrollSetting { get; set; }
+        public bool IsEnabledClipboard { get; set; } = true;
+
+        [DataMember]
+        public bool IsImmediateSelect { get; set; } = true;
+
+        [DataMember]
+        public bool OverwriteScrollSetting { get; set; } = false;
         [DataMember]
         public ScrollCaptureSetting Scroll { get; set; } = new ScrollCaptureSetting();
         IReadOnlyScrollCaptureSetting IReadOnlyCaptureGroupSetting.Scroll => Scroll;

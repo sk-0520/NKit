@@ -103,7 +103,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             if(!IsDisposed) {
                 if(disposing) {
                     if(IsOpend) {
-                        Channel.Close();
+                        Close();
                     }
                 }
             }

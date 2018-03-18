@@ -65,7 +65,13 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
             var dirPath = Path.Combine(Environment.ExpandEnvironmentVariables(StartupOptions.WorkspacePath), "capture", GroupSetting.Id.ToString());
             var dir = Directory.CreateDirectory(dirPath);
-            return Manager.CaptureAsync(Setting.Define.CaptureMode.Control, true, true, true, savedEventName, dir, CaptureSetting.Scroll, cancelToken).ContinueWith(_ => {
+
+            var scrollSetting = GroupSetting.OverwriteScrollSetting
+                ? GroupSetting.Scroll
+                : CaptureSetting.Scroll
+            ;
+
+            return Manager.CaptureAsync(GroupSetting.CaptureMode, GroupSetting.IsEnabledClipboard, GroupSetting.IsImmediateSelect, true, savedEventName, dir, scrollSetting, cancelToken).ContinueWith(_ => {
                 // 頭バグってきた
                 saveNoticeCancel.Cancel();
                 SaveNoticeEvent.Set();
