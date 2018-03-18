@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Setting.Capture;
 using ContentTypeTextNet.NKit.Setting.NKit;
 using ContentTypeTextNet.NKit.Utility.Model;
@@ -42,7 +43,8 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         protected override Task<None> RunCoreAsync(CancellationToken cancelToken)
         {
-            var savedEventName = "TEST";
+            var id = DateTime.Now.ToFileTime().ToString();
+            var savedEventName = $"cttn-nkit-capture-save-{id}";
             var waitTime = TimeSpan.FromMinutes(1);
             SaveNoticeEvent = new EventWaitHandle(false, EventResetMode.AutoReset, savedEventName);
 
@@ -61,7 +63,8 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 }
             }, saveNoticeCancelToken);
 
-            var dir = Directory.CreateDirectory(@"x:\nkit-screen2");
+            var dirPath = Path.Combine(Environment.ExpandEnvironmentVariables(StartupOptions.WorkspacePath), "capture", GroupSetting.Id.ToString());
+            var dir = Directory.CreateDirectory(dirPath);
             return Manager.CaptureAsync(Setting.Define.CaptureMode.Control, true, true, true, savedEventName, dir, CaptureSetting.Scroll, cancelToken).ContinueWith(_ => {
                 // 頭バグってきた
                 saveNoticeCancel.Cancel();
