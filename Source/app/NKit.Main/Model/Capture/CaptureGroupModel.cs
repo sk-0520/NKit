@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,52 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         EventWaitHandle SaveNoticeEvent { get; set; }
         Task SaveNoticePolling { get; set; }
 
+        public ObservableCollection<FileInfo> FileItems { get; } = new ObservableCollection<FileInfo>();
+
+        #endregion
+
+        #region function
+
+        DirectoryInfo GetCaptureDirectory()
+        {
+            var dirPath = Path.Combine(Environment.ExpandEnvironmentVariables(StartupOptions.WorkspacePath), "capture", GroupSetting.Id.ToString());
+            var dir = Directory.CreateDirectory(dirPath);
+
+            return dir;
+        }
+
+        IEnumerable<FileInfo> GetCaptureFiles()
+        {
+            var dir = GetCaptureDirectory();
+            return dir.EnumerateFiles("*.png", SearchOption.TopDirectoryOnly);
+        }
+
+        void LoadCaptureFiles()
+        {
+            var files = GetCaptureFiles().OrderBy(f => f.Name);
+            FileItems.Clear();
+            foreach(var file in files) {
+                FileItems.Add(file);
+            }
+        }
+
+        void AddCaptureFiles()
+        {
+            var files = GetCaptureFiles();
+            var addFileItems = FileItems
+                .Concat(files)
+                .GroupBy(f => f.Name)
+                .Where(g => g.Count() == 1)
+                .Select(g => g.First())
+                .OrderBy(f => f.Name)
+                .ToList()
+            ;
+            foreach(var addFileItem in addFileItems) {
+                FileItems.Add(addFileItem);
+            }
+
+        }
+
         #endregion
 
         #region RunnableAsyncModel
@@ -57,20 +104,20 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                     saveNoticeCancelToken.ThrowIfCancellationRequested();
                     if(isSaved) {
                         // 保存された画像をうんぬんかんぬん。
+                        // これさぁ、監視した方が手っ取り早くないですかね
                         Logger.Information("saved image!");
+                        AddCaptureFiles();
                     }
                     cancelToken.ThrowIfCancellationRequested();
                 }
             }, saveNoticeCancelToken);
 
-            var dirPath = Path.Combine(Environment.ExpandEnvironmentVariables(StartupOptions.WorkspacePath), "capture", GroupSetting.Id.ToString());
-            var dir = Directory.CreateDirectory(dirPath);
 
             var scrollSetting = GroupSetting.OverwriteScrollSetting
                 ? GroupSetting.Scroll
                 : CaptureSetting.Scroll
             ;
-
+            var dir = GetCaptureDirectory();
             return Manager.CaptureAsync(GroupSetting.CaptureMode, GroupSetting.IsEnabledClipboard, GroupSetting.IsImmediateSelect, true, savedEventName, dir, scrollSetting, cancelToken).ContinueWith(_ => {
                 // 頭バグってきた
                 saveNoticeCancel.Cancel();

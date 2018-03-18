@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,6 +66,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             set { SetPropertyValue(Model.GroupSetting.Scroll.InternetExplorer.Footer, value, nameof(Model.GroupSetting.Scroll.InternetExplorer.Footer.HideElements)); }
         }
 
+        public ObservableCollection<FileInfo> FileItems => Model.FileItems;
 
         #endregion
 

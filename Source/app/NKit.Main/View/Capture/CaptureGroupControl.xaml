@@ -75,8 +75,18 @@
       </Grid>
     </Grid>
 
-    <Grid Grid.Column="2">
-
+    <Grid Grid.Column="2" >
+      <ScrollViewer>
+        <StackPanel>
+          <ItemsControl ItemsSource="{Binding FileItems}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </ScrollViewer>
     </Grid>
 
     <GridSplitter Grid.Column="1" Style="{StaticResource DefaultVericalGridSplitter}" />
