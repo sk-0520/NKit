@@ -27,18 +27,35 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.viewComponents = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
+            // 
+            // viewComponents
+            // 
+            this.viewComponents.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.viewComponents.Location = new System.Drawing.Point(0, 0);
+            this.viewComponents.Multiline = true;
+            this.viewComponents.Name = "viewComponents";
+            this.viewComponents.ReadOnly = true;
+            this.viewComponents.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.viewComponents.Size = new System.Drawing.Size(150, 150);
+            this.viewComponents.TabIndex = 0;
+            this.viewComponents.WordWrap = false;
             // 
             // ThirdPartyLicenseControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.viewComponents);
             this.Name = "ThirdPartyLicenseControl";
             this.Load += new System.EventHandler(this.ThirdPartyLicenseControl_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+
+        private System.Windows.Forms.TextBox viewComponents;
     }
 }
