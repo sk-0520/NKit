@@ -14,6 +14,7 @@ namespace ContentTypeTextNet.NKit.Setting.Capture
 
         string GroupName { get; }
 
+
         #endregion
     }
 

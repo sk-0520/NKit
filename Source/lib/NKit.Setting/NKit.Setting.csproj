@@ -51,6 +51,7 @@
       <Link>Common\Setting.cs</Link>
     </Compile>
     <Compile Include="Capture\CaptureGroupSetting.cs" />
+    <Compile Include="Capture\ScrollCaptureSetting.cs" />
     <Compile Include="Capture\CaptureSetting.cs" />
     <Compile Include="Define\AssociationFileKind.cs" />
     <Compile Include="Define\CaptureMode.cs" />

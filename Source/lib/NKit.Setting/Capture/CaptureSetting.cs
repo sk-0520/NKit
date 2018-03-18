@@ -18,10 +18,7 @@ namespace ContentTypeTextNet.NKit.Setting.Capture
         IReadOnlyKeySetting SelectKey { get; }
         IReadOnlyKeySetting TakeShotKey { get; }
 
-        bool ScrollInternetExplorerIsEnabledHideFixedHeader { get; }
-        string ScrollInternetExplorerHideFixedHeaderElements { get; }
-        bool ScrollInternetExplorerIsEnabledHideFixedFooter { get; }
-        string ScrollInternetExplorerHideFixedFooterElements { get; }
+        IReadOnlyScrollCaptureSetting Scroll { get; }
 
         #endregion
     }
@@ -44,13 +41,8 @@ namespace ContentTypeTextNet.NKit.Setting.Capture
         IReadOnlyKeySetting IReadOnlyCaptureSetting.TakeShotKey => TakeShotKey;
 
         [DataMember]
-        public bool ScrollInternetExplorerIsEnabledHideFixedHeader { get; set; }
-        [DataMember]
-        public string ScrollInternetExplorerHideFixedHeaderElements { get; set; }
-        [DataMember]
-        public bool ScrollInternetExplorerIsEnabledHideFixedFooter { get; set; }
-        [DataMember]
-        public string ScrollInternetExplorerHideFixedFooterElements { get; set; }
+        public ScrollCaptureSetting Scroll { get; set; } = new ScrollCaptureSetting();
+        IReadOnlyScrollCaptureSetting IReadOnlyCaptureSetting.Scroll => Scroll;
 
         #endregion
     }

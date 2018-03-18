@@ -38,27 +38,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         public KeySetting SelectKeySetting => Setting.Capture.SelectKey;
         public KeySetting TakeShotKeySetting => Setting.Capture.TakeShotKey;
 
-        public bool ScrollInternetExplorerIsEnabledHideFixedHeader
-        {
-            get { return Setting.Capture.ScrollInternetExplorerIsEnabledHideFixedHeader; }
-            set { Setting.Capture.ScrollInternetExplorerIsEnabledHideFixedHeader = value; }
-        }
-        public string ScrollInternetExplorerHideFixedHeaderElements
-        {
-            get { return Setting.Capture.ScrollInternetExplorerHideFixedHeaderElements; }
-            set { Setting.Capture.ScrollInternetExplorerHideFixedHeaderElements = value; }
-        }
-
-        public bool ScrollInternetExplorerIsEnabledHideFixedFooter
-        {
-            get { return Setting.Capture.ScrollInternetExplorerIsEnabledHideFixedFooter; }
-            set { Setting.Capture.ScrollInternetExplorerIsEnabledHideFixedFooter = value; }
-        }
-        public string ScrollInternetExplorerHideFixedFooterElements
-        {
-            get { return Setting.Capture.ScrollInternetExplorerHideFixedFooterElements; }
-            set { Setting.Capture.ScrollInternetExplorerHideFixedFooterElements = value; }
-        }
+        public InternetExplorerScrollCaptureSetting InternetExplorerScrollCaptureSetting => Setting.Capture.Scroll.InternetExplorer;
 
         public bool NowCapturing
         {
@@ -160,22 +140,22 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 "--immediately_select",
             };
 
-            if(ScrollInternetExplorerIsEnabledHideFixedHeader) {
+            if(Setting.Capture.Scroll.InternetExplorer.Header.IsEnabled) {
                 arguments.Add("--scroll_ie_hide_header");
 
-                if(string.IsNullOrWhiteSpace(ScrollInternetExplorerHideFixedHeaderElements)) {
+                if(string.IsNullOrWhiteSpace(Setting.Capture.Scroll.InternetExplorer.Header.HideElements)) {
                     arguments.Add(ProgramRelationUtility.EscapesequenceToArgument("*"));
                 } else {
-                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(ScrollInternetExplorerHideFixedHeaderElements));
+                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(Setting.Capture.Scroll.InternetExplorer.Header.HideElements));
                 }
             }
-            if(ScrollInternetExplorerIsEnabledHideFixedFooter) {
+            if(Setting.Capture.Scroll.InternetExplorer.Footer.IsEnabled) {
                 arguments.Add("--scroll_ie_hide_footer");
 
-                if(string.IsNullOrWhiteSpace(ScrollInternetExplorerHideFixedFooterElements)) {
+                if(string.IsNullOrWhiteSpace(Setting.Capture.Scroll.InternetExplorer.Footer.HideElements)) {
                     arguments.Add(ProgramRelationUtility.EscapesequenceToArgument("*"));
                 } else {
-                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(ScrollInternetExplorerHideFixedFooterElements));
+                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(Setting.Capture.Scroll.InternetExplorer.Footer.HideElements));
                 }
             }
 

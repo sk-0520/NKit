@@ -70,25 +70,24 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
 
         public bool IsEnabledHideHeader
         {
-            get { return Model.ScrollInternetExplorerIsEnabledHideFixedHeader; }
-            set { SetPropertyValue(Model, value, nameof(Model.ScrollInternetExplorerIsEnabledHideFixedHeader)); }
+            get { return Model.InternetExplorerScrollCaptureSetting.Header.IsEnabled; }
+            set { SetPropertyValue(Model.InternetExplorerScrollCaptureSetting.Header, value, nameof(Model.InternetExplorerScrollCaptureSetting.Header.IsEnabled)); }
         }
         public string HideHeaderElement
         {
-            get { return Model.ScrollInternetExplorerHideFixedHeaderElements; }
-            set { SetPropertyValue(Model, value, nameof(Model.ScrollInternetExplorerHideFixedHeaderElements)); }
+            get { return Model.InternetExplorerScrollCaptureSetting.Header.HideElements; }
+            set { SetPropertyValue(Model.InternetExplorerScrollCaptureSetting.Header, value, nameof(Model.InternetExplorerScrollCaptureSetting.Header.HideElements)); }
         }
 
         public bool IsEnabledHideFooter
         {
-            get { return Model.ScrollInternetExplorerIsEnabledHideFixedFooter; }
-            set { SetPropertyValue(Model, value, nameof(Model.ScrollInternetExplorerIsEnabledHideFixedFooter)); }
+            get { return Model.InternetExplorerScrollCaptureSetting.Footer.IsEnabled; }
+            set { SetPropertyValue(Model.InternetExplorerScrollCaptureSetting.Footer, value, nameof(Model.InternetExplorerScrollCaptureSetting.Footer.IsEnabled)); }
         }
-
         public string HideFooterElement
         {
-            get { return Model.ScrollInternetExplorerHideFixedFooterElements; }
-            set { SetPropertyValue(Model, value, nameof(Model.ScrollInternetExplorerHideFixedFooterElements)); }
+            get { return Model.InternetExplorerScrollCaptureSetting.Footer.HideElements; }
+            set { SetPropertyValue(Model.InternetExplorerScrollCaptureSetting.Footer, value, nameof(Model.InternetExplorerScrollCaptureSetting.Footer.HideElements)); }
         }
 
         #endregion
