@@ -93,6 +93,7 @@
     <Compile Include="Model\AcceptVersion.cs" />
     <Compile Include="Model\NKitTalkerHost.cs" />
     <Compile Include="Model\SystemWebBrowserUtility.cs" />
+    <Compile Include="Model\ThirdPartyLicense.cs" />
     <Compile Include="Model\Update\UpdateManager.cs" />
     <Compile Include="Model\Workspace\Setting\WorkspaceItemSetting.cs" />
     <Compile Include="Model\Workspace\Setting\WorkspaceSetting.cs" />
@@ -124,6 +125,12 @@
     <Compile Include="View\TestExecuteForm.Designer.cs">
       <DependentUpon>TestExecuteForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\ThirdPartyLicenseControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\ThirdPartyLicenseControl.Designer.cs">
+      <DependentUpon>ThirdPartyLicenseControl.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -146,12 +153,18 @@
     <EmbeddedResource Include="View\TestExecuteForm.resx">
       <DependentUpon>TestExecuteForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\ThirdPartyLicenseControl.resx">
+      <DependentUpon>ThirdPartyLicenseControl.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="%40NKit.user.config">
       <DependentUpon>%40NKit.user.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="doc\license\third-party.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\File\exclude\marked.js.txt" />
@@ -198,7 +211,7 @@
       <DependentUpon>App.config</DependentUpon>
     </None>
     <None Include="Properties\app.manifest" />
-    <Content Include="etc\license\NKit.rtf">
+    <Content Include="doc\license\NKit.rtf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\File\AcceptMessage.rtf" />
@@ -217,5 +230,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -39,6 +39,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commanAccept = new System.Windows.Forms.Button();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.tabMainPageThirdParty = new System.Windows.Forms.TabPage();
+            this.thirdPartyLicenseControl1 = new ContentTypeTextNet.NKit.Manager.View.ThirdPartyLicenseControl();
             this.tabMain.SuspendLayout();
             this.tabMainPageMain.SuspendLayout();
             this.tabMainPageLicense.SuspendLayout();
@@ -47,12 +49,14 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
+            this.tabMainPageThirdParty.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabMain
             // 
             this.tabMain.Controls.Add(this.tabMainPageMain);
             this.tabMain.Controls.Add(this.tabMainPageLicense);
+            this.tabMain.Controls.Add(this.tabMainPageThirdParty);
             this.tabMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabMain.HotTrack = true;
             this.tabMain.Location = new System.Drawing.Point(3, 3);
@@ -88,7 +92,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.tabMainPageLicense.Location = new System.Drawing.Point(4, 22);
             this.tabMainPageLicense.Name = "tabMainPageLicense";
             this.tabMainPageLicense.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMainPageLicense.Size = new System.Drawing.Size(308, 94);
+            this.tabMainPageLicense.Size = new System.Drawing.Size(362, 149);
             this.tabMainPageLicense.TabIndex = 2;
             this.tabMainPageLicense.Text = "ライセンス情報";
             this.tabMainPageLicense.UseVisualStyleBackColor = true;
@@ -98,7 +102,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.viewLicense.Dock = System.Windows.Forms.DockStyle.Fill;
             this.viewLicense.Location = new System.Drawing.Point(3, 3);
             this.viewLicense.Name = "viewLicense";
-            this.viewLicense.Size = new System.Drawing.Size(302, 88);
+            this.viewLicense.Size = new System.Drawing.Size(356, 143);
             this.viewLicense.TabIndex = 1;
             this.viewLicense.Text = "";
             // 
@@ -180,11 +184,14 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.toolStripContainer1.ContentPanel.Controls.Add(this.tableLayoutPanel1);
             this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(376, 217);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolStripContainer1.LeftToolStripPanelVisible = false;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer1.Name = "toolStripContainer1";
+            this.toolStripContainer1.RightToolStripPanelVisible = false;
             this.toolStripContainer1.Size = new System.Drawing.Size(376, 239);
             this.toolStripContainer1.TabIndex = 4;
             this.toolStripContainer1.Text = "toolStripContainer1";
+            this.toolStripContainer1.TopToolStripPanelVisible = false;
             // 
             // statusStrip1
             // 
@@ -193,6 +200,25 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(376, 22);
             this.statusStrip1.TabIndex = 0;
+            // 
+            // tabMainPageThirdParty
+            // 
+            this.tabMainPageThirdParty.Controls.Add(this.thirdPartyLicenseControl1);
+            this.tabMainPageThirdParty.Location = new System.Drawing.Point(4, 22);
+            this.tabMainPageThirdParty.Name = "tabMainPageThirdParty";
+            this.tabMainPageThirdParty.Padding = new System.Windows.Forms.Padding(3);
+            this.tabMainPageThirdParty.Size = new System.Drawing.Size(362, 149);
+            this.tabMainPageThirdParty.TabIndex = 3;
+            this.tabMainPageThirdParty.Text = "サードパーティ";
+            this.tabMainPageThirdParty.UseVisualStyleBackColor = true;
+            // 
+            // thirdPartyLicenseControl1
+            // 
+            this.thirdPartyLicenseControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.thirdPartyLicenseControl1.Location = new System.Drawing.Point(3, 3);
+            this.thirdPartyLicenseControl1.Name = "thirdPartyLicenseControl1";
+            this.thirdPartyLicenseControl1.Size = new System.Drawing.Size(356, 143);
+            this.thirdPartyLicenseControl1.TabIndex = 0;
             // 
             // AcceptForm
             // 
@@ -215,6 +241,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.toolStripContainer1.ContentPanel.PerformLayout();
             this.toolStripContainer1.ResumeLayout(false);
             this.toolStripContainer1.PerformLayout();
+            this.tabMainPageThirdParty.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -233,5 +260,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.Button commanAccept;
         private System.Windows.Forms.ToolStripContainer toolStripContainer1;
         private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.TabPage tabMainPageThirdParty;
+        private ThirdPartyLicenseControl thirdPartyLicenseControl1;
     }
 }
