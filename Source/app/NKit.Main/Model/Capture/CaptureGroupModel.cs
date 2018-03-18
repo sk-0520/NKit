@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         EventWaitHandle SaveNoticeEvent { get; set; }
         Task SaveNoticePolling { get; set; }
 
-        public ObservableCollection<FileInfo> FileItems { get; } = new ObservableCollection<FileInfo>();
+        public ObservableCollection<CaptureImageModel> FileItems { get; } = new ObservableCollection<CaptureImageModel>();
 
         #endregion
 
@@ -53,6 +53,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             return dir.EnumerateFiles("*.png", SearchOption.TopDirectoryOnly);
         }
 
+        /*
         void LoadCaptureFiles()
         {
             var files = GetCaptureFiles().OrderBy(f => f.Name);
@@ -78,6 +79,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             }
 
         }
+        */
 
         #endregion
 
@@ -106,7 +108,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                         // 保存された画像をうんぬんかんぬん。
                         // これさぁ、監視した方が手っ取り早くないですかね
                         Logger.Information("saved image!");
-                        AddCaptureFiles();
+                        //AddCaptureFiles();
                     }
                     cancelToken.ThrowIfCancellationRequested();
                 }
