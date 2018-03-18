@@ -17,7 +17,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         #region property
 
-        FileInfo ImageFile { get; }
+        public FileInfo ImageFile { get; }
 
         #endregion
 

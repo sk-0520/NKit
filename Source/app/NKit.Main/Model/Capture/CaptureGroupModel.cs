@@ -39,6 +39,13 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         #region function
 
+        CaptureImageModel CreateImageModel(FileInfo fileInfo)
+        {
+            var result = new CaptureImageModel(fileInfo);
+
+            return result;
+        }
+
         DirectoryInfo GetCaptureDirectory()
         {
             var dirPath = Path.Combine(Environment.ExpandEnvironmentVariables(StartupOptions.WorkspacePath), "capture", GroupSetting.Id.ToString());
@@ -53,33 +60,31 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             return dir.EnumerateFiles("*.png", SearchOption.TopDirectoryOnly);
         }
 
-        /*
         void LoadCaptureFiles()
         {
             var files = GetCaptureFiles().OrderBy(f => f.Name);
-            FileItems.Clear();
+            Items.Clear();
             foreach(var file in files) {
-                FileItems.Add(file);
+                Items.Add(CreateImageModel(file));
             }
         }
 
         void AddCaptureFiles()
         {
             var files = GetCaptureFiles();
-            var addFileItems = FileItems
-                .Concat(files)
-                .GroupBy(f => f.Name)
+            var addFileItems = Items
+                .Concat(files.Select(f => new CaptureImageModel(f)))
+                .GroupBy(i => i.ImageFile.Name)
                 .Where(g => g.Count() == 1)
                 .Select(g => g.First())
-                .OrderBy(f => f.Name)
+                .OrderBy(i => i.ImageFile.Name)
                 .ToList()
             ;
             foreach(var addFileItem in addFileItems) {
-                FileItems.Add(addFileItem);
+                Items.Add(addFileItem);
             }
 
         }
-        */
 
         #endregion
 
@@ -108,7 +113,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                         // 保存された画像をうんぬんかんぬん。
                         // これさぁ、監視した方が手っ取り早くないですかね
                         Logger.Information("saved image!");
-                        //AddCaptureFiles();
+                        AddCaptureFiles();
                     }
                     cancelToken.ThrowIfCancellationRequested();
                 }
