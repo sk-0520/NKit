@@ -267,6 +267,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 }
                 TopMost = false;
                 TopMost = true;
+                TopMost = false;
             }));
         }
         private void Worker_OutputLog(object sender, LogEventArgs e)
