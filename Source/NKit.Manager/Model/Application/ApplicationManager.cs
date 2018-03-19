@@ -54,7 +54,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         #region property
 
-        NKitApplicationItem MainApplication { get; set; }
+        ManageItem MainApplication { get; set; }
 
         IApplicationLogFactory LogFactory { get; }
         ILogger Logger { get; }
@@ -115,20 +115,22 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         public void ExecuteMainApplication(IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspaceItemSetting)
         {
             if(MainApplication != null) {
-                MainApplication.Exited -= MainApplication_Exited;
+                MainApplication.ApplicationItem.Exited -= MainApplication_Exited;
             }
 
+            var exitedEventName = CreateExitedEventName(activeWorkspace);
             var nkitArgs = CreateNKitArguments(activeWorkspace, workspaceItemSetting);
-            MainApplication = new NKitApplicationItem(NKitApplicationKind.Main, LogFactory) {
+            var mainApplication = new NKitApplicationItem(NKitApplicationKind.Main, LogFactory) {
                 Arguments = AddNKitArguments(string.Empty, nkitArgs)
             };
-            Logger.Debug($"unmanage main, Path: {MainApplication.Path}, Arguments: {MainApplication.Arguments}");
+            MainApplication = new ManageItem(0, mainApplication, exitedEventName, nkitArgs);
+            Logger.Debug($"unmanage main, Path: {MainApplication.ApplicationItem.Path}, Arguments: {MainApplication.ApplicationItem.Arguments}");
 
             GroupSuicideEvent = new EventWaitHandle(false, EventResetMode.ManualReset, activeWorkspace.GroupSuicideEventName);
 
-            MainApplication.Exited += MainApplication_Exited;
+            MainApplication.ApplicationItem.Exited += MainApplication_Exited;
 
-            MainApplication.Execute();
+            MainApplication.ApplicationItem.Execute();
         }
 
         uint PreparateManageItem(ApplicationItem item, string exitedEventName, IReadOnlyDictionary<string, string> nkitArgs)
@@ -295,6 +297,18 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 if(!item.Close(logger)) {
                     item.Kill(logger);
                 }
+            }
+        }
+
+        public void ShutdownMainApplication()
+        {
+            // こわいし
+            ShutdownManageApplications();
+
+            var logger = LogFactory.CreateLogger("main");
+            Thread.Sleep(CloseWaitTime);
+            if(!MainApplication.Close(logger)) {
+                MainApplication.Kill(logger);
             }
         }
 

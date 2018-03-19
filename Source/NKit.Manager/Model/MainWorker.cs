@@ -355,6 +355,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             return true;
         }
 
+        public void CloseWorkspace()
+        {
+            // 他の子たちは付随して死ぬはず(怖いから中で殺してるけど)
+            ApplicationManager.ShutdownMainApplication();
+        }
+
         public void ClearSelectedWorkspace()
         {
             SelectedWorkspaceItem = null;

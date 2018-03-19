@@ -290,7 +290,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         private void commandWorkspaceClose_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("TODO: not impl");
+            Worker.CloseWorkspace();
         }
 
         private void ManagerForm_FormClosing(object sender, FormClosingEventArgs e)
