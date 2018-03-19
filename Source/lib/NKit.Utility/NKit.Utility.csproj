@@ -153,6 +153,7 @@
     <Compile Include="View\Converter\DoubleToPercentConverter.cs" />
     <Compile Include="View\Converter\EnumToBooleanConverter.cs" />
     <Compile Include="View\Converter\EscapeAccessKeyConverter.cs" />
+    <Compile Include="View\Converter\FilePathToImageConverter.cs" />
     <Compile Include="View\Converter\HumanLikeByteConverter.cs" />
     <Compile Include="View\Converter\KeyBindingToGestureTextConverter.cs" />
     <Compile Include="View\Converter\LogicalNotConverter.cs" />

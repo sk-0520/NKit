@@ -106,6 +106,12 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             }
         }
 
+        public void RemoveAllCaptureFiles()
+        {
+            var dir = GetCaptureBaseDirectory();
+            dir.Delete(true);
+        }
+
         public void CancelCapture()
         {
             Manager.CancelCapture();

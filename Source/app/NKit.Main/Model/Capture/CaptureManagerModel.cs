@@ -18,6 +18,9 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 {
     public class CaptureManagerModel : ManagerModelBase
     {
+        #region define
+        #endregion
+
         #region variable
 
         bool _nowCapturing;
@@ -93,6 +96,11 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 Setting.Capture.Groups.Remove(groupSetting);
             }
 
+            try {
+                model.RemoveAllCaptureFiles();
+            } catch(IOException ex) {
+                Logger.Error(ex);
+            }
             model.Dispose();
         }
 
