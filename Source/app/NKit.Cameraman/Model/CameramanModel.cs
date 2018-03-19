@@ -85,23 +85,41 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 case ImageKind.Png:
                     return ("png", ImageFormat.Png);
 
+                case ImageKind.Jpeg:
+                    return ("jpeg", ImageFormat.Jpeg);
+
+                case ImageKind.Bmp:
+                    return ("bmp", ImageFormat.Bmp);
+
                 default:
                     throw new NotImplementedException();
             }
         }
 
 
-        static void DevelopCore(Image image, DirectoryInfo saveDirectory, SaveImageParameter parameter)
+        static void DevelopCore(Image image, DateTime timestamp, DirectoryInfo saveDirectory, SaveImageParameter parameter)
         {
+            Debug.Assert(timestamp.Kind == DateTimeKind.Utc);
+
             var info = GetSaveFormatInfo(parameter.ImageKind);
 
             var map = new Dictionary<string, string>() {
                 ["EXT"] = info.ext,
             };
 
-            var fileName = CommonUtility.ReplaceNKitText(parameter.FileNameFormat, DateTime.UtcNow, map);
+            var fileName = CommonUtility.ReplaceNKitText(parameter.FileNameFormat, timestamp, map);
             var filePath = Path.Combine(saveDirectory.FullName, fileName);
-            image.Save(filePath, info.format);
+            if(parameter.Size.Width == 0 || parameter.Size.Height == 0) {
+                image.Save(filePath, info.format);
+            } else {
+                using(var bitmap = new Bitmap(parameter.Size.Width, parameter.Size.Height)) {
+                    using(var g = Graphics.FromImage(bitmap)) {
+                        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+                        g.DrawImage(image, 0, 0, parameter.Size.Width, parameter.Size.Height);
+                    }
+                    bitmap.Save(filePath, info.format);
+                }
+            }
         }
 
         /// <summary>
@@ -114,13 +132,14 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 Clipboard.SetImage(image);
             }
             if(Bag.SaveDirectory != null) {
+                var timestamp = DateTime.UtcNow;
                 if(Bag.Image.IsEnabled) {
                     Logger.Information("save image");
-                    DevelopCore(image, Bag.SaveDirectory, Bag.Image);
+                    DevelopCore(image, timestamp, Bag.SaveDirectory, Bag.Image);
                 }
                 if(Bag.Thumbnail.IsEnabled) {
                     Logger.Information("save thumbnail");
-                    DevelopCore(image, Bag.SaveDirectory, Bag.Thumbnail);
+                    DevelopCore(image, timestamp, Bag.SaveDirectory, Bag.Thumbnail);
                 }
             }
 

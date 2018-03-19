@@ -131,6 +131,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
                 if(saveThumbnailOption.HasValue()) {
                     Thumbnail = SaveImageParameter.Parse(saveThumbnailOption.Value());
+                    if(Thumbnail.Size.Width == 0 || Thumbnail.Size.Height == 0) {
+                        throw new ArgumentException("thumbnail size error");
+                    }
                 }
             }
             if(saveEventOption.HasValue()) {
