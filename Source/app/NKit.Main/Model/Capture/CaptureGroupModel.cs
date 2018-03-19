@@ -69,7 +69,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         IEnumerable<FileInfo> GetCaptureFiles(DirectoryInfo directory)
         {
-            return directory.EnumerateFiles("*.png", SearchOption.TopDirectoryOnly);
+            return directory.EnumerateFiles($"*_{Constants.CaptureRawImageSuffix}.png", SearchOption.TopDirectoryOnly);
         }
 
         public void InitializeCaptureFiles()
@@ -162,7 +162,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 : CaptureSetting.Scroll
             ;
 
-            return Manager.CaptureAsync(GroupSetting.CaptureTarget, GroupSetting.IsEnabledClipboard, GroupSetting.IsImmediateSelect, true, SavedEventName, CurrentCaptureDirectory, ImageKind.Png, scrollSetting, cancelToken).ContinueWith(_ => {
+            return Manager.CaptureAsync(GroupSetting.CaptureTarget, GroupSetting.IsEnabledClipboard, GroupSetting.IsImmediateSelect, true, SavedEventName, CurrentCaptureDirectory, Constants.CaptureImageKind, Constants.CaptureThumbnailKind, Constants.CaptureThumbnailSize, scrollSetting, cancelToken).ContinueWith(_ => {
                 // 頭バグってきた
                 saveNoticeCancel.Cancel();
                 SaveNoticeEvent.Set();
