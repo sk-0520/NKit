@@ -163,7 +163,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         }
 
         // 引数がなぁ、多いのなぁ
-        public Task CaptureAsync(CaptureTarget captureTarget, bool isEnabledClipboard, bool isImmediateSelect, bool isContinuation, string savedEventName, DirectoryInfo saveDirectory, ImageKind saveImageKind, IReadOnlyScrollCaptureSetting scrollSetting, CancellationToken cancelToken)
+        public Task CaptureAsync(CaptureTarget captureTarget, bool isEnabledClipboard, bool isImmediateSelect, bool isContinuation, string savedEventName, DirectoryInfo saveDirectory, ImageKind saveImageKind, ImageKind thumbnailImageKind, Size thumbnailSize, IReadOnlyScrollCaptureSetting scrollSetting, CancellationToken cancelToken)
         {
             var arguments = new List<string>() {
                 "--target",
@@ -175,7 +175,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             }
 
             if(isImmediateSelect) {
-                arguments.Add("--immediately_select");
+                arguments.Add("--immediate_select");
             }
 
             if(isContinuation) {
@@ -187,11 +187,23 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 arguments.Add("--save_directory");
                 arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(saveDirectory.FullName));
 
-                arguments.Add("--save_file_name_format");
-                arguments.Add(ProgramRelationUtility.EscapesequenceToArgument("${YYYY}-${MM}-${DD}_${hh24}-${mm}-${ss}_${FFF}.${EXT}"));
+                arguments.Add("--save_image");
+                arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(string.Join(
+                    "/",
+                    saveImageKind.ToString(),
+                    "${YYYY}-${MM}-${DD}_${hh24}-${mm}-${ss}_${FFF}_" + Constants.CaptureRawImageSuffix + ".${EXT}"
+                )));
 
-                arguments.Add("--save_image_kind");
-                arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(saveImageKind.ToString()));
+                if(thumbnailSize.Width != 0 && thumbnailSize.Height != 0) {
+                    arguments.Add("--save_thumbnail");
+                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(string.Join(
+                        "/",
+                        thumbnailImageKind.ToString(),
+                        "${YYYY}-${MM}-${DD}_${hh24}-${mm}-${ss}_${FFF}_" + Constants.CaptureThumbnailImageSuffix + ".${EXT}",
+                        thumbnailSize.Width.ToString(),
+                        thumbnailSize.Height.ToString()
+                    )));
+                }
             }
 
             if(!string.IsNullOrWhiteSpace(savedEventName)) {
@@ -219,11 +231,11 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             }
 
             if(CaptureKeyUtility.CanSendKeySetting(Setting.Capture.TakeShotKey)) {
-                arguments.Add("--photo_opportunity_key");
+                arguments.Add("--take_shot_key");
                 arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(CaptureKeyUtility.ToCameramanArgumentKey(Setting.Capture.TakeShotKey)));
             }
             if(CaptureKeyUtility.CanSendKeySetting(Setting.Capture.SelectKey)) {
-                arguments.Add("--wait_opportunity_key");
+                arguments.Add("--select_photo_key");
                 arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(CaptureKeyUtility.ToCameramanArgumentKey(Setting.Capture.SelectKey)));
             }
 
@@ -232,7 +244,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         public void SimpleCapture(CaptureTarget captureTarget)
         {
-            CaptureAsync(captureTarget, true, true, false, default(string), default(DirectoryInfo), ImageKind.Png, Setting.Capture.Scroll, CancellationToken.None);
+            CaptureAsync(captureTarget, true, true, false, default(string), default(DirectoryInfo), ImageKind.Png, ImageKind.Jpeg, Size.Empty, Setting.Capture.Scroll, CancellationToken.None);
         }
 
         #endregion

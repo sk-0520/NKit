@@ -85,8 +85,40 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 case ImageKind.Png:
                     return ("png", ImageFormat.Png);
 
+                case ImageKind.Jpeg:
+                    return ("jpeg", ImageFormat.Jpeg);
+
+                case ImageKind.Bmp:
+                    return ("bmp", ImageFormat.Bmp);
+
                 default:
                     throw new NotImplementedException();
+            }
+        }
+
+
+        static void DevelopCore(Image image, DateTime timestamp, DirectoryInfo saveDirectory, SaveImageParameter parameter)
+        {
+            Debug.Assert(timestamp.Kind == DateTimeKind.Utc);
+
+            var info = GetSaveFormatInfo(parameter.ImageKind);
+
+            var map = new Dictionary<string, string>() {
+                ["EXT"] = info.ext,
+            };
+
+            var fileName = CommonUtility.ReplaceNKitText(parameter.FileNameFormat, timestamp, map);
+            var filePath = Path.Combine(saveDirectory.FullName, fileName);
+            if(parameter.Size.Width == 0 || parameter.Size.Height == 0) {
+                image.Save(filePath, info.format);
+            } else {
+                using(var bitmap = new Bitmap(parameter.Size.Width, parameter.Size.Height)) {
+                    using(var g = Graphics.FromImage(bitmap)) {
+                        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+                        g.DrawImage(image, 0, 0, parameter.Size.Width, parameter.Size.Height);
+                    }
+                    bitmap.Save(filePath, info.format);
+                }
             }
         }
 
@@ -100,15 +132,15 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 Clipboard.SetImage(image);
             }
             if(Bag.SaveDirectory != null) {
-                var info = GetSaveFormatInfo(Bag.SaveImageKind);
-
-                var map = new Dictionary<string, string>() {
-                    ["EXT"] = info.ext,
-                };
-
-                var fileName = CommonUtility.ReplaceNKitText(Bag.SaveFileNameFormat, DateTime.UtcNow, map);
-                var filePath = Path.Combine(Bag.SaveDirectory.FullName, fileName);
-                image.Save(filePath, info.format);
+                var timestamp = DateTime.UtcNow;
+                if(Bag.Image.IsEnabled) {
+                    Logger.Information("save image");
+                    DevelopCore(image, timestamp, Bag.SaveDirectory, Bag.Image);
+                }
+                if(Bag.Thumbnail.IsEnabled) {
+                    Logger.Information("save thumbnail");
+                    DevelopCore(image, timestamp, Bag.SaveDirectory, Bag.Thumbnail);
+                }
             }
 
             if(Bag.SaveNoticeEvent != null) {
@@ -404,7 +436,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     EndSelectView();
 
                     // 即時起動で継続使用しないのであれば選択待機よりは終了
-                    if(Bag.ImmediatelySelect && !Bag.IsContinuation) {
+                    if(Bag.IsImmediateSelect && !Bag.IsContinuation) {
                         Logger.Information("exit program ^_^");
                         Exit();
                     }
@@ -432,7 +464,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         private void Form_Shown(object sender, EventArgs e)
         {
             CameramanForm.Shown -= Form_Shown;
-            if(Bag.ImmediatelySelect) {
+            if(Bag.IsImmediateSelect) {
                 StartSelectView();
             } else {
                 CameramanForm.ShowNavigation();

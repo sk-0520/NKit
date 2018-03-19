@@ -13,6 +13,7 @@
   xmlns:app_setting_define="clr-namespace:ContentTypeTextNet.NKit.Setting.Define;assembly=NKit.Setting"
   xmlns:app_utility_view_converter="clr-namespace:ContentTypeTextNet.NKit.Utility.View.Converter;assembly=NKit.Utility"
 
+  xmlns:app="clr-namespace:ContentTypeTextNet.NKit.Main"
   xmlns:app_main_view_control="clr-namespace:ContentTypeTextNet.NKit.Main.View.Control"
 
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -51,7 +52,10 @@
 
           <Label>capture mode:</Label>
           <StackPanel>
+            <!--
+            これはまずい
             <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Screen}}" Content="Screen" />
+            -->
             <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Window}}" Content="Window" />
             <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Client}}" Content="Client" />
             <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Control}}" Content="Control" />
@@ -93,7 +97,7 @@
           <RowDefinition Height="Auto" />
           <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
+
         <ToolBar Grid.Row="0">
           <Label>filter</Label>
           <ComboBox IsEditable="False" ItemsSource="{Binding FilterStartTimestampItems}" SelectedItem="{Binding SelectedFilterStartTimestamp}" />
@@ -103,7 +107,7 @@
           <ListBox.ItemTemplate>
             <DataTemplate>
               <StackPanel Orientation="Horizontal">
-                <Image Source="{Binding FilePath, Converter={StaticResource FilePathToImageConverter}}" Width="120" Height="90" />
+                <Image Source="{Binding ThumbnailImagePath, Converter={StaticResource FilePathToImageConverter}}" Width="{x:Static app:Constants.CaptureThumbnailSizeWidth}" Height="{x:Static app:Constants.CaptureThumbnailSizeHeight}" />
                 <StackPanel>
                   <TextBlock Text="{Binding FileName}" />
                   <TextBlock Text="{Binding CaptureTimestamp}" />

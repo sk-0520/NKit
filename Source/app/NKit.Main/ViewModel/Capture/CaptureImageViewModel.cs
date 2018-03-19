@@ -10,17 +10,35 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
 {
     public class CaptureImageViewModel : SingleModelViewModelBase<CaptureImageModel>
     {
+        #region variable
+
+        string _thumbnailImagePath = null;
+
+        #endregion
+
         public CaptureImageViewModel(CaptureImageModel model)
             : base(model)
         { }
 
         #region property
 
-        public string FileName => Model.ImageFile.Name;
-        public string FilePath => Model.ImageFile.FullName;
+        public string FileName => Model.RawImageFile.Name;
+        public string FilePath => Model.RawImageFile.FullName;
 
-        public DateTime CaptureStartTimestamp => Model.ImageFile.Directory.CreationTime;
-        public DateTime CaptureTimestamp => Model.ImageFile.CreationTime;
+        public string ThumbnailImagePath
+        {
+            get
+            {
+                if(this._thumbnailImagePath == null) {
+                    this._thumbnailImagePath = Model.GetEnabledThumbnailImagePath();
+                }
+
+                return this._thumbnailImagePath;
+            }
+        }
+
+        public DateTime CaptureStartTimestamp => Model.RawImageFile.Directory.CreationTime;
+        public DateTime CaptureTimestamp => Model.RawImageFile.CreationTime;
 
         #endregion
 

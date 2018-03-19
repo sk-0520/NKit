@@ -9,5 +9,7 @@ namespace ContentTypeTextNet.NKit.Setting.Define
     public enum ImageKind
     {
         Png,
+        Jpeg,
+        Bmp,
     }
 }
