@@ -45,7 +45,7 @@
           <StackPanel Orientation="Horizontal">
             <Label Content="{Binding GroupName}" />
             <Label Content="{Binding RunState}" />
-            <Button Command="{Binding DataContext.RemoveGroupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">remove</Button>
+            <Button Command="{Binding DataContext.RemoveGroupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding }">remove</Button>
           </StackPanel>
         </DataTemplate>
       </TabControl.ItemTemplate>

@@ -109,17 +109,20 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             SelectedGroupItem = viewModel;
         });
 
-        public ICommand RemoveGroupCommand => new DelegateCommand<CaptureGroupViewModel>(vm => {
-            if(SelectedGroupItem == vm) {
-                // くるしい, 近しい子を選んであげるべき
-                SelectedGroupItem = GroupViewModels.Where(g => g != vm).FirstOrDefault();
-            }
+        public DelegateCommand<CaptureGroupViewModel> RemoveGroupCommand => new DelegateCommand<CaptureGroupViewModel>(
+            vm => {
+                if(SelectedGroupItem == vm) {
+                    // くるしい, 近しい子を選んであげるべき
+                    SelectedGroupItem = GroupViewModels.Where(g => g != vm).FirstOrDefault();
+                }
 
-            var index = GroupViewModels.IndexOf(vm);
-            GroupViewModels.RemoveAt(index);
-            vm.Dispose();
-            Model.RemoveGroupAt(index);
-        });
+                var index = GroupViewModels.IndexOf(vm);
+                GroupViewModels.RemoveAt(index);
+                vm.Dispose();
+                Model.RemoveGroupAt(index);
+            },
+            vm => !(vm.RunState == Utility.Define.RunState.Prepare || vm.RunState == Utility.Define.RunState.Running)
+        );
 
         public ICommand SimpleCaptureControlCommand => new DelegateCommand(
             () => { Model.SimpleCapture(Setting.Define.CaptureTarget.Control); },
@@ -160,10 +163,12 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             if(e.PropertyName == nameof(Model.NowCapturing)) {
                 //Application.Current.Dispatcher.Invoke(() => {
                 RaisePropertyChanged(nameof(NowCapturing));
-                foreach(var g  in GroupViewModels) {
+                foreach(var g in GroupViewModels) {
                     g.RaiseNowCapturingPropertyChanged();
                 }
-                //CommandManager.InvalidateRequerySuggested();
+                InvokeUI(() => {
+                    CommandManager.InvalidateRequerySuggested();
+                });
                 //});
             }
         }
