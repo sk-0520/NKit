@@ -31,14 +31,14 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         #region property
 
-        ManagerWorker Worker { get; set; }
+        MainWorker Worker { get; set; }
         ReleaseNoteForm ReleaseNoteForm { get; set; }
 
         #endregion
 
         #region function
 
-        public void SetWorker(ManagerWorker worker)
+        public void SetWorker(MainWorker worker)
         {
             Worker = worker;
             Worker.WorkspaceExited += Worker_WorkspaceExited;

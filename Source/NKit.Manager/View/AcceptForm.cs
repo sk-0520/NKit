@@ -24,7 +24,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         #region function
 
-        ManagerWorker Worker { get; set; }
+        MainWorker Worker { get; set; }
 
         #endregion
 
@@ -85,7 +85,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         }
 
-        public void SetWorker(ManagerWorker worker)
+        public void SetWorker(MainWorker worker)
         {
             Worker = worker;
 

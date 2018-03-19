@@ -16,6 +16,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 {
     public class ApplicationManager : ManagerBase
     {
+        #region define
+
+        static readonly TimeSpan CloseWaitTime = TimeSpan.FromMilliseconds(500);
+
+        #endregion
+
         #region event
 
         public event EventHandler<EventArgs> MainApplicationExited;
@@ -272,16 +278,31 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             return false;
         }
 
-        public void ShutdownAllApplications()
+        void ShutdownManageApplications()
         {
+            var logger = LogFactory.CreateLogger("shutdown");
+            logger.Information($"event set: {nameof(GroupSuicideEvent)}, {CommonUtility.ManagedStartup.GroupSuicideEventName}");
+            GroupSuicideEvent.Set();
 
+            Thread.Sleep(CloseWaitTime);
+
+            var runningItems = ManageItems
+                .Where(i => i.ApplicationItem.IsRunning)
+                .ToList()
+            ;
+            logger.Information($"running: {runningItems.Count}");
+            foreach(var item in runningItems) {
+                if(!item.Close(logger)) {
+                    item.Kill(logger);
+                }
+            }
         }
 
         #endregion
 
         private void MainApplication_Exited(object sender, EventArgs e)
         {
-            ShutdownAllApplications();
+            ShutdownManageApplications();
 
             if(MainApplicationExited != null) {
                 MainApplicationExited(sender, e);

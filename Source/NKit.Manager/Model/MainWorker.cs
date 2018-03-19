@@ -23,7 +23,7 @@ using ContentTypeTextNet.NKit.Manager.View;
 
 namespace ContentTypeTextNet.NKit.Manager.Model
 {
-    public class ManagerWorker : DisposerBase
+    public class MainWorker : DisposerBase
     {
         #region define
 
@@ -39,7 +39,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         #endregion
 
-        public ManagerWorker()
+        public MainWorker()
         {
             LogManager = new LogManager();
             LogManager.LogWrite += LogManager_LogWrite;

@@ -57,7 +57,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             }
 
             var path = Path.Combine(CommonUtility.GetDocumentDirectory().FullName, "license", "third-party.xml");
-            var license = ManagerWorker.LoadXmlObject<ThirdPartyLicense>(path);
+            var license = MainWorker.LoadXmlObject<ThirdPartyLicense>(path);
             this.viewComponents.Text = string.Join(Environment.NewLine, license.Components.Select(c => FormatComponent(c)));
 
         }

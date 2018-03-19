@@ -89,7 +89,7 @@
     <Compile Include="Model\Log\Setting\LogSetting.cs" />
     <Compile Include="Model\ManagerBase.cs" />
     <Compile Include="Model\ManagerSetting.cs" />
-    <Compile Include="Model\ManagerWorker.cs" />
+    <Compile Include="Model\MainWorker.cs" />
     <Compile Include="Model\AcceptVersion.cs" />
     <Compile Include="Model\NKitTalkerHost.cs" />
     <Compile Include="Model\SystemWebBrowserUtility.cs" />
