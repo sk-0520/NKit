@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Data;
 using ContentTypeTextNet.NKit.Main.Model.Capture;
 using ContentTypeTextNet.NKit.Setting.Define;
+using ContentTypeTextNet.NKit.Utility.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
 using ContentTypeTextNet.NKit.Utility.ViewModell;
 
@@ -18,6 +19,12 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
 {
     public class CaptureGroupViewModel : RunnableViewModelBase<CaptureGroupModel, None>
     {
+        #region variable
+
+        RunState _initialRunState;
+
+        #endregion
+
         public CaptureGroupViewModel(CaptureGroupModel model)
             : base(model)
         {
@@ -75,12 +82,37 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         ObservableCollection<CaptureImageViewModel> ItemViewModels { get; } = new ObservableCollection<CaptureImageViewModel>();
         public ICollectionView Items { get; set; }
 
+        public RunState InitialRunState
+        {
+            get { return this._initialRunState; }
+            set { SetProperty(ref this._initialRunState, value); }
+        }
+
         #endregion
 
         #region command
         #endregion
 
         #region function
+
+        public Task InitializeCaptureFilesAsync()
+        {
+            if(InitialRunState == RunState.None || InitialRunState == RunState.Error) {
+                InitialRunState = RunState.Running;
+                return Task.Run(() => {
+                    Model.InitializeCaptureFiles();
+                }).ContinueWith(t => {
+                    if(t.IsFaulted) {
+                        InitialRunState = RunState.Error;
+                    } else {
+                        InitialRunState = RunState.Finished;
+                    }
+                });
+            }
+
+            return Task.CompletedTask;
+        }
+
         #endregion
 
         #region SingleModelViewModelBase

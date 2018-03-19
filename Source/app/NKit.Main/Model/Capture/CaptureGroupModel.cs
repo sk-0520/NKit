@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Setting.Capture;
+using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Setting.NKit;
 using ContentTypeTextNet.NKit.Utility.Model;
 
@@ -15,6 +16,12 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 {
     public class CaptureGroupModel: RunnableAsyncModel<None>
     {
+        #region define
+
+        const string CaptureSubDirectoryNamePrefix = "cap-";
+
+        #endregion
+
         public CaptureGroupModel(CaptureManagerModel manager, CaptureGroupSetting groupSetting, IReadOnlyCaptureSetting captureSetting, IReadOnlyNKitSetting nkitSetting)
         {
             Manager = manager;
@@ -31,7 +38,11 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         public IReadOnlyNKitSetting NKitSetting { get; }
 
         EventWaitHandle SaveNoticeEvent { get; set; }
+        string SavedEventName { get; set; }
+
         Task SaveNoticePolling { get; set; }
+
+        DirectoryInfo CurrentCaptureDirectory { get; set; }
 
         public ObservableCollection<CaptureImageModel> Items { get; } = new ObservableCollection<CaptureImageModel>();
 
@@ -41,39 +52,48 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         CaptureImageModel CreateImageModel(FileInfo fileInfo)
         {
-            var result = new CaptureImageModel(fileInfo);
+            var result = new CaptureImageModel(this, fileInfo);
 
             return result;
         }
 
-        DirectoryInfo GetCaptureDirectory()
+        DirectoryInfo GetCaptureBaseDirectory()
         {
-            var dirPath = Path.Combine(Environment.ExpandEnvironmentVariables(StartupOptions.WorkspacePath), "capture", GroupSetting.Id.ToString());
+            var workspaceDirPath = Environment.ExpandEnvironmentVariables(StartupOptions.WorkspacePath);
+            var dirPath = Path.Combine(workspaceDirPath, "capture", GroupSetting.Id.ToString());
             var dir = Directory.CreateDirectory(dirPath);
 
             return dir;
         }
 
-        IEnumerable<FileInfo> GetCaptureFiles()
+        IEnumerable<FileInfo> GetCaptureFiles(DirectoryInfo directory)
         {
-            var dir = GetCaptureDirectory();
-            return dir.EnumerateFiles("*.png", SearchOption.TopDirectoryOnly);
+            return directory.EnumerateFiles("*.png", SearchOption.TopDirectoryOnly);
         }
 
-        void LoadCaptureFiles()
+        public void InitializeCaptureFiles()
         {
-            var files = GetCaptureFiles().OrderBy(f => f.Name);
-            Items.Clear();
-            foreach(var file in files) {
-                Items.Add(CreateImageModel(file));
+            //TODO: 例外対応
+            var captureDirs = GetCaptureBaseDirectory()
+                .EnumerateDirectories(CaptureSubDirectoryNamePrefix)
+                .OrderBy(d => d.Name)
+            ;
+            foreach(var captureDir in captureDirs) {
+                var files = GetCaptureFiles(captureDir)
+                    .OrderBy(f => f.Name)
+                ;
+                Items.Clear();
+                foreach(var file in files) {
+                    Items.Add(CreateImageModel(file));
+                }
             }
         }
 
         void AddCaptureFiles()
         {
-            var files = GetCaptureFiles();
+            var files = GetCaptureFiles(CurrentCaptureDirectory);
             var addFileItems = Items
-                .Concat(files.Select(f => new CaptureImageModel(f)))
+                .Concat(files.Select(f => CreateImageModel(f)))
                 .GroupBy(i => i.ImageFile.Name)
                 .Where(g => g.Count() == 1)
                 .Select(g => g.First())
@@ -83,24 +103,27 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             foreach(var addFileItem in addFileItems) {
                 Items.Add(addFileItem);
             }
-
         }
 
         #endregion
 
         #region RunnableAsyncModel
 
-        protected override PreparaResult<None> PreparateCore(CancellationToken cancelToken)
+        protected override Task<PreparaResult<None>> PreparateCoreAsync(CancellationToken cancelToken)
         {
-            return base.PreparateCore(cancelToken);
+            var baseDirectory = GetCaptureBaseDirectory();
+            CurrentCaptureDirectory = baseDirectory.CreateSubdirectory(CaptureSubDirectoryNamePrefix + DateTime.UtcNow.ToString("yyyyMMddHHmmss"));
+
+            var id = DateTime.Now.ToFileTime().ToString();
+            SavedEventName = $"cttn-nkit-capture-save-{id}";
+            SaveNoticeEvent = new EventWaitHandle(false, EventResetMode.AutoReset, SavedEventName);
+
+            return base.PreparateCoreAsync(cancelToken);
         }
 
         protected override Task<None> RunCoreAsync(CancellationToken cancelToken)
         {
-            var id = DateTime.Now.ToFileTime().ToString();
-            var savedEventName = $"cttn-nkit-capture-save-{id}";
             var waitTime = TimeSpan.FromMinutes(1);
-            SaveNoticeEvent = new EventWaitHandle(false, EventResetMode.AutoReset, savedEventName);
 
             var saveNoticeCancel = new CancellationTokenSource();
             var saveNoticeCancelToken = saveNoticeCancel.Token;
@@ -124,13 +147,14 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 ? GroupSetting.Scroll
                 : CaptureSetting.Scroll
             ;
-            var dir = GetCaptureDirectory();
-            return Manager.CaptureAsync(GroupSetting.CaptureTarget, GroupSetting.IsEnabledClipboard, GroupSetting.IsImmediateSelect, true, savedEventName, dir, scrollSetting, cancelToken).ContinueWith(_ => {
+
+            return Manager.CaptureAsync(GroupSetting.CaptureTarget, GroupSetting.IsEnabledClipboard, GroupSetting.IsImmediateSelect, true, SavedEventName, CurrentCaptureDirectory, ImageKind.Png, scrollSetting, cancelToken).ContinueWith(_ => {
                 // 頭バグってきた
                 saveNoticeCancel.Cancel();
                 SaveNoticeEvent.Set();
 
                 SaveNoticeEvent.Dispose();
+
                 return None.Void;
             });
         }

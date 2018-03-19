@@ -47,12 +47,12 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         public override bool Cancelable => false;
 
-        protected override Task<PreparaResult<byte[]>> PreparationCoreAsync(CancellationToken cancelToken)
+        protected override Task<PreparaResult<byte[]>> PreparateCoreAsync(CancellationToken cancelToken)
         {
             HashProvider = new HashProvider(HashType);
             
             FileStream = FileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
-            return base.PreparationCoreAsync(cancelToken);
+            return base.PreparateCoreAsync(cancelToken);
         }
 
         protected override Task<byte[]> RunCoreAsync(CancellationToken cancelToken)

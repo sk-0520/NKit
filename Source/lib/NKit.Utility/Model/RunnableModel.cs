@@ -133,7 +133,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         /// </summary>
         /// <typeparam name="TPreparaValue"></typeparam>
         /// <returns>真なら処理を継続、偽なら<see cref="TRunResult"/>を返して未処理とする。</returns>
-        protected virtual Task<PreparaResult<TRunResult>> PreparationCoreAsync(CancellationToken cancelToken) => GetDefaultPreparaValueAsync(true);
+        protected virtual Task<PreparaResult<TRunResult>> PreparateCoreAsync(CancellationToken cancelToken) => GetDefaultPreparaValueAsync(true);
 
         protected abstract TRunResult RunCore(CancellationToken cancelToken);
         protected abstract Task<TRunResult> RunCoreAsync(CancellationToken cancelToken);
@@ -181,7 +181,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             try {
                 RunState = RunState.Prepare;
 
-                var preResult = await PreparationCoreAsync(cancelToken);
+                var preResult = await PreparateCoreAsync(cancelToken);
 
                 PreparationSpan = DateTime.Now - StartTimestamp;
 
@@ -219,7 +219,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         public override bool CanAsync => false;
 
-        protected override Task<PreparaResult<TRunResult>> PreparationCoreAsync(CancellationToken cancelToken)
+        protected override Task<PreparaResult<TRunResult>> PreparateCoreAsync(CancellationToken cancelToken)
         {
             throw new NotSupportedException();
         }

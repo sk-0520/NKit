@@ -136,7 +136,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         }
 
         // 引数がなぁ、多いのなぁ
-        public Task CaptureAsync(CaptureTarget captureTarget, bool isEnabledClipboard, bool isImmediateSelect, bool isContinuation, string savedEventName, DirectoryInfo saveDirectory, IReadOnlyScrollCaptureSetting scrollSetting, CancellationToken cancelToken)
+        public Task CaptureAsync(CaptureTarget captureTarget, bool isEnabledClipboard, bool isImmediateSelect, bool isContinuation, string savedEventName, DirectoryInfo saveDirectory, ImageKind saveImageKind, IReadOnlyScrollCaptureSetting scrollSetting, CancellationToken cancelToken)
         {
             var arguments = new List<string>() {
                 "--target",
@@ -164,7 +164,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 arguments.Add(ProgramRelationUtility.EscapesequenceToArgument("${YYYY}-${MM}-${DD}_${hh24}-${mm}-${ss}_${FFF}.${EXT}"));
 
                 arguments.Add("--save_image_kind");
-                arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(ImageKind.Png.ToString()));
+                arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(saveImageKind.ToString()));
             }
 
             if(!string.IsNullOrWhiteSpace(savedEventName)) {
@@ -205,7 +205,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         public void SimpleCapture(CaptureTarget captureTarget)
         {
-            CaptureAsync(captureTarget, true, true, false, default(string), default(DirectoryInfo), Setting.Capture.Scroll, CancellationToken.None);
+            CaptureAsync(captureTarget, true, true, false, default(string), default(DirectoryInfo), ImageKind.Png, Setting.Capture.Scroll, CancellationToken.None);
         }
 
         #endregion

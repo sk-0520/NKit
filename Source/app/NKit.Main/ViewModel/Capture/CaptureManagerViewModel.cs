@@ -42,7 +42,14 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         public CaptureGroupViewModel SelectedGroupItem
         {
             get { return this._selectedGroupItem; }
-            set { SetProperty(ref this._selectedGroupItem, value); }
+            set
+            {
+                if(SetProperty(ref this._selectedGroupItem, value)) {
+                    if(SelectedGroupItem != null) {
+                        SelectedGroupItem.InitializeCaptureFilesAsync();
+                    }
+                }
+            }
         }
 
         public bool NowCapturing => Model.NowCapturing;
@@ -152,8 +159,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         {
             if(e.PropertyName == nameof(Model.NowCapturing)) {
                 //Application.Current.Dispatcher.Invoke(() => {
-                    RaisePropertyChanged(nameof(NowCapturing));
-                    //CommandManager.InvalidateRequerySuggested();
+                RaisePropertyChanged(nameof(NowCapturing));
+                //CommandManager.InvalidateRequerySuggested();
                 //});
             }
         }
