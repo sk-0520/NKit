@@ -105,10 +105,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             var saveImageOption = command.Option("--save_image", "[image kind]/[thumbnail file name format], extension is ${EXT}", CommandOptionType.SingleValue);
             var saveThumbnailOption = command.Option("--save_thumbnail", "[image kind]/[thumbnail file name format]/[width]/[height], extension is ${EXT}", CommandOptionType.SingleValue);
             var saveEventOption = command.Option("--save_event_name", "save event", CommandOptionType.SingleValue);
-            var continuationOption = command.Option("--continuation", "one/continuation", CommandOptionType.NoValue);
+            var continuationOption = command.Option("--continuation", "single/continuation", CommandOptionType.NoValue);
             var isImmediateSelectOption = command.Option("--immediate_select", "start select", CommandOptionType.NoValue);
-            var shotKeyOption = command.Option("--photo_opportunity_key", $"shot normal key + {Keys.Control}, {Keys.Shift}, {Keys.Alt}", CommandOptionType.SingleValue);
-            var selectKeyOption = command.Option("--wait_opportunity_key", $"select normal key + {Keys.Control}, {Keys.Shift}, {Keys.Alt}", CommandOptionType.SingleValue);
+            var shotKeyOption = command.Option("--take_shot_key", $"shot normal key + {Keys.Control}, {Keys.Shift}, {Keys.Alt}", CommandOptionType.SingleValue);
+            var selectKeyOption = command.Option("--select_photo_key", $"select normal key + {Keys.Control}, {Keys.Shift}, {Keys.Alt}", CommandOptionType.SingleValue);
             var shotDelayTimeOption = command.Option("--photo_opportunity_delay_time", "shot deilay time", CommandOptionType.SingleValue);
             var cameraBorderColorOption = command.Option("--camera_border_color", "color", CommandOptionType.SingleValue);
             var cameraBorderWidthOption = command.Option("--camera_border_width", "color", CommandOptionType.SingleValue);

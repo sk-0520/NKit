@@ -219,11 +219,11 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             }
 
             if(CaptureKeyUtility.CanSendKeySetting(Setting.Capture.TakeShotKey)) {
-                arguments.Add("--photo_opportunity_key");
+                arguments.Add("--take_shot_key");
                 arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(CaptureKeyUtility.ToCameramanArgumentKey(Setting.Capture.TakeShotKey)));
             }
             if(CaptureKeyUtility.CanSendKeySetting(Setting.Capture.SelectKey)) {
-                arguments.Add("--wait_opportunity_key");
+                arguments.Add("--select_photo_key");
                 arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(CaptureKeyUtility.ToCameramanArgumentKey(Setting.Capture.SelectKey)));
             }
 
