@@ -12,7 +12,7 @@ namespace ContentTypeTextNet.NKit.Utility.View.Converter
 {
     public class FilePathToImageConverter : IValueConverter
     {
-        #region property
+        #region IValueConverter
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
