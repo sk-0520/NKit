@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ContentTypeTextNet.NKit.Utility.ViewModell;
+using ContentTypeTextNet.NKit.Utility.ViewModel;
 
 namespace ContentTypeTextNet.NKit.Main.View.Control
 {

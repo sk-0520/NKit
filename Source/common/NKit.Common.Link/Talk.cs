@@ -65,6 +65,9 @@ namespace ContentTypeTextNet.NKit.Common
         [OperationContract]
         NKitApplicationStatus GetStatus(NKitApplicationKind sender, uint manageId);
 
+        [OperationContract]
+        bool Shutdown(NKitApplicationKind sender, uint manageId, bool force);
+
         #endregion
     }
 

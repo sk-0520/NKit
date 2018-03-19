@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using ContentTypeTextNet.Library.PInvoke.Windows;
 using ContentTypeTextNet.NKit.Cameraman.Model.Scroll;
 using ContentTypeTextNet.NKit.Cameraman.View;
+using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
 using Gma.System.MouseKeyHook;
@@ -45,12 +46,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         CameraBase GetCammera(IntPtr hWnd)
         {
-            if(Bag.CaptureMode == CaptureMode.Screen) {
+            if(Bag.CaptureTarget == CaptureTarget.Screen) {
                 return new ScreenCamera();
             }
 
             Debug.Assert(hWnd != IntPtr.Zero);
-            if(Bag.CaptureMode == CaptureMode.Scroll) {
+            if(Bag.CaptureTarget == CaptureTarget.Scroll) {
                 return new ScrollCamera(hWnd, Bag.ScrollDelayTime) {
                     ScrollInternetExplorerInitializeTime = Bag.ScrollInternetExplorerInitializeTime,
 
@@ -62,7 +63,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 };
             }
 
-            return new WindowHandleCamera(hWnd, Bag.CaptureMode);
+            return new WindowHandleCamera(hWnd, Bag.CaptureTarget);
 
             throw new NotImplementedException();
         }
@@ -78,6 +79,17 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             }
         }
 
+        static (string ext, ImageFormat format) GetSaveFormatInfo(ImageKind kind)
+        {
+            switch(kind) {
+                case ImageKind.Png:
+                    return ("png", ImageFormat.Png);
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         /// <summary>
         /// 現像。
         /// </summary>
@@ -88,9 +100,15 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 Clipboard.SetImage(image);
             }
             if(Bag.SaveDirectory != null) {
-                var fileName = $"{DateTime.Now: yyyyMMdd_HHmmss}.png";
+                var info = GetSaveFormatInfo(Bag.SaveImageKind);
+
+                var map = new Dictionary<string, string>() {
+                    ["EXT"] = info.ext,
+                };
+
+                var fileName = CommonUtility.ReplaceNKitText(Bag.SaveFileNameFormat, DateTime.UtcNow, map);
                 var filePath = Path.Combine(Bag.SaveDirectory.FullName, fileName);
-                image.Save(filePath, ImageFormat.Png);
+                image.Save(filePath, info.format);
             }
 
             if(Bag.SaveNoticeEvent != null) {
@@ -100,7 +118,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         public void Execute(InformationForm form)
         {
-            if(Bag.CaptureMode == CaptureMode.Screen && !Bag.IsContinuation) {
+            if(Bag.CaptureTarget == CaptureTarget.Screen && !Bag.IsContinuation) {
                 CaptureScreen();
                 Exit();
             } else {
@@ -110,7 +128,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     HookKeyboardInput();
                 }
 
-                if(Bag.CaptureMode == CaptureMode.Screen) {
+                if(Bag.CaptureTarget == CaptureTarget.Screen) {
                     Application.Run();
                 } else {
                     CameramanForm = form;
@@ -209,16 +227,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 HookEvents = null;
             }
 
-            if(Bag.ExitNoticeEvent != null) {
-                Bag.ExitNoticeEvent.Set();
-            }
-
             Application.Exit();
         }
 
         void SelectViewAndFocus(Point mousePoint)
         {
-            var hWnd = WindowHandleUtility.GetView(mousePoint, Bag.CaptureMode);
+            var hWnd = WindowHandleUtility.GetView(mousePoint, Bag.CaptureTarget);
 
             if(hWnd == IntPtr.Zero) {
                 CameramanForm.Detach();
@@ -236,7 +250,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 return;
             }
 
-            var rect = WindowHandleUtility.GetViewArea(hWnd, Bag.CaptureMode);
+            var rect = WindowHandleUtility.GetViewArea(hWnd, Bag.CaptureTarget);
             // 枠用にサイズ補正
             CameramanForm.Attach(hWnd, rect);
 
@@ -358,7 +372,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             // キャプチャ処理
             if(CheckInputKey(e, Bag.ShotKeys)) {
                 Logger.Information("shot");
-                if(Bag.CaptureMode == CaptureMode.Screen) {
+                if(Bag.CaptureTarget == CaptureTarget.Screen) {
                     CaptureInHooking(CaptureScreen);
                 } else {
                     if(NowSelecting) {
@@ -369,7 +383,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                         }
                     } else {
                         // 今時点でアクティブなやつからキャプチャ
-                        var hWnd = WindowHandleUtility.GetActiveWindow(Bag.CaptureMode);
+                        var hWnd = WindowHandleUtility.GetActiveWindow(Bag.CaptureTarget);
                         if(hWnd != IntPtr.Zero) {
                             Logger.Debug("window handle!");
                             TargetWindowHandle = hWnd;

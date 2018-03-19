@@ -46,6 +46,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         protected Process Process { get; }
 
+        public int ProcessId => Process.Id;
+
         public string Path => Process.StartInfo.FileName;
 
         public string Arguments { get; set; }
@@ -88,6 +90,11 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 Process.BeginErrorReadLine();
                 Process.BeginOutputReadLine();
             }
+        }
+
+        public void Kill()
+        {
+            Process.Kill();
         }
 
         #endregion

@@ -255,6 +255,23 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             };
         }
 
+        public bool Shutdown(NKitApplicationKind senderApplication, uint manageId, bool force)
+        {
+            if(TryGetManageItem(manageId, out var manageItem)) {
+                //TODO: 起動状態とかもう死んでるとか調べた方がいい
+                var logger = LogFactory.CreateLogger(manageItem.GetType().Name);
+                var closeResult = manageItem.Close(logger);
+                if(closeResult) {
+                    return true;
+                }
+                if(force) {
+                    return manageItem.Kill(logger);
+                }
+            }
+
+            return false;
+        }
+
         public void ShutdownAllApplications()
         {
 

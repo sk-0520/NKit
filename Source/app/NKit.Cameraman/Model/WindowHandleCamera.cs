@@ -10,16 +10,16 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 {
     public class WindowHandleCamera : CameraBase
     {
-        public WindowHandleCamera(IntPtr hWnd, CaptureMode captureMode)
+        public WindowHandleCamera(IntPtr hWnd, CaptureTarget captureTarget)
         {
             WindowHandle = hWnd;
-            CaptureMode = captureMode;
+            CaptureTarget = captureTarget;
         }
 
         #region property
 
         protected IntPtr WindowHandle { get; }
-        CaptureMode CaptureMode { get; }
+        CaptureTarget CaptureTarget { get; }
 
         #endregion
 
@@ -27,7 +27,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         protected override Image TakeShotCore()
         {
-            var area = WindowHandleUtility.GetViewArea(WindowHandle, CaptureMode);
+            var area = WindowHandleUtility.GetViewArea(WindowHandle, CaptureTarget);
 
             var bitmap = new Bitmap(area.Width, area.Height);
             using(var g = Graphics.FromImage(bitmap)) {

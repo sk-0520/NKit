@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ContentTypeTextNet.NKit.Setting.Define
 {
-    public enum CaptureMode
+    public enum CaptureTarget
     {
         Screen,
         Window,

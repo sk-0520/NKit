@@ -51,10 +51,12 @@
       <Link>Common\Setting.cs</Link>
     </Compile>
     <Compile Include="Capture\CaptureGroupSetting.cs" />
+    <Compile Include="Capture\ScrollCaptureSetting.cs" />
     <Compile Include="Capture\CaptureSetting.cs" />
     <Compile Include="Define\AssociationFileKind.cs" />
-    <Compile Include="Define\CaptureMode.cs" />
+    <Compile Include="Define\CaptureTarget.cs" />
     <Compile Include="Define\FlagMatchKind.cs" />
+    <Compile Include="Define\ImageKind.cs" />
     <Compile Include="Define\SearchPatternKind.cs" />
     <Compile Include="File\AssociationFileSetting.cs" />
     <Compile Include="File\FileSetting.cs" />
