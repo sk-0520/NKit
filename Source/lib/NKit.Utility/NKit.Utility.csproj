@@ -133,7 +133,7 @@
     <Compile Include="Model\Unmanaged\Gdi.cs" />
     <Compile Include="Model\Unmanaged\GlobalAllocModel.cs" />
     <Compile Include="Model\Unmanaged\UnmanagedModelBase.cs" />
-    <Compile Include="ViewModell\RunnableViewModel.cs" />
+    <Compile Include="ViewModel\RunnableViewModel.cs" />
     <Compile Include="View\Attach\GridHelpers.cs" />
     <Compile Include="Model\Cacher.cs" />
     <Compile Include="Model\ConfigurationCacher.cs" />
@@ -147,7 +147,7 @@
     <Compile Include="Model\PathUtility.cs" />
     <Compile Include="Model\UnitConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModell\ViewModel.cs" />
+    <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="View\Converter\BinaryToTextConverter.cs" />
     <Compile Include="View\Converter\DoubleToParameterPercentConverter.cs" />
     <Compile Include="View\Converter\DoubleToPercentConverter.cs" />

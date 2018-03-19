@@ -13,7 +13,7 @@ using ContentTypeTextNet.NKit.Main.Model.Capture;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
-using ContentTypeTextNet.NKit.Utility.ViewModell;
+using ContentTypeTextNet.NKit.Utility.ViewModel;
 using Prism.Interactivity.InteractionRequest;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture

@@ -13,7 +13,7 @@ using ContentTypeTextNet.NKit.Utility.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
 using Prism.Commands;
 
-namespace ContentTypeTextNet.NKit.Utility.ViewModell
+namespace ContentTypeTextNet.NKit.Utility.ViewModel
 {
     public interface IRunnableItem : IReadOnlyRunnableStatus
     {

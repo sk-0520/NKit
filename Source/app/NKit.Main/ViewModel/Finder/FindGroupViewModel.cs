@@ -19,7 +19,7 @@ using ContentTypeTextNet.NKit.Main.Model.Finder;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Setting.Finder;
 using ContentTypeTextNet.NKit.Utility.Model;
-using ContentTypeTextNet.NKit.Utility.ViewModell;
+using ContentTypeTextNet.NKit.Utility.ViewModel;
 using Prism.Commands;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder

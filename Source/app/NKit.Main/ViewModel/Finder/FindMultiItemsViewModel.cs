@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using ContentTypeTextNet.NKit.Utility.ViewModell;
+using ContentTypeTextNet.NKit.Utility.ViewModel;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 {
