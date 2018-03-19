@@ -152,7 +152,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
 
                     IsEnabledLastItemScroll = true;
                     IsEnabledAddCaptureStartTimestamp = true;
-                });
+                }, TaskScheduler.FromCurrentSynchronizationContext());
             }
 
             return Task.CompletedTask;
