@@ -194,6 +194,12 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             Model.Items.CollectionChanged -= Items_CollectionChanged;
         }
 
+        protected override void CancelCore()
+        {
+            Model.CancelCapture();
+            base.CancelCore();
+        }
+
         #endregion
 
         private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

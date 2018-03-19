@@ -155,6 +155,26 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         #endregion
     }
 
+    public class TalkApplicationShutdownEventArgs : TalkEventArgs
+    {
+        public TalkApplicationShutdownEventArgs(NKitApplicationKind senderApplication)
+            : base(senderApplication)
+        { }
+
+        #region property
+
+        /// <summary>
+        /// 管理ID。
+        /// </summary>
+        public uint ManageId { get; set; }
+
+        public bool Force { get; set; }
+
+        public bool Success { get; set; }
+
+        #endregion
+    }
+
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class NKitApplicationTalkerHost : NKitTalkerHostBase<INKitApplicationTalker>, INKitApplicationTalker
     {
@@ -164,6 +184,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         public event EventHandler<TalkApplicationPreparateEventArgs> ApplicationPreparate;
         public event EventHandler<TalkApplicationWakeupEventArgs> ApplicationWakeup;
         public event EventHandler<TalkApplicationStatusEventArgs> ApplicationStatus;
+        public event EventHandler<TalkApplicationShutdownEventArgs> ApplicationShutdown;
+        
 
         #endregion
 
@@ -222,6 +244,21 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             };
         }
 
+        bool OnShutdown(NKitApplicationKind sender, uint manageId, bool force)
+        {
+            if(ApplicationShutdown != null) {
+                var e = new TalkApplicationShutdownEventArgs(sender) {
+                    ManageId = manageId,
+                    Force = force,
+                };
+                ApplicationShutdown(this, e);
+
+                return e.Success;
+            }
+
+            return false;
+        }
+
         #endregion
 
         #region INKitApplicationTalker
@@ -239,6 +276,11 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         public NKitApplicationStatus GetStatus(NKitApplicationKind sender, uint manageId)
         {
             return OnGetStatus(sender, manageId);
+        }
+
+        public bool Shutdown(NKitApplicationKind sender, uint manageId, bool force)
+        {
+            return OnShutdown(sender, manageId, force);
         }
 
         #endregion

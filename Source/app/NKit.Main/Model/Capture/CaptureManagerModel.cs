@@ -50,6 +50,8 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         CancellationTokenSource CaptureCancel { get; set; }
         TimeSpan CaptureExitPollingTime { get; set; } = TimeSpan.FromSeconds(30);
 
+        uint CammeramanManageId { get; set; } = 0;
+
         #endregion
 
         #region function
@@ -103,8 +105,8 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
                 var executeTask = Task.CompletedTask;
 
-                var manageId = client.PreparateApplication(NKitApplicationKind.Cameraman, arguments, workingDirectoryPath);
-                var status = client.GetStatusApplication(manageId);
+                CammeramanManageId = client.PreparateApplication(NKitApplicationKind.Cameraman, arguments, workingDirectoryPath);
+                var status = client.GetStatusApplication(CammeramanManageId);
                 //if(status.IsEnabled) {
                 if(!string.IsNullOrEmpty(status.ExitedEventName)) {
                     var cameramanExitEvent = EventWaitHandle.OpenExisting(status.ExitedEventName);
@@ -125,13 +127,30 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                     }, TaskScheduler.FromCurrentSynchronizationContext());
                 }
 
-                if(client.WakeupApplication(manageId)) {
+                if(client.WakeupApplication(CammeramanManageId)) {
                     NowCapturing = true;
                 }
 
                 return executeTask;
 
                 //}
+            }
+        }
+
+        public void CancelCapture()
+        {
+            if(CammeramanManageId == 0) {
+                throw new InvalidOperationException(nameof(CammeramanManageId));
+            }
+
+            using(var client = new ApplicationSwitcher(StartupOptions.ServiceUri)) {
+                client.Initialize();
+                // チェックはいらないんじゃないかなぁ
+                //var status = client.GetStatusApplication(CammeramanManageId);
+                if(!client.ShutdownApplication(CammeramanManageId, false)) {
+                    Logger.Warning("force shutdown");
+                    client.ShutdownApplication(CammeramanManageId, true);
+                }
             }
         }
 

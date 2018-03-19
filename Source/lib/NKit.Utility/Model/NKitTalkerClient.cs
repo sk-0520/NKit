@@ -141,6 +141,11 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             return Host.GetStatus(SenderApplication, manageId);
         }
 
+        public bool Shutdown(uint manageId, bool force)
+        {
+            return Host.Shutdown(SenderApplication, manageId, force);
+        }
+
         #endregion
     }
 

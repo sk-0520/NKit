@@ -106,6 +106,11 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             }
         }
 
+        public void CancelCapture()
+        {
+            Manager.CancelCapture();
+        }
+
         #endregion
 
         #region RunnableAsyncModel
