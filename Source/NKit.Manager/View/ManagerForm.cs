@@ -296,11 +296,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private void ManagerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = !Worker.CheckCanExit();
-            if(e.Cancel) {
-                if(Worker.WorkspaceState == Define.WorkspaceState.Running) {
-                    WindowState = FormWindowState.Minimized;
-                }
-            }
         }
 
         private async void commandCheckUpdate_Click(object sender, EventArgs e)
