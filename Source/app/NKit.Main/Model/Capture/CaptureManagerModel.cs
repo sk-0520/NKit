@@ -175,7 +175,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             }
 
             if(isImmediateSelect) {
-                arguments.Add("--immediately_select");
+                arguments.Add("--immediate_select");
             }
 
             if(isContinuation) {

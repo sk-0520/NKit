@@ -53,13 +53,42 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         #region property
 
-        bool IsEnabled { get; }
-        ImageKind ImageKind { get; }
-        string FileNameFormat { get; }
+        public bool IsEnabled { get; }
+        public ImageKind ImageKind { get; }
+        public string FileNameFormat { get; }
         /// <summary>
         /// <see cref="Size.Width"/>, <see cref="Size.Height"/>のどちらかが 0 ならそのまんまのサイズで保存する。
         /// </summary>
-        Size Size { get; }
+        public Size Size { get; }
+
+        #endregion
+
+        #region function
+
+        public static SaveImageParameter Parse(string s)
+        {
+            var splitValues = s.Split('/');
+            switch(splitValues.Length) {
+                case 2:
+                    return new SaveImageParameter(
+                        EnumUtility.Parse<ImageKind>(splitValues[0]),
+                        splitValues[1]
+                    );
+
+                case 4:
+                    return new SaveImageParameter(
+                        EnumUtility.Parse<ImageKind>(splitValues[0]),
+                        splitValues[1],
+                        new Size(
+                            int.Parse(splitValues[2]),
+                            int.Parse(splitValues[3])
+                        )
+                    );
+
+                default:
+                    throw new ArgumentException(s);
+            }
+        }
 
         #endregion
     }
@@ -73,12 +102,11 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             var targetOption = command.Option("--target", "target", CommandOptionType.SingleValue);
             var clipboardOption = command.Option("--clipboard", "use clipboard", CommandOptionType.NoValue);
             var saveDirOption = command.Option("--save_directory", "save directory", CommandOptionType.SingleValue);
-            var saveFileNameFormatOption = command.Option("--save_file_name_format", "save file name format, extension is ${EXT}", CommandOptionType.SingleValue);
-            var saveImageKindOption = command.Option("--save_image_kind", "png", CommandOptionType.SingleValue);
-            var saveThumbnailOption = command.Option("--save_thumbnail", "[image kind]/[thumbnail file name format]/[width]/[height]", CommandOptionType.SingleValue);
+            var saveImageOption = command.Option("--save_image", "[image kind]/[thumbnail file name format], extension is ${EXT}", CommandOptionType.SingleValue);
+            var saveThumbnailOption = command.Option("--save_thumbnail", "[image kind]/[thumbnail file name format]/[width]/[height], extension is ${EXT}", CommandOptionType.SingleValue);
             var saveEventOption = command.Option("--save_event_name", "save event", CommandOptionType.SingleValue);
             var continuationOption = command.Option("--continuation", "one/continuation", CommandOptionType.NoValue);
-            var immediatelySelectOption = command.Option("--immediately_select", "start select", CommandOptionType.NoValue);
+            var isImmediateSelectOption = command.Option("--immediate_select", "start select", CommandOptionType.NoValue);
             var shotKeyOption = command.Option("--photo_opportunity_key", $"shot normal key + {Keys.Control}, {Keys.Shift}, {Keys.Alt}", CommandOptionType.SingleValue);
             var selectKeyOption = command.Option("--wait_opportunity_key", $"select normal key + {Keys.Control}, {Keys.Shift}, {Keys.Alt}", CommandOptionType.SingleValue);
             var shotDelayTimeOption = command.Option("--photo_opportunity_delay_time", "shot deilay time", CommandOptionType.SingleValue);
@@ -96,33 +124,20 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             if(saveDirOption.HasValue()) {
                 SaveDirectory = new DirectoryInfo(saveDirOption.Value());
 
-                if(!saveFileNameFormatOption.HasValue()) {
-                    throw new ArgumentException("--save_directory, --save_file_name_format");
+                if(!saveImageOption.HasValue()) {
+                    throw new ArgumentException("--save_directory need --save_image");
                 }
-                SaveFileNameFormat = saveFileNameFormatOption.Value();
+                Image = SaveImageParameter.Parse(saveImageOption.Value());
 
-                if(saveImageKindOption.HasValue()) {
-                    SaveImageKind = EnumUtility.Parse<ImageKind>(saveImageKindOption.Value());
-                }
                 if(saveThumbnailOption.HasValue()) {
-                    var thumbnailValue = saveThumbnailOption.Value();
-                    // これ以上引数増やしたくないのはわかるけどキッツいなぁ
-                    var splitValues = thumbnailValue.Split('/');
-                    Thumbnail = new SaveImageParameter(
-                        EnumUtility.Parse<ImageKind>(splitValues[0]),
-                        splitValues[1],
-                        new Size(
-                            int.Parse(splitValues[2]),
-                            int.Parse(splitValues[3])
-                        )
-                    );
+                    Thumbnail = SaveImageParameter.Parse(saveThumbnailOption.Value());
                 }
             }
             if(saveEventOption.HasValue()) {
                 SaveNoticeEvent = EventWaitHandle.OpenExisting(saveEventOption.Value());
             }
             IsContinuation = continuationOption.HasValue();
-            ImmediatelySelect = immediatelySelectOption.HasValue();
+            IsImmediateSelect = isImmediateSelectOption.HasValue();
 
             var needKey = true;
             if(CaptureTarget == Setting.Define.CaptureTarget.Screen && !IsContinuation) {
@@ -191,15 +206,14 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         public bool IsEnabledClipboard { get; }
 
         public DirectoryInfo SaveDirectory { get; }
-        public string SaveFileNameFormat { get; }
-        public ImageKind SaveImageKind { get; } = ImageKind.Png;
+        public SaveImageParameter Image { get; } = SaveImageParameter.Disabled;
 
-        SaveImageParameter Thumbnail { get; } = SaveImageParameter.Disabled;
+        public SaveImageParameter Thumbnail { get; } = SaveImageParameter.Disabled;
 
         public EventWaitHandle SaveNoticeEvent { get; }
 
         public bool IsContinuation { get; }
-        public bool ImmediatelySelect { get; }
+        public bool IsImmediateSelect { get; }
 
         public Keys ShotKeys { get; } = Keys.None;
         public Keys SelectKeys { get; } = Keys.None;

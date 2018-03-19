@@ -90,6 +90,20 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             }
         }
 
+
+        static void DevelopCore(Image image, DirectoryInfo saveDirectory, SaveImageParameter parameter)
+        {
+            var info = GetSaveFormatInfo(parameter.ImageKind);
+
+            var map = new Dictionary<string, string>() {
+                ["EXT"] = info.ext,
+            };
+
+            var fileName = CommonUtility.ReplaceNKitText(parameter.FileNameFormat, DateTime.UtcNow, map);
+            var filePath = Path.Combine(saveDirectory.FullName, fileName);
+            image.Save(filePath, info.format);
+        }
+
         /// <summary>
         /// 現像。
         /// </summary>
@@ -100,15 +114,14 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 Clipboard.SetImage(image);
             }
             if(Bag.SaveDirectory != null) {
-                var info = GetSaveFormatInfo(Bag.SaveImageKind);
-
-                var map = new Dictionary<string, string>() {
-                    ["EXT"] = info.ext,
-                };
-
-                var fileName = CommonUtility.ReplaceNKitText(Bag.SaveFileNameFormat, DateTime.UtcNow, map);
-                var filePath = Path.Combine(Bag.SaveDirectory.FullName, fileName);
-                image.Save(filePath, info.format);
+                if(Bag.Image.IsEnabled) {
+                    Logger.Information("save image");
+                    DevelopCore(image, Bag.SaveDirectory, Bag.Image);
+                }
+                if(Bag.Thumbnail.IsEnabled) {
+                    Logger.Information("save thumbnail");
+                    DevelopCore(image, Bag.SaveDirectory, Bag.Thumbnail);
+                }
             }
 
             if(Bag.SaveNoticeEvent != null) {
@@ -404,7 +417,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     EndSelectView();
 
                     // 即時起動で継続使用しないのであれば選択待機よりは終了
-                    if(Bag.ImmediatelySelect && !Bag.IsContinuation) {
+                    if(Bag.IsImmediateSelect && !Bag.IsContinuation) {
                         Logger.Information("exit program ^_^");
                         Exit();
                     }
@@ -432,7 +445,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         private void Form_Shown(object sender, EventArgs e)
         {
             CameramanForm.Shown -= Form_Shown;
-            if(Bag.ImmediatelySelect) {
+            if(Bag.IsImmediateSelect) {
                 StartSelectView();
             } else {
                 CameramanForm.ShowNavigation();
