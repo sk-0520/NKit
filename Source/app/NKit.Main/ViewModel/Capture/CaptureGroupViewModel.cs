@@ -14,6 +14,7 @@ using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
 using ContentTypeTextNet.NKit.Utility.ViewModell;
+using Prism.Interactivity.InteractionRequest;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
 {
@@ -32,6 +33,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         }
 
         #region property
+
+        public InteractionRequest<ScrollNotification<CaptureImageViewModel>> ScrollRequest { get; } = new InteractionRequest<ScrollNotification<CaptureImageViewModel>>();
 
         public string GroupName
         {
@@ -163,9 +166,10 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
                             .ToList()
                         ;
                         ItemViewModels.AddRange(vms);
-                        Items.MoveCurrentToLast();
+                        ScrollRequest.Raise(new ScrollNotification<CaptureImageViewModel>(vms.Last()));
                         break;
                 }
+
             });
         }
 

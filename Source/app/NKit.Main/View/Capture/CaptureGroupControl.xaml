@@ -2,9 +2,13 @@
   上位から DataContext を設定して使用。
 -->
 <UserControl
+  x:Name="root"
   x:Class="ContentTypeTextNet.NKit.Main.View.Capture.CaptureGroupControl"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+  xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+  xmlns:prism="http://prismlibrary.com/"
 
   xmlns:app_setting_define="clr-namespace:ContentTypeTextNet.NKit.Setting.Define;assembly=NKit.Setting"
   xmlns:app_utility_view_converter="clr-namespace:ContentTypeTextNet.NKit.Utility.View.Converter;assembly=NKit.Utility"
@@ -19,6 +23,13 @@
   <UserControl.Resources>
     <app_utility_view_converter:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
   </UserControl.Resources>
+  
+  <i:Interaction.Triggers>
+    <prism:InteractionRequestTrigger SourceObject="{Binding ScrollRequest, Mode=OneWay}">
+      <prism:InvokeCommandAction Command="{Binding ScrollCommand, ElementName=root}" />
+    </prism:InteractionRequestTrigger>
+  </i:Interaction.Triggers>
+  
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="4*" />
@@ -76,7 +87,7 @@
     </Grid>
 
     <Grid Grid.Column="2" >
-      <ScrollViewer>
+      <ScrollViewer x:Name="captureItemsScroller">
         <StackPanel>
           <ItemsControl ItemsSource="{Binding Items}">
             <ItemsControl.ItemTemplate>

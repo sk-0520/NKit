@@ -75,14 +75,14 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         {
             //TODO: 例外対応
             var captureDirs = GetCaptureBaseDirectory()
-                .EnumerateDirectories(CaptureSubDirectoryNamePrefix)
+                .EnumerateDirectories(CaptureSubDirectoryNamePrefix + "*")
                 .OrderBy(d => d.Name)
             ;
+            Items.Clear();
             foreach(var captureDir in captureDirs) {
                 var files = GetCaptureFiles(captureDir)
                     .OrderBy(f => f.Name)
                 ;
-                Items.Clear();
                 foreach(var file in files) {
                     Items.Add(CreateImageModel(file));
                 }
