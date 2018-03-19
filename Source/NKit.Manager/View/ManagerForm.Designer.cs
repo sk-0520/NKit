@@ -53,7 +53,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.labelBuildType = new System.Windows.Forms.Label();
             this.commandTestExecute = new System.Windows.Forms.Button();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
-            this.selectWorkspaceLoadToHide = new System.Windows.Forms.CheckBox();
+            this.selectWorkspaceLoadToMinimize = new System.Windows.Forms.CheckBox();
+            this.selectWorkspaceRunningMinimizeToNotifyArea = new System.Windows.Forms.CheckBox();
             this.panelWorkspace.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
@@ -80,7 +81,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             // commandWorkspaceClose
             // 
-            this.commandWorkspaceClose.Location = new System.Drawing.Point(233, 79);
+            this.commandWorkspaceClose.Location = new System.Drawing.Point(256, 79);
             this.commandWorkspaceClose.Name = "commandWorkspaceClose";
             this.commandWorkspaceClose.Size = new System.Drawing.Size(75, 23);
             this.commandWorkspaceClose.TabIndex = 1;
@@ -288,23 +289,35 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.notifyIcon.Text = "notifyIcon";
             this.notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
             // 
-            // selectWorkspaceLoadToHide
+            // selectWorkspaceLoadToMinimize
             // 
-            this.selectWorkspaceLoadToHide.AutoSize = true;
-            this.selectWorkspaceLoadToHide.Location = new System.Drawing.Point(204, 60);
-            this.selectWorkspaceLoadToHide.Name = "selectWorkspaceLoadToHide";
-            this.selectWorkspaceLoadToHide.Size = new System.Drawing.Size(86, 16);
-            this.selectWorkspaceLoadToHide.TabIndex = 5;
-            this.selectWorkspaceLoadToHide.Text = "load -> hide";
-            this.selectWorkspaceLoadToHide.UseVisualStyleBackColor = true;
-            this.selectWorkspaceLoadToHide.CheckedChanged += new System.EventHandler(this.selectWorkspaceLoadToHide_CheckedChanged);
+            this.selectWorkspaceLoadToMinimize.AutoSize = true;
+            this.selectWorkspaceLoadToMinimize.Location = new System.Drawing.Point(204, 60);
+            this.selectWorkspaceLoadToMinimize.Name = "selectWorkspaceLoadToMinimize";
+            this.selectWorkspaceLoadToMinimize.Size = new System.Drawing.Size(92, 16);
+            this.selectWorkspaceLoadToMinimize.TabIndex = 5;
+            this.selectWorkspaceLoadToMinimize.Text = "load -> small";
+            this.selectWorkspaceLoadToMinimize.UseVisualStyleBackColor = true;
+            this.selectWorkspaceLoadToMinimize.CheckedChanged += new System.EventHandler(this.selectWorkspaceLoadToMinimize_CheckedChanged);
+            // 
+            // selectWorkspaceRunningMinimizeToNotifyArea
+            // 
+            this.selectWorkspaceRunningMinimizeToNotifyArea.AutoSize = true;
+            this.selectWorkspaceRunningMinimizeToNotifyArea.Location = new System.Drawing.Point(164, 82);
+            this.selectWorkspaceRunningMinimizeToNotifyArea.Name = "selectWorkspaceRunningMinimizeToNotifyArea";
+            this.selectWorkspaceRunningMinimizeToNotifyArea.Size = new System.Drawing.Size(92, 16);
+            this.selectWorkspaceRunningMinimizeToNotifyArea.TabIndex = 10;
+            this.selectWorkspaceRunningMinimizeToNotifyArea.Text = "small -> icon";
+            this.selectWorkspaceRunningMinimizeToNotifyArea.UseVisualStyleBackColor = true;
+            this.selectWorkspaceRunningMinimizeToNotifyArea.CheckedChanged += new System.EventHandler(this.selectWorkspaceRunningMinimizeToNotifyArea_CheckedChanged);
             // 
             // ManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(654, 266);
-            this.Controls.Add(this.selectWorkspaceLoadToHide);
+            this.Controls.Add(this.selectWorkspaceRunningMinimizeToNotifyArea);
+            this.Controls.Add(this.selectWorkspaceLoadToMinimize);
             this.Controls.Add(this.commandTestExecute);
             this.Controls.Add(this.labelVersionHash);
             this.Controls.Add(this.labelBuildType);
@@ -361,7 +374,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.Label labelVersionNumber;
         private System.Windows.Forms.Button commandTestExecute;
         private System.Windows.Forms.NotifyIcon notifyIcon;
-        private System.Windows.Forms.CheckBox selectWorkspaceLoadToHide;
+        private System.Windows.Forms.CheckBox selectWorkspaceLoadToMinimize;
+        private System.Windows.Forms.CheckBox selectWorkspaceRunningMinimizeToNotifyArea;
     }
 }
 

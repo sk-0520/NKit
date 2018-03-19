@@ -70,10 +70,15 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             set { ManagerSetting.Accepted = value; }
         }
 
-        public bool WorkspaceLoadToHide
+        public bool WorkspaceLoadToMinimize
         {
-            get { return ManagerSetting.Workspace.WorkspaceLoadToHide; }
-            set { ManagerSetting.Workspace.WorkspaceLoadToHide = value; }
+            get { return ManagerSetting.Workspace.WorkspaceLoadToMinimize; }
+            set { ManagerSetting.Workspace.WorkspaceLoadToMinimize = value; }
+        }
+        public bool WorkspaceRunningMinimizeToNotifyArea
+        {
+            get { return ManagerSetting.Workspace.WorkspaceRunningMinimizeToNotifyArea; }
+            set { ManagerSetting.Workspace.WorkspaceRunningMinimizeToNotifyArea = value; }
         }
 
         public bool CanUpdate => UpdateManager.HasUpdate;
