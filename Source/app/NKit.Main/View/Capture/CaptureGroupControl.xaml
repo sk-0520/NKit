@@ -23,13 +23,13 @@
   <UserControl.Resources>
     <app_utility_view_converter:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
   </UserControl.Resources>
-  
+
   <i:Interaction.Triggers>
     <prism:InteractionRequestTrigger SourceObject="{Binding ScrollRequest, Mode=OneWay}">
       <prism:InvokeCommandAction Command="{Binding ScrollCommand, ElementName=root}" />
     </prism:InteractionRequestTrigger>
   </i:Interaction.Triggers>
-  
+
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="4*" />
@@ -87,22 +87,20 @@
     </Grid>
 
     <Grid Grid.Column="2" >
-      <ScrollViewer x:Name="captureItemsScroller">
-        <StackPanel>
-          <ItemsControl ItemsSource="{Binding Items}">
-            <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <StackPanel>
-                  <TextBlock Text="{Binding}" />
-                  <TextBlock Text="{Binding FileName}" />
-                  <TextBlock Text="{Binding FilePath}" />
-                  <Image Source="{Binding FilePath}" />
-                </StackPanel>
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-        </StackPanel>
-      </ScrollViewer>
+      <ListBox x:Name="captureItemsContainer" VirtualizingPanel.ScrollUnit="Pixel" ItemsSource="{Binding Items}">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <Image Source="{Binding FilePath}" Width="120" Height="90" />
+              <StackPanel>
+                <TextBlock Text="{Binding CaptureStartTimestamp}" />
+                <TextBlock Text="{Binding FileName}" />
+                <TextBlock Text="{Binding CaptureTimestamp}" />
+              </StackPanel>
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
     </Grid>
 
     <GridSplitter Grid.Column="1" Style="{StaticResource DefaultVericalGridSplitter}" />

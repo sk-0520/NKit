@@ -19,6 +19,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         public string FileName => Model.ImageFile.Name;
         public string FilePath => Model.ImageFile.FullName;
 
+        public DateTime CaptureStartTimestamp => Model.ImageFile.Directory.CreationTime;
+        public DateTime CaptureTimestamp => Model.ImageFile.CreationTime;
+
         #endregion
 
         #region command

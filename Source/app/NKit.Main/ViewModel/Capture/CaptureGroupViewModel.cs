@@ -85,6 +85,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         ObservableCollection<CaptureImageViewModel> ItemViewModels { get; } = new ObservableCollection<CaptureImageViewModel>();
         public ICollectionView Items { get; set; }
 
+        bool IsEnabledLastItemScroll { get; set; } = true;
+
         public RunState InitialRunState
         {
             get { return this._initialRunState; }
@@ -101,6 +103,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         public Task InitializeCaptureFilesAsync()
         {
             if(InitialRunState == RunState.None || InitialRunState == RunState.Error) {
+                IsEnabledLastItemScroll = false;
                 InitialRunState = RunState.Running;
                 return Task.Run(() => {
                     Model.InitializeCaptureFiles();
@@ -110,6 +113,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
                     } else {
                         InitialRunState = RunState.Finished;
                     }
+                    IsEnabledLastItemScroll = true;
                 });
             }
 
@@ -166,7 +170,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
                             .ToList()
                         ;
                         ItemViewModels.AddRange(vms);
-                        ScrollRequest.Raise(new ScrollNotification<CaptureImageViewModel>(vms.Last()));
+                        if(IsEnabledLastItemScroll) {
+                            ScrollRequest.Raise(new ScrollNotification<CaptureImageViewModel>(vms.Last()));
+                        }
                         break;
                 }
 

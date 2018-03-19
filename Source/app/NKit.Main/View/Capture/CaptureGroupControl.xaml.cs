@@ -39,7 +39,7 @@ namespace ContentTypeTextNet.NKit.Main.View.Capture
 
         void Scroll(ScrollNotification<CaptureImageViewModel> scrollNotification)
         {
-            this.captureItemsScroller.ScrollToBottom();
+            this.captureItemsContainer.ScrollIntoView(scrollNotification.Target);
         }
 
         #endregion
