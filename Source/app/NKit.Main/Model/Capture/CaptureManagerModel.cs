@@ -198,7 +198,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                     arguments.Add("--save_thumbnail");
                     arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(string.Join(
                         "/",
-                        saveImageKind.ToString(),
+                        thumbnailImageKind.ToString(),
                         "${YYYY}-${MM}-${DD}_${hh24}-${mm}-${ss}_${FFF}_" + Constants.CaptureThumbnailImageSuffix + ".${EXT}",
                         thumbnailSize.Width.ToString(),
                         thumbnailSize.Height.ToString()

@@ -95,10 +95,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             var files = GetCaptureFiles(CurrentCaptureDirectory);
             var addFileItems = Items
                 .Concat(files.Select(f => CreateImageModel(f)))
-                .GroupBy(i => i.ImageFile.Name)
+                .GroupBy(i => i.RawImageFile.Name)
                 .Where(g => g.Count() == 1)
                 .Select(g => g.First())
-                .OrderBy(i => i.ImageFile.Name)
+                .OrderBy(i => i.RawImageFile.Name)
                 .ToList()
             ;
             foreach(var addFileItem in addFileItems) {

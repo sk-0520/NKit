@@ -20,6 +20,8 @@ namespace ContentTypeTextNet.NKit.Main
         public static ImageKind CaptureImageKind { get; } = ImageKind.Png;
         public static ImageKind CaptureThumbnailKind { get; } = ImageKind.Jpeg;
         public static Size CaptureThumbnailSize { get; } = new Size(120, 80);
+        public static double CaptureThumbnailSizeWidth => CaptureThumbnailSize.Width;
+        public static double CaptureThumbnailSizeHeight => CaptureThumbnailSize.Height;
 
         #endregion
 
