@@ -265,6 +265,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 if(WindowState == FormWindowState.Minimized) {
                     WindowState = FormWindowState.Normal;
                 }
+                TopMost = false;
+                TopMost = true;
             }));
         }
         private void Worker_OutputLog(object sender, LogEventArgs e)
