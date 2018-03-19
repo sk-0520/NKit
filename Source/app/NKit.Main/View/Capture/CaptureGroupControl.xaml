@@ -87,20 +87,31 @@
     </Grid>
 
     <Grid Grid.Column="2" >
-      <ListBox x:Name="captureItemsContainer" VirtualizingPanel.ScrollUnit="Pixel" ItemsSource="{Binding Items}">
-        <ListBox.ItemTemplate>
-          <DataTemplate>
-            <StackPanel Orientation="Horizontal">
-              <Image Source="{Binding FilePath}" Width="120" Height="90" />
-              <StackPanel>
-                <TextBlock Text="{Binding CaptureStartTimestamp}" />
-                <TextBlock Text="{Binding FileName}" />
-                <TextBlock Text="{Binding CaptureTimestamp}" />
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <ToolBar Grid.Row="0">
+          <Label>filter</Label>
+          <ComboBox IsEditable="False" ItemsSource="{Binding FilterStartTimestampItems}" SelectedItem="{Binding SelectedFilterStartTimestamp}" />
+        </ToolBar>
+
+        <ListBox x:Name="captureItemsContainer" Grid.Row="1" VirtualizingPanel.ScrollUnit="Pixel" ScrollViewer.CanContentScroll="True" ItemsSource="{Binding Items}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <Image Source="{Binding FilePath}" Width="120" Height="90" />
+                <StackPanel>
+                  <TextBlock Text="{Binding FileName}" />
+                  <TextBlock Text="{Binding CaptureTimestamp}" />
+                </StackPanel>
               </StackPanel>
-            </StackPanel>
-          </DataTemplate>
-        </ListBox.ItemTemplate>
-      </ListBox>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Grid>
     </Grid>
 
     <GridSplitter Grid.Column="1" Style="{StaticResource DefaultVericalGridSplitter}" />

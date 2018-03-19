@@ -46,6 +46,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         public ObservableCollection<CaptureImageModel> Items { get; } = new ObservableCollection<CaptureImageModel>();
 
+
         #endregion
 
         #region function
