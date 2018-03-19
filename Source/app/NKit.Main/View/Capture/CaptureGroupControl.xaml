@@ -52,7 +52,10 @@
 
           <Label>capture mode:</Label>
           <StackPanel>
+            <!--
+            これはまずい
             <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Screen}}" Content="Screen" />
+            -->
             <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Window}}" Content="Window" />
             <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Client}}" Content="Client" />
             <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Control}}" Content="Control" />
