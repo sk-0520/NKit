@@ -10,7 +10,7 @@ using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
 using ContentTypeTextNet.NKit.Main.ViewModel.File;
 using ContentTypeTextNet.NKit.Setting.Define;
-using ContentTypeTextNet.NKit.Utility.ViewModell;
+using ContentTypeTextNet.NKit.Utility.ViewModel;
 using Prism.Commands;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder

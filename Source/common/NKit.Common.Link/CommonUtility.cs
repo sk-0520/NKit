@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace ContentTypeTextNet.NKit.Common
 {
@@ -13,6 +16,7 @@ namespace ContentTypeTextNet.NKit.Common
         static string BinaryDirectoryName { get; } = "bin";
         static string ApplicationDirectoryName { get; } = "app";
         static string EtcDirectoryName { get; } = "etc";
+        static string DocumentDirectoryName { get; } = "doc";
 
         static string BinaryBusyboxDirectoryName { get; } = "busybox";
 
@@ -212,6 +216,17 @@ namespace ContentTypeTextNet.NKit.Common
             return new DirectoryInfo(libDirPath);
         }
 
+        public static DirectoryInfo GetDocumentDirectory(params string[] args)
+        {
+            var libDirPath = Path.Combine(GetRootDirectory(args).FullName, DocumentDirectoryName);
+            return new DirectoryInfo(libDirPath);
+        }
+        public static DirectoryInfo GetDocumentDirectoryForApplication()
+        {
+            var libDirPath = Path.Combine(GetRootDirectoryForApplication().FullName, DocumentDirectoryName);
+            return new DirectoryInfo(libDirPath);
+        }
+
         public static FileInfo GetBusyBox(bool usePlatformBusyBox, DirectoryInfo binaryDirectory)
         {
             var name = "busybox.exe";
@@ -240,6 +255,114 @@ namespace ContentTypeTextNet.NKit.Common
             return new FileInfo(path);
         }
 
+
+
+        static string ReplaceNKitTextCore(string source, DateTime utcTimestamp, IReadOnlyDictionary<string, string> customMap)
+        {
+            var localTimestamp = utcTimestamp.ToLocalTime();
+
+            KeyValuePair<string, string> kvp(string k, string v) => new KeyValuePair<string, string>(k, v);
+            IEnumerable<KeyValuePair<string, string>> CreateNKitTimestampFormatFromClrFromat(string nkitFormat, string clrFormat)
+            {
+                var local = localTimestamp.ToString(clrFormat);
+                return new[] {
+                    kvp(nkitFormat, local),
+                    kvp(nkitFormat + ":" + "L", local),
+                    kvp(nkitFormat + ":" + "U", utcTimestamp.ToString(clrFormat))
+                };
+            }
+
+            var timstampFormats = new[] {
+                //new { NKit = "Y", Clr = "y" },
+                new { NKit = "YY", Clr = "yy" },
+                //new { NKit = "YYY", Clr = "yyy" },
+                new { NKit = "YYYY", Clr = "yyyy" },
+
+                //new { NKit = "M", Clr = "M" },
+                new { NKit = "MM", Clr = "MM" },
+                new { NKit = "MMM", Clr = "MMM" },
+                new { NKit = "MMMM", Clr = "MMMM" },
+
+                //new { NKit = "D", Clr = "d" },
+                new { NKit = "DD", Clr = "dd" },
+                new { NKit = "DDD", Clr = "ddd" },
+
+                //new { NKit = "h12", Clr = "h" },
+                new { NKit = "hh12", Clr = "hh" },
+                //new { NKit = "h24", Clr = "H" },
+                new { NKit = "hh24", Clr = "HH" },
+
+                new { NKit = "m", Clr = "m" },
+                new { NKit = "mm", Clr = "mm" },
+
+                //new { NKit = "s", Clr = "s" },
+                new { NKit = "ss", Clr = "ss" },
+
+                new { NKit = "f", Clr = "f" },
+                new { NKit = "ff", Clr = "ff" },
+                new { NKit = "fff", Clr = "fff" },
+
+                new { NKit = "F", Clr = "F" },
+                new { NKit = "FF", Clr = "FF" },
+                new { NKit = "FFF", Clr = "FFF" },
+            }.SelectMany(i => CreateNKitTimestampFormatFromClrFromat(i.NKit, i.Clr))
+            ;
+
+            var map = timstampFormats.ToDictionary(
+                kv => kv.Key,
+                kv => kv.Value
+            );
+
+            if(customMap != null && customMap.Any()) {
+                foreach(var pair in customMap) {
+                    map[pair.Key] = pair.Value;
+                }
+            }
+
+            var regex = new Regex(@"\${(.+?)}");
+            return regex.Replace(source, m => {
+                if(!m.Success) {
+                    return m.Value;
+                }
+                var key = m.Groups[1].Value;
+                if(string.IsNullOrEmpty(key)) {
+                    return m.Value;
+                }
+
+                if(map.TryGetValue(key, out var value)) {
+                    return value;
+                }
+
+                return key;
+            });
+        }
+
+        /// <summary>
+        /// 共通的に使用する文字列置き換え処理。
+        /// <para>やってることは <see cref="ContentTypeTextNet.NKit.Utility.Model.TextUtility.ReplaceFromDictionary"/> と一緒だけどマネージャがアセンブリ参照できない。</para>
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="customMap"></param>
+        /// <param name="utcTimestamp"></param>
+        /// <returns></returns>
+        public static string ReplaceNKitText(string source, DateTime utcTimestamp, IReadOnlyDictionary<string, string> customMap = null)
+        {
+            if(source == null) {
+                throw new ArgumentNullException(nameof(source));
+            }
+            if(utcTimestamp.Kind != DateTimeKind.Utc) {
+                throw new ArgumentException($"{nameof(utcTimestamp)}.{nameof(utcTimestamp.Kind)} only {nameof(DateTimeKind)}.{nameof(DateTimeKind.Utc)}");
+            }
+
+            if(string.IsNullOrWhiteSpace(source)) {
+                return source;
+            }
+            if(source.IndexOf('$') == -1) {
+                return source;
+            }
+
+            return ReplaceNKitTextCore(source, utcTimestamp, customMap);
+        }
 
         #endregion
     }

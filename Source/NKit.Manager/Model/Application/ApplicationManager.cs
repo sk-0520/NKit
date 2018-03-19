@@ -16,6 +16,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 {
     public class ApplicationManager : ManagerBase
     {
+        #region define
+
+        static readonly TimeSpan CloseWaitTime = TimeSpan.FromMilliseconds(500);
+
+        #endregion
+
         #region event
 
         public event EventHandler<EventArgs> MainApplicationExited;
@@ -48,7 +54,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
 
         #region property
 
-        NKitApplicationItem MainApplication { get; set; }
+        ManageItem MainApplication { get; set; }
 
         IApplicationLogFactory LogFactory { get; }
         ILogger Logger { get; }
@@ -109,20 +115,22 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
         public void ExecuteMainApplication(IReadOnlyActiveWorkspace activeWorkspace, IReadOnlyWorkspaceItemSetting workspaceItemSetting)
         {
             if(MainApplication != null) {
-                MainApplication.Exited -= MainApplication_Exited;
+                MainApplication.ApplicationItem.Exited -= MainApplication_Exited;
             }
 
+            var exitedEventName = CreateExitedEventName(activeWorkspace);
             var nkitArgs = CreateNKitArguments(activeWorkspace, workspaceItemSetting);
-            MainApplication = new NKitApplicationItem(NKitApplicationKind.Main, LogFactory) {
+            var mainApplication = new NKitApplicationItem(NKitApplicationKind.Main, LogFactory) {
                 Arguments = AddNKitArguments(string.Empty, nkitArgs)
             };
-            Logger.Debug($"unmanage main, Path: {MainApplication.Path}, Arguments: {MainApplication.Arguments}");
+            MainApplication = new ManageItem(0, mainApplication, exitedEventName, nkitArgs);
+            Logger.Debug($"unmanage main, Path: {MainApplication.ApplicationItem.Path}, Arguments: {MainApplication.ApplicationItem.Arguments}");
 
             GroupSuicideEvent = new EventWaitHandle(false, EventResetMode.ManualReset, activeWorkspace.GroupSuicideEventName);
 
-            MainApplication.Exited += MainApplication_Exited;
+            MainApplication.ApplicationItem.Exited += MainApplication_Exited;
 
-            MainApplication.Execute();
+            MainApplication.ApplicationItem.Execute();
         }
 
         uint PreparateManageItem(ApplicationItem item, string exitedEventName, IReadOnlyDictionary<string, string> nkitArgs)
@@ -255,16 +263,60 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
             };
         }
 
-        public void ShutdownAllApplications()
+        public bool Shutdown(NKitApplicationKind senderApplication, uint manageId, bool force)
         {
+            if(TryGetManageItem(manageId, out var manageItem)) {
+                //TODO: 起動状態とかもう死んでるとか調べた方がいい
+                var logger = LogFactory.CreateLogger(manageItem.GetType().Name);
+                var closeResult = manageItem.Close(logger);
+                if(closeResult) {
+                    return true;
+                }
+                if(force) {
+                    return manageItem.Kill(logger);
+                }
+            }
 
+            return false;
+        }
+
+        void ShutdownManageApplications()
+        {
+            var logger = LogFactory.CreateLogger("shutdown");
+            logger.Information($"event set: {nameof(GroupSuicideEvent)}, {CommonUtility.ManagedStartup.GroupSuicideEventName}");
+            GroupSuicideEvent.Set();
+
+            Thread.Sleep(CloseWaitTime);
+
+            var runningItems = ManageItems
+                .Where(i => i.ApplicationItem.IsRunning)
+                .ToList()
+            ;
+            logger.Information($"running: {runningItems.Count}");
+            foreach(var item in runningItems) {
+                if(!item.Close(logger)) {
+                    item.Kill(logger);
+                }
+            }
+        }
+
+        public void ShutdownMainApplication()
+        {
+            // こわいし
+            ShutdownManageApplications();
+
+            var logger = LogFactory.CreateLogger("main");
+            Thread.Sleep(CloseWaitTime);
+            if(!MainApplication.Close(logger)) {
+                MainApplication.Kill(logger);
+            }
         }
 
         #endregion
 
         private void MainApplication_Exited(object sender, EventArgs e)
         {
-            ShutdownAllApplications();
+            ShutdownManageApplications();
 
             if(MainApplicationExited != null) {
                 MainApplicationExited(sender, e);

@@ -42,7 +42,14 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         public CaptureGroupViewModel SelectedGroupItem
         {
             get { return this._selectedGroupItem; }
-            set { SetProperty(ref this._selectedGroupItem, value); }
+            set
+            {
+                if(SetProperty(ref this._selectedGroupItem, value)) {
+                    if(SelectedGroupItem != null) {
+                        SelectedGroupItem.InitializeCaptureFilesAsync();
+                    }
+                }
+            }
         }
 
         public bool NowCapturing => Model.NowCapturing;
@@ -70,25 +77,24 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
 
         public bool IsEnabledHideHeader
         {
-            get { return Model.ScrollInternetExplorerIsEnabledHideFixedHeader; }
-            set { SetPropertyValue(Model, value, nameof(Model.ScrollInternetExplorerIsEnabledHideFixedHeader)); }
+            get { return Model.InternetExplorerScrollCaptureSetting.Header.IsEnabled; }
+            set { SetPropertyValue(Model.InternetExplorerScrollCaptureSetting.Header, value, nameof(Model.InternetExplorerScrollCaptureSetting.Header.IsEnabled)); }
         }
         public string HideHeaderElement
         {
-            get { return Model.ScrollInternetExplorerHideFixedHeaderElements; }
-            set { SetPropertyValue(Model, value, nameof(Model.ScrollInternetExplorerHideFixedHeaderElements)); }
+            get { return Model.InternetExplorerScrollCaptureSetting.Header.HideElements; }
+            set { SetPropertyValue(Model.InternetExplorerScrollCaptureSetting.Header, value, nameof(Model.InternetExplorerScrollCaptureSetting.Header.HideElements)); }
         }
 
         public bool IsEnabledHideFooter
         {
-            get { return Model.ScrollInternetExplorerIsEnabledHideFixedFooter; }
-            set { SetPropertyValue(Model, value, nameof(Model.ScrollInternetExplorerIsEnabledHideFixedFooter)); }
+            get { return Model.InternetExplorerScrollCaptureSetting.Footer.IsEnabled; }
+            set { SetPropertyValue(Model.InternetExplorerScrollCaptureSetting.Footer, value, nameof(Model.InternetExplorerScrollCaptureSetting.Footer.IsEnabled)); }
         }
-
         public string HideFooterElement
         {
-            get { return Model.ScrollInternetExplorerHideFixedFooterElements; }
-            set { SetPropertyValue(Model, value, nameof(Model.ScrollInternetExplorerHideFixedFooterElements)); }
+            get { return Model.InternetExplorerScrollCaptureSetting.Footer.HideElements; }
+            set { SetPropertyValue(Model.InternetExplorerScrollCaptureSetting.Footer, value, nameof(Model.InternetExplorerScrollCaptureSetting.Footer.HideElements)); }
         }
 
         #endregion
@@ -103,28 +109,31 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             SelectedGroupItem = viewModel;
         });
 
-        public ICommand RemoveGroupCommand => new DelegateCommand<CaptureGroupViewModel>(vm => {
-            if(SelectedGroupItem == vm) {
-                // くるしい, 近しい子を選んであげるべき
-                SelectedGroupItem = GroupViewModels.Where(g => g != vm).FirstOrDefault();
-            }
+        public DelegateCommand<CaptureGroupViewModel> RemoveGroupCommand => new DelegateCommand<CaptureGroupViewModel>(
+            vm => {
+                if(SelectedGroupItem == vm) {
+                    // くるしい, 近しい子を選んであげるべき
+                    SelectedGroupItem = GroupViewModels.Where(g => g != vm).FirstOrDefault();
+                }
 
-            var index = GroupViewModels.IndexOf(vm);
-            GroupViewModels.RemoveAt(index);
-            vm.Dispose();
-            Model.RemoveGroupAt(index);
-        });
+                var index = GroupViewModels.IndexOf(vm);
+                GroupViewModels.RemoveAt(index);
+                vm.Dispose();
+                Model.RemoveGroupAt(index);
+            },
+            vm => !(vm.RunState == Utility.Define.RunState.Prepare || vm.RunState == Utility.Define.RunState.Running)
+        );
 
         public ICommand SimpleCaptureControlCommand => new DelegateCommand(
-            () => { Model.SimpleCaptureControl(); },
+            () => { Model.SimpleCapture(Setting.Define.CaptureTarget.Control); },
             () => !NowCapturing
         );
         public ICommand SimpleCaptureWindowCommand => new DelegateCommand(
-            () => { Model.SimpleCaptureWindow(); },
+            () => { Model.SimpleCapture(Setting.Define.CaptureTarget.Window); },
             () => !NowCapturing
         );
         public ICommand SimpleCaptureScrollCommand => new DelegateCommand(
-            () => { Model.SimpleCaptureScroll(); },
+            () => { Model.SimpleCapture(Setting.Define.CaptureTarget.Scroll); },
             () => !NowCapturing
         );
 
@@ -153,8 +162,13 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         {
             if(e.PropertyName == nameof(Model.NowCapturing)) {
                 //Application.Current.Dispatcher.Invoke(() => {
-                    RaisePropertyChanged(nameof(NowCapturing));
-                    //CommandManager.InvalidateRequerySuggested();
+                RaisePropertyChanged(nameof(NowCapturing));
+                foreach(var g in GroupViewModels) {
+                    g.RaiseNowCapturingPropertyChanged();
+                }
+                InvokeUI(() => {
+                    CommandManager.InvalidateRequerySuggested();
+                });
                 //});
             }
         }

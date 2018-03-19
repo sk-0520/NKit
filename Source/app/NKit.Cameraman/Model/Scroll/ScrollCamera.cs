@@ -16,7 +16,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
     public abstract class ScrollCameraBase : WindowHandleCamera
     {
         public ScrollCameraBase(IntPtr hWnd, TimeSpan delayTime)
-            : base(hWnd, CaptureMode.Client)
+            : base(hWnd, CaptureTarget.Client)
         {
             DelayTime = delayTime;
         }

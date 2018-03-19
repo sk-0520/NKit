@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using ContentTypeTextNet.Library.PInvoke.Windows;
 using ContentTypeTextNet.NKit.Cameraman.Model.Scroll;
 using ContentTypeTextNet.NKit.Cameraman.View;
+using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
 using Gma.System.MouseKeyHook;
@@ -45,12 +46,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         CameraBase GetCammera(IntPtr hWnd)
         {
-            if(Bag.CaptureMode == CaptureMode.Screen) {
+            if(Bag.CaptureTarget == CaptureTarget.Screen) {
                 return new ScreenCamera();
             }
 
             Debug.Assert(hWnd != IntPtr.Zero);
-            if(Bag.CaptureMode == CaptureMode.Scroll) {
+            if(Bag.CaptureTarget == CaptureTarget.Scroll) {
                 return new ScrollCamera(hWnd, Bag.ScrollDelayTime) {
                     ScrollInternetExplorerInitializeTime = Bag.ScrollInternetExplorerInitializeTime,
 
@@ -62,7 +63,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 };
             }
 
-            return new WindowHandleCamera(hWnd, Bag.CaptureMode);
+            return new WindowHandleCamera(hWnd, Bag.CaptureTarget);
 
             throw new NotImplementedException();
         }
@@ -78,6 +79,49 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             }
         }
 
+        static (string ext, ImageFormat format) GetSaveFormatInfo(ImageKind kind)
+        {
+            switch(kind) {
+                case ImageKind.Png:
+                    return ("png", ImageFormat.Png);
+
+                case ImageKind.Jpeg:
+                    return ("jpeg", ImageFormat.Jpeg);
+
+                case ImageKind.Bmp:
+                    return ("bmp", ImageFormat.Bmp);
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+
+        static void DevelopCore(Image image, DateTime timestamp, DirectoryInfo saveDirectory, SaveImageParameter parameter)
+        {
+            Debug.Assert(timestamp.Kind == DateTimeKind.Utc);
+
+            var info = GetSaveFormatInfo(parameter.ImageKind);
+
+            var map = new Dictionary<string, string>() {
+                ["EXT"] = info.ext,
+            };
+
+            var fileName = CommonUtility.ReplaceNKitText(parameter.FileNameFormat, timestamp, map);
+            var filePath = Path.Combine(saveDirectory.FullName, fileName);
+            if(parameter.Size.Width == 0 || parameter.Size.Height == 0) {
+                image.Save(filePath, info.format);
+            } else {
+                using(var bitmap = new Bitmap(parameter.Size.Width, parameter.Size.Height)) {
+                    using(var g = Graphics.FromImage(bitmap)) {
+                        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+                        g.DrawImage(image, 0, 0, parameter.Size.Width, parameter.Size.Height);
+                    }
+                    bitmap.Save(filePath, info.format);
+                }
+            }
+        }
+
         /// <summary>
         /// 現像。
         /// </summary>
@@ -88,9 +132,15 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 Clipboard.SetImage(image);
             }
             if(Bag.SaveDirectory != null) {
-                var fileName = $"{DateTime.Now: yyyyMMdd_HHmmss}.png";
-                var filePath = Path.Combine(Bag.SaveDirectory.FullName, fileName);
-                image.Save(filePath, ImageFormat.Png);
+                var timestamp = DateTime.UtcNow;
+                if(Bag.Image.IsEnabled) {
+                    Logger.Information("save image");
+                    DevelopCore(image, timestamp, Bag.SaveDirectory, Bag.Image);
+                }
+                if(Bag.Thumbnail.IsEnabled) {
+                    Logger.Information("save thumbnail");
+                    DevelopCore(image, timestamp, Bag.SaveDirectory, Bag.Thumbnail);
+                }
             }
 
             if(Bag.SaveNoticeEvent != null) {
@@ -100,7 +150,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         public void Execute(InformationForm form)
         {
-            if(Bag.CaptureMode == CaptureMode.Screen && !Bag.IsContinuation) {
+            if(Bag.CaptureTarget == CaptureTarget.Screen && !Bag.IsContinuation) {
                 CaptureScreen();
                 Exit();
             } else {
@@ -110,7 +160,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     HookKeyboardInput();
                 }
 
-                if(Bag.CaptureMode == CaptureMode.Screen) {
+                if(Bag.CaptureTarget == CaptureTarget.Screen) {
                     Application.Run();
                 } else {
                     CameramanForm = form;
@@ -209,16 +259,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 HookEvents = null;
             }
 
-            if(Bag.ExitNoticeEvent != null) {
-                Bag.ExitNoticeEvent.Set();
-            }
-
             Application.Exit();
         }
 
         void SelectViewAndFocus(Point mousePoint)
         {
-            var hWnd = WindowHandleUtility.GetView(mousePoint, Bag.CaptureMode);
+            var hWnd = WindowHandleUtility.GetView(mousePoint, Bag.CaptureTarget);
 
             if(hWnd == IntPtr.Zero) {
                 CameramanForm.Detach();
@@ -236,7 +282,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 return;
             }
 
-            var rect = WindowHandleUtility.GetViewArea(hWnd, Bag.CaptureMode);
+            var rect = WindowHandleUtility.GetViewArea(hWnd, Bag.CaptureTarget);
             // 枠用にサイズ補正
             CameramanForm.Attach(hWnd, rect);
 
@@ -358,7 +404,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             // キャプチャ処理
             if(CheckInputKey(e, Bag.ShotKeys)) {
                 Logger.Information("shot");
-                if(Bag.CaptureMode == CaptureMode.Screen) {
+                if(Bag.CaptureTarget == CaptureTarget.Screen) {
                     CaptureInHooking(CaptureScreen);
                 } else {
                     if(NowSelecting) {
@@ -369,7 +415,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                         }
                     } else {
                         // 今時点でアクティブなやつからキャプチャ
-                        var hWnd = WindowHandleUtility.GetActiveWindow(Bag.CaptureMode);
+                        var hWnd = WindowHandleUtility.GetActiveWindow(Bag.CaptureTarget);
                         if(hWnd != IntPtr.Zero) {
                             Logger.Debug("window handle!");
                             TargetWindowHandle = hWnd;
@@ -390,7 +436,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                     EndSelectView();
 
                     // 即時起動で継続使用しないのであれば選択待機よりは終了
-                    if(Bag.ImmediatelySelect && !Bag.IsContinuation) {
+                    if(Bag.IsImmediateSelect && !Bag.IsContinuation) {
                         Logger.Information("exit program ^_^");
                         Exit();
                     }
@@ -418,7 +464,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         private void Form_Shown(object sender, EventArgs e)
         {
             CameramanForm.Shown -= Form_Shown;
-            if(Bag.ImmediatelySelect) {
+            if(Bag.IsImmediateSelect) {
                 StartSelectView();
             } else {
                 CameramanForm.ShowNavigation();

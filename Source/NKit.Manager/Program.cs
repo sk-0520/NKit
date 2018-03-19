@@ -29,7 +29,7 @@ namespace ContentTypeTextNet.NKit.Manager
 
         static void MainCore()
         {
-            var worker = new ManagerWorker();
+            var worker = new MainWorker();
             worker.Initialize();
             var logger = worker.CreateLogger("ENTRY");
             worker.LoadSetting();

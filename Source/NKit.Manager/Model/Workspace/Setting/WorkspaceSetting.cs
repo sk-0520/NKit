@@ -19,7 +19,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting
 
         IReadOnlyWorkspaceItemSetting[] Items { get; }
 
-        bool WorkspaceLoadToHide { get; }
+        bool WorkspaceLoadToMinimize { get; }
+        bool WorkspaceRunningMinimizeToNotifyArea { get; }
 
         #endregion
     }
@@ -38,7 +39,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting
         IReadOnlyWorkspaceItemSetting[] IReadOnlyWorkspaceSetting.Items => Items;
 
         [DataMember]
-        public bool WorkspaceLoadToHide { get; set; }
+        public bool WorkspaceLoadToMinimize { get; set; }
+        [DataMember]
+        public bool WorkspaceRunningMinimizeToNotifyArea { get; set; }
 
         #endregion
     }

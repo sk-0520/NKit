@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<third-party-license>
+	<!--
+	複数のライブラリが寄せ集まったやつは独断で一つのコンポーネントとする。
+	MEMO: ライセンス全文が必要ならテキスト要素として下にぶっこむ
+	-->
+	<component name="AvalonEdit" project-uri="http://avalonedit.net/" license-name="MIT" license-uri="https://opensource.org/licenses/MIT" />
+	<component name="CommonServiceLocator" project-uri="https://github.com/unitycontainer/commonservicelocator" license-name="Microsoft Public License" license-uri="https://opensource.org/licenses/MS-PL" />
+	<component name="Extended.Wpf.Toolkit" project-uri="https://github.com/xceedsoftware/wpftoolkit" license-name="Microsoft Public License" license-uri="https://github.com/xceedsoftware/wpftoolkit/blob/master/license.md" />
+	<component name="HtmlAgilityPack" project-uri="http://html-agility-pack.net/" license-name="MIT" license-uri="https://github.com/zzzprojects/html-agility-pack/blob/master/LICENSE" />
+	<component name="Microsoft.Extensions.CommandLineUtils" project-uri="https://www.asp.net/" license-name="" license-uri="https://www.microsoft.com/web/webpi/eula/net_library_eula_enu.htm"/>
+	<component name="Microsoft.VisualStudio.SlowCheetah" project-uri="https://github.com/Microsoft/slow-cheetah" license-name="MIT" license-uri="https://raw.githubusercontent.com/Microsoft/slow-cheetah/master/LICENSE" />
+	<!-- ないんよなぁ。。。 -->
+	<component name="Microsoft.WindowsAPICodePack" project-uri="http://code.msdn.microsoft.com/WindowsAPICodePack" license-name="" license-uri="http://code.msdn.microsoft.com/WindowsAPICodePack/Project/License.aspx" />
+	<component name="MouseKeyHook" project-uri="https://github.com/gmamaladze/globalmousekeyhook" license-name="MIT" license-uri="https://github.com/gmamaladze/globalmousekeyhook/blob/master/LICENSE.txt" />
+	<component name="MSTest.TestAdapter" project-uri="https://github.com/microsoft/testfx" license-name="" license-uri="https://www.microsoft.com/web/webpi/eula/net_library_eula_enu.htm" />
+	<component name="Newtonsoft.Json" project-uri="https://www.newtonsoft.com/json" license-name="MIT" license-uri="https://raw.githubusercontent.com/JamesNK/Newtonsoft.Json/master/LICENSE.md" />
+	<component name="NPOI" project-uri="https://github.com/tonyqus/npoi" license-name="Apache License 2.0" license-uri="https://github.com/tonyqus/npoi/blob/master/LICENSE" />
+	<component name="Prism" project-uri="http://prismlibrary.github.io/" license-name="MIT" license-uri="https://github.com/PrismLibrary/Prism/blob/master/LICENSE" />
+	<component name="ReadJEnc" project-uri="https://github.com/hnx8/ReadJEnc" license-name="MIT" license-uri="http://hp.vector.co.jp/authors/VA055804/HNXgrep/ReadJEnc_Readme.txt" />
+	<component name="SharpZipLib" project-uri="http://www.icsharpcode.net/OpenSource/SharpZipLib/Default.aspx" license-name="MIT" license-uri="https://github.com/icsharpcode/SharpZipLib/blob/master/LICENSE.txt" />
+
+	<component name="busybox-w32" project-uri="https://frippery.org/busybox/" license-name="GPL2" license-uri="" />
+
+	<component name="marked" project-uri="https://github.com/chjj/marked" license-name="MIT" license-uri="https://github.com/markedjs/marked/blob/master/LICENSE.md" />
+
+	<!--
+	<component name="" project-uri="" license-name="" license-uri="" />
+	-->
+</third-party-license>

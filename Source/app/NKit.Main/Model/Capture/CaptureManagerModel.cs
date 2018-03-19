@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -17,6 +18,9 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 {
     public class CaptureManagerModel : ManagerModelBase
     {
+        #region define
+        #endregion
+
         #region variable
 
         bool _nowCapturing;
@@ -38,27 +42,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         public KeySetting SelectKeySetting => Setting.Capture.SelectKey;
         public KeySetting TakeShotKeySetting => Setting.Capture.TakeShotKey;
 
-        public bool ScrollInternetExplorerIsEnabledHideFixedHeader
-        {
-            get { return Setting.Capture.ScrollInternetExplorerIsEnabledHideFixedHeader; }
-            set { Setting.Capture.ScrollInternetExplorerIsEnabledHideFixedHeader = value; }
-        }
-        public string ScrollInternetExplorerHideFixedHeaderElements
-        {
-            get { return Setting.Capture.ScrollInternetExplorerHideFixedHeaderElements; }
-            set { Setting.Capture.ScrollInternetExplorerHideFixedHeaderElements = value; }
-        }
-
-        public bool ScrollInternetExplorerIsEnabledHideFixedFooter
-        {
-            get { return Setting.Capture.ScrollInternetExplorerIsEnabledHideFixedFooter; }
-            set { Setting.Capture.ScrollInternetExplorerIsEnabledHideFixedFooter = value; }
-        }
-        public string ScrollInternetExplorerHideFixedFooterElements
-        {
-            get { return Setting.Capture.ScrollInternetExplorerHideFixedFooterElements; }
-            set { Setting.Capture.ScrollInternetExplorerHideFixedFooterElements = value; }
-        }
+        public InternetExplorerScrollCaptureSetting InternetExplorerScrollCaptureSetting => Setting.Capture.Scroll.InternetExplorer;
 
         public bool NowCapturing
         {
@@ -68,6 +52,8 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         CancellationTokenSource CaptureCancel { get; set; }
         TimeSpan CaptureExitPollingTime { get; set; } = TimeSpan.FromSeconds(30);
+
+        uint CammeramanManageId { get; set; } = 0;
 
         #endregion
 
@@ -110,23 +96,31 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 Setting.Capture.Groups.Remove(groupSetting);
             }
 
+            try {
+                model.RemoveAllCaptureFiles();
+            } catch(IOException ex) {
+                Logger.Error(ex);
+            }
             model.Dispose();
         }
 
-        void Capture(string arguments, string workingDirectoryPath)
+        Task CaptureCoreAsync(string arguments, string workingDirectoryPath, CancellationToken cancelToken)
         {
             Debug.Assert(!NowCapturing);
 
             using(var client = new ApplicationSwitcher(StartupOptions.ServiceUri)) {
                 client.Initialize();
-                var manageId = client.PreparateApplication(NKitApplicationKind.Cameraman, arguments, workingDirectoryPath);
-                var status = client.GetStatusApplication(manageId);
+
+                var executeTask = Task.CompletedTask;
+
+                CammeramanManageId = client.PreparateApplication(NKitApplicationKind.Cameraman, arguments, workingDirectoryPath);
+                var status = client.GetStatusApplication(CammeramanManageId);
                 //if(status.IsEnabled) {
                 if(!string.IsNullOrEmpty(status.ExitedEventName)) {
                     var cameramanExitEvent = EventWaitHandle.OpenExisting(status.ExitedEventName);
                     CaptureCancel = new CancellationTokenSource();
                     var token = CaptureCancel.Token;
-                    Task.Run(() => {
+                    executeTask = Task.Run(() => {
                         while(true) {
                             var result = cameramanExitEvent.WaitOne(CaptureExitPollingTime);
                             if(result) {
@@ -141,67 +135,116 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                     }, TaskScheduler.FromCurrentSynchronizationContext());
                 }
 
-                if(client.WakeupApplication(manageId)) {
+                if(client.WakeupApplication(CammeramanManageId)) {
                     NowCapturing = true;
                 }
+
+                return executeTask;
 
                 //}
             }
         }
 
-        void SimpleCaptureCore(CaptureMode captureMode)
+        public void CancelCapture()
         {
-            var arguments = new List<string>() {
-                "--mode",
-                ProgramRelationUtility.EscapesequenceToArgument(captureMode.ToString()),
+            if(CammeramanManageId == 0) {
+                throw new InvalidOperationException(nameof(CammeramanManageId));
+            }
 
-                "--clipboard",
-
-                "--immediately_select",
-            };
-
-            if(ScrollInternetExplorerIsEnabledHideFixedHeader) {
-                arguments.Add("--scroll_ie_hide_header");
-
-                if(string.IsNullOrWhiteSpace(ScrollInternetExplorerHideFixedHeaderElements)) {
-                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument("*"));
-                } else {
-                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(ScrollInternetExplorerHideFixedHeaderElements));
+            using(var client = new ApplicationSwitcher(StartupOptions.ServiceUri)) {
+                client.Initialize();
+                // チェックはいらないんじゃないかなぁ
+                //var status = client.GetStatusApplication(CammeramanManageId);
+                if(!client.ShutdownApplication(CammeramanManageId, false)) {
+                    Logger.Warning("force shutdown");
+                    client.ShutdownApplication(CammeramanManageId, true);
                 }
             }
-            if(ScrollInternetExplorerIsEnabledHideFixedFooter) {
-                arguments.Add("--scroll_ie_hide_footer");
+        }
 
-                if(string.IsNullOrWhiteSpace(ScrollInternetExplorerHideFixedFooterElements)) {
+        // 引数がなぁ、多いのなぁ
+        public Task CaptureAsync(CaptureTarget captureTarget, bool isEnabledClipboard, bool isImmediateSelect, bool isContinuation, string savedEventName, DirectoryInfo saveDirectory, ImageKind saveImageKind, ImageKind thumbnailImageKind, Size thumbnailSize, IReadOnlyScrollCaptureSetting scrollSetting, CancellationToken cancelToken)
+        {
+            var arguments = new List<string>() {
+                "--target",
+                ProgramRelationUtility.EscapesequenceToArgument(captureTarget.ToString()),
+            };
+
+            if(isEnabledClipboard) {
+                arguments.Add("--clipboard");
+            }
+
+            if(isImmediateSelect) {
+                arguments.Add("--immediate_select");
+            }
+
+            if(isContinuation) {
+                arguments.Add("--continuation");
+
+            }
+
+            if(saveDirectory != null) {
+                arguments.Add("--save_directory");
+                arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(saveDirectory.FullName));
+
+                arguments.Add("--save_image");
+                arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(string.Join(
+                    "/",
+                    saveImageKind.ToString(),
+                    "${YYYY}-${MM}-${DD}_${hh24}-${mm}-${ss}_${FFF}_" + Constants.CaptureRawImageSuffix + ".${EXT}"
+                )));
+
+                if(thumbnailSize.Width != 0 && thumbnailSize.Height != 0) {
+                    arguments.Add("--save_thumbnail");
+                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(string.Join(
+                        "/",
+                        thumbnailImageKind.ToString(),
+                        "${YYYY}-${MM}-${DD}_${hh24}-${mm}-${ss}_${FFF}_" + Constants.CaptureThumbnailImageSuffix + ".${EXT}",
+                        thumbnailSize.Width.ToString(),
+                        thumbnailSize.Height.ToString()
+                    )));
+                }
+            }
+
+            if(!string.IsNullOrWhiteSpace(savedEventName)) {
+                arguments.Add("--save_event_name");
+                arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(savedEventName));
+            }
+
+            if(scrollSetting.InternetExplorer.Header.IsEnabled) {
+                arguments.Add("--scroll_ie_hide_header");
+
+                if(string.IsNullOrWhiteSpace(scrollSetting.InternetExplorer.Header.HideElements)) {
                     arguments.Add(ProgramRelationUtility.EscapesequenceToArgument("*"));
                 } else {
-                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(ScrollInternetExplorerHideFixedFooterElements));
+                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(scrollSetting.InternetExplorer.Header.HideElements));
+                }
+            }
+            if(scrollSetting.InternetExplorer.Footer.IsEnabled) {
+                arguments.Add("--scroll_ie_hide_footer");
+
+                if(string.IsNullOrWhiteSpace(scrollSetting.InternetExplorer.Footer.HideElements)) {
+                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument("*"));
+                } else {
+                    arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(scrollSetting.InternetExplorer.Footer.HideElements));
                 }
             }
 
             if(CaptureKeyUtility.CanSendKeySetting(Setting.Capture.TakeShotKey)) {
-                arguments.Add("--photo_opportunity_key");
+                arguments.Add("--take_shot_key");
                 arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(CaptureKeyUtility.ToCameramanArgumentKey(Setting.Capture.TakeShotKey)));
             }
             if(CaptureKeyUtility.CanSendKeySetting(Setting.Capture.SelectKey)) {
-                arguments.Add("--wait_opportunity_key");
+                arguments.Add("--select_photo_key");
                 arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(CaptureKeyUtility.ToCameramanArgumentKey(Setting.Capture.SelectKey)));
             }
 
-            Capture(string.Join(" ", arguments), string.Empty);
+            return CaptureCoreAsync(string.Join(" ", arguments), string.Empty, cancelToken);
         }
 
-        public void SimpleCaptureControl()
+        public void SimpleCapture(CaptureTarget captureTarget)
         {
-            SimpleCaptureCore(CaptureMode.Control);
-        }
-        public void SimpleCaptureWindow()
-        {
-            SimpleCaptureCore(CaptureMode.Window);
-        }
-        public void SimpleCaptureScroll()
-        {
-            SimpleCaptureCore(CaptureMode.Scroll);
+            CaptureAsync(captureTarget, true, true, false, default(string), default(DirectoryInfo), ImageKind.Png, ImageKind.Jpeg, Size.Empty, Setting.Capture.Scroll, CancellationToken.None);
         }
 
         #endregion

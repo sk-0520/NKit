@@ -103,7 +103,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             if(!IsDisposed) {
                 if(disposing) {
                     if(IsOpend) {
-                        Channel.Close();
+                        Close();
                     }
                 }
             }
@@ -139,6 +139,11 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         public NKitApplicationStatus GetStatus(uint manageId)
         {
             return Host.GetStatus(SenderApplication, manageId);
+        }
+
+        public bool Shutdown(uint manageId, bool force)
+        {
+            return Host.Shutdown(SenderApplication, manageId, force);
         }
 
         #endregion

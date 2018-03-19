@@ -26,7 +26,7 @@
       <Button.Style>
         <Style TargetType="Button">
           <Style.Triggers>
-            <DataTrigger Binding="{Binding RunnableItem.Cancelable, ElementName=root}" Value="False">
+            <DataTrigger Binding="{Binding RunnableItem.IsCancelable, ElementName=root}" Value="False">
               <Setter Property="Grid.ColumnSpan" Value="2" />
             </DataTrigger>
           </Style.Triggers>
@@ -37,7 +37,7 @@
       Grid.Column="1"
       Command="{Binding CancelRunCommand}"
       Content="{Binding CancelContent, ElementName=root}"
-      Visibility="{Binding RunnableItem.Cancelable, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}"
+      Visibility="{Binding RunnableItem.IsCancelable, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}"
     />
   </Grid>
 </UserControl>

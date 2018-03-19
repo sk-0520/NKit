@@ -53,11 +53,21 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         /// <summary>
         /// キャンセル処理が可能か。
         /// </summary>
-        bool Cancelable { get; }
+        bool IsCancelable { get; }
         /// <summary>
         /// 非同期実行が可能か。
         /// </summary>
         bool CanAsync { get; }
+
+        /// <summary>
+        /// 実行可能か。
+        /// </summary>
+        bool CanRun { get; }
+        /// <summary>
+        /// キャンセル可能か。
+        /// <para><see cref="IsCancelable"/>と違って今の処理がキャンセル可能かを示す。</para>
+        /// </summary>
+        bool CanCancel { get; }
 
         #endregion
     }
@@ -102,7 +112,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             private set { SetProperty(ref this._runState, value); }
         }
 
-        public virtual bool Cancelable
+        public virtual bool IsCancelable
         {
             get { return this._cancelable; }
             private set { SetProperty(ref this._cancelable, value); }
@@ -113,6 +123,37 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             get { return this._canAsync; }
             private set { SetProperty(ref this._canAsync, value); }
         }
+
+        public virtual bool CanRun
+        {
+            get
+            {
+                var canExecuteValues = new[] {
+                    RunState.None,
+                    RunState.Finished,
+                    RunState.Error,
+                    RunState.Cancel,
+                };
+                return canExecuteValues.Any(v => v == RunState);
+            }
+        }
+
+        public virtual bool CanCancel
+        {
+            get
+            {
+                if(!IsCancelable) {
+                    return false;
+                }
+
+                var canExecuteValues = new[] {
+                    RunState.Prepare,
+                    RunState.Running,
+                };
+                return canExecuteValues.Any(v => v == RunState);
+            }
+        }
+
 
         #endregion
 
@@ -133,7 +174,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         /// </summary>
         /// <typeparam name="TPreparaValue"></typeparam>
         /// <returns>真なら処理を継続、偽なら<see cref="TRunResult"/>を返して未処理とする。</returns>
-        protected virtual Task<PreparaResult<TRunResult>> PreparationCoreAsync(CancellationToken cancelToken) => GetDefaultPreparaValueAsync(true);
+        protected virtual Task<PreparaResult<TRunResult>> PreparateCoreAsync(CancellationToken cancelToken) => GetDefaultPreparaValueAsync(true);
 
         protected abstract TRunResult RunCore(CancellationToken cancelToken);
         protected abstract Task<TRunResult> RunCoreAsync(CancellationToken cancelToken);
@@ -181,7 +222,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             try {
                 RunState = RunState.Prepare;
 
-                var preResult = await PreparationCoreAsync(cancelToken);
+                var preResult = await PreparateCoreAsync(cancelToken);
 
                 PreparationSpan = DateTime.Now - StartTimestamp;
 
@@ -219,7 +260,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         public override bool CanAsync => false;
 
-        protected override Task<PreparaResult<TRunResult>> PreparationCoreAsync(CancellationToken cancelToken)
+        protected override Task<PreparaResult<TRunResult>> PreparateCoreAsync(CancellationToken cancelToken)
         {
             throw new NotSupportedException();
         }

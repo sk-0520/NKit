@@ -163,6 +163,29 @@ namespace ContentTypeTextNet.NKit.Main.Model
             return result;
         }
 
+        public bool ShutdownApplication(uint manageId, bool force)
+        {
+            bool result = false;
+
+            Swicther.DoSwitch(
+                ApplicationClient,
+                timestamp => {
+                    result = ApplicationClient.Shutdown(manageId, force);
+                },
+                (timestamp, talkerException) => {
+                    // あくまで起動させるだけで管理まではしない
+                    if(talkerException != null) {
+                        Logger.Error(talkerException);
+                    }
+                    // TODO: 内部的な監視がいるかも。。。だりぃ
+                    // しらねーよ
+                    result = false;
+                }
+            );
+
+            return result;
+        }
+
         #endregion
     }
 }

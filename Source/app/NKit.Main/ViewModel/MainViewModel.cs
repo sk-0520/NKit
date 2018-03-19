@@ -10,7 +10,7 @@ using ContentTypeTextNet.NKit.Main.ViewModel.Capture;
 using ContentTypeTextNet.NKit.Main.ViewModel.File;
 using ContentTypeTextNet.NKit.Main.ViewModel.Finder;
 using ContentTypeTextNet.NKit.Main.ViewModel.System;
-using ContentTypeTextNet.NKit.Utility.ViewModell;
+using ContentTypeTextNet.NKit.Utility.ViewModel;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel
 {

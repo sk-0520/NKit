@@ -257,7 +257,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
         #region RunnableModelBase
 
-        protected override Task<PreparaResult<None>> PreparationCoreAsync(CancellationToken cancelToken)
+        protected override Task<PreparaResult<None>> PreparateCoreAsync(CancellationToken cancelToken)
         {
             if(string.IsNullOrEmpty(FindGroupSetting.RootDirectoryPath)) {
                 Logger.Warning("root dir is empty");
@@ -313,7 +313,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                 oldItem.Dispose();
             }
 
-            return base.PreparationCoreAsync(cancelToken);
+            return base.PreparateCoreAsync(cancelToken);
         }
 
         protected override Task<None> RunCoreAsync(CancellationToken cancelToken)

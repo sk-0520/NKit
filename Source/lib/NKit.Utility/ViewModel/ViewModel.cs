@@ -17,7 +17,7 @@ using ContentTypeTextNet.NKit.Utility.Model;
 using Prism.Commands;
 using Prism.Mvvm;
 
-namespace ContentTypeTextNet.NKit.Utility.ViewModell
+namespace ContentTypeTextNet.NKit.Utility.ViewModel
 {
     public abstract class ViewModelBase : BindableBase, IDisposable
     {

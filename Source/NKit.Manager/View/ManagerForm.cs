@@ -31,14 +31,14 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         #region property
 
-        ManagerWorker Worker { get; set; }
+        MainWorker Worker { get; set; }
         ReleaseNoteForm ReleaseNoteForm { get; set; }
 
         #endregion
 
         #region function
 
-        public void SetWorker(ManagerWorker worker)
+        public void SetWorker(MainWorker worker)
         {
             Worker = worker;
             Worker.WorkspaceExited += Worker_WorkspaceExited;
@@ -175,7 +175,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
             // 設定値をどばーっと反映
             Worker.ListupWorkspace(this.selectWorkspace, Guid.Empty);
-            this.selectWorkspaceLoadToHide.Checked = Worker.WorkspaceLoadToHide;
+            this.selectWorkspaceLoadToMinimize.Checked = Worker.WorkspaceLoadToMinimize;
 
 
             RefreshControls();
@@ -251,7 +251,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             Worker.LoadSelectedWorkspace();
             RefreshControls();
-            if(Worker.WorkspaceLoadToHide && Worker.WorkspaceState == WorkspaceState.Running) {
+            if(Worker.WorkspaceLoadToMinimize && Worker.WorkspaceState == WorkspaceState.Running) {
                 WindowState = FormWindowState.Minimized;
             }
         }
@@ -265,6 +265,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 if(WindowState == FormWindowState.Minimized) {
                     WindowState = FormWindowState.Normal;
                 }
+                TopMost = false;
+                TopMost = true;
             }));
         }
         private void Worker_OutputLog(object sender, LogEventArgs e)
@@ -290,17 +292,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         private void commandWorkspaceClose_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("TODO: not impl");
+            Worker.CloseWorkspace();
         }
 
         private void ManagerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = !Worker.CheckCanExit();
-            if(e.Cancel) {
-                if(Worker.WorkspaceState == Define.WorkspaceState.Running) {
-                    WindowState = FormWindowState.Minimized;
-                }
-            }
         }
 
         private async void commandCheckUpdate_Click(object sender, EventArgs e)
@@ -385,7 +382,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
             if(Worker.WorkspaceState == WorkspaceState.Running) {
                 if(WindowState == FormWindowState.Minimized) {
-                    this.notifyIcon.Visible = true;
+                    this.notifyIcon.Visible = Worker.WorkspaceRunningMinimizeToNotifyArea;
                 } else {
                     this.notifyIcon.Visible = false;
                 }
@@ -401,9 +398,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
             WindowState = FormWindowState.Normal;
         }
 
-        private void selectWorkspaceLoadToHide_CheckedChanged(object sender, EventArgs e)
+        private void selectWorkspaceLoadToMinimize_CheckedChanged(object sender, EventArgs e)
         {
-            Worker.WorkspaceLoadToHide = this.selectWorkspaceLoadToHide.Checked;
+            Worker.WorkspaceLoadToMinimize = this.selectWorkspaceLoadToMinimize.Checked;
         }
 
         private void commandWorkspaceDirectorySelect_Click(object sender, EventArgs e)
@@ -423,6 +420,11 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.inputWorkspaceDirectoryPath.Text = dialog.SelectedPath;
                 }
             }
+        }
+
+        private void selectWorkspaceRunningMinimizeToNotifyArea_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.WorkspaceRunningMinimizeToNotifyArea  = this.selectWorkspaceRunningMinimizeToNotifyArea.Checked;
         }
     }
 }

@@ -19,7 +19,7 @@ using ContentTypeTextNet.NKit.Main.Model.Finder;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Setting.Finder;
 using ContentTypeTextNet.NKit.Utility.Model;
-using ContentTypeTextNet.NKit.Utility.ViewModell;
+using ContentTypeTextNet.NKit.Utility.ViewModel;
 using Prism.Commands;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
@@ -636,11 +636,16 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                         break;
 
                     case NotifyCollectionChangedAction.Remove:
-                        ItemViewModels.RemoveAt(e.OldStartingIndex);
-                        foreach(var oldItem in e.OldItems.Cast<FindItemModel>()) {
-                            oldItem.PropertyChanged -= FindItemModel_PropertyChanged;
-                            oldItem.Dispose();
+                        var oldViewModels = ItemViewModels.Skip(e.OldStartingIndex).Take(e.OldItems.Count).ToList();
+                        foreach(var counter in new Counter(oldViewModels.Count)) {
+                            ItemViewModels.RemoveAt(e.OldStartingIndex);
                         }
+                        foreach(var oldViewModel in oldViewModels) {
+                            oldViewModel.PropertyChanged -= FindItemModel_PropertyChanged;
+                            oldViewModel.Dispose();
+                        }
+                        ItemViewModels.RemoveAt(e.OldStartingIndex);
+
                         RaiseCountPropertyChanged();
                         break;
 

@@ -46,7 +46,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
 
         #region RunnableModelBase
 
-        protected override Task<PreparaResult<int>> PreparationCoreAsync(CancellationToken cancelToken)
+        protected override Task<PreparaResult<int>> PreparateCoreAsync(CancellationToken cancelToken)
         {
             ExecuteProcess = new Process();
 
@@ -55,7 +55,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
             ExecuteProcess.EnableRaisingEvents = true;
             ExecuteProcess.Exited += Process_Exited;
 
-            return base.PreparationCoreAsync(cancelToken);
+            return base.PreparateCoreAsync(cancelToken);
         }
 
         protected sealed override Task<int> RunCoreAsync(CancellationToken cancelToken)
@@ -118,9 +118,9 @@ namespace ContentTypeTextNet.NKit.Main.Model
             ExecuteProcess.BeginOutputReadLine();
         }
 
-        protected override Task<PreparaResult<int>> PreparationCoreAsync(CancellationToken cancelToken)
+        protected override Task<PreparaResult<int>> PreparateCoreAsync(CancellationToken cancelToken)
         {
-            var result = base.PreparationCoreAsync(cancelToken);
+            var result = base.PreparateCoreAsync(cancelToken);
 
             ExecuteProcess.StartInfo.UseShellExecute = false;
             ExecuteProcess.StartInfo.CreateNoWindow = true;

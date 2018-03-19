@@ -23,7 +23,7 @@ using ContentTypeTextNet.NKit.Manager.View;
 
 namespace ContentTypeTextNet.NKit.Manager.Model
 {
-    public class ManagerWorker : DisposerBase
+    public class MainWorker : DisposerBase
     {
         #region define
 
@@ -39,7 +39,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         #endregion
 
-        public ManagerWorker()
+        public MainWorker()
         {
             LogManager = new LogManager();
             LogManager.LogWrite += LogManager_LogWrite;
@@ -70,10 +70,15 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             set { ManagerSetting.Accepted = value; }
         }
 
-        public bool WorkspaceLoadToHide
+        public bool WorkspaceLoadToMinimize
         {
-            get { return ManagerSetting.Workspace.WorkspaceLoadToHide; }
-            set { ManagerSetting.Workspace.WorkspaceLoadToHide = value; }
+            get { return ManagerSetting.Workspace.WorkspaceLoadToMinimize; }
+            set { ManagerSetting.Workspace.WorkspaceLoadToMinimize = value; }
+        }
+        public bool WorkspaceRunningMinimizeToNotifyArea
+        {
+            get { return ManagerSetting.Workspace.WorkspaceRunningMinimizeToNotifyArea; }
+            set { ManagerSetting.Workspace.WorkspaceRunningMinimizeToNotifyArea = value; }
         }
 
         public bool CanUpdate => UpdateManager.HasUpdate;
@@ -229,7 +234,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             }
         }
 
-        T LoadXmlObject<T>(string path)
+        internal static T LoadXmlObject<T>(string path)
         {
             using(var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read)) {
                 using(var reader = XmlReader.Create(stream)) {
@@ -355,6 +360,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             return true;
         }
 
+        public void CloseWorkspace()
+        {
+            // 他の子たちは付随して死ぬはず(怖いから中で殺してるけど)
+            ApplicationManager.ShutdownMainApplication();
+        }
+
         public void ClearSelectedWorkspace()
         {
             SelectedWorkspaceItem = null;
@@ -442,6 +453,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             NKitApplicationTalkerHost.ApplicationPreparate += NKitApplicationTalker_ApplicationPreparate;
             NKitApplicationTalkerHost.ApplicationWakeup += NKitApplicationTalkerHost_ApplicationWakeup;
             NKitApplicationTalkerHost.ApplicationStatus += NKitApplicationTalkerHost_ApplicationStatus;
+            NKitApplicationTalkerHost.ApplicationShutdown += NKitApplicationTalkerHost_ApplicationShutdown;
             NKitApplicationTalkerHost.Open();
 
             NKitLoggingTalkerHost = new NKitLoggingTalkerHost(ActiveWorkspace.ServiceUri, CommonUtility.LogAddress);
@@ -454,7 +466,6 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
             SaveSetting();
         }
-
 
         public bool CheckCanExit()
         {
@@ -517,6 +528,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                         NKitApplicationTalkerHost.ApplicationPreparate -= NKitApplicationTalker_ApplicationPreparate;
                         NKitApplicationTalkerHost.ApplicationWakeup -= NKitApplicationTalkerHost_ApplicationWakeup;
                         NKitApplicationTalkerHost.ApplicationStatus -= NKitApplicationTalkerHost_ApplicationStatus;
+                        NKitApplicationTalkerHost.ApplicationShutdown -= NKitApplicationTalkerHost_ApplicationShutdown;
                         NKitApplicationTalkerHost.Dispose();
                     }
                     if(NKitLoggingTalkerHost != null) {
@@ -542,6 +554,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             NKitApplicationTalkerHost.ApplicationPreparate -= NKitApplicationTalker_ApplicationPreparate;
             NKitApplicationTalkerHost.ApplicationWakeup -= NKitApplicationTalkerHost_ApplicationWakeup;
             NKitApplicationTalkerHost.ApplicationStatus -= NKitApplicationTalkerHost_ApplicationStatus;
+            NKitApplicationTalkerHost.ApplicationShutdown -= NKitApplicationTalkerHost_ApplicationShutdown;
             NKitApplicationTalkerHost.Dispose();
 
             NKitLoggingTalkerHost.LoggingWrite -= NKitLoggingTalkerHost_LoggingWrite;
@@ -575,6 +588,13 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             var status = ApplicationManager.GetStatus(e.SenderApplication, e.ManageId);
             e.Status = status;
         }
+
+        private void NKitApplicationTalkerHost_ApplicationShutdown(object sender, TalkApplicationShutdownEventArgs e)
+        {
+            var success = ApplicationManager.Shutdown(e.SenderApplication, e.ManageId, e.Force);
+            e.Success = success;
+        }
+
 
         private void NKitLoggingTalkerHost_LoggingWrite(object sender, TalkLoggingWriteEventArgs e)
         {

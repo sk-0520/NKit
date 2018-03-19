@@ -41,9 +41,9 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         #region RunnableModelBase
 
-        protected override Task<PreparaResult<None>> PreparationCoreAsync(CancellationToken cancelToken)
+        protected override Task<PreparaResult<None>> PreparateCoreAsync(CancellationToken cancelToken)
         {
-            return base.PreparationCoreAsync(cancelToken);
+            return base.PreparateCoreAsync(cancelToken);
         }
 
         /// <summary>
