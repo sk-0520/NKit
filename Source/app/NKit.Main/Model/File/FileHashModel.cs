@@ -45,7 +45,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         #region RunnableModelBase
 
-        public override bool Cancelable => false;
+        public override bool IsCancelable => false;
 
         protected override Task<PreparaResult<byte[]>> PreparateCoreAsync(CancellationToken cancelToken)
         {

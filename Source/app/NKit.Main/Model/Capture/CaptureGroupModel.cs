@@ -110,6 +110,8 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         #region RunnableAsyncModel
 
+        public override bool CanRun => !Manager.NowCapturing && base.CanRun;
+
         protected override Task<PreparaResult<None>> PreparateCoreAsync(CancellationToken cancelToken)
         {
             var baseDirectory = GetCaptureBaseDirectory();

@@ -160,6 +160,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             if(e.PropertyName == nameof(Model.NowCapturing)) {
                 //Application.Current.Dispatcher.Invoke(() => {
                 RaisePropertyChanged(nameof(NowCapturing));
+                foreach(var g  in GroupViewModels) {
+                    g.RaiseNowCapturingPropertyChanged();
+                }
                 //CommandManager.InvalidateRequerySuggested();
                 //});
             }

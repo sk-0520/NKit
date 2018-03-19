@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 using ContentTypeTextNet.NKit.Main.Model.Capture;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.Define;
@@ -167,6 +168,11 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             }
 
             return false;
+        }
+
+        public void RaiseNowCapturingPropertyChanged()
+        {
+            RaisePropertyChanged(nameof(CanRun));
         }
 
 

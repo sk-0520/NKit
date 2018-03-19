@@ -35,8 +35,10 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
             nameof(IRunnableItem.StartTimestamp),
             nameof(IRunnableItem.EndTimestamp),
             nameof(IRunnableItem.PreparationSpan),
-            nameof(IRunnableItem.Cancelable),
+            nameof(IRunnableItem.IsCancelable),
             nameof(IRunnableItem.CanAsync),
+            nameof(IRunnableItem.CanRun),
+            nameof(IRunnableItem.CanCancel),
         };
 
         #endregion
@@ -71,42 +73,15 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
         public DateTime StartTimestamp => Model.StartTimestamp;
         public DateTime EndTimestamp => Model.EndTimestamp;
         public TimeSpan PreparationSpan => Model.PreparationSpan;
-        public bool Cancelable => Model.Cancelable;
+        public bool IsCancelable => Model.IsCancelable;
         public bool CanAsync => Model.CanAsync;
+        public bool CanRun => Model.CanRun;
+        public bool CanCancel => Model.CanCancel;
 
         #endregion
 
         #region property
 
-        protected virtual bool CanRun
-        {
-            get
-            {
-                var canExecuteValues = new[] {
-                    RunState.None,
-                    RunState.Finished,
-                    RunState.Error,
-                    RunState.Cancel,
-                };
-                return canExecuteValues.Any(v => v == RunState);
-            }
-        }
-
-        protected virtual bool CanCancel
-        {
-            get
-            {
-                if(!Cancelable) {
-                    return false;
-                }
-
-                var canExecuteValues = new[] {
-                    RunState.Prepare,
-                    RunState.Running,
-                };
-                return canExecuteValues.Any(v => v == RunState);
-            }
-        }
 
         protected CancellationTokenSource RunningCancellationTokenSource { get; private set; }
 
@@ -121,7 +96,7 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
             }
 
             var token = CancellationToken.None;
-            if(Cancelable) {
+            if(IsCancelable) {
                 RunningCancellationTokenSource = new CancellationTokenSource();
                 token = RunningCancellationTokenSource.Token;
             }
@@ -137,7 +112,7 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
             }
 
             var token = CancellationToken.None;
-            if(Cancelable) {
+            if(IsCancelable) {
                 RunningCancellationTokenSource = new CancellationTokenSource();
                 token = RunningCancellationTokenSource.Token;
             }
@@ -146,7 +121,7 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
 
         protected virtual void CancelCore()
         {
-            Debug.Assert(Cancelable);
+            Debug.Assert(IsCancelable);
             Debug.Assert(RunningCancellationTokenSource != null);
             RunningCancellationTokenSource.Cancel();
         }
@@ -185,18 +160,25 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
         {
             if(RunnableProperties.Any(s => s == e.PropertyName)) {
                 RaisePropertyChanged(e.PropertyName);
-                if(e.PropertyName == nameof(Model.RunState)) {
-                    InvokeUI(() => {
-                        RaisePropertyChanged(nameof(CanRun));
-                        RunCommand.RaiseCanExecuteChanged();
-                        CancelRunCommand.RaiseCanExecuteChanged();
-                    });
-                }
-                if(e.PropertyName == nameof(Model.Cancelable)) {
-                    InvokeUI(() => {
+                switch(e.PropertyName) {
+                    case nameof(Model.RunState):
+                    case nameof(Model.CanRun):
+                    case nameof(Model.CanCancel):
+                        InvokeUI(() => {
+                            //RaisePropertyChanged(nameof(CanRun));
+                            //RaisePropertyChanged(nameof(CanCancel));
+                            RunCommand.RaiseCanExecuteChanged();
+                            CancelRunCommand.RaiseCanExecuteChanged();
+                        });
+                        break;
+
+                    case nameof(Model.IsCancelable):
                         RaisePropertyChanged(nameof(CanCancel));
                         CancelRunCommand.RaiseCanExecuteChanged();
-                    });
+                        break;
+
+                    default:
+                        break;
                 }
             }
 
