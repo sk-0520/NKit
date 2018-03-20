@@ -7,9 +7,10 @@ using ContentTypeTextNet.NKit.Main.Model;
 using ContentTypeTextNet.NKit.Main.Model.Capture;
 using ContentTypeTextNet.NKit.Main.ViewModel.App;
 using ContentTypeTextNet.NKit.Main.ViewModel.Capture;
+using ContentTypeTextNet.NKit.Main.ViewModel.Cli;
 using ContentTypeTextNet.NKit.Main.ViewModel.File;
 using ContentTypeTextNet.NKit.Main.ViewModel.Finder;
-using ContentTypeTextNet.NKit.Main.ViewModel.System;
+using ContentTypeTextNet.NKit.Main.ViewModel.SystemEnvironment;
 using ContentTypeTextNet.NKit.Utility.ViewModel;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel
@@ -23,7 +24,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel
             CaptureManager = new CaptureManagerViewModel(Model.CaptureManager);
             FileManager = new FileManagerViewModel(Model.FileManager);
             FinderManager = new FinderManagerViewModel(Model.FinderManager);
-            SystemManager = new SystemManagerViewModel(Model.SystemManager);
+            SystemEnvironmentManager = new SystemEnvironmentManagerViewModel(Model.SystemEnvironmentManager);
+            CliManager = new CliManagerViewModel(Model.CliManager);
         }
 
         #region property
@@ -32,7 +34,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel
         public CaptureManagerViewModel CaptureManager { get; }
         public FileManagerViewModel FileManager { get; }
         public FinderManagerViewModel FinderManager { get; }
-        public SystemManagerViewModel SystemManager { get; }
+        public SystemEnvironmentManagerViewModel SystemEnvironmentManager { get; }
+        public CliManagerViewModel CliManager { get; }
 
         #endregion
     }
