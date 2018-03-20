@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -73,6 +74,15 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private void commandUpdate_Click(object sender, EventArgs e)
         {
             ExecuteUpdateAction?.Invoke();
+        }
+
+        private void viewReleaseNote_Navigating(object sender, WebBrowserNavigatingEventArgs e)
+        {
+            var urlText = e.Url.ToString();
+            if(urlText.StartsWith(IssueBaseUri.ToString(), StringComparison.InvariantCultureIgnoreCase)) {
+                Process.Start(urlText);
+                e.Cancel = true;
+            }
         }
     }
 }
