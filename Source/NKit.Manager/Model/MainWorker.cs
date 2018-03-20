@@ -1,3 +1,10 @@
+//#define IGNORE_LOCK
+#if IGNORE_LOCK
+#   if DEBUG
+#   else
+#       error defined IGNORE_LOCK !
+#   endif
+#endif
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,19 +32,19 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 {
     public class MainWorker : DisposerBase
     {
-        #region define
+#region define
 
         [DllImport("shell32.dll", SetLastError = true)]
         static extern void SetCurrentProcessExplicitAppUserModelID([MarshalAs(UnmanagedType.LPWStr)] string AppID);
 
-        #endregion
+#endregion
 
-        #region event
+#region event
 
         public event EventHandler<EventArgs> WorkspaceExited;
         public event EventHandler<LogEventArgs> OutputLog;
 
-        #endregion
+#endregion
 
         public MainWorker()
         {
@@ -51,7 +58,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         }
 
 
-        #region property
+#region property
 
         LogManager LogManager { get; }
         ILogger Logger { get; set; }
@@ -97,9 +104,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         ActiveWorkspace ActiveWorkspace { get; } = new ActiveWorkspace();
 
-        #endregion
+#endregion
 
-        #region function
+#region function
 
         public ILogger CreateLogger(string subject)
         {
@@ -417,6 +424,13 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                 return false;
             }
 
+#if IGNORE_LOCK
+            var _ignoreLock=true;
+            if(_ignoreLock) {
+                return false;
+            }
+#endif
+
             var path = Path.Combine(SelectedWorkspaceItem.DirectoryPath, Constants.WorkspaceLockFile);
             return File.Exists(path);
         }
@@ -549,9 +563,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             testExecuteForm.ShowDialog();
         }
 
-        #endregion
+#endregion
 
-        #region DisposerBase
+#region DisposerBase
 
         protected override void Dispose(bool disposing)
         {
@@ -580,7 +594,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             base.Dispose(disposing);
         }
 
-        #endregion
+#endregion
 
         private void ApplicationManager_MainApplicationExited(object sender, EventArgs e)
         {
