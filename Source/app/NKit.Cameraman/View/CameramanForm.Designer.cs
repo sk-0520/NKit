@@ -27,6 +27,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CameramanForm));
             this.hallArea = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
@@ -48,6 +49,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.ClientSize = new System.Drawing.Size(177, 62);
             this.Controls.Add(this.hallArea);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "CameramanForm";

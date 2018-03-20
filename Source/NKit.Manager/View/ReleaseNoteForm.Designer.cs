@@ -27,6 +27,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReleaseNoteForm));
             this.commandClose = new System.Windows.Forms.Button();
             this.viewReleaseNote = new System.Windows.Forms.WebBrowser();
             this.commandUpdate = new System.Windows.Forms.Button();
@@ -73,6 +74,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.Controls.Add(this.commandUpdate);
             this.Controls.Add(this.commandClose);
             this.Controls.Add(this.viewReleaseNote);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ReleaseNoteForm";
             this.Text = "ReleaseNoteForm";
             this.ResumeLayout(false);
