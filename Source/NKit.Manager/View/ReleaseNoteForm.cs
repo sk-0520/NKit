@@ -38,13 +38,27 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandUpdate.Enabled = canUpdate;
         }
 
+        string ReplaceReleaceNote(string rawValue)
+        {
+            var issueRegex = new Regex(@"(?<HASH>#)(?<NUMBER>\d+)");
+            var issueReplaced = issueRegex.Replace(rawValue, m => {
+                var hash = m.Groups["HASH"].Value;
+                var number = m.Groups["NUMBER"].Value;
+
+                return $"[{hash}{number}]({IssueBaseUri}/{number})";
+            });
+
+            return issueReplaced;
+        }
+
         public void SetReleaseNote(Version version, string releaseHash, DateTime releaseTimestamp, string releaseNoteValue)
         {
+            var replacedReleaceNoteValue = ReplaceReleaceNote(releaseNoteValue);
             var html = Properties.Resources.File_ReleaseNoteMarkdown
                 .Replace("${VERSION}", version.ToString())
                 .Replace("${TIMESTAMP}", releaseTimestamp.ToString("u"))
                 .Replace("${HASH}", releaseHash)
-                .Replace("${CONTENT}", releaseNoteValue)
+                .Replace("${CONTENT}", replacedReleaceNoteValue)
             ;
             this.viewReleaseNote.DocumentStream = new MemoryStream(Encoding.UTF8.GetBytes(html));
         }
