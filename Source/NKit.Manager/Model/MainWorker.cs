@@ -410,6 +410,33 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             }
         }
 
+        public bool IsLockedSelectedWorkspace()
+        {
+            if(string.IsNullOrWhiteSpace(SelectedWorkspaceItem.DirectoryPath)) {
+                Logger.Debug("workspace dir path is empty");
+                return false;
+            }
+
+            var path = Path.Combine(SelectedWorkspaceItem.DirectoryPath, Constants.WorkspaceLockFile);
+            return File.Exists(path);
+        }
+
+        public bool RemoveSelectedWorkspaceLockFile()
+        {
+            var path = Path.Combine(SelectedWorkspaceItem.DirectoryPath, Constants.WorkspaceLockFile);
+            if(!File.Exists(path)) {
+                Logger.Information("not found lock file");
+                return true;
+            }
+            try {
+                File.Delete(path);
+                return true;
+            } catch(IOException ex) {
+                Logger.Information(ex);
+            }
+            return false;
+        }
+
         public void LoadSelectedWorkspace()
         {
             if(string.IsNullOrWhiteSpace(SelectedWorkspaceItem.DirectoryPath)) {

@@ -251,6 +251,21 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         private void commandWorkspaceLoad_Click(object sender, EventArgs e)
         {
+            if(Worker.IsLockedSelectedWorkspace()) {
+                if((ModifierKeys & Keys.Shift) == Keys.Shift) {
+                    var result = MessageBox.Show("workspace is locked, unlock?", "force", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                    if(result != DialogResult.Yes) {
+                        return;
+                    }
+                    if(!Worker.RemoveSelectedWorkspaceLockFile()) {
+                        return;
+                    }
+                } else {
+                    MessageBox.Show("workspace is locked");
+                    return;
+                }
+            }
+
             Worker.LoadSelectedWorkspace();
             RefreshControls();
             if(Worker.WorkspaceLoadToMinimize && Worker.WorkspaceState == WorkspaceState.Running) {
@@ -437,7 +452,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         private void selectWorkspaceRunningMinimizeToNotifyArea_CheckedChanged(object sender, EventArgs e)
         {
-            Worker.WorkspaceRunningMinimizeToNotifyArea  = this.selectWorkspaceRunningMinimizeToNotifyArea.Checked;
+            Worker.WorkspaceRunningMinimizeToNotifyArea = this.selectWorkspaceRunningMinimizeToNotifyArea.Checked;
         }
     }
 }
