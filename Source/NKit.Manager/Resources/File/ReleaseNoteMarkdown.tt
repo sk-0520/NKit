@@ -20,12 +20,12 @@
         <p>
             <strong>${HASH}</strong>
         </p>
-        <div id='view-content'></div>
+        <div id="view-content"></div>
         <pre id="raw-content" style="display: none">${CONTENT}</pre>
     </body>
     <script>
-        var viewContent = document.getElementById("view-content");
-        var rawContent = document.getElementById("raw-content");
+        var viewContent = document.getElementById('view-content');
+        var rawContent = document.getElementById('raw-content');
         var makedMarkdownHtml = marked(rawContent.innerHTML);
         viewContent.innerHTML = makedMarkdownHtml;
     </script>

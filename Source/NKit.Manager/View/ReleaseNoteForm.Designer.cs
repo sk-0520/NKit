@@ -50,6 +50,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.viewReleaseNote.Name = "viewReleaseNote";
             this.viewReleaseNote.Size = new System.Drawing.Size(421, 259);
             this.viewReleaseNote.TabIndex = 1;
+            this.viewReleaseNote.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.viewReleaseNote_Navigating);
             // 
             // commandUpdate
             // 
