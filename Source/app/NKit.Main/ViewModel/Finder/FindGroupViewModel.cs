@@ -459,6 +459,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         });
 
         public ICommand SelectRootDirectoryPathCommand => new DelegateCommand(() => {
+            // TODO: メッセージにした方がいいかも
             if(Model.SelectRootDirectoryPathFromDialog()) {
                 RaisePropertyChanged(nameof(RootDirectoryPath));
             }
