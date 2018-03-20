@@ -68,15 +68,8 @@
           <app_main_view_control:KeySettingControl Key="{Binding TakeShotKey, Mode=TwoWay}" ModifierKeys="{Binding TakeShotModifierKeys, Mode=TwoWay}" />
         </StackPanel>
 
-        <StackPanel>
-          <CheckBox IsChecked="{Binding IsEnabledHideHeader}">hide header(default: *)</CheckBox>
-          <TextBox Text="{Binding HideHeaderElement}" />
-        </StackPanel>
-
-        <StackPanel>
-          <CheckBox IsChecked="{Binding IsEnabledHideFooter}">hide footer(default: *)</CheckBox>
-          <TextBox Text="{Binding HideFooterElement}" />
-        </StackPanel>
+        <app_main_view_capture:InternetExplorerScrollHideCaptureControl HideTitle="hide header(default: *)" IsEnabledHide="{Binding IsEnabledHideHeader, Mode=TwoWay}" HideElement="{Binding HideHeaderElement, Mode=TwoWay}" />
+        <app_main_view_capture:InternetExplorerScrollHideCaptureControl HideTitle="hide footer(default: *)" IsEnabledHide="{Binding IsEnabledHideFooter, Mode=TwoWay}" HideElement="{Binding HideFooterElement, Mode=TwoWay}" />
 
       </StackPanel>
     </Grid>

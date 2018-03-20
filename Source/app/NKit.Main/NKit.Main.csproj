@@ -185,6 +185,9 @@
     <Compile Include="View\Capture\CaptureManagerControl.xaml.cs">
       <DependentUpon>CaptureManagerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Capture\InternetExplorerScrollHideCaptureControl.xaml.cs">
+      <DependentUpon>InternetExplorerScrollHideCaptureControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Control\FlagMatchSelectControl.xaml.cs">
       <DependentUpon>FlagMatchSelectControl.xaml</DependentUpon>
     </Compile>
@@ -203,6 +206,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Capture\CaptureManagerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Capture\InternetExplorerScrollHideCaptureControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

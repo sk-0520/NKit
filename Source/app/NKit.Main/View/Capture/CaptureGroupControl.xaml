@@ -15,6 +15,7 @@
 
   xmlns:app="clr-namespace:ContentTypeTextNet.NKit.Main"
   xmlns:app_main_view_control="clr-namespace:ContentTypeTextNet.NKit.Main.View.Control"
+  xmlns:app_main_view_capture="clr-namespace:ContentTypeTextNet.NKit.Main.View.Capture"
 
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   mc:Ignorable="d"
@@ -69,16 +70,8 @@
               <CheckBox IsChecked="{Binding OverwriteScrollSetting}">OverwriteScrollSetting</CheckBox>
             </GroupBox.Header>
             <StackPanel>
-
-              <StackPanel>
-                <CheckBox IsChecked="{Binding IsEnabledHideHeader}">hide header(default: *)</CheckBox>
-                <TextBox Text="{Binding HideHeaderElement}" />
-              </StackPanel>
-
-              <StackPanel>
-                <CheckBox IsChecked="{Binding IsEnabledHideFooter}">hide footer(default: *)</CheckBox>
-                <TextBox Text="{Binding HideFooterElement}" />
-              </StackPanel>
+              <app_main_view_capture:InternetExplorerScrollHideCaptureControl HideTitle="hide header(default: *)" IsEnabledHide="{Binding IsEnabledHideHeader, Mode=TwoWay}" HideElement="{Binding HideHeaderElement, Mode=TwoWay}" />
+              <app_main_view_capture:InternetExplorerScrollHideCaptureControl HideTitle="hide footer(default: *)" IsEnabledHide="{Binding IsEnabledHideFooter, Mode=TwoWay}" HideElement="{Binding HideFooterElement, Mode=TwoWay}" />
             </StackPanel>
 
           </GroupBox>
