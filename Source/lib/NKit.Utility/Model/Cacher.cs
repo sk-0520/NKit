@@ -149,13 +149,13 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         {
             get
             {
-                LastUsedTimestamp = DateTime.Now;
+                LastUsedUtcTimestamp = DateTime.UtcNow;
                 return this._value;
             }
             private set { this._value = value; }
         }
 
-        public DateTime LastUsedTimestamp { get; private set; }
+        public DateTime LastUsedUtcTimestamp { get; private set; }
 
         #endregion
     }

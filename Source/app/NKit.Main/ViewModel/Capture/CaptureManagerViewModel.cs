@@ -121,7 +121,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
                 vm.Dispose();
                 Model.RemoveGroupAt(index);
             },
-            vm => !(vm.RunState == Utility.Define.RunState.Prepare || vm.RunState == Utility.Define.RunState.Running)
+            vm => !(vm.RunState == Utility.Define.RunState.Preparate || vm.RunState == Utility.Define.RunState.Running)
         );
 
         public ICommand SimpleCaptureControlCommand => new DelegateCommand(

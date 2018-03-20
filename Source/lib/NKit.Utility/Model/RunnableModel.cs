@@ -37,15 +37,15 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         /// <summary>
         /// 処理開始時間。
         /// </summary>
-        DateTime StartTimestamp { get; }
+        DateTime StartUtcTimestamp { get; }
         /// <summary>
         /// 処理終了時間。
         /// </summary>
-        DateTime EndTimestamp { get; }
+        DateTime EndUtcTimestamp { get; }
         /// <summary>
         /// 準備にかかった時間。
         /// </summary>
-        TimeSpan PreparationSpan { get; }
+        TimeSpan PreparateSpan { get; }
         /// <summary>
         /// 実行状態。
         /// </summary>
@@ -90,17 +90,17 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         #region IReadOnlyRunnableStatus
 
-        public virtual DateTime StartTimestamp
+        public virtual DateTime StartUtcTimestamp
         {
             get { return this._startTimestamp; }
             private set { SetProperty(ref this._startTimestamp, value); }
         }
-        public virtual DateTime EndTimestamp
+        public virtual DateTime EndUtcTimestamp
         {
             get { return this._endTimestamp; }
             private set { SetProperty(ref this._endTimestamp, value); }
         }
-        public virtual TimeSpan PreparationSpan
+        public virtual TimeSpan PreparateSpan
         {
             get { return this._preparationSpan; }
             private set { SetProperty(ref this._preparationSpan, value); }
@@ -147,7 +147,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                 }
 
                 var canExecuteValues = new[] {
-                    RunState.Prepare,
+                    RunState.Preparate,
                     RunState.Running,
                 };
                 return canExecuteValues.Any(v => v == RunState);
@@ -181,15 +181,15 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         public TRunResult Run(CancellationToken cancelToken)
         {
-            EndTimestamp = DateTime.MinValue;
-            StartTimestamp = DateTime.Now;
+            EndUtcTimestamp = DateTime.MinValue;
+            StartUtcTimestamp = DateTime.UtcNow;
 
             try {
-                RunState = RunState.Prepare;
+                RunState = RunState.Preparate;
 
                 var preResult = PreparateCore(cancelToken);
 
-                PreparationSpan = DateTime.Now - StartTimestamp;
+                PreparateSpan = DateTime.UtcNow - StartUtcTimestamp;
 
                 if(preResult.Success) {
                     RunState = RunState.Running;
@@ -210,21 +210,21 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                 RunState = RunState.Error;
                 throw;
             } finally {
-                EndTimestamp = DateTime.Now;
+                EndUtcTimestamp = DateTime.UtcNow;
             }
         }
 
         public async Task<TRunResult> RunAsync(CancellationToken cancelToken)
         {
-            EndTimestamp = DateTime.MinValue;
-            StartTimestamp = DateTime.Now;
+            EndUtcTimestamp = DateTime.MinValue;
+            StartUtcTimestamp = DateTime.UtcNow;
 
             try {
-                RunState = RunState.Prepare;
+                RunState = RunState.Preparate;
 
                 var preResult = await PreparateCoreAsync(cancelToken);
 
-                PreparationSpan = DateTime.Now - StartTimestamp;
+                PreparateSpan = DateTime.UtcNow - StartUtcTimestamp;
 
                 if(preResult.Success) {
                     RunState = RunState.Running;
@@ -245,7 +245,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                 RunState = RunState.Error;
                 throw;
             } finally {
-                EndTimestamp = DateTime.Now;
+                EndUtcTimestamp = DateTime.UtcNow;
             }
         }
 

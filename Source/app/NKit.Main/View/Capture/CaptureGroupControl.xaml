@@ -93,7 +93,7 @@
 
         <ToolBar Grid.Row="0">
           <Label>filter</Label>
-          <ComboBox IsEditable="False" ItemsSource="{Binding FilterStartTimestampItems}" SelectedItem="{Binding SelectedFilterStartTimestamp}" />
+          <ComboBox IsEditable="False" ItemsSource="{Binding FilterStartUtcTimestampItems}" SelectedItem="{Binding SelectedFilterStartUtcTimestamp}" />
         </ToolBar>
 
         <ListBox x:Name="captureItemsContainer" Grid.Row="1" VirtualizingPanel.ScrollUnit="Pixel" ScrollViewer.CanContentScroll="True" ItemsSource="{Binding Items}">
@@ -103,7 +103,7 @@
                 <Image Source="{Binding ThumbnailImagePath, Converter={StaticResource FilePathToImageConverter}}" Width="{x:Static app:Constants.CaptureThumbnailSizeWidth}" Height="{x:Static app:Constants.CaptureThumbnailSizeHeight}" />
                 <StackPanel>
                   <TextBlock Text="{Binding FileName}" />
-                  <TextBlock Text="{Binding CaptureTimestamp}" />
+                  <TextBlock Text="{Binding CaptureUtcTimestamp}" />
                 </StackPanel>
               </StackPanel>
             </DataTemplate>

@@ -170,10 +170,10 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 ServiceUri = new Uri("http://127.0.0.1"),
             };
             var dummyWorkspaceSetting = new WorkspaceItemSetting() {
-                CreatedTimestamp = DateTime.MaxValue,
+                CreatedUtcTimestamp = DateTime.MaxValue,
                 DirectoryPath = "🐇",
                 Name = "🐉",
-                UpdatedTimestamp = DateTime.MinValue,
+                UpdatedUtcTimestamp = DateTime.MinValue,
             };
 
             return Task.Run(() => {

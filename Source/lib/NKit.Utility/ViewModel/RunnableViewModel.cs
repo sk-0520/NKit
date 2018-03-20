@@ -32,9 +32,9 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
         static string[] RunnableProperties =
         {
             nameof(IRunnableItem.RunState),
-            nameof(IRunnableItem.StartTimestamp),
-            nameof(IRunnableItem.EndTimestamp),
-            nameof(IRunnableItem.PreparationSpan),
+            nameof(IRunnableItem.StartUtcTimestamp),
+            nameof(IRunnableItem.EndUtcTimestamp),
+            nameof(IRunnableItem.PreparateSpan),
             nameof(IRunnableItem.IsCancelable),
             nameof(IRunnableItem.CanAsync),
             nameof(IRunnableItem.CanRun),
@@ -70,9 +70,9 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
         #region IReadOnlyRunnableStatus
 
         public RunState RunState => Model.RunState;
-        public DateTime StartTimestamp => Model.StartTimestamp;
-        public DateTime EndTimestamp => Model.EndTimestamp;
-        public TimeSpan PreparationSpan => Model.PreparationSpan;
+        public DateTime StartUtcTimestamp => Model.StartUtcTimestamp;
+        public DateTime EndUtcTimestamp => Model.EndUtcTimestamp;
+        public TimeSpan PreparateSpan => Model.PreparateSpan;
         public bool IsCancelable => Model.IsCancelable;
         public bool CanAsync => Model.CanAsync;
         public bool CanRun => Model.CanRun;

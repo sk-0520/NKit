@@ -37,8 +37,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             }
         }
 
-        public DateTime CaptureStartTimestamp => Model.RawImageFile.Directory.CreationTime;
-        public DateTime CaptureTimestamp => Model.RawImageFile.CreationTime;
+        public DateTime CaptureStartUtcTimestamp => Model.RawImageFile.Directory.CreationTime.ToUniversalTime();
+        public DateTime CaptureUtcTimestamp => Model.RawImageFile.CreationTime.ToUniversalTime();
 
         #endregion
 

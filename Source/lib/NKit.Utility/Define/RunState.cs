@@ -22,7 +22,7 @@ namespace ContentTypeTextNet.NKit.Utility.Define
         /// 準備中。
         /// </summary>
         [EnumMember]
-        Prepare,
+        Preparate,
         /// <summary>
         /// 実行中。
         /// </summary>
