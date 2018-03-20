@@ -191,7 +191,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(string.Join(
                     "/",
                     saveImageKind.ToString(),
-                    "${YYYY}-${MM}-${DD}_${hh24}-${mm}-${ss}_${FFF}_" + Constants.CaptureRawImageSuffix + ".${EXT}"
+                    "${YYYY}-${MM}-${DD}_${hh24}-${mm}-${ss}_${fff}_" + Constants.CaptureRawImageSuffix + ".${EXT}"
                 )));
 
                 if(thumbnailSize.Width != 0 && thumbnailSize.Height != 0) {
@@ -199,7 +199,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                     arguments.Add(ProgramRelationUtility.EscapesequenceToArgument(string.Join(
                         "/",
                         thumbnailImageKind.ToString(),
-                        "${YYYY}-${MM}-${DD}_${hh24}-${mm}-${ss}_${FFF}_" + Constants.CaptureThumbnailImageSuffix + ".${EXT}",
+                        "${YYYY}-${MM}-${DD}_${hh24}-${mm}-${ss}_${fff}_" + Constants.CaptureThumbnailImageSuffix + ".${EXT}",
                         thumbnailSize.Width.ToString(),
                         thumbnailSize.Height.ToString()
                     )));
