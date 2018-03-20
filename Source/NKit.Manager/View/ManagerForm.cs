@@ -27,6 +27,15 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
             Font = SystemFonts.MessageBoxFont;
             this.notifyIcon.Icon = Icon;
+
+            #region DEBUG
+#if DEBUG || BETA
+            AllowDrop = true;
+            DragEnter += ReleaseNoteForm_DragEnterAndDragOver;
+            DragOver += ReleaseNoteForm_DragEnterAndDragOver;
+            DragDrop += ReleaseNoteForm_DragDrop;
+#endif
+            #endregion
         }
 
         #region property
@@ -454,5 +463,41 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             Worker.WorkspaceRunningMinimizeToNotifyArea = this.selectWorkspaceRunningMinimizeToNotifyArea.Checked;
         }
+
+        #region DEBUG
+#if DEBUG || BETA
+        private void ReleaseNoteForm_DragEnterAndDragOver(object sender, DragEventArgs e)
+        {
+            if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if(files.Length == 1) {
+                    e.Effect = DragDropEffects.Copy;
+                }
+            }
+        }
+
+        private void ReleaseNoteForm_DragDrop(object sender, DragEventArgs e)
+        {
+            if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if(files.Length == 1) {
+                    var file = files[0];
+
+                    // デバッグコードなので Dispose は考えない
+                    var form = new ReleaseNoteForm();
+                    form.IssueBaseUri = Constants.IssuesBaseUri;
+                    form.SetReleaseNote(
+                        Assembly.GetExecutingAssembly().GetName().Version,
+                        Application.ProductVersion,
+                        // これは渡された時からローカルタイム
+                        DateTime.Now,
+                        File.ReadAllText(file)
+                    );
+                    form.Show(this);
+                }
+            }
+        }
+#endif
+        #endregion
     }
 }
