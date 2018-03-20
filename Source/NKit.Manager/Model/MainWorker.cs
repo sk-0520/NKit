@@ -1,3 +1,10 @@
+//#define IGNORE_LOCK
+#if IGNORE_LOCK
+#   if DEBUG
+#   else
+#       error defined IGNORE_LOCK !
+#   endif
+#endif
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -410,6 +417,40 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             }
         }
 
+        public bool IsLockedSelectedWorkspace()
+        {
+            if(string.IsNullOrWhiteSpace(SelectedWorkspaceItem.DirectoryPath)) {
+                Logger.Debug("workspace dir path is empty");
+                return false;
+            }
+
+#if IGNORE_LOCK
+            var _ignoreLock=true;
+            if(_ignoreLock) {
+                return false;
+            }
+#endif
+
+            var path = Path.Combine(SelectedWorkspaceItem.DirectoryPath, Constants.WorkspaceLockFile);
+            return File.Exists(path);
+        }
+
+        public bool RemoveSelectedWorkspaceLockFile()
+        {
+            var path = Path.Combine(SelectedWorkspaceItem.DirectoryPath, Constants.WorkspaceLockFile);
+            if(!File.Exists(path)) {
+                Logger.Information("not found lock file");
+                return true;
+            }
+            try {
+                File.Delete(path);
+                return true;
+            } catch(IOException ex) {
+                Logger.Information(ex);
+            }
+            return false;
+        }
+
         public void LoadSelectedWorkspace()
         {
             if(string.IsNullOrWhiteSpace(SelectedWorkspaceItem.DirectoryPath)) {
@@ -424,6 +465,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                 Logger.Error(ex);
                 Logger.Warning("drive!");
                 return;
+            }
+            var lockFilePath = Path.Combine(SelectedWorkspaceItem.DirectoryPath, Constants.WorkspaceLockFile);
+            using(File.Create(lockFilePath)) {
+                Logger.Information("lock file created");
             }
             Directory.CreateDirectory(Path.Combine(workspaceDirPath, CommonUtility.WorkspaceSettingDirectoryName));
             Directory.CreateDirectory(Path.Combine(workspaceDirPath, CommonUtility.WorkspaceLogDirectoryName));
@@ -570,6 +615,13 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             if(ActiveWorkspace.LogWriter != null) {
                 LogManager.DetachOutputWriter(ActiveWorkspace.LogWriter);
                 ActiveWorkspace.LogWriter.Dispose();
+            }
+
+            var lockFilePath = Path.Combine(SelectedWorkspaceItem.DirectoryPath, Constants.WorkspaceLockFile);
+            try {
+                File.Delete(lockFilePath);
+            } catch(IOException ex) {
+                Logger.Error(ex);
             }
         }
 
