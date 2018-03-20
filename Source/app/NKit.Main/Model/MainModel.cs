@@ -7,10 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Main.Model.Capture;
+using ContentTypeTextNet.NKit.Main.Model.Cli;
 using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
 using ContentTypeTextNet.NKit.Main.Model.NKit;
-using ContentTypeTextNet.NKit.Main.Model.System;
+using ContentTypeTextNet.NKit.Main.Model.SystemEnvironment;
 using ContentTypeTextNet.NKit.Setting;
 using ContentTypeTextNet.NKit.Utility.Model;
 using Prism.Mvvm;
@@ -30,7 +31,8 @@ namespace ContentTypeTextNet.NKit.Main.Model
         public FinderManagerModel FinderManager { get; private set; }
         public FileManagerModel FileManager { get; private set; }
         public CaptureManagerModel CaptureManager { get; private set; }
-        public SystemManagerModel SystemManager { get; private set; }
+        public SystemEnvironmentManagerModel SystemEnvironmentManager { get; private set; }
+        public CliManagerModel CliManager { get; private set; }
 
         LogSwitcher LogSwitcher { get; set; }
 
@@ -59,8 +61,8 @@ namespace ContentTypeTextNet.NKit.Main.Model
             FinderManager = new FinderManagerModel(Setting);
             FileManager = new FileManagerModel(Setting);
             CaptureManager = new CaptureManagerModel(Setting);
-            SystemManager = new SystemManagerModel(Setting);
-
+            SystemEnvironmentManager = new SystemEnvironmentManagerModel(Setting);
+            CliManager = new CliManagerModel(Setting);
 
 #if DEBUG
             IsInitialized = true;

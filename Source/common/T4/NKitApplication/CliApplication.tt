@@ -44,10 +44,10 @@ namespace <#= defaultNamespace #>
                 var result = model.Run(CancellationToken.None);
 
                 logger.Information($"RESULT STATUS =================");
-                logger.Information($"{model.StartTimestamp}");
-                logger.Information($"{model.PreparationSpan}");
-                logger.Information($"{model.EndTimestamp}");
-                logger.Information($"{model.EndTimestamp - model.StartTimestamp}");
+                logger.Information($"{model.StartUtcTimestamp}");
+                logger.Information($"{model.PreparateSpan}");
+                logger.Information($"{model.EndUtcTimestamp}");
+                logger.Information($"{model.EndUtcTimestamp - model.StartUtcTimestamp}");
                 logger.Information($"{model.RunState}");
                 logger.Information($"{result}");
 

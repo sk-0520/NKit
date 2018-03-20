@@ -87,7 +87,7 @@ namespace ContentTypeTextNet.NKit.Common
         #region function
 
         [OperationContract]
-        void Write(DateTime timestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int processId, int theadId, string callerMemberName, string callerFileName, int callerLineNumber);
+        void Write(DateTime utcTimestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int processId, int theadId, string callerMemberName, string callerFileName, int callerLineNumber);
 
         #endregion
     }

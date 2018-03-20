@@ -159,11 +159,11 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         public void Write(NKitLogKind logKind, string subject, string message, string detail, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
-            var timestamp = DateTime.Now;
+            var utcTimestamp = DateTime.UtcNow;
             var threadid = Thread.CurrentThread.ManagedThreadId;
             var processId = Process.GetCurrentProcess().Id;
 
-            Host.Write(timestamp, SenderApplication, logKind, subject, message, detail, processId, threadid, callerMemberName, callerFilePath, callerLineNumber);
+            Host.Write(utcTimestamp, SenderApplication, logKind, subject, message, detail, processId, threadid, callerMemberName, callerFilePath, callerLineNumber);
         }
 
 
@@ -189,24 +189,24 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         public void DoSwitch(NKitTalkerClientBase client, TalkerSwicthDelegate talker, LocalSwicthDelegate local)
         {
-            var timestamp = DateTime.Now;
+            var utcTimestamp = DateTime.UtcNow;
             Exception talkerException = null;
 
             if(client != null) {
-                if(LastErrorTimestamp + RetrySpan < timestamp) {
+                if(LastErrorTimestamp + RetrySpan < utcTimestamp) {
                     try {
-                        talker(timestamp);
+                        talker(utcTimestamp);
                         return;
                     } catch(CommunicationException ex) {
                         talkerException = ex;
                     }
-                    LastErrorTimestamp = timestamp;
+                    LastErrorTimestamp = utcTimestamp;
                 }
             }
 
             // WCFが死んだか、単体で動いている場合
             if(client == null || talkerException != null) {
-                local(timestamp, talkerException);
+                local(utcTimestamp, talkerException);
             }
         }
 

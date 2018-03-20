@@ -97,9 +97,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         }
 
 
-        static void DevelopCore(Image image, DateTime timestamp, DirectoryInfo saveDirectory, SaveImageParameter parameter)
+        static void DevelopCore(Image image, DateTime utcTimestamp, DirectoryInfo saveDirectory, SaveImageParameter parameter)
         {
-            Debug.Assert(timestamp.Kind == DateTimeKind.Utc);
+            Debug.Assert(utcTimestamp.Kind == DateTimeKind.Utc);
 
             var info = GetSaveFormatInfo(parameter.ImageKind);
 
@@ -107,7 +107,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 ["EXT"] = info.ext,
             };
 
-            var fileName = CommonUtility.ReplaceNKitText(parameter.FileNameFormat, timestamp, map);
+            var fileName = CommonUtility.ReplaceNKitText(parameter.FileNameFormat, utcTimestamp, map);
             var filePath = Path.Combine(saveDirectory.FullName, fileName);
             if(parameter.Size.Width == 0 || parameter.Size.Height == 0) {
                 image.Save(filePath, info.format);
@@ -132,14 +132,14 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
                 Clipboard.SetImage(image);
             }
             if(Bag.SaveDirectory != null) {
-                var timestamp = DateTime.UtcNow;
+                var utcTimestamp = DateTime.UtcNow;
                 if(Bag.Image.IsEnabled) {
                     Logger.Information("save image");
-                    DevelopCore(image, timestamp, Bag.SaveDirectory, Bag.Image);
+                    DevelopCore(image, utcTimestamp, Bag.SaveDirectory, Bag.Image);
                 }
                 if(Bag.Thumbnail.IsEnabled) {
                     Logger.Information("save thumbnail");
-                    DevelopCore(image, timestamp, Bag.SaveDirectory, Bag.Thumbnail);
+                    DevelopCore(image, utcTimestamp, Bag.SaveDirectory, Bag.Thumbnail);
                 }
             }
 

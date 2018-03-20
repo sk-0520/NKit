@@ -30,12 +30,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting
         /// <summary>
         /// 作成日時。
         /// </summary>
-        DateTime CreatedTimestamp { get; }
+        DateTime CreatedUtcTimestamp { get; }
         /// <summary>
         /// 最終使用日時。
         /// <para>使用開始日時となる。</para>
         /// </summary>
-        DateTime UpdatedTimestamp { get; }
+        DateTime UpdatedUtcTimestamp { get; }
 
         #endregion
     }
@@ -56,9 +56,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Workspace.Setting
 
 
         [DataMember]
-        public DateTime CreatedTimestamp { get; set; }
+        public DateTime CreatedUtcTimestamp { get; set; }
         [DataMember]
-        public DateTime UpdatedTimestamp { get; set; }
+        public DateTime UpdatedUtcTimestamp { get; set; }
 
         #endregion
     }

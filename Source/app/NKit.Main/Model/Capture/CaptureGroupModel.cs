@@ -128,7 +128,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             var baseDirectory = GetCaptureBaseDirectory();
             CurrentCaptureDirectory = baseDirectory.CreateSubdirectory(CaptureSubDirectoryNamePrefix + DateTime.UtcNow.ToString("yyyyMMddHHmmss"));
 
-            var id = DateTime.Now.ToFileTime().ToString();
+            var id = DateTime.UtcNow.ToFileTime().ToString();
             SavedEventName = $"cttn-nkit-capture-save-{id}";
             SaveNoticeEvent = new EventWaitHandle(false, EventResetMode.AutoReset, SavedEventName);
 

@@ -116,6 +116,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                 var path = commandLine.GetValue("log-dir");
                 if(!string.IsNullOrWhiteSpace(path)) {
                     var dir = Directory.CreateDirectory(path);
+                    // こいつはローカル時間でいい
                     outputLogPath = Path.Combine(dir.FullName, DateTime.Now.ToString("yyyy-MM-dd_hhmmss") + ".log");
                     var writer = File.CreateText(outputLogPath);
                     writer.AutoFlush = true;
@@ -176,7 +177,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             InitializeLogger(commandLine);
             InitializeEnvironmentVariable(commandLine);
 
-            var baseId = DateTime.Now.ToFileTime();
+            var baseId = DateTime.UtcNow.ToFileTime();
             ActiveWorkspace.ApplicationId = $"NKIT_{baseId}_ID";
             SetCurrentProcessExplicitAppUserModelID(ActiveWorkspace.ApplicationId);
         }
@@ -196,7 +197,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                             ManagerSetting = (ManagerSetting)serializer.ReadObject(reader);
                             IsUpdatedFirstExecute = ManagerSetting.LastExecuteVersion < currentVersion;
                             ManagerSetting.LastExecuteVersion = currentVersion;
-                            ManagerSetting.LastExecuteTimestamp = currentTimestamp;
+                            ManagerSetting.LastExecuteUtcTimestamp = currentTimestamp;
                             ManagerSetting.ExecuteCount += 1;
                             IsFirstExecute = false;
                             return;
@@ -215,9 +216,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                 Accepted = false,
                 ExecuteCount = 1,
                 FirstExecuteVersion = currentVersion,
-                FirstExecuteTimestamp = currentTimestamp,
+                FirstExecuteUtcTimestamp = currentTimestamp,
                 LastExecuteVersion = currentVersion,
-                LastExecuteTimestamp = currentTimestamp,
+                LastExecuteUtcTimestamp = currentTimestamp,
             };
             IsFirstExecute = true;
         }
@@ -278,7 +279,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             }
 
             var items = ManagerSetting.Workspace.Items
-                .OrderByDescending(i => i.UpdatedTimestamp)
+                .OrderByDescending(i => i.UpdatedUtcTimestamp)
                 .Select(i => new CustomDisplayItem<WorkspaceItemSetting>(i) {
                     CustomDisplayText = v => v.Name
                 })
@@ -337,7 +338,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                 Debug.Assert(SelectedWorkspaceItem == null);
                 // 新規作成
                 var item = new WorkspaceItemSetting() {
-                    CreatedTimestamp = currentTimestamp,
+                    CreatedUtcTimestamp = currentTimestamp,
                 };
 
                 var items = ManagerSetting.Workspace.Items.ToList();
@@ -352,7 +353,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
             SelectedWorkspaceItem.Name = name;
             SelectedWorkspaceItem.DirectoryPath = directoryPath;
-            SelectedWorkspaceItem.UpdatedTimestamp = currentTimestamp;
+            SelectedWorkspaceItem.UpdatedUtcTimestamp = currentTimestamp;
             SelectedWorkspaceItem.Logging = logging;
 
             WorkspaceState = WorkspaceState.Selecting;
@@ -430,6 +431,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
             // ワークスペースにログ出力開始
             if(SelectedWorkspaceItem.Logging) {
+                // こいつはローカル時間でいい
                 ActiveWorkspace.LogFilePath = Path.Combine(workspaceDirPath, CommonUtility.WorkspaceLogDirectoryName, DateTime.Now.ToString("yyyy-MM-dd_hhmmss") + ".log");
                 ActiveWorkspace.LogWriter = File.CreateText(ActiveWorkspace.LogFilePath);
                 LogManager.AttachOutputWriter(ActiveWorkspace.LogWriter, true);
@@ -444,7 +446,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             ManagerSetting.Workspace.LastUseWorkspaceId = SelectedWorkspaceItem.Id;
 
             // 起動処理
-            var aboutId = DateTime.Now.ToFileTime().ToString();
+            var aboutId = DateTime.UtcNow.ToFileTime().ToString();
             ActiveWorkspace.BaseId = aboutId;
             ActiveWorkspace.ServiceUri = new Uri($"net.pipe://localhost/cttn-nkit-{aboutId}");
             ActiveWorkspace.GroupSuicideEventName = $"cttn-nkit-group-suicide-{aboutId}";

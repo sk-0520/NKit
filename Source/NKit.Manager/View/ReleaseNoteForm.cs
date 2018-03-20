@@ -26,9 +26,16 @@ namespace ContentTypeTextNet.NKit.Manager.View
         public Uri ReleaseNoteUri { get; set; }
         public Uri IssueBaseUri { get; set; }
 
+        public Action ExecuteUpdateAction { get; set; }
+
         #endregion
 
         #region function
+
+        public void SetUpdatable(bool canUpdate)
+        {
+            this.commandUpdate.Enabled = canUpdate;
+        }
 
         public void SetReleaseNote(Version version, string releaseHash, DateTime releaseTimestamp, string releaseNoteValue)
         {
@@ -46,6 +53,11 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private void commandClose_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void commandUpdate_Click(object sender, EventArgs e)
+        {
+            ExecuteUpdateAction?.Invoke();
         }
     }
 }

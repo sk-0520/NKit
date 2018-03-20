@@ -57,7 +57,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
         {
             var combinedUri = CombineUri(baseUri, hierarchies);
             var uri = Constants.UpdateCheckUriAppendRandom
-                ? new Uri(combinedUri.ToString().TrimEnd('/') + $"?{DateTime.Now.ToFileTime()}")
+                ? new Uri(combinedUri.ToString().TrimEnd('/') + $"?{DateTime.UtcNow.ToFileTime()}")
                 : combinedUri
             ;
 

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Setting;
 
-namespace ContentTypeTextNet.NKit.Main.Model.System
+namespace ContentTypeTextNet.NKit.Main.Model.SystemEnvironment
 {
-    public class SystemManagerModel : ManagerModelBase
+    public class SystemEnvironmentManagerModel : ManagerModelBase
     {
-        public SystemManagerModel(MainSetting setting)
+        public SystemEnvironmentManagerModel(MainSetting setting)
             : base(setting)
         { }
     }

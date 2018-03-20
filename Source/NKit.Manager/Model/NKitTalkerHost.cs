@@ -294,7 +294,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         #region property
 
-        public DateTime Timestamp { get; set; }
+        public DateTime UtcTimestamp { get; set; }
 
         public NKitLogKind LogKind { get; set; }
         public string Subject { get; set; }
@@ -324,11 +324,11 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         #region function
 
-        private void OnWrite(DateTime timestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int processId, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
+        private void OnWrite(DateTime utcTimestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int processId, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
             if(LoggingWrite != null) {
                 var e = new TalkLoggingWriteEventArgs(senderApplication) {
-                    Timestamp = timestamp,
+                    UtcTimestamp = utcTimestamp,
                     LogKind = logKind,
                     Subject = subject,
                     Message = message,

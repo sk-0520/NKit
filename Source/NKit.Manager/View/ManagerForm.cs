@@ -155,9 +155,11 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 ReleaseNoteForm = new ReleaseNoteForm();
                 ReleaseNoteForm.IssueBaseUri = Constants.IssuesBaseUri;
                 ReleaseNoteForm.FormClosed += ReleaseNoteForm_FormClosed;
+                ReleaseNoteForm.ExecuteUpdateAction = this.commandExecuteUpdate.PerformClick;
             }
 
             ReleaseNoteForm.ReleaseNoteUri = Worker.ReleaseNoteUri;
+            ReleaseNoteForm.SetUpdatable(Worker.WorkspaceState != WorkspaceState.Updating);
             ReleaseNoteForm.SetReleaseNote(Worker.NewVersion, Worker.ReleaseHash, Worker.ReleaseTimestamp, Worker.ReleaseNoteValue);
             ReleaseNoteForm.Show(this);
 
@@ -267,6 +269,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 }
                 TopMost = false;
                 TopMost = true;
+                TopMost = false;
             }));
         }
         private void Worker_OutputLog(object sender, LogEventArgs e)
@@ -314,6 +317,10 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             var execEvent = new AutoResetEvent(false);
 
+            if(ReleaseNoteForm != null) {
+                ReleaseNoteForm.SetUpdatable(false);
+            }
+
             var task = Worker.ExecuteUpdateAsync(execEvent);
 
             // 向こうから非同期処理完了前に制御が帰ってきたらコントロール系を更新
@@ -321,6 +328,11 @@ namespace ContentTypeTextNet.NKit.Manager.View
             RefreshControls();
 
             var updated = await task;
+
+            if(ReleaseNoteForm != null) {
+                ReleaseNoteForm.SetUpdatable(true);
+            }
+
             if(!updated) {
                 // あかなんだ
                 RefreshControls();
@@ -347,6 +359,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private void ReleaseNoteForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             ReleaseNoteForm.FormClosed -= ReleaseNoteForm_FormClosed;
+            ReleaseNoteForm.ExecuteUpdateAction = null;
             ReleaseNoteForm.Dispose();
             ReleaseNoteForm = null;
         }

@@ -30,7 +30,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         /// <summary>
         /// 初回使用日時。
         /// </summary>
-        DateTime FirstExecuteTimestamp { get; }
+        DateTime FirstExecuteUtcTimestamp { get; }
         /// <summary>
         /// 最終使用バージョン。
         /// </summary>
@@ -38,7 +38,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         /// <summary>
         /// 最終使用日時。
         /// </summary>
-        DateTime LastExecuteTimestamp { get; }
+        DateTime LastExecuteUtcTimestamp { get; }
         /// <summary>
         /// 実行回数。
         /// </summary>
@@ -68,10 +68,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         public bool Accepted { get; set; }
         [DataMember]
         public Version FirstExecuteVersion { get; set; }
-        public DateTime FirstExecuteTimestamp { get; set; }
+        public DateTime FirstExecuteUtcTimestamp { get; set; }
         [DataMember]
         public Version LastExecuteVersion { get; set; }
-        public DateTime LastExecuteTimestamp { get; set; }
+        public DateTime LastExecuteUtcTimestamp { get; set; }
         [DataMember]
         public int ExecuteCount { get; set; }
 

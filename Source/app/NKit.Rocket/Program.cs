@@ -39,16 +39,16 @@ namespace ContentTypeTextNet.NKit.Rocket
                 var logger = Log.CreateLogger();
 
                 logger.Information("!!START!!");
-                logger.Information($"this template compiled: 2018-03-14 13:02:42Z UTC");
+                logger.Information($"this template compiled: 2018-03-20 02:36:25Z UTC");
 
                 var model = new ContentTypeTextNet.NKit.Rocket.Model.RocketModel(args);
                 var result = model.Run(CancellationToken.None);
 
                 logger.Information($"RESULT STATUS =================");
-                logger.Information($"{model.StartTimestamp}");
-                logger.Information($"{model.PreparationSpan}");
-                logger.Information($"{model.EndTimestamp}");
-                logger.Information($"{model.EndTimestamp - model.StartTimestamp}");
+                logger.Information($"{model.StartUtcTimestamp}");
+                logger.Information($"{model.PreparateSpan}");
+                logger.Information($"{model.EndUtcTimestamp}");
+                logger.Information($"{model.EndUtcTimestamp - model.StartUtcTimestamp}");
                 logger.Information($"{model.RunState}");
                 logger.Information($"{result}");
 

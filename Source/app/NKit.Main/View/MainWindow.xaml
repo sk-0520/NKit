@@ -9,6 +9,9 @@
   xmlns:app_main_view_finder="clr-namespace:ContentTypeTextNet.NKit.Main.View.Finder"
   xmlns:app_main_view_capture="clr-namespace:ContentTypeTextNet.NKit.Main.View.Capture"
   xmlns:app_main_view_nkit="clr-namespace:ContentTypeTextNet.NKit.Main.View.NKit"
+  xmlns:app_main_view_file="clr-namespace:ContentTypeTextNet.NKit.Main.View.File"
+  xmlns:app_main_view_systemenv="clr-namespace:ContentTypeTextNet.NKit.Main.View.SystemEnvironment"
+  xmlns:app_main_view_cli="clr-namespace:ContentTypeTextNet.NKit.Main.View.Cli"
 
   Title="MainWindow"
   Width="640"
@@ -31,15 +34,19 @@
       </TabItem>
 
       <TabItem Header="file" DataContext="{Binding FileManager}">
-
+        <app_main_view_file:FileManagerControl />
       </TabItem>
 
       <TabItem Header="capture" DataContext="{Binding CaptureManager}">
         <app_main_view_capture:CaptureManagerControl />
       </TabItem>
 
-      <TabItem Header="system" DataContext="{Binding SystemManager}">
+      <TabItem Header="cli" DataContext="{Binding CliManager}">
+        <app_main_view_cli:CliManagerControl />
+      </TabItem>
 
+      <TabItem Header="system env" DataContext="{Binding SystemEnvironmentManager}">
+        <app_main_view_systemenv:SystemEnvironmentManagerControl />
       </TabItem>
 
       <TabItem Header="nkit" DataContext="{Binding NKitManager}">

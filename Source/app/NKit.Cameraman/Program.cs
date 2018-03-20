@@ -44,7 +44,7 @@ namespace ContentTypeTextNet.NKit.Cameraman
                 var logger = Log.CreateLogger();
 
                 logger.Information("!!START!!");
-                logger.Information($"this template compiled: 2018-03-15 05:55:44Z UTC");
+                logger.Information($"this template compiled: 2018-03-20 02:36:26Z UTC");
 
                 var model = new ContentTypeTextNet.NKit.Cameraman.Model.CameramanModel(args);
                 var form = new ContentTypeTextNet.NKit.Cameraman.View.InformationForm();
@@ -53,10 +53,10 @@ namespace ContentTypeTextNet.NKit.Cameraman
                                 model.Execute(form);
                 
 //                logger.Information($"RESULT STATUS =================");
-//                logger.Information($"{model.StartTimestamp}");
-//                logger.Information($"{model.PreparationSpan}");
-//                logger.Information($"{model.EndTimestamp}");
-//                logger.Information($"{model.EndTimestamp - model.StartTimestamp}");
+//                logger.Information($"{model.StartUtcTimestamp}");
+//                logger.Information($"{model.PreparateSpan}");
+//                logger.Information($"{model.EndUtcTimestamp}");
+//                logger.Information($"{model.EndUtcTimestamp - model.StartUtcTimestamp}");
 //                logger.Information($"{model.RunState}");
 //                logger.Information($"{result}");
 
