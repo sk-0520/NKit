@@ -27,6 +27,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestExecuteForm));
             this.commandExecute = new System.Windows.Forms.Button();
             this.commandClose = new System.Windows.Forms.Button();
             this.listApplications = new System.Windows.Forms.ListView();
@@ -88,6 +89,7 @@
             this.Controls.Add(this.listApplications);
             this.Controls.Add(this.commandClose);
             this.Controls.Add(this.commandExecute);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TestExecuteForm";
             this.Text = "TestExecuteForm";
             this.Shown += new System.EventHandler(this.TestExecuteForm_Shown);

@@ -28,6 +28,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManagerForm));
             this.selectWorkspace = new System.Windows.Forms.ComboBox();
             this.commandWorkspaceLoad = new System.Windows.Forms.Button();
             this.commandWorkspaceClose = new System.Windows.Forms.Button();
@@ -333,6 +334,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.Controls.Add(this.label3);
             this.Controls.Add(this.commandWorkspaceLoad);
             this.Controls.Add(this.selectWorkspace);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ManagerForm";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ManagerForm_FormClosing);

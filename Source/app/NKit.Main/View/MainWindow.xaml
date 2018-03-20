@@ -13,6 +13,8 @@
   xmlns:app_main_view_systemenv="clr-namespace:ContentTypeTextNet.NKit.Main.View.SystemEnvironment"
   xmlns:app_main_view_cli="clr-namespace:ContentTypeTextNet.NKit.Main.View.Cli"
 
+  Icon="/Resources/NKit.Main.ico"
+
   Title="MainWindow"
   Width="640"
   Height="480"

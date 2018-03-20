@@ -41,6 +41,9 @@
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\NKit.Cameraman.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ContentTypeTextNet.PInvoke, Version=1.0.6647.23837, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ContentTypeTextNet.PInvoke.1.0.0.32\lib\net46\ContentTypeTextNet.PInvoke.dll</HintPath>
@@ -134,6 +137,7 @@
     <Compile Include="View\WindowStatusControl.Designer.cs">
       <DependentUpon>WindowStatusControl.cs</DependentUpon>
     </Compile>
+    <Content Include="Resources\NKit.Cameraman.ico" />
     <EmbeddedResource Include="View\CameramanForm.resx">
       <DependentUpon>CameramanForm.cs</DependentUpon>
     </EmbeddedResource>
