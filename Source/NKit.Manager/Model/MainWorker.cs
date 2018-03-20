@@ -452,6 +452,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                 Logger.Warning("drive!");
                 return;
             }
+            var lockFilePath = Path.Combine(SelectedWorkspaceItem.DirectoryPath, Constants.WorkspaceLockFile);
+            using(File.Create(lockFilePath)) {
+                Logger.Information("lock file created");
+            }
             Directory.CreateDirectory(Path.Combine(workspaceDirPath, CommonUtility.WorkspaceSettingDirectoryName));
             Directory.CreateDirectory(Path.Combine(workspaceDirPath, CommonUtility.WorkspaceLogDirectoryName));
             Directory.CreateDirectory(Path.Combine(workspaceDirPath, CommonUtility.WorkspaceTemporaryDirectoryName));
@@ -597,6 +601,13 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             if(ActiveWorkspace.LogWriter != null) {
                 LogManager.DetachOutputWriter(ActiveWorkspace.LogWriter);
                 ActiveWorkspace.LogWriter.Dispose();
+            }
+
+            var lockFilePath = Path.Combine(SelectedWorkspaceItem.DirectoryPath, Constants.WorkspaceLockFile);
+            try {
+                File.Delete(lockFilePath);
+            } catch(IOException ex) {
+                Logger.Error(ex);
             }
         }
 
