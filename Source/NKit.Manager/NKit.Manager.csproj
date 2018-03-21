@@ -183,7 +183,7 @@
     <Content Include="doc\license\third-party.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\File\exclude\marked.js.txt" />
+    <Content Include="Resources\File\exclude\marked.js" />
     <Content Include="Resources\File\ReleaseNoteDocument.html">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
