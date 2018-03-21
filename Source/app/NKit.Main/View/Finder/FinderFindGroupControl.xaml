@@ -78,7 +78,7 @@
 
           <Label>type:</Label>
           <app_main_view_control:SearchPatternSelectControl SearchPatternKind="{Binding FileNameSearchPatternKind, Mode=TwoWay}" />
-          
+
           <CheckBox IsChecked="{Binding FindDotFile}">FindDotFile</CheckBox>
           <CheckBox IsChecked="{Binding FindFileNameOnly}">FindFileNameOnly</CheckBox>
 
@@ -92,7 +92,7 @@
             <Slider Grid.Column="0" Minimum="0" Maximum="9999999" Value="{Binding FileSizeLimitMaximum}"  />
             <TextBox Grid.Column="1" Text="{Binding FileSizeLimitMaximum}" />
           </Grid>
-          
+
           <Separator />
 
           <Expander IsExpanded="{Binding FindFileProperty}">
@@ -201,8 +201,9 @@
 
       <Grid x:Name="fileListPanel" Grid.Row="1">
         <Grid.RowDefinitions>
-          <RowDefinition Height="*" />
+          <RowDefinition Height="1*" />
           <RowDefinition Height="Auto" />
+          <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
         <ListView
@@ -225,6 +226,16 @@
             </i:EventTrigger>
             -->
           </i:Interaction.Triggers>
+          <ListView.Style>
+            <Style TargetType="ListView">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding ShowSelectedFileDetail}" Value="False">
+                  <Setter Property="Grid.RowSpan" Value="3" />
+                </DataTrigger>
+              </Style.Triggers>
+              <Setter Property="Grid.RowSpan" Value="1" />
+            </Style>
+          </ListView.Style>
           <ListView.ItemsPanel>
             <ItemsPanelTemplate>
               <VirtualizingStackPanel Orientation="Vertical" />
@@ -338,7 +349,7 @@
           </ListView.ContextMenu>
         </ListView>
 
-        <ContentControl Grid.Row="1" Visibility="{Binding ShowSelectedFileDetail, Converter={StaticResource BooleanToVisibilityConverter}}" Height="{Binding ActualHeight, ElementName=fileListPanel, Converter={StaticResource DoubleToParameterPercentConverter}, ConverterParameter=0.5}">
+        <ContentControl Grid.Row="2" Visibility="{Binding ShowSelectedFileDetail, Converter={StaticResource BooleanToVisibilityConverter}}" >
           <ContentControl.Style>
             <Style TargetType="ContentControl">
               <Style.Triggers>
@@ -360,6 +371,8 @@
             </Style>
           </ContentControl.Style>
         </ContentControl>
+
+        <GridSplitter Grid.Row="1" Style="{StaticResource DefaultHorizonGridSplitter}" Visibility="{Binding ShowSelectedFileDetail, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
       </Grid>
     </Grid>
