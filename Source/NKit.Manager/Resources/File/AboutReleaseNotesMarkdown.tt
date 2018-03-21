@@ -1,0 +1,32 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".html" encoding="utf-8" #>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <script>
+        <#@ include file="$(ProjectDir)\Resources\File\exclude\marked.js.txt" #>
+        </script>
+    </head>
+    <body>
+        <h1>
+            <strong>${VERSION}</strong>
+            <time>${TIMESTAMP}</time>
+        </h1>
+        <p>
+            <strong>${HASH}</strong>
+        </p>
+        <div id="view-content"></div>
+        <pre id="raw-content" style="display: none">${CONTENT}</pre>
+    </body>
+    <script>
+        var viewContent = document.getElementById('view-content');
+        var rawContent = document.getElementById('raw-content');
+        var makedMarkdownHtml = marked(rawContent.innerHTML);
+        viewContent.innerHTML = makedMarkdownHtml;
+    </script>
+</html>

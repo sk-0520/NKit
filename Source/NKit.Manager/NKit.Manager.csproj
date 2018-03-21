@@ -95,6 +95,7 @@
     <Compile Include="Model\MainWorker.cs" />
     <Compile Include="Model\AcceptVersion.cs" />
     <Compile Include="Model\NKitTalkerHost.cs" />
+    <Compile Include="Model\ReleaseNoteItem.cs" />
     <Compile Include="Model\SystemWebBrowserUtility.cs" />
     <Compile Include="Model\ThirdPartyLicense.cs" />
     <Compile Include="Model\Update\UpdateManager.cs" />
@@ -122,6 +123,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\ReleaseNoteControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="View\ReleaseNoteForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -180,6 +184,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\File\exclude\marked.js.txt" />
+    <Content Include="Resources\File\AboutReleaseNotesMarkdown.html">
+      <DependentUpon>AboutReleaseNotesMarkdown.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Content>
+    <Content Include="Resources\File\AboutReleaseNotesMarkdown.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AboutReleaseNotesMarkdown.html</LastGenOutput>
+    </Content>
     <Content Include="Resources\File\ReleaseNoteMarkdown.html">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
