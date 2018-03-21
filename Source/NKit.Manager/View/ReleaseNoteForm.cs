@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ContentTypeTextNet.NKit.Common;
 
 namespace ContentTypeTextNet.NKit.Manager.View
 {
@@ -21,6 +22,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             InitializeComponent();
 
             Font = SystemFonts.MessageBoxFont;
+            Text = CommonUtility.ReplaceWindowTitle(Text);
         }
 
         #region property

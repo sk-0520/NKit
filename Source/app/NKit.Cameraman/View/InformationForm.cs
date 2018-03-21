@@ -20,6 +20,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             InitializeComponent();
 
             Font = SystemFonts.MessageBoxFont;
+            Text = CommonUtility.ReplaceWindowTitle(Text);
         }
 
         #region property

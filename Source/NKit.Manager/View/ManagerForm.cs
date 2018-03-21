@@ -26,6 +26,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
             InitializeComponent();
 
             Font = SystemFonts.MessageBoxFont;
+            Text = CommonUtility.ReplaceWindowTitle(Text);
+
             this.notifyIcon.Icon = Icon;
 
             #region DEBUG

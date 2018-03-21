@@ -364,6 +364,15 @@ namespace ContentTypeTextNet.NKit.Common
             return ReplaceNKitTextCore(source, utcTimestamp, customMap);
         }
 
+        public static string ReplaceWindowTitle(string title)
+        {
+#if DEBUG || BETA
+            return $"[{BuildType}] {title}: {System.Diagnostics.FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion}";
+#else
+            return title;
+#endif
+        }
+
         #endregion
     }
 }

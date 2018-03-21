@@ -148,6 +148,7 @@
     <Compile Include="Model\UnitConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
+    <Compile Include="View\Attach\WindowTitleBehavior.cs" />
     <Compile Include="View\Converter\BinaryToTextConverter.cs" />
     <Compile Include="View\Converter\DoubleToParameterPercentConverter.cs" />
     <Compile Include="View\Converter\DoubleToPercentConverter.cs" />
