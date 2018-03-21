@@ -44,20 +44,22 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         DirectoryInfo CurrentCaptureDirectory { get; set; }
 
-        public ObservableCollection<CaptureImageModel> Items { get; } = new ObservableCollection<CaptureImageModel>();
+        public ObservableCollection<CaptureImageModel> Images { get; } = new ObservableCollection<CaptureImageModel>();
 
 
         #endregion
 
         #region function
 
+        bool IsEqualPath(string a, string b) => string.Equals(a, b, StringComparison.InvariantCultureIgnoreCase);
+        bool IsEqualImageData(string fileName, string directoryName, IReadOnlyCaptureImageSetting setting) => IsEqualPath(fileName, setting.FileName) && IsEqualPath(directoryName, setting.DirectoryName);
+
         CaptureImageModel CreateImageModel(FileInfo fileInfo)
         {
-            bool IsEqualPath(string a, string b) => string.Equals(a, b, StringComparison.InvariantCultureIgnoreCase);
 
             var fileDirName = fileInfo.Directory.Name;
             var imageSetting = GroupSetting.Images
-                .FirstOrDefault(i => IsEqualPath(i.FileName, fileInfo.Name) && IsEqualPath(i.DirectoryName, fileDirName))
+                .FirstOrDefault(i => IsEqualImageData(fileInfo.Name, fileDirName, i))
             ;
             var hasImageSetting = imageSetting != null;
             if(!hasImageSetting) {
@@ -76,7 +78,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             return result;
         }
 
-        DirectoryInfo GetCaptureBaseDirectory()
+        DirectoryInfo GetCaptureImageBaseDirectory()
         {
             var workspaceDirPath = Environment.ExpandEnvironmentVariables(StartupOptions.WorkspacePath);
             var dirPath = Path.Combine(workspaceDirPath, "capture", GroupSetting.Id.ToString());
@@ -93,17 +95,17 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         public void InitializeCaptureFiles()
         {
             //TODO: 例外対応
-            var captureDirs = GetCaptureBaseDirectory()
+            var captureDirs = GetCaptureImageBaseDirectory()
                 .EnumerateDirectories(CaptureSubDirectoryNamePrefix + "*")
                 .OrderBy(d => d.Name)
             ;
-            Items.Clear();
+            Images.Clear();
             foreach(var captureDir in captureDirs) {
                 var files = GetCaptureFiles(captureDir)
                     .OrderBy(f => f.Name)
                 ;
                 foreach(var file in files) {
-                    Items.Add(CreateImageModel(file));
+                    Images.Add(CreateImageModel(file));
                 }
             }
         }
@@ -111,7 +113,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         void AddCaptureFiles()
         {
             var files = GetCaptureFiles(CurrentCaptureDirectory);
-            var addFileItems = Items
+            var addFileItems = Images
                 .Concat(files.Select(f => CreateImageModel(f)))
                 .GroupBy(i => i.ImageFile.Name)
                 .Where(g => g.Count() == 1)
@@ -120,19 +122,45 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 .ToList()
             ;
             foreach(var addFileItem in addFileItems) {
-                Items.Add(addFileItem);
+                Images.Add(addFileItem);
             }
         }
 
         public void RemoveAllCaptureFiles()
         {
-            var dir = GetCaptureBaseDirectory();
+            var dir = GetCaptureImageBaseDirectory();
             dir.Delete(true);
         }
 
         public void CancelCapture()
         {
             Manager.CancelCapture();
+        }
+
+        bool RemoveImage(CaptureImageModel image)
+        {
+            Images.Remove(image);
+
+            var imageSetting = GroupSetting.Images
+                .FirstOrDefault(i => IsEqualImageData(image.ImageFile.Name, image.ImageFile.Directory.Name, i))
+            ;
+            GroupSetting.Images.Remove(imageSetting);
+
+            using(image) {
+                try {
+                    image.ImageFile.Delete();
+                    return true;
+                } catch(IOException ex) {
+                    Logger.Error(ex);
+                }
+                return false;
+            }
+        }
+
+        public bool RemoveImageAt(int index)
+        {
+            var image = Images[index];
+            return RemoveImage(image);
         }
 
         #endregion
@@ -143,7 +171,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         protected override Task<PreparaResult<None>> PreparateCoreAsync(CancellationToken cancelToken)
         {
-            var baseDirectory = GetCaptureBaseDirectory();
+            var baseDirectory = GetCaptureImageBaseDirectory();
             CurrentCaptureDirectory = baseDirectory.CreateSubdirectory(CaptureSubDirectoryNamePrefix + DateTime.UtcNow.ToString("yyyyMMddHHmmss"));
 
             var id = DateTime.UtcNow.ToFileTime().ToString();

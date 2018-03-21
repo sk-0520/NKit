@@ -103,7 +103,7 @@
           </ComboBox>
         </ToolBar>
 
-        <ListBox x:Name="captureItemsContainer" Grid.Row="1" VirtualizingPanel.ScrollUnit="Pixel" ScrollViewer.CanContentScroll="True" ItemsSource="{Binding Items}">
+        <ListBox x:Name="captureItemsContainer" Grid.Row="1" VirtualizingPanel.ScrollUnit="Pixel" ScrollViewer.CanContentScroll="True" ItemsSource="{Binding ImageItems}">
           <ListBox.ItemTemplate>
             <DataTemplate>
               <StackPanel Orientation="Horizontal">
@@ -117,6 +117,7 @@
                   </TextBlock>
                   <TextBlock Text="{Binding CaptureUtcTimestamp, Converter={StaticResource UtcToLocalTimestampConverter}}" />
                   <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" />
+                  <Button Command="{Binding DataContext.RemoveImageCommand ,ElementName=root}" CommandParameter="{Binding}">remove</Button>
                 </StackPanel>
               </StackPanel>
             </DataTemplate>
