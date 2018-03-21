@@ -121,10 +121,13 @@
   <data name="File_AcceptMessage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\file\acceptmessage.rtf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="File_ReleaseNoteDocument" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\File\ReleaseNoteDocument.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="File_ReleaseNoteLatest" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\File\ReleaseNoteLatest.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="File_ReleaseNoteLayout" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\File\ReleaseNoteLayout.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;shift_jis</value>
+    <value>..\Resources\File\ReleaseNoteLayout.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>

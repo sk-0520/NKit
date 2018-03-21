@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -19,7 +21,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         #region function
 
-        string ReplaceReleaceNote(string rawValue)
+        string ReplaceReleaceNoteContent(string rawValue)
         {
             var issueRegex = new Regex(@"(?<HASH>#)(?<NUMBER>\d+)");
             var issueReplaced = issueRegex.Replace(rawValue, m => {
@@ -32,19 +34,41 @@ namespace ContentTypeTextNet.NKit.Manager.View
             return issueReplaced;
         }
 
-        public void SetReleaseNote(string title, IEnumerable<ReleaseNoteItem> items)
+        string ReplaceReleaseNoteItem(ReleaseNoteItem item)
         {
-            //var replacedReleaceNoteValue = ReplaceReleaceNote(releaseNoteValue);
-            //var html = Properties.Resources.File_ReleaseNoteMarkdown
-            //    .Replace("${VERSION}", version.ToString())
-            //    .Replace("${TIMESTAMP}", releaseTimestamp.ToString("u"))
-            //    .Replace("${HASH}", releaseHash)
-            //    .Replace("${CONTENT}", replacedReleaceNoteValue)
-            //;
-            //this.viewReleaseNote.DocumentStream = new MemoryStream(Encoding.UTF8.GetBytes(html));
+            var replacedContent = ReplaceReleaceNoteContent(item.Content);
+            var html = Properties.Resources.File_ReleaseNoteLayout
+                .Replace("${VERSION}", item.Version.ToString())
+                .Replace("${TIMESTAMP}", item.Timestamp.ToString("u"))
+                .Replace("${HASH}", item.Hash)
+                .Replace("${CONTENT}", replacedContent)
+            ;
+            return html;
+        }
+
+        public void SetReleaseNotes(string title, IEnumerable<ReleaseNoteItem> items)
+        {
+            var releaseNoteContents = string.Join(Environment.NewLine, items.Select(i => ReplaceReleaseNoteItem(i)));
+
+            var html = Properties.Resources.File_ReleaseNoteDocument
+                .Replace("${TITLE}", title)
+                .Replace("${ALL-CONTENTS}", releaseNoteContents)
+            ;
+            DocumentStream = new MemoryStream(Encoding.UTF8.GetBytes(html));
         }
 
 
         #endregion
+
+        protected override void OnNavigating(WebBrowserNavigatingEventArgs e)
+        {
+            var urlText = e.Url.ToString();
+            if(urlText.StartsWith(IssueBaseUri.ToString(), StringComparison.InvariantCultureIgnoreCase)) {
+                Process.Start(urlText);
+                e.Cancel = true;
+            }
+
+            base.OnNavigating(e);
+        }
     }
 }
