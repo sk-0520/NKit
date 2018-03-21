@@ -41,7 +41,7 @@
         <app_main_view_finder:FinderManagerControl />
       </TabItem>
 
-      <TabItem Header="file" DataContext="{Binding FileManager}">
+      <TabItem Header="file" DataContext="{Binding FileManager}" IsEnabled="False">
         <app_main_view_file:FileManagerControl />
       </TabItem>
 
@@ -49,11 +49,11 @@
         <app_main_view_capture:CaptureManagerControl />
       </TabItem>
 
-      <TabItem Header="cli" DataContext="{Binding CliManager}">
+      <TabItem Header="cli" DataContext="{Binding CliManager}" IsEnabled="False">
         <app_main_view_cli:CliManagerControl />
       </TabItem>
 
-      <TabItem Header="system env" DataContext="{Binding SystemEnvironmentManager}">
+      <TabItem Header="system env" DataContext="{Binding SystemEnvironmentManager}" IsEnabled="False">
         <app_main_view_systemenv:SystemEnvironmentManagerControl />
       </TabItem>
 
