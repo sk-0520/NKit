@@ -33,15 +33,22 @@
             this.commandClose = new System.Windows.Forms.Button();
             this.tabInformation = new System.Windows.Forms.TabControl();
             this.tabInformationPageThirdParty = new System.Windows.Forms.TabPage();
-            this.thirdPartyLicenseControl1 = new ContentTypeTextNet.NKit.Manager.View.ThirdPartyLicenseControl();
             this.tabInformationPageReleaseNote = new System.Windows.Forms.TabPage();
-            this.releaseNoteControl1 = new ContentTypeTextNet.NKit.Manager.View.ReleaseNoteControl();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.commandData = new System.Windows.Forms.Button();
+            this.commandApp = new System.Windows.Forms.Button();
+            this.linkForum = new System.Windows.Forms.LinkLabel();
+            this.linkDevelopment = new System.Windows.Forms.LinkLabel();
+            this.linkWebsite = new System.Windows.Forms.LinkLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.viewVersion = new System.Windows.Forms.TextBox();
+            this.thirdPartyLicenseControl1 = new ContentTypeTextNet.NKit.Manager.View.ThirdPartyLicenseControl();
+            this.releaseNoteControl1 = new ContentTypeTextNet.NKit.Manager.View.ReleaseNoteControl();
+            this.commandVersionCopy = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.tabInformation.SuspendLayout();
@@ -116,14 +123,6 @@
             this.tabInformationPageThirdParty.Text = "tabPage1";
             this.tabInformationPageThirdParty.UseVisualStyleBackColor = true;
             // 
-            // thirdPartyLicenseControl1
-            // 
-            this.thirdPartyLicenseControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.thirdPartyLicenseControl1.Location = new System.Drawing.Point(3, 3);
-            this.thirdPartyLicenseControl1.Name = "thirdPartyLicenseControl1";
-            this.thirdPartyLicenseControl1.Size = new System.Drawing.Size(297, 239);
-            this.thirdPartyLicenseControl1.TabIndex = 0;
-            // 
             // tabInformationPageReleaseNote
             // 
             this.tabInformationPageReleaseNote.Controls.Add(this.releaseNoteControl1);
@@ -135,18 +134,15 @@
             this.tabInformationPageReleaseNote.Text = "tabPage2";
             this.tabInformationPageReleaseNote.UseVisualStyleBackColor = true;
             // 
-            // releaseNoteControl1
-            // 
-            this.releaseNoteControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.releaseNoteControl1.IssueBaseUri = null;
-            this.releaseNoteControl1.Location = new System.Drawing.Point(3, 3);
-            this.releaseNoteControl1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.releaseNoteControl1.Name = "releaseNoteControl1";
-            this.releaseNoteControl1.Size = new System.Drawing.Size(297, 239);
-            this.releaseNoteControl1.TabIndex = 0;
-            // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.commandVersionCopy);
+            this.panel1.Controls.Add(this.viewVersion);
+            this.panel1.Controls.Add(this.commandData);
+            this.panel1.Controls.Add(this.commandApp);
+            this.panel1.Controls.Add(this.linkForum);
+            this.panel1.Controls.Add(this.linkDevelopment);
+            this.panel1.Controls.Add(this.linkWebsite);
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
@@ -154,10 +150,63 @@
             this.panel1.Size = new System.Drawing.Size(311, 271);
             this.panel1.TabIndex = 2;
             // 
+            // commandData
+            // 
+            this.commandData.Location = new System.Drawing.Point(221, 154);
+            this.commandData.Name = "commandData";
+            this.commandData.Size = new System.Drawing.Size(75, 23);
+            this.commandData.TabIndex = 2;
+            this.commandData.Text = "data";
+            this.commandData.UseVisualStyleBackColor = true;
+            this.commandData.Click += new System.EventHandler(this.commandData_Click);
+            // 
+            // commandApp
+            // 
+            this.commandApp.Location = new System.Drawing.Point(221, 125);
+            this.commandApp.Name = "commandApp";
+            this.commandApp.Size = new System.Drawing.Size(75, 23);
+            this.commandApp.TabIndex = 2;
+            this.commandApp.Text = "app";
+            this.commandApp.UseVisualStyleBackColor = true;
+            this.commandApp.Click += new System.EventHandler(this.commandApp_Click);
+            // 
+            // linkForum
+            // 
+            this.linkForum.AutoSize = true;
+            this.linkForum.Location = new System.Drawing.Point(219, 98);
+            this.linkForum.Name = "linkForum";
+            this.linkForum.Size = new System.Drawing.Size(34, 12);
+            this.linkForum.TabIndex = 1;
+            this.linkForum.TabStop = true;
+            this.linkForum.Text = "forum";
+            this.linkForum.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkForum_LinkClicked);
+            // 
+            // linkDevelopment
+            // 
+            this.linkDevelopment.AutoSize = true;
+            this.linkDevelopment.Location = new System.Drawing.Point(219, 63);
+            this.linkDevelopment.Name = "linkDevelopment";
+            this.linkDevelopment.Size = new System.Drawing.Size(69, 12);
+            this.linkDevelopment.TabIndex = 1;
+            this.linkDevelopment.TabStop = true;
+            this.linkDevelopment.Text = "development";
+            this.linkDevelopment.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkDevelopment_LinkClicked);
+            // 
+            // linkWebsite
+            // 
+            this.linkWebsite.AutoSize = true;
+            this.linkWebsite.Location = new System.Drawing.Point(219, 35);
+            this.linkWebsite.Name = "linkWebsite";
+            this.linkWebsite.Size = new System.Drawing.Size(48, 12);
+            this.linkWebsite.TabIndex = 1;
+            this.linkWebsite.TabStop = true;
+            this.linkWebsite.Text = "web site";
+            this.linkWebsite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkWebsite_LinkClicked);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::ContentTypeTextNet.NKit.Manager.Properties.Resources.NKit_Manager;
-            this.pictureBox1.Location = new System.Drawing.Point(33, 25);
+            this.pictureBox1.Location = new System.Drawing.Point(6, 6);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(192, 192);
@@ -213,6 +262,42 @@
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // viewVersion
+            // 
+            this.viewVersion.Location = new System.Drawing.Point(22, 214);
+            this.viewVersion.Name = "viewVersion";
+            this.viewVersion.ReadOnly = true;
+            this.viewVersion.Size = new System.Drawing.Size(155, 19);
+            this.viewVersion.TabIndex = 3;
+            // 
+            // thirdPartyLicenseControl1
+            // 
+            this.thirdPartyLicenseControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.thirdPartyLicenseControl1.Location = new System.Drawing.Point(3, 3);
+            this.thirdPartyLicenseControl1.Name = "thirdPartyLicenseControl1";
+            this.thirdPartyLicenseControl1.Size = new System.Drawing.Size(297, 239);
+            this.thirdPartyLicenseControl1.TabIndex = 0;
+            // 
+            // releaseNoteControl1
+            // 
+            this.releaseNoteControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.releaseNoteControl1.IssueBaseUri = null;
+            this.releaseNoteControl1.Location = new System.Drawing.Point(3, 3);
+            this.releaseNoteControl1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.releaseNoteControl1.Name = "releaseNoteControl1";
+            this.releaseNoteControl1.Size = new System.Drawing.Size(297, 239);
+            this.releaseNoteControl1.TabIndex = 0;
+            // 
+            // commandVersionCopy
+            // 
+            this.commandVersionCopy.Location = new System.Drawing.Point(200, 226);
+            this.commandVersionCopy.Name = "commandVersionCopy";
+            this.commandVersionCopy.Size = new System.Drawing.Size(75, 23);
+            this.commandVersionCopy.TabIndex = 4;
+            this.commandVersionCopy.Text = "copy";
+            this.commandVersionCopy.UseVisualStyleBackColor = true;
+            this.commandVersionCopy.Click += new System.EventHandler(this.commandVersionCopy_Click);
+            // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -230,6 +315,7 @@
             this.tabInformationPageThirdParty.ResumeLayout(false);
             this.tabInformationPageReleaseNote.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
             this.toolStripContainer1.BottomToolStripPanel.PerformLayout();
@@ -256,5 +342,12 @@
         private ThirdPartyLicenseControl thirdPartyLicenseControl1;
         private ReleaseNoteControl releaseNoteControl1;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.LinkLabel linkForum;
+        private System.Windows.Forms.LinkLabel linkDevelopment;
+        private System.Windows.Forms.LinkLabel linkWebsite;
+        private System.Windows.Forms.Button commandData;
+        private System.Windows.Forms.Button commandApp;
+        private System.Windows.Forms.TextBox viewVersion;
+        private System.Windows.Forms.Button commandVersionCopy;
     }
 }
