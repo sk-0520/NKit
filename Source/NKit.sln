@@ -39,16 +39,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Rocket", "app\NKit.Roc
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NKit.Common.Application", "common\NKit.Common.Application\NKit.Common.Application.shproj", "{9D4F8E27-8F0D-4745-B6D7-BC6997E97BAC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NKit.Common.Link", "NKit.Common.Link", "{75B61508-BAF3-4F46-A875-900DB01B95DE}"
-	ProjectSection(SolutionItems) = preProject
-		common\NKit.Common.Link\CommonUtility.cs = common\NKit.Common.Link\CommonUtility.cs
-		common\NKit.Common.Link\Disposer.cs = common\NKit.Common.Link\Disposer.cs
-		common\NKit.Common.Link\Logging.cs = common\NKit.Common.Link\Logging.cs
-		common\NKit.Common.Link\ProgramRelationUtility.cs = common\NKit.Common.Link\ProgramRelationUtility.cs
-		common\NKit.Common.Link\Setting.cs = common\NKit.Common.Link\Setting.cs
-		common\NKit.Common.Link\Talk.cs = common\NKit.Common.Link\Talk.cs
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "T4", "T4", "{99EBEF4A-19B0-4663-BD4F-36CEC1779D37}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NKitApplication", "NKitApplication", "{27D60F2A-A517-4371-8A87-17F0B9B9EF37}"
@@ -59,6 +49,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NKitApplication", "NKitAppl
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Cameraman", "app\NKit.Cameraman\NKit.Cameraman.csproj", "{6E1DA3F8-DEED-47BA-9E83-382B8F4DC4D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Common.Link", "common\NKit.Common.Link\NKit.Common.Link.csproj", "{C30011CD-DDC0-4D37-A117-D3E0A20E786F}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -108,6 +100,10 @@ Global
 		{6E1DA3F8-DEED-47BA-9E83-382B8F4DC4D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E1DA3F8-DEED-47BA-9E83-382B8F4DC4D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E1DA3F8-DEED-47BA-9E83-382B8F4DC4D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C30011CD-DDC0-4D37-A117-D3E0A20E786F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C30011CD-DDC0-4D37-A117-D3E0A20E786F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C30011CD-DDC0-4D37-A117-D3E0A20E786F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C30011CD-DDC0-4D37-A117-D3E0A20E786F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,10 +119,10 @@ Global
 		{76F8B393-7678-4183-8172-D74045686B13} = {A3ECDBE3-5487-4635-AA05-597EB42AB395}
 		{4C796AFB-AA0C-4A6E-B85F-EBB07486EA0A} = {BA7C2163-9D37-4D39-96AC-9DB9269B97D9}
 		{9D4F8E27-8F0D-4745-B6D7-BC6997E97BAC} = {91FBCEEB-423A-4ACA-84B8-80970B97402B}
-		{75B61508-BAF3-4F46-A875-900DB01B95DE} = {91FBCEEB-423A-4ACA-84B8-80970B97402B}
 		{99EBEF4A-19B0-4663-BD4F-36CEC1779D37} = {91FBCEEB-423A-4ACA-84B8-80970B97402B}
 		{27D60F2A-A517-4371-8A87-17F0B9B9EF37} = {99EBEF4A-19B0-4663-BD4F-36CEC1779D37}
 		{6E1DA3F8-DEED-47BA-9E83-382B8F4DC4D9} = {BA7C2163-9D37-4D39-96AC-9DB9269B97D9}
+		{C30011CD-DDC0-4D37-A117-D3E0A20E786F} = {91FBCEEB-423A-4ACA-84B8-80970B97402B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DCA37A7D-11B2-4BEF-BD2E-1441C71C69AB}
