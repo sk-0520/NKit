@@ -22,8 +22,11 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
 
         #region property
 
-        public string FileName => Model.RawImageFile.Name;
-        public string FilePath => Model.RawImageFile.FullName;
+        public string FileName => Model.ImageFile.Name;
+        public string FilePath => Model.ImageFile.FullName;
+
+        public uint Width => Model.Width;
+        public uint Height => Model.Height;
 
         public string ThumbnailImagePath
         {
@@ -37,8 +40,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             }
         }
 
-        public DateTime CaptureStartUtcTimestamp => Model.RawImageFile.Directory.CreationTime.ToUniversalTime();
-        public DateTime CaptureUtcTimestamp => Model.RawImageFile.CreationTime.ToUniversalTime();
+        public DateTime CaptureStartUtcTimestamp => Model.ImageFile.Directory.CreationTime.ToUniversalTime();
+        public DateTime CaptureUtcTimestamp => Model.ImageFile.CreationTime.ToUniversalTime();
 
         #endregion
 
