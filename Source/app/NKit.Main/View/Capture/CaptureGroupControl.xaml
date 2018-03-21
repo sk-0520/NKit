@@ -116,6 +116,7 @@
                     <Run Text="{Binding Height, Mode=OneTime}" />
                   </TextBlock>
                   <TextBlock Text="{Binding CaptureUtcTimestamp, Converter={StaticResource UtcToLocalTimestampConverter}}" />
+                  <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
               </StackPanel>
             </DataTemplate>

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ContentTypeTextNet.NKit.Setting.Capture;
 using ContentTypeTextNet.NKit.Utility.Model;
 using Microsoft.WindowsAPICodePack.Shell;
 
@@ -11,23 +12,28 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 {
     public class CaptureImageModel : ModelBase
     {
-        public CaptureImageModel(CaptureGroupModel group, FileInfo rawImageFile)
+        public CaptureImageModel(CaptureImageSetting imageSetting, CaptureGroupModel group, FileInfo rawImageFile)
         {
+            ImageSetting = imageSetting;
             Group = group;
             ImageFile = rawImageFile;
-
-            ImageShellFile = ShellFile.FromFilePath(ImageFile.FullName);
         }
 
         #region property
 
+        CaptureImageSetting ImageSetting { get; }
         CaptureGroupModel Group { get; }
 
         public FileInfo ImageFile { get; }
-        ShellFile ImageShellFile { get; }
 
-        public uint Width => ImageShellFile.Properties.System.Image.HorizontalSize?.Value ?? 0;
-        public uint Height => ImageShellFile.Properties.System.Image.VerticalSize?.Value ?? 0;
+        public uint Width => ImageSetting.Width;
+        public uint Height => ImageSetting.Height;
+
+        public string Comment
+        {
+            get { return ImageSetting.Comment; }
+            set { ImageSetting.Comment = value; }
+        }
 
         #endregion
 
@@ -56,25 +62,18 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             return ImageFile.FullName;
         }
 
-        //public string GetComment()
-        //{
-        //}
+        public void RefreshSetting()
+        {
+            using(var shellFile = ShellFile.FromFilePath(ImageFile.FullName)) {
+                var image = shellFile.Properties.System.Image;
+                ImageSetting.Width = image.HorizontalSize.Value ?? 0;
+                ImageSetting.Height = image.VerticalSize.Value ?? 0;
+            }
+        }
 
         #endregion
 
         #region ModelBase
-
-        protected override void Dispose(bool disposing)
-        {
-            if(!IsDisposed) {
-                if(disposing) {
-                    ImageShellFile.Dispose();
-                }
-            }
-
-            base.Dispose(disposing);
-        }
-
         #endregion
     }
 }

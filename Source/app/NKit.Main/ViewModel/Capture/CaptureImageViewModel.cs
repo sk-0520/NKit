@@ -27,6 +27,11 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
 
         public uint Width => Model.Width;
         public uint Height => Model.Height;
+        public string Comment
+        {
+            get { return Model.Comment; }
+            set { SetModelValue(value); }
+        }
 
         public string ThumbnailImagePath
         {

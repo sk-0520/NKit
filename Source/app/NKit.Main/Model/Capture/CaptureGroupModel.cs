@@ -53,8 +53,26 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         CaptureImageModel CreateImageModel(FileInfo fileInfo)
         {
-            var result = new CaptureImageModel(this, fileInfo);
+            bool IsEqualPath(string a, string b) => string.Equals(a, b, StringComparison.InvariantCultureIgnoreCase);
 
+            var fileDirName = fileInfo.Directory.Name;
+            var imageSetting = GroupSetting.Images
+                .FirstOrDefault(i => IsEqualPath(i.FileName, fileInfo.Name) && IsEqualPath(i.DirectoryName, fileDirName))
+            ;
+            var hasImageSetting = imageSetting != null;
+            if(!hasImageSetting) {
+                imageSetting = new CaptureImageSetting() {
+                    DirectoryName = fileDirName,
+                    FileName = fileInfo.Name,
+                    Comment = string.Empty,
+                };
+                GroupSetting.Images.Add(imageSetting);
+            }
+
+            var result = new CaptureImageModel(imageSetting, this, fileInfo);
+            if(!hasImageSetting) {
+                result.RefreshSetting();
+            }
             return result;
         }
 
