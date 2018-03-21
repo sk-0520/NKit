@@ -121,5 +121,15 @@ namespace ContentTypeTextNet.NKit.Manager.Properties {
                 return ResourceManager.GetString("File_ReleaseNoteLayout", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap NKit_Manager {
+            get {
+                object obj = ResourceManager.GetObject("NKit_Manager", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

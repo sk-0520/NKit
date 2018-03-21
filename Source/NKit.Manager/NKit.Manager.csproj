@@ -196,6 +196,7 @@
     <Content Include="Resources\File\ReleaseNoteLayout.html">
       <LastGenOutput>ReleaseNoteLayout.html1.cs</LastGenOutput>
     </Content>
+    <None Include="Resources\NKit.Manager.png" />
     <Content Include="Resources\NKit.Manager.ico" />
     <None Include="App.config" />
     <Content Include="%40NKit.user.tt">
