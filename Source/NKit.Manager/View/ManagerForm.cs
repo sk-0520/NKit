@@ -169,7 +169,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
             if(ReleaseNoteForm == null) {
                 ReleaseNoteForm = new ReleaseNoteForm();
-                ReleaseNoteForm.IssueBaseUri = Constants.IssuesBaseUri;
                 ReleaseNoteForm.FormClosed += ReleaseNoteForm_FormClosed;
                 ReleaseNoteForm.ExecuteUpdateAction = this.commandExecuteUpdate.PerformClick;
             }
@@ -522,7 +521,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
                     // デバッグコードなので Dispose は考えない
                     var form = new ReleaseNoteForm();
-                    form.IssueBaseUri = Constants.IssuesBaseUri;
                     form.SetReleaseNote(
                         Assembly.GetExecutingAssembly().GetName().Version,
                         Application.ProductVersion,

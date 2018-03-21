@@ -28,7 +28,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         #region property
 
         public Uri ReleaseNoteUri { get; set; }
-        public Uri IssueBaseUri { get; set; }
+        Uri IssueBaseUri { get; } = Constants.IssuesBaseUri;
 
         public Action ExecuteUpdateAction { get; set; }
 
