@@ -106,13 +106,17 @@
         <ListBox x:Name="captureItemsContainer" Grid.Row="1" VirtualizingPanel.ScrollUnit="Pixel" ScrollViewer.CanContentScroll="True" ItemsSource="{Binding ImageItems}" SelectedItem="{Binding SelectedImageItem}">
           <i:Interaction.Triggers>
             <i:EventTrigger EventName="MouseDoubleClick">
-              <i:InvokeCommandAction Command="{Binding CopySelectedImageItemCommand}" />
+              <i:InvokeCommandAction Command="{Binding OpenSelectedImageItemCommand}" />
             </i:EventTrigger>
           </i:Interaction.Triggers>
           <ListBox.ItemTemplate>
             <DataTemplate>
               <StackPanel Orientation="Horizontal">
-                <Image Source="{Binding ThumbnailImagePath, Converter={StaticResource FilePathToImageConverter}}" Width="{x:Static app:Constants.CaptureThumbnailSizeWidth}" Height="{x:Static app:Constants.CaptureThumbnailSizeHeight}" />
+                <TextBlock>
+                  <Hyperlink TextDecorations="{x:Null}" Command="{Binding CopyCommand}" >
+                    <Image Source="{Binding ThumbnailImagePath, Converter={StaticResource FilePathToImageConverter}}" Width="{x:Static app:Constants.CaptureThumbnailSizeWidth}" Height="{x:Static app:Constants.CaptureThumbnailSizeHeight}" />
+                  </Hyperlink>
+                </TextBlock>
                 <StackPanel>
                   <TextBlock Text="{Binding FileName}" />
                   <TextBlock>

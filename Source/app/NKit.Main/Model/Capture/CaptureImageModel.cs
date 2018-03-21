@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Setting.Capture;
 using ContentTypeTextNet.NKit.Utility.Model;
 using Microsoft.WindowsAPICodePack.Shell;
@@ -82,6 +83,12 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 var co = new ClipboardOperator();
                 return co.CopyImage(bitmap);
             }
+        }
+
+        public void OpenImage()
+        {
+            var fo = new FileOpener();
+            fo.Open(ImageFile);
         }
 
         #endregion
