@@ -25,6 +25,7 @@
   <UserControl.Resources>
     <app_utility_view_converter:FilePathToImageConverter x:Key="FilePathToImageConverter" />
     <app_utility_view_converter:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+    <app_utility_view_converter:UtcToLocalTimestampConverter x:Key="UtcToLocalTimestampConverter" />
   </UserControl.Resources>
 
   <i:Interaction.Triggers>
@@ -93,7 +94,13 @@
 
         <ToolBar Grid.Row="0">
           <Label>filter</Label>
-          <ComboBox IsEditable="False" ItemsSource="{Binding FilterStartUtcTimestampItems}" SelectedItem="{Binding SelectedFilterStartUtcTimestamp}" />
+          <ComboBox IsEditable="False" ItemsSource="{Binding FilterStartUtcTimestampItems}" SelectedItem="{Binding SelectedFilterStartUtcTimestamp}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Converter={StaticResource UtcToLocalTimestampConverter}}" />
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
         </ToolBar>
 
         <ListBox x:Name="captureItemsContainer" Grid.Row="1" VirtualizingPanel.ScrollUnit="Pixel" ScrollViewer.CanContentScroll="True" ItemsSource="{Binding Items}">
@@ -103,7 +110,7 @@
                 <Image Source="{Binding ThumbnailImagePath, Converter={StaticResource FilePathToImageConverter}}" Width="{x:Static app:Constants.CaptureThumbnailSizeWidth}" Height="{x:Static app:Constants.CaptureThumbnailSizeHeight}" />
                 <StackPanel>
                   <TextBlock Text="{Binding FileName}" />
-                  <TextBlock Text="{Binding CaptureUtcTimestamp}" />
+                  <TextBlock Text="{Binding CaptureUtcTimestamp, Converter={StaticResource UtcToLocalTimestampConverter}}" />
                 </StackPanel>
               </StackPanel>
             </DataTemplate>

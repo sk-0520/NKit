@@ -10,8 +10,10 @@ namespace ContentTypeTextNet.NKit.Manager
     partial class Constants
     {
         #region property
-        public static bool UpdateCheckUriAppendRandom => bool.Parse(ConfigurationManager.AppSettings["update-check-uri-append-random"]);
 
+        public static string LogTimestampFormat { get; } = ConfigurationManager.AppSettings["log-timestamp-format"];
+
+        public static bool UpdateCheckUriAppendRandom => bool.Parse(ConfigurationManager.AppSettings["update-check-uri-append-random"]);
 
         public static string UpdateCheckBranchBaseUri => ConfigurationManager.AppSettings["update-check-branch-base-uri"];
         public static string UpdateCheckBranchTargetName => ConfigurationManager.AppSettings["update-check-branch-target-name"];
@@ -40,7 +42,7 @@ namespace ContentTypeTextNet.NKit.Manager
 
         public static TimeSpan TestExecuteWait => TimeSpan.Parse(ConfigurationManager.AppSettings["test-execute-wait"]);
 
-        
+
         #endregion
     }
 }
