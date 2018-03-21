@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -29,6 +30,12 @@ namespace ContentTypeTextNet.NKit.Setting.Capture
         bool OverwriteScrollSetting { get; }
         IReadOnlyScrollCaptureSetting Scroll { get;}
 
+        /// <summary>
+        /// このグループに所属する画像。
+        /// <para>コメントとキャッシュ情報管理が目的。</para>
+        /// </summary>
+        IReadOnlyCollection<IReadOnlyCaptureImageSetting> Images { get; }
+
         #endregion
     }
 
@@ -54,6 +61,10 @@ namespace ContentTypeTextNet.NKit.Setting.Capture
         [DataMember]
         public ScrollCaptureSetting Scroll { get; set; } = new ScrollCaptureSetting();
         IReadOnlyScrollCaptureSetting IReadOnlyCaptureGroupSetting.Scroll => Scroll;
+
+        [DataMember]
+        public Collection<CaptureImageSetting> Images { get; set; } = new Collection<CaptureImageSetting>();
+        IReadOnlyCollection<IReadOnlyCaptureImageSetting> IReadOnlyCaptureGroupSetting.Images => Images;
 
         #endregion
     }

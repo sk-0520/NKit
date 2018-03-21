@@ -15,6 +15,7 @@ using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
 using ContentTypeTextNet.NKit.Utility.ViewModel;
+using Prism.Commands;
 using Prism.Interactivity.InteractionRequest;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
@@ -32,13 +33,15 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         RunState _initialRunState;
         DateTime _selectedFilterStartUtcTimestamp = UnSelectedFilterTimestamp;
 
+        CaptureImageViewModel _selectedImageItem;
+
         #endregion
 
         public CaptureGroupViewModel(CaptureGroupModel model)
             : base(model)
         {
-            Items = GetInvokeUI(() => CollectionViewSource.GetDefaultView(ItemViewModels));
-            Items.Filter = CaptureItemFilter;
+            ImageItems = GetInvokeUI(() => CollectionViewSource.GetDefaultView(ImageItemViewModels));
+            ImageItems.Filter = CaptureItemFilter;
         }
 
         #region property
@@ -91,8 +94,15 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             set { SetPropertyValue(Model.GroupSetting.Scroll.InternetExplorer.Footer, value, nameof(Model.GroupSetting.Scroll.InternetExplorer.Footer.HideElements)); }
         }
 
-        ObservableCollection<CaptureImageViewModel> ItemViewModels { get; } = new ObservableCollection<CaptureImageViewModel>();
-        public ICollectionView Items { get; set; }
+        public CaptureImageViewModel SelectedImageItem
+        {
+            get { return this._selectedImageItem; }
+            set { SetProperty(ref this._selectedImageItem, value); }
+        }
+
+
+        ObservableCollection<CaptureImageViewModel> ImageItemViewModels { get; } = new ObservableCollection<CaptureImageViewModel>();
+        public ICollectionView ImageItems { get; set; }
 
         public ObservableCollection<DateTime> FilterStartUtcTimestampItems { get; } = new ObservableCollection<DateTime>();
         public DateTime SelectedFilterStartUtcTimestamp
@@ -101,7 +111,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             set
             {
                 if(SetProperty(ref this._selectedFilterStartUtcTimestamp, value)) {
-                    Items.Refresh();
+                    ImageItems.Refresh();
                 }
             }
         }
@@ -119,6 +129,24 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         #endregion
 
         #region command
+
+        public ICommand RemoveImageCommand => new DelegateCommand<CaptureImageViewModel>(
+            vm => {
+                var index = ImageItemViewModels.IndexOf(vm);
+                Model.RemoveImageAt(index);
+            }
+        );
+
+        public ICommand OpenSelectedImageItemCommand => new DelegateCommand(
+            () => {
+                var param = default(object);
+                if(SelectedImageItem.OpenCommand.CanExecute(param)) {
+                    SelectedImageItem.OpenCommand.Execute(param);
+                }
+            },
+            () => SelectedImageItem != null
+        );
+
         #endregion
 
         #region function
@@ -138,7 +166,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
                         InitialRunState = RunState.Finished;
                     }
 
-                    var startTimestamps = ItemViewModels
+                    var startTimestamps = ImageItemViewModels
                         .Select(vm => vm.CaptureStartUtcTimestamp)
                         .GroupBy(time => time)
                         .Select(g => g.First())
@@ -148,7 +176,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
                     FilterStartUtcTimestampItems.Add(UnSelectedFilterTimestamp);
                     FilterStartUtcTimestampItems.AddRange(startTimestamps);
                     SelectedFilterStartUtcTimestamp = UnSelectedFilterTimestamp;
-                    Items.Refresh();
+                    ImageItems.Refresh();
 
                     IsEnabledLastItemScroll = true;
                     IsEnabledAddCaptureStartTimestamp = true;
@@ -184,14 +212,14 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         {
             base.AttachModelEventsCore();
 
-            Model.Items.CollectionChanged += Items_CollectionChanged;
+            Model.Images.CollectionChanged += Items_CollectionChanged;
         }
 
         override protected void DetachModelEventsCore()
         {
             base.DetachModelEventsCore();
 
-            Model.Items.CollectionChanged -= Items_CollectionChanged;
+            Model.Images.CollectionChanged -= Items_CollectionChanged;
         }
 
         protected override void CancelCore()
@@ -207,29 +235,33 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             Application.Current.Dispatcher.Invoke(() => {
                 switch(e.Action) {
                     case NotifyCollectionChangedAction.Reset:
-                        var oldItems = ItemViewModels;
-                        ItemViewModels.Clear();
+                        var oldItems = ImageItemViewModels;
+                        ImageItemViewModels.Clear();
                         foreach(var oldItem in oldItems) {
                             oldItem.Dispose();
                         }
                         FilterStartUtcTimestampItems.Clear();
                         SelectedFilterStartUtcTimestamp = UnSelectedFilterTimestamp;
+                        SelectedImageItem = null;
                         break;
 
                     case NotifyCollectionChangedAction.Move:
-                        ItemViewModels.Move(e.OldStartingIndex, e.NewStartingIndex);
+                        ImageItemViewModels.Move(e.OldStartingIndex, e.NewStartingIndex);
                         break;
 
                     case NotifyCollectionChangedAction.Remove:
-                        var removeStartTimestamp = ItemViewModels[e.OldStartingIndex].CaptureStartUtcTimestamp;
-                        var oldViewModels = ItemViewModels.Skip(e.OldStartingIndex).Take(e.OldItems.Count).ToList();
+                        var removeStartTimestamp = ImageItemViewModels[e.OldStartingIndex].CaptureStartUtcTimestamp;
+                        var oldViewModels = ImageItemViewModels.Skip(e.OldStartingIndex).Take(e.OldItems.Count).ToList();
                         foreach(var counter in new Counter(oldViewModels.Count)) {
-                            ItemViewModels.RemoveAt(e.OldStartingIndex);
+                            ImageItemViewModels.RemoveAt(e.OldStartingIndex);
                         }
                         foreach(var oldViewModel in oldViewModels) {
                             oldViewModel.Dispose();
                         }
-                        if(!ItemViewModels.Any(vm => vm.CaptureStartUtcTimestamp == removeStartTimestamp)) {
+                        if(oldViewModels.Any(i => i == SelectedImageItem)) {
+                            SelectedImageItem = null;
+                        }
+                        if(!ImageItemViewModels.Any(vm => vm.CaptureStartUtcTimestamp == removeStartTimestamp)) {
                             FilterStartUtcTimestampItems.Remove(removeStartTimestamp);
                         }
 
@@ -242,7 +274,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
                             .Select(i => new CaptureImageViewModel(i))
                             .ToList()
                         ;
-                        ItemViewModels.AddRange(vms);
+                        ImageItemViewModels.AddRange(vms);
                         if(IsEnabledLastItemScroll) {
                             ScrollRequest.Raise(new ScrollNotification<CaptureImageViewModel>(vms.Last()));
                         }

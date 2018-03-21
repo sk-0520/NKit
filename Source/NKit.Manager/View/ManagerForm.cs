@@ -44,6 +44,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         MainWorker Worker { get; set; }
         ReleaseNoteForm ReleaseNoteForm { get; set; }
+        AboutForm AboutForm { get; set; }
 
         #endregion
 
@@ -94,6 +95,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.commandExecuteUpdate.Enabled = Worker.CanUpdate;
                     this.commandShowReleaseNote.Enabled = Worker.CanUpdate;
                     this.commandTestExecute.Enabled = true;
+                    this.commandShowAbout.Enabled = true;
                     break;
 
                 case Define.WorkspaceState.Selecting:
@@ -112,6 +114,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.commandExecuteUpdate.Enabled = Worker.CanUpdate;
                     this.commandShowReleaseNote.Enabled = Worker.CanUpdate;
                     this.commandTestExecute.Enabled = true;
+                    this.commandShowAbout.Enabled = true;
                     break;
 
                 case Define.WorkspaceState.Running:
@@ -130,6 +133,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.commandExecuteUpdate.Enabled = false;
                     this.commandShowReleaseNote.Enabled = Worker.CanUpdate;
                     this.commandTestExecute.Enabled = false;
+                    this.commandShowAbout.Enabled = true;
                     break;
 
                 case Define.WorkspaceState.Updating:
@@ -151,6 +155,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.commandExecuteUpdate.Enabled = false;
                     this.commandShowReleaseNote.Enabled = Worker.CanUpdate;
                     this.commandTestExecute.Enabled = false;
+                    this.commandShowAbout.Enabled = false;
                     break;
 
                 default:
@@ -164,16 +169,24 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
             if(ReleaseNoteForm == null) {
                 ReleaseNoteForm = new ReleaseNoteForm();
-                ReleaseNoteForm.IssueBaseUri = Constants.IssuesBaseUri;
                 ReleaseNoteForm.FormClosed += ReleaseNoteForm_FormClosed;
                 ReleaseNoteForm.ExecuteUpdateAction = this.commandExecuteUpdate.PerformClick;
             }
 
             ReleaseNoteForm.ReleaseNoteUri = Worker.ReleaseNoteUri;
             ReleaseNoteForm.SetUpdatable(Worker.WorkspaceState != WorkspaceState.Updating);
-            ReleaseNoteForm.SetReleaseNote(Worker.NewVersion, Worker.ReleaseHash, Worker.ReleaseTimestamp, Worker.ReleaseNoteValue);
+            ReleaseNoteForm.SetReleaseNote(Worker.ReleaseNote);
             ReleaseNoteForm.Show(this);
+        }
 
+        void ShowAbout()
+        {
+            if(AboutForm == null) {
+                AboutForm = new AboutForm();
+                AboutForm.FormClosed += AboutForm_FormClosed;
+            }
+
+            AboutForm.Show(this);
         }
 
         #endregion
@@ -325,6 +338,10 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             var execEvent = new AutoResetEvent(false);
 
+            if(AboutForm != null) {
+                AboutForm.Close();
+            }
+
             if(ReleaseNoteForm != null) {
                 ReleaseNoteForm.SetUpdatable(false);
             }
@@ -370,6 +387,13 @@ namespace ContentTypeTextNet.NKit.Manager.View
             ReleaseNoteForm.ExecuteUpdateAction = null;
             ReleaseNoteForm.Dispose();
             ReleaseNoteForm = null;
+        }
+
+        private void AboutForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            AboutForm.FormClosed -= AboutForm_FormClosed;
+            AboutForm.Dispose();
+            AboutForm = null;
         }
 
         private void commandTestExecute_Click(object sender, EventArgs e)
@@ -467,6 +491,15 @@ namespace ContentTypeTextNet.NKit.Manager.View
             Worker.WorkspaceRunningMinimizeToNotifyArea = this.selectWorkspaceRunningMinimizeToNotifyArea.Checked;
         }
 
+        private void commandShowAbout_Click(object sender, EventArgs e)
+        {
+            if(AboutForm == null) {
+                ShowAbout();
+            } else if(AboutForm.Visible) {
+                AboutForm.Activate();
+            }
+        }
+
         #region DEBUG
 #if DEBUG || BETA
         private void ReleaseNoteForm_DragEnterAndDragOver(object sender, DragEventArgs e)
@@ -488,19 +521,19 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
                     // デバッグコードなので Dispose は考えない
                     var form = new ReleaseNoteForm();
-                    form.IssueBaseUri = Constants.IssuesBaseUri;
-                    form.SetReleaseNote(
-                        Assembly.GetExecutingAssembly().GetName().Version,
-                        Application.ProductVersion,
+                    form.SetReleaseNote(new ReleaseNoteItem() {
+                        Version = Assembly.GetExecutingAssembly().GetName().Version,
+                        Hash = Application.ProductVersion,
                         // これは渡された時からローカルタイム
-                        DateTime.Now,
-                        File.ReadAllText(file)
-                    );
+                        Timestamp = DateTime.Now,
+                        Content = File.ReadAllText(file),
+                    });
                     form.Show(this);
                 }
             }
         }
 #endif
         #endregion
+
     }
 }

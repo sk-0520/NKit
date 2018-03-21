@@ -95,6 +95,7 @@
     <Compile Include="Model\MainWorker.cs" />
     <Compile Include="Model\AcceptVersion.cs" />
     <Compile Include="Model\NKitTalkerHost.cs" />
+    <Compile Include="Model\ReleaseNoteItem.cs" />
     <Compile Include="Model\SystemWebBrowserUtility.cs" />
     <Compile Include="Model\ThirdPartyLicense.cs" />
     <Compile Include="Model\Update\UpdateManager.cs" />
@@ -102,6 +103,12 @@
     <Compile Include="Model\Workspace\Setting\WorkspaceSetting.cs" />
     <Compile Include="Model\Workspace\WorkspaceManager.cs" />
     <Compile Include="Model\Workspace\ActiveWorkspace.cs" />
+    <Compile Include="View\AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\AcceptForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,6 +123,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\ReleaseNoteControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="View\ReleaseNoteForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,6 +154,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="View\AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\AcceptForm.resx">
       <DependentUpon>AcceptForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -171,15 +184,19 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\File\exclude\marked.js.txt" />
-    <Content Include="Resources\File\ReleaseNoteMarkdown.html">
+    <Content Include="Resources\File\ReleaseNoteDocument.html">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ReleaseNoteMarkdown.tt</DependentUpon>
+      <DependentUpon>ReleaseNoteDocument.tt</DependentUpon>
     </Content>
-    <Content Include="Resources\File\ReleaseNoteMarkdown.tt">
+    <Content Include="Resources\File\ReleaseNoteDocument.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ReleaseNoteMarkdown.html</LastGenOutput>
+      <LastGenOutput>ReleaseNoteDocument.html</LastGenOutput>
     </Content>
+    <Content Include="Resources\File\ReleaseNoteLayout.html">
+      <LastGenOutput>ReleaseNoteLayout.html1.cs</LastGenOutput>
+    </Content>
+    <None Include="Resources\NKit.Manager.png" />
     <Content Include="Resources\NKit.Manager.ico" />
     <None Include="App.config" />
     <Content Include="%40NKit.user.tt">
@@ -215,6 +232,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="doc\release-notes\ver_0-1-0.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="doc\release-notes\ver_0-2-0.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="NKit.exe.config">

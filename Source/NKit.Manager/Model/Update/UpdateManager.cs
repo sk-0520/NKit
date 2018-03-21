@@ -30,13 +30,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
 
         public bool HasUpdate { get; private set; }
 
-        public Version NewVersion { get; private set; }
         public Uri DownloadUri { get; private set; }
-
-        public string ReleaseNoteValue { get; private set; }
-        public string ReleaseHash { get; private set; }
-        public DateTime ReleaseTimestamp { get; private set; }
         public Uri ReleaseNoteUri { get; private set; }
+
+        public ReleaseNoteItem ReleaseNote { get; private set; } = new ReleaseNoteItem();
 
         #endregion
 
@@ -204,11 +201,11 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
 
 
                 HasUpdate = true;
-                ReleaseHash = hash;
-                ReleaseTimestamp = timestamp;
-                NewVersion = parsedVersion;
+                ReleaseNote.Hash = hash;
+                ReleaseNote.Timestamp = timestamp;
+                ReleaseNote.Version = parsedVersion;
+                ReleaseNote.Content = rawReleaseNoteFile.value;
                 DownloadUri = new Uri(downloadUri);
-                ReleaseNoteValue = rawReleaseNoteFile.value;
                 ReleaseNoteUri = rawReleaseNoteFile.uri;
             }
 
@@ -280,7 +277,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
                 var archiveDirectoryPath = Path.Combine(CommonUtility.GetDataDirectory().FullName, Constants.ArchiveDirectoryName);
                 Directory.CreateDirectory(archiveDirectoryPath);
 
-                var archiveFilePath = Path.Combine(archiveDirectoryPath, GetFormattedArchiveFileName(NewVersion));
+                var archiveFilePath = Path.Combine(archiveDirectoryPath, GetFormattedArchiveFileName(ReleaseNote.Version));
                 using(var fileStream = File.Create(archiveFilePath)) {
                     using(var httpContentStream = await response.Content.ReadAsStreamAsync()) {
                         await httpContentStream.CopyToAsync(fileStream);

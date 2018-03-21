@@ -89,11 +89,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         }
 
         public bool CanUpdate => UpdateManager.HasUpdate;
-        public Version NewVersion => UpdateManager.NewVersion;
-        public string ReleaseNoteValue => UpdateManager.ReleaseNoteValue;
         public Uri ReleaseNoteUri => UpdateManager.ReleaseNoteUri;
-        public string ReleaseHash => UpdateManager.ReleaseHash;
-        public DateTime ReleaseTimestamp => UpdateManager.ReleaseTimestamp;
+        public ReleaseNoteItem ReleaseNote => UpdateManager.ReleaseNote;
 
         public bool NeedSave { get; private set; } = true;
         ManagerSetting ManagerSetting { get; set; }

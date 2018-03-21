@@ -11,6 +11,10 @@ namespace ContentTypeTextNet.NKit.Manager
     {
         #region property
 
+        public static string ApplicationWebPage { get; } = ConfigurationManager.AppSettings["app-website"];
+        public static string ApplicationDevelopmentPage { get; } = ConfigurationManager.AppSettings["app-development"];
+        public static string ApplicationForumPage { get; } = ConfigurationManager.AppSettings["app-forum"];
+
         public static string LogTimestampFormat { get; } = ConfigurationManager.AppSettings["log-timestamp-format"];
 
         public static bool UpdateCheckUriAppendRandom => bool.Parse(ConfigurationManager.AppSettings["update-check-uri-append-random"]);

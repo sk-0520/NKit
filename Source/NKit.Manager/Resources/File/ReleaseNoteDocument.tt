@@ -1,0 +1,35 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".html" encoding="utf-8" #>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <script>
+        <#@ include file="$(ProjectDir)\Resources\File\exclude\marked.js.txt" #>
+
+        function replaceReleaseNoteSection(section) {
+            var viewContent = section.getElementsByClassName('view-content')[0];
+            var rawContent = section.getElementsByClassName('markdown-content')[0];
+            var makedMarkdownHtml = marked(rawContent.innerHTML);
+            viewContent.innerHTML = makedMarkdownHtml;
+        }
+        </script>
+    </head>
+    <body>
+        <h1>${TITLE}</h1>
+        ${ALL-CONTENTS}
+    </body>
+    <script>
+        (function() {
+            var sections = document.getElementsByTagName('section');
+            for(var i = 0; i < sections.length; i++) {
+                var section = sections[i];
+                replaceReleaseNoteSection(section);
+            }
+        })();
+    </script>
+</html>

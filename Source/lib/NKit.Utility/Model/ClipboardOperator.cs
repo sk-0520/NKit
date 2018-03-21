@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace ContentTypeTextNet.NKit.Utility.Model
 {
@@ -14,16 +15,19 @@ namespace ContentTypeTextNet.NKit.Utility.Model
     {
         #region function
 
-        public void CopyText(string text)
+        public bool CopyText(string text)
         {
             try {
                 Clipboard.SetText(text);
+                return true;
             } catch(Exception ex) {
                 Log.Out.Warning(ex);
             }
+
+            return false;
         }
 
-        public void CopyFiles(IEnumerable<FileSystemInfo> fileSystemInfos)
+        public bool CopyFiles(IEnumerable<FileSystemInfo> fileSystemInfos)
         {
             try {
                 var data = new DataObject();
@@ -35,14 +39,29 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                 data.SetText(string.Join(Environment.NewLine, fileSystemInfos));
 
                 Clipboard.SetDataObject(data);
+                return true;
             } catch(Exception ex) {
                 Log.Out.Warning(ex);
             }
+
+            return false;
         }
 
-        public void CopyFile(FileSystemInfo fileSystemInfos)
+        public bool CopyFile(FileSystemInfo fileSystemInfos)
         {
-            CopyFiles(new[] { fileSystemInfos });
+            return CopyFiles(new[] { fileSystemInfos });
+        }
+
+        public bool CopyImage(BitmapSource bitmapSource)
+        {
+            try {
+                Clipboard.SetImage(bitmapSource);
+                return true;
+            } catch(Exception ex) {
+                Log.Out.Warning(ex);
+            }
+
+            return false;
         }
 
         #endregion
