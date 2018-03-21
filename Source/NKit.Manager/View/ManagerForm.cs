@@ -183,29 +183,11 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.labelVersionNumber.Text = assembly.GetName().Version.ToString();
             this.labelVersionHash.Text = FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;
 
-
             // 設定値をどばーっと反映
             Worker.ListupWorkspace(this.selectWorkspace, Guid.Empty);
             this.selectWorkspaceLoadToMinimize.Checked = Worker.WorkspaceLoadToMinimize;
 
-
             RefreshControls();
-            /*
-            var r = new ReleaseNoteForm();
-            r.IssueBaseUri = Constants.IssuesBaseUri;
-            r.ReleaseNoteUri = new Uri("http://localhost/");
-            r.SetReleaseNote(new Version("1.2.3.4"), new string('x', 40), DateTime.Now, @"
-* a
-   * b
-        *c
-      *d
-        *e
-
-123456846
-258146586
-");
-            r.Show();
-            */
         }
 
         private void commandWorkspaceSave_Click(object sender, EventArgs e)
@@ -407,6 +389,25 @@ namespace ContentTypeTextNet.NKit.Manager.View
 #endif
                 using(var form = new TestExecuteForm()) {
                     Worker.ExecuteTest(form, true);
+                }
+            }
+
+            // ワークスペースを開くように言われてるんなら開く
+            var commandLine = new CommandLine();
+            if(commandLine.HasOption("load_workspace")) {
+                var logger = Worker.CreateLogger("LOAD");
+                try {
+                    //NOTE: ほんとは指定ワークスペースにしたかったけど諸々の事情により見送り、将来的に必要であればオプション指定で開けるようにする
+                    if(Worker.SelectedWorkspaceItem != null) {
+                        logger.Information("load last workspace");
+                        this.commandWorkspaceLoad.PerformClick();
+                    } else {
+                        logger.Error("last workspace: empty");
+                    }
+                } finally {
+                    if(logger is IDisposable diposer) {
+                        diposer.Dispose();
+                    }
                 }
             }
         }
