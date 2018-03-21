@@ -158,6 +158,7 @@
     <Compile Include="View\Converter\KeyBindingToGestureTextConverter.cs" />
     <Compile Include="View\Converter\LogicalNotConverter.cs" />
     <Compile Include="View\Converter\NotNullToBooleanConverter.cs" />
+    <Compile Include="View\Converter\UtcToLocalTimestampConverter.cs" />
     <Compile Include="View\Selector\ComboBoxItemTemplateSelector.cs" />
   </ItemGroup>
   <ItemGroup>
