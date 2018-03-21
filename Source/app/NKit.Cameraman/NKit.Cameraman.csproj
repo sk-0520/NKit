@@ -41,9 +41,12 @@
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\NKit.Cameraman.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ContentTypeTextNet.PInvoke, Version=1.0.6647.23837, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ContentTypeTextNet.PInvoke.1.0.0.32\lib\net46\ContentTypeTextNet.PInvoke.dll</HintPath>
+    <Reference Include="ContentTypeTextNet.PInvoke, Version=1.0.6654.7809, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ContentTypeTextNet.PInvoke.1.0.0.33\lib\net46\ContentTypeTextNet.PInvoke.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Gma.System.MouseKeyHook, Version=5.6.130.0, Culture=neutral, processorArchitecture=MSIL">
@@ -134,6 +137,7 @@
     <Compile Include="View\WindowStatusControl.Designer.cs">
       <DependentUpon>WindowStatusControl.cs</DependentUpon>
     </Compile>
+    <Content Include="Resources\NKit.Cameraman.ico" />
     <EmbeddedResource Include="View\CameramanForm.resx">
       <DependentUpon>CameramanForm.cs</DependentUpon>
     </EmbeddedResource>

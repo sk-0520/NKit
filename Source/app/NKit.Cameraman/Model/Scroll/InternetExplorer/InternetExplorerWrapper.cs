@@ -62,7 +62,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 
         public bool Initialize()
         {
-            var message = WindowHandleUtility.RegisterWindowMessage(HtmlGetObjectWindowMessage);
+            var message = NativeMethods.RegisterWindowMessage(HtmlGetObjectWindowMessage);
             if(message == 0) {
                 Logger.Warning($"${HtmlGetObjectWindowMessage} is 0");
                 return false;
@@ -78,7 +78,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
             Thread.Sleep(DocumentWaitTime);
 
             var IID_IHTMLDocument2 = typeof(IHTMLDocument2).GUID;
-            IHTMLDocument2 rawHtmlDocument = (IHTMLDocument2)WindowHandleUtility.ObjectFromLresult(sendMessageResult, IID_IHTMLDocument2, IntPtr.Zero);
+            IHTMLDocument2 rawHtmlDocument = (IHTMLDocument2)NativeMethods.ObjectFromLresult(sendMessageResult, IID_IHTMLDocument2, IntPtr.Zero);
             if(rawHtmlDocument == null) {
                 Logger.Warning($"{nameof(IHTMLDocument2)} is null, {sendMessageResult}, {IID_IHTMLDocument2}");
                 return false;
@@ -89,7 +89,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
             HtmlScreen = ComModel.Create(HtmlWindow.Com.screen);
             HtmlScreen2 = ComModel.Create((IHTMLScreen2)HtmlWindow.Com.screen);
 
-            using(var serviceProvider = ComModel.Create((WindowHandleUtility.IServiceProvider)HtmlDocument.Com.parentWindow)) {
+            using(var serviceProvider = ComModel.Create((Library.PInvoke.Windows.IServiceProvider)HtmlDocument.Com.parentWindow)) {
                 var SID_SWebBrowserApp = typeof(IWebBrowserApp).GUID;
                 var IID_webBrowser = typeof(IWebBrowser2).GUID;
                 serviceProvider.Com.QueryService(ref SID_SWebBrowserApp, ref IID_webBrowser, out object queryResult);

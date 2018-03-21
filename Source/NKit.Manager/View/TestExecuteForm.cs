@@ -51,6 +51,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
         public TestExecuteForm()
         {
             InitializeComponent();
+
+            Font = SystemFonts.MessageBoxFont;
+            Text = CommonUtility.ReplaceWindowTitle(Text);
         }
 
         #region property

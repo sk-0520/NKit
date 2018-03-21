@@ -106,7 +106,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
 
         void Write(DateTime utcTimestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int processId, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
-            var writeValue = $"{utcTimestamp} {senderApplication} {logKind} {subject} {message} {detail}";
+            var logTimestamp = CommonUtility.ReplaceNKitText(Constants.LogTimestampFormat, utcTimestamp);
+            var writeValue = $"{logTimestamp} {senderApplication} {logKind} {subject} {message} {detail}";
             foreach(var data in Writers) {
                 data.Writer.WriteLine(writeValue);
             }
@@ -135,7 +136,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="leaveOpen">偽の場合は自動的に解放される。真なら渡し主が解放すること。</param>

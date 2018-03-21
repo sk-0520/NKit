@@ -102,7 +102,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll
                 Logger.Debug("search ieframe start");
                 // IFrame なら中を探検していく
                 var findWindowHandle = IntPtr.Zero;
-                var result = WindowHandleUtility.EnumChildWindows(
+                var result = NativeMethods.EnumChildWindows(
                     WindowHandle,
                     (hWnd, lParam) => {
                         var childWindowClassName = WindowHandleUtility.GetWindowClassName(hWnd);

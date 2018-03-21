@@ -43,13 +43,16 @@
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\NKit.Main.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CommonServiceLocator.2.0.3\lib\net47\CommonServiceLocator.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ContentTypeTextNet.PInvoke, Version=1.0.6647.23837, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ContentTypeTextNet.PInvoke.1.0.0.32\lib\net46\ContentTypeTextNet.PInvoke.dll</HintPath>
+    <Reference Include="ContentTypeTextNet.PInvoke, Version=1.0.6654.7809, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ContentTypeTextNet.PInvoke.1.0.0.33\lib\net46\ContentTypeTextNet.PInvoke.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Gma.System.MouseKeyHook, Version=5.6.130.0, Culture=neutral, processorArchitecture=MSIL">
@@ -421,6 +424,7 @@
       <LastGenOutput>%40NKit.Main.user.config</LastGenOutput>
       <DependentUpon>App.config</DependentUpon>
     </Content>
+    <Resource Include="Resources\NKit.Main.ico" />
   </ItemGroup>
   <Import Project="..\..\common\NKit.Common.Application\NKit.Common.Application.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

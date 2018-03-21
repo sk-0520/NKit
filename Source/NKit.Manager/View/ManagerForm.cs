@@ -26,7 +26,18 @@ namespace ContentTypeTextNet.NKit.Manager.View
             InitializeComponent();
 
             Font = SystemFonts.MessageBoxFont;
+            Text = CommonUtility.ReplaceWindowTitle(Text);
+
             this.notifyIcon.Icon = Icon;
+
+            #region DEBUG
+#if DEBUG || BETA
+            AllowDrop = true;
+            DragEnter += ReleaseNoteForm_DragEnterAndDragOver;
+            DragOver += ReleaseNoteForm_DragEnterAndDragOver;
+            DragDrop += ReleaseNoteForm_DragDrop;
+#endif
+            #endregion
         }
 
         #region property
@@ -174,29 +185,11 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.labelVersionNumber.Text = assembly.GetName().Version.ToString();
             this.labelVersionHash.Text = FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;
 
-
             // 設定値をどばーっと反映
             Worker.ListupWorkspace(this.selectWorkspace, Guid.Empty);
             this.selectWorkspaceLoadToMinimize.Checked = Worker.WorkspaceLoadToMinimize;
 
-
             RefreshControls();
-            /*
-            var r = new ReleaseNoteForm();
-            r.IssueBaseUri = Constants.IssuesBaseUri;
-            r.ReleaseNoteUri = new Uri("http://localhost/");
-            r.SetReleaseNote(new Version("1.2.3.4"), new string('x', 40), DateTime.Now, @"
-* a
-   * b
-        *c
-      *d
-        *e
-
-123456846
-258146586
-");
-            r.Show();
-            */
         }
 
         private void commandWorkspaceSave_Click(object sender, EventArgs e)
@@ -251,6 +244,21 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         private void commandWorkspaceLoad_Click(object sender, EventArgs e)
         {
+            if(Worker.IsLockedSelectedWorkspace()) {
+                if((ModifierKeys & Keys.Shift) == Keys.Shift) {
+                    var result = MessageBox.Show("workspace is locked, unlock?", "force", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                    if(result != DialogResult.Yes) {
+                        return;
+                    }
+                    if(!Worker.RemoveSelectedWorkspaceLockFile()) {
+                        return;
+                    }
+                } else {
+                    MessageBox.Show("workspace is locked");
+                    return;
+                }
+            }
+
             Worker.LoadSelectedWorkspace();
             RefreshControls();
             if(Worker.WorkspaceLoadToMinimize && Worker.WorkspaceState == WorkspaceState.Running) {
@@ -385,6 +393,25 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     Worker.ExecuteTest(form, true);
                 }
             }
+
+            // ワークスペースを開くように言われてるんなら開く
+            var commandLine = new CommandLine();
+            if(commandLine.HasOption("load_workspace")) {
+                var logger = Worker.CreateLogger("LOAD");
+                try {
+                    //NOTE: ほんとは指定ワークスペースにしたかったけど諸々の事情により見送り、将来的に必要であればオプション指定で開けるようにする
+                    if(Worker.SelectedWorkspaceItem != null) {
+                        logger.Information("load last workspace");
+                        this.commandWorkspaceLoad.PerformClick();
+                    } else {
+                        logger.Error("last workspace: empty");
+                    }
+                } finally {
+                    if(logger is IDisposable diposer) {
+                        diposer.Dispose();
+                    }
+                }
+            }
         }
 
         private void ManagerForm_SizeChanged(object sender, EventArgs e)
@@ -437,7 +464,43 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         private void selectWorkspaceRunningMinimizeToNotifyArea_CheckedChanged(object sender, EventArgs e)
         {
-            Worker.WorkspaceRunningMinimizeToNotifyArea  = this.selectWorkspaceRunningMinimizeToNotifyArea.Checked;
+            Worker.WorkspaceRunningMinimizeToNotifyArea = this.selectWorkspaceRunningMinimizeToNotifyArea.Checked;
         }
+
+        #region DEBUG
+#if DEBUG || BETA
+        private void ReleaseNoteForm_DragEnterAndDragOver(object sender, DragEventArgs e)
+        {
+            if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if(files.Length == 1) {
+                    e.Effect = DragDropEffects.Copy;
+                }
+            }
+        }
+
+        private void ReleaseNoteForm_DragDrop(object sender, DragEventArgs e)
+        {
+            if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if(files.Length == 1) {
+                    var file = files[0];
+
+                    // デバッグコードなので Dispose は考えない
+                    var form = new ReleaseNoteForm();
+                    form.IssueBaseUri = Constants.IssuesBaseUri;
+                    form.SetReleaseNote(
+                        Assembly.GetExecutingAssembly().GetName().Version,
+                        Application.ProductVersion,
+                        // これは渡された時からローカルタイム
+                        DateTime.Now,
+                        File.ReadAllText(file)
+                    );
+                    form.Show(this);
+                }
+            }
+        }
+#endif
+        #endregion
     }
 }

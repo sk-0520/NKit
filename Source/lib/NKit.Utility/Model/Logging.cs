@@ -171,7 +171,8 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                     LoggingClient.Write(logKind, subject, message, detail, callerMemberName, callerFilePath, callerLineNumber);
                 },
                 (timestamp, talkerException) => {
-                    var writeValue = $"@ {timestamp} {SenderApplication} {logKind} {subject} {message} {detail}";
+                    var logTimestamp = CommonUtility.ReplaceNKitText("${YYYY}-${MM}-${DD}T${hh24}:${mm}:${ss}.${fff}", timestamp);
+                    var writeValue = $"@ {logTimestamp} {SenderApplication} {logKind} {subject} {message} {detail}";
                     switch(logKind) {
                         case NKitLogKind.Trace:
                         case NKitLogKind.Debug:

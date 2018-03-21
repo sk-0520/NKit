@@ -18,6 +18,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         public CameramanForm()
         {
             InitializeComponent();
+
+            Font = SystemFonts.MessageBoxFont;
+            Text = CommonUtility.ReplaceWindowTitle(Text);
         }
 
         #region property
