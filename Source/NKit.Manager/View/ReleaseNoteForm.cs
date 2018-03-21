@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ContentTypeTextNet.NKit.Common;
+using ContentTypeTextNet.NKit.Manager.Model;
 
 namespace ContentTypeTextNet.NKit.Manager.View
 {
@@ -54,16 +55,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
             return issueReplaced;
         }
 
-        public void SetReleaseNote(Version version, string releaseHash, DateTime releaseTimestamp, string releaseNoteValue)
+        public void SetReleaseNote(ReleaseNoteItem item)
         {
-            var replacedReleaceNoteValue = ReplaceReleaceNote(releaseNoteValue);
-            var html = Properties.Resources.File_ReleaseNoteLatest
-                .Replace("${VERSION}", version.ToString())
-                .Replace("${TIMESTAMP}", releaseTimestamp.ToString("u"))
-                .Replace("${HASH}", releaseHash)
-                .Replace("${CONTENT}", replacedReleaceNoteValue)
-            ;
-            this.viewReleaseNote.DocumentStream = new MemoryStream(Encoding.UTF8.GetBytes(html));
+            this.releaseNoteControl.SetReleaseNotes("new version", new[] { item });
         }
 
         #endregion

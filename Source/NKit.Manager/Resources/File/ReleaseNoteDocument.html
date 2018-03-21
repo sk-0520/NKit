@@ -1387,6 +1387,13 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 }
 })(this || (typeof window !== 'undefined' ? window : global));
 
+
+        function replaceReleaseNoteSection(section) {
+            var viewContent = section.getElementsByClassName('view-content')[0];
+            var rawContent = section.getElementsByClassName('markdown-content')[0];
+            var makedMarkdownHtml = marked(rawContent.innerHTML);
+            viewContent.innerHTML = makedMarkdownHtml;
+        }
         </script>
     </head>
     <body>

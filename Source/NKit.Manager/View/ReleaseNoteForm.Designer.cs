@@ -29,8 +29,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReleaseNoteForm));
             this.commandClose = new System.Windows.Forms.Button();
-            this.viewReleaseNote = new System.Windows.Forms.WebBrowser();
             this.commandUpdate = new System.Windows.Forms.Button();
+            this.releaseNoteControl = new ContentTypeTextNet.NKit.Manager.View.ReleaseNoteControl();
             this.SuspendLayout();
             // 
             // commandClose
@@ -44,15 +44,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandClose.UseVisualStyleBackColor = true;
             this.commandClose.Click += new System.EventHandler(this.commandClose_Click);
             // 
-            // viewReleaseNote
-            // 
-            this.viewReleaseNote.Location = new System.Drawing.Point(12, 12);
-            this.viewReleaseNote.MinimumSize = new System.Drawing.Size(20, 20);
-            this.viewReleaseNote.Name = "viewReleaseNote";
-            this.viewReleaseNote.Size = new System.Drawing.Size(421, 259);
-            this.viewReleaseNote.TabIndex = 1;
-            this.viewReleaseNote.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.viewReleaseNote_Navigating);
-            // 
             // commandUpdate
             // 
             this.commandUpdate.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -64,6 +55,15 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandUpdate.UseVisualStyleBackColor = true;
             this.commandUpdate.Click += new System.EventHandler(this.commandUpdate_Click);
             // 
+            // releaseNoteControl
+            // 
+            this.releaseNoteControl.IssueBaseUri = null;
+            this.releaseNoteControl.Location = new System.Drawing.Point(12, 12);
+            this.releaseNoteControl.MinimumSize = new System.Drawing.Size(20, 20);
+            this.releaseNoteControl.Name = "releaseNoteControl";
+            this.releaseNoteControl.Size = new System.Drawing.Size(458, 259);
+            this.releaseNoteControl.TabIndex = 1;
+            // 
             // ReleaseNoteForm
             // 
             this.AcceptButton = this.commandClose;
@@ -71,9 +71,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.commandClose;
             this.ClientSize = new System.Drawing.Size(482, 312);
+            this.Controls.Add(this.releaseNoteControl);
             this.Controls.Add(this.commandUpdate);
             this.Controls.Add(this.commandClose);
-            this.Controls.Add(this.viewReleaseNote);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ReleaseNoteForm";
             this.Text = "ReleaseNoteForm";
@@ -84,7 +84,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         #endregion
 
         private System.Windows.Forms.Button commandClose;
-        private System.Windows.Forms.WebBrowser viewReleaseNote;
         private System.Windows.Forms.Button commandUpdate;
+        private ReleaseNoteControl releaseNoteControl;
     }
 }

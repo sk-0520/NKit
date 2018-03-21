@@ -103,38 +103,6 @@ namespace ContentTypeTextNet.NKit.Manager.Properties {
         }
         
         /// <summary>
-        ///   &lt;!DOCTYPE html&gt;
-        ///&lt;html&gt;
-        ///    &lt;head&gt;
-        ///        &lt;meta charset=&quot;UTF-8&quot; /&gt;
-        ///        &lt;script&gt;
-        ///        /**
-        /// * marked - a markdown parser
-        /// * Copyright (c) 2011-2014, Christopher Jeffrey. (MIT Licensed)
-        /// * https://github.com/chjj/marked
-        /// */
-        ///
-        ///;(function(root) {
-        ///&apos;use strict&apos;;
-        ///
-        ////**
-        /// * Block-Level Grammar
-        /// */
-        ///
-        ///var block = {
-        ///  newline: /^\n+/,
-        ///  code: /^( {4}[^\n]+\n*)+/,
-        ///  fences: noop,
-        ///  hr: /^ {0,3}((?:- *){3,}|(?:_ *){3,}|(?:\* *){3,})(?:\n+|$)/,
-        ///  heading: /^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)/,        /// [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string File_ReleaseNoteLatest {
-            get {
-                return ResourceManager.GetString("File_ReleaseNoteLatest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   &lt;section&gt;
         ///	&lt;h2&gt;
         ///		&lt;strong class=&quot;vresion&quot;&gt;${VERSION}&lt;/strong&gt;

@@ -10,6 +10,13 @@
         <meta charset="UTF-8" />
         <script>
         <#@ include file="$(ProjectDir)\Resources\File\exclude\marked.js.txt" #>
+
+        function replaceReleaseNoteSection(section) {
+            var viewContent = section.getElementsByClassName('view-content')[0];
+            var rawContent = section.getElementsByClassName('markdown-content')[0];
+            var makedMarkdownHtml = marked(rawContent.innerHTML);
+            viewContent.innerHTML = makedMarkdownHtml;
+        }
         </script>
     </head>
     <body>

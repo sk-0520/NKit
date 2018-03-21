@@ -184,7 +184,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\File\exclude\marked.js.txt" />
-    <Content Include="Resources\File\exclude\replace-releasenote.js.txt" />
     <Content Include="Resources\File\ReleaseNoteDocument.html">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -196,15 +195,6 @@
     </Content>
     <Content Include="Resources\File\ReleaseNoteLayout.html">
       <LastGenOutput>ReleaseNoteLayout.html1.cs</LastGenOutput>
-    </Content>
-    <Content Include="Resources\File\ReleaseNoteLatest.html">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ReleaseNoteLatest.tt</DependentUpon>
-    </Content>
-    <Content Include="Resources\File\ReleaseNoteLatest.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ReleaseNoteLatest.html</LastGenOutput>
     </Content>
     <Content Include="Resources\NKit.Manager.ico" />
     <None Include="App.config" />

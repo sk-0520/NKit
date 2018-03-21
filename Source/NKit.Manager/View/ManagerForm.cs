@@ -175,7 +175,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
             ReleaseNoteForm.ReleaseNoteUri = Worker.ReleaseNoteUri;
             ReleaseNoteForm.SetUpdatable(Worker.WorkspaceState != WorkspaceState.Updating);
-            ReleaseNoteForm.SetReleaseNote(Worker.NewVersion, Worker.ReleaseHash, Worker.ReleaseTimestamp, Worker.ReleaseNoteValue);
+            ReleaseNoteForm.SetReleaseNote(Worker.ReleaseNote);
             ReleaseNoteForm.Show(this);
         }
 
@@ -521,13 +521,13 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
                     // デバッグコードなので Dispose は考えない
                     var form = new ReleaseNoteForm();
-                    form.SetReleaseNote(
-                        Assembly.GetExecutingAssembly().GetName().Version,
-                        Application.ProductVersion,
+                    form.SetReleaseNote(new ReleaseNoteItem() {
+                        Version = Assembly.GetExecutingAssembly().GetName().Version,
+                        Hash = Application.ProductVersion,
                         // これは渡された時からローカルタイム
-                        DateTime.Now,
-                        File.ReadAllText(file)
-                    );
+                        Timestamp = DateTime.Now,
+                        Content = File.ReadAllText(file),
+                    });
                     form.Show(this);
                 }
             }

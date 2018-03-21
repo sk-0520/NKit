@@ -15,7 +15,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
     {
         #region property
 
-        public Uri IssueBaseUri { get; } = Constants.IssuesBaseUri;
+        public Uri IssueBaseUri { get; set; }
 
         #endregion
 
@@ -28,7 +28,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 var hash = m.Groups["HASH"].Value;
                 var number = m.Groups["NUMBER"].Value;
 
-                return $"[{hash}{number}]({IssueBaseUri}/{number})";
+                return $"[{hash}{number}]({IssueBaseUri ?? Constants.IssuesBaseUri}/{number})";
             });
 
             return issueReplaced;
@@ -63,7 +63,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         protected override void OnNavigating(WebBrowserNavigatingEventArgs e)
         {
             var urlText = e.Url.ToString();
-            if(urlText.StartsWith(IssueBaseUri.ToString(), StringComparison.InvariantCultureIgnoreCase)) {
+            if(urlText.StartsWith((IssueBaseUri ?? Constants.IssuesBaseUri).ToString(), StringComparison.InvariantCultureIgnoreCase)) {
                 Process.Start(urlText);
                 e.Cancel = true;
             }
