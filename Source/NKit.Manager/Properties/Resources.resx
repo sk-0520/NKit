@@ -121,7 +121,13 @@
   <data name="File_AcceptMessage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\file\acceptmessage.rtf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="File_ReleaseNoteMarkdown" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\file\releasenotemarkdown.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="File_ReleaseNoteDocument" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\File\ReleaseNoteDocument.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="File_ReleaseNoteLayout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\File\ReleaseNoteLayout.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="NKit_Manager" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\nkit.manager.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

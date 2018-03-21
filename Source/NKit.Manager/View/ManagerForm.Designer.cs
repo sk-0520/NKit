@@ -56,6 +56,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.selectWorkspaceLoadToMinimize = new System.Windows.Forms.CheckBox();
             this.selectWorkspaceRunningMinimizeToNotifyArea = new System.Windows.Forms.CheckBox();
+            this.commandShowAbout = new System.Windows.Forms.Button();
             this.panelWorkspace.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
@@ -312,11 +313,22 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.selectWorkspaceRunningMinimizeToNotifyArea.UseVisualStyleBackColor = true;
             this.selectWorkspaceRunningMinimizeToNotifyArea.CheckedChanged += new System.EventHandler(this.selectWorkspaceRunningMinimizeToNotifyArea_CheckedChanged);
             // 
+            // commandShowAbout
+            // 
+            this.commandShowAbout.Location = new System.Drawing.Point(2, 148);
+            this.commandShowAbout.Name = "commandShowAbout";
+            this.commandShowAbout.Size = new System.Drawing.Size(75, 23);
+            this.commandShowAbout.TabIndex = 11;
+            this.commandShowAbout.Text = "about";
+            this.commandShowAbout.UseVisualStyleBackColor = true;
+            this.commandShowAbout.Click += new System.EventHandler(this.commandShowAbout_Click);
+            // 
             // ManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(654, 266);
+            this.Controls.Add(this.commandShowAbout);
             this.Controls.Add(this.selectWorkspaceRunningMinimizeToNotifyArea);
             this.Controls.Add(this.selectWorkspaceLoadToMinimize);
             this.Controls.Add(this.commandTestExecute);
@@ -378,6 +390,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.CheckBox selectWorkspaceLoadToMinimize;
         private System.Windows.Forms.CheckBox selectWorkspaceRunningMinimizeToNotifyArea;
+        private System.Windows.Forms.Button commandShowAbout;
     }
 }
 
