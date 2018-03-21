@@ -39,7 +39,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             var replacedContent = ReplaceReleaceNoteContent(item.Content);
             var html = Properties.Resources.File_ReleaseNoteLayout
                 .Replace("${VERSION}", item.Version.ToString())
-                .Replace("${TIMESTAMP}", item.Timestamp.ToString("u"))
+                .Replace("${TIMESTAMP}", item.Timestamp == DateTime.MinValue ? string.Empty: item.Timestamp.ToString("u"))
                 .Replace("${HASH}", item.Hash)
                 .Replace("${CONTENT}", replacedContent)
             ;
