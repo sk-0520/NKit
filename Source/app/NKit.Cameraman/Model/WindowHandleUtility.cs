@@ -12,53 +12,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 {
     public static class WindowHandleUtility
     {
-        #region PInvoke
-        // PInvoke 待つの疲れた
-
-        #region Winuser.h
-
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
-
-        [DllImport("user32.dll")]
-        static extern bool AttachThreadInput(uint idAttach, uint idAttachTo, bool fAttach);
-
-        [DllImport("kernel32.dll")]
-        static extern uint GetCurrentThreadId();
-
-        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool EnumChildWindows(IntPtr hwndParent, NativeMethods.EnumWindowsProc lpEnumFunc, IntPtr lParam);
-
-        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        public static extern uint RegisterWindowMessage(string lpString);
-
-        #endregion
-
-        #region Oleacc.h
-
-        [DllImport("oleacc.dll", PreserveSig = false)]
-        [return: MarshalAs(UnmanagedType.Interface)]
-        public static extern object ObjectFromLresult(UIntPtr lResult, [MarshalAs(UnmanagedType.LPStruct)] Guid refiid, IntPtr wParam);
-
-        #endregion
-
-        #region pinvoke.net にはあったけど MSDN 見つけられんかったからヘッダファイル分かんね
-
-        [ComImport]
-        [Guid("6d5140c1-7436-11ce-8034-00aa006009fa")]
-        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        public interface IServiceProvider
-        {
-            void QueryService(ref Guid guidService, ref Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvObject);
-        }
-        #endregion
-
-        #endregion
-
         #region define
 
         const int WindowClassMaxSize = 256;
@@ -121,13 +74,13 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
             // なんとかしてフォーカスウィンドウまで飛んでいく
             int targetProcessId;
-            var targetThreadId = GetWindowThreadProcessId(hWnd, out targetProcessId);
-            var myThreadId = GetCurrentThreadId();
-            if(AttachThreadInput(myThreadId, targetThreadId, true)) {
+            var targetThreadId = NativeMethods.GetWindowThreadProcessId(hWnd, out targetProcessId);
+            var myThreadId = NativeMethods.GetCurrentThreadId();
+            if(NativeMethods.AttachThreadInput(myThreadId, targetThreadId, true)) {
                 try {
                     return NativeMethods.GetFocus();
                 } finally {
-                    AttachThreadInput(myThreadId, targetThreadId, false);
+                    NativeMethods.AttachThreadInput(myThreadId, targetThreadId, false);
                 }
             }
 
@@ -137,7 +90,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         public static string GetWindowClassName(IntPtr hWnd)
         {
             var windowClassNameBuffer = new StringBuilder(WindowClassMaxSize);
-            var windowClassResult = GetClassName(hWnd, windowClassNameBuffer, windowClassNameBuffer.Capacity);
+            var windowClassResult = NativeMethods.GetClassName(hWnd, windowClassNameBuffer, windowClassNameBuffer.Capacity);
             if(windowClassResult == 0) {
                 return string.Empty;
             }
