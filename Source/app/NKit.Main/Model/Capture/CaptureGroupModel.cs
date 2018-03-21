@@ -137,15 +137,30 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             Manager.CancelCapture();
         }
 
-        public void RemoveImageAt(int index)
+        bool RemoveImage(CaptureImageModel image)
         {
-            var item = Items[index];
-            Items.Remove(item);
+            Items.Remove(image);
+
             var imageSetting = GroupSetting.Images
-                .FirstOrDefault(i => IsEqualImageData(item.ImageFile.Name, item.ImageFile.Directory.Name, i))
+                .FirstOrDefault(i => IsEqualImageData(image.ImageFile.Name, image.ImageFile.Directory.Name, i))
             ;
             GroupSetting.Images.Remove(imageSetting);
-            item.Dispose();
+
+            using(image) {
+                try {
+                    image.ImageFile.Delete();
+                    return true;
+                } catch(IOException ex) {
+                    Logger.Error(ex);
+                }
+                return false;
+            }
+        }
+
+        public bool RemoveImageAt(int index)
+        {
+            var image = Items[index];
+            return RemoveImage(image);
         }
 
         #endregion
