@@ -33,6 +33,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         RunState _initialRunState;
         DateTime _selectedFilterStartUtcTimestamp = UnSelectedFilterTimestamp;
 
+        CaptureImageViewModel _selectedImageItem;
+
         #endregion
 
         public CaptureGroupViewModel(CaptureGroupModel model)
@@ -92,6 +94,13 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             set { SetPropertyValue(Model.GroupSetting.Scroll.InternetExplorer.Footer, value, nameof(Model.GroupSetting.Scroll.InternetExplorer.Footer.HideElements)); }
         }
 
+        public CaptureImageViewModel SelectedImageItem
+        {
+            get { return this._selectedImageItem; }
+            set { SetProperty(ref this._selectedImageItem, value); }
+        }
+
+
         ObservableCollection<CaptureImageViewModel> ImageItemViewModels { get; } = new ObservableCollection<CaptureImageViewModel>();
         public ICollectionView ImageItems { get; set; }
 
@@ -128,6 +137,15 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             }
         );
 
+        public ICommand CopySelectedImageItemCommand => new DelegateCommand(
+            () => {
+                var param = default(object);
+                if(SelectedImageItem.CopyCommand.CanExecute(param)) {
+                    SelectedImageItem.CopyCommand.Execute(param);
+                }
+            },
+            () => SelectedImageItem != null
+        );
 
         #endregion
 
@@ -224,6 +242,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
                         }
                         FilterStartUtcTimestampItems.Clear();
                         SelectedFilterStartUtcTimestamp = UnSelectedFilterTimestamp;
+                        SelectedImageItem = null;
                         break;
 
                     case NotifyCollectionChangedAction.Move:
@@ -238,6 +257,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
                         }
                         foreach(var oldViewModel in oldViewModels) {
                             oldViewModel.Dispose();
+                        }
+                        if(oldViewModels.Any(i => i == SelectedImageItem)) {
+                            SelectedImageItem = null;
                         }
                         if(!ImageItemViewModels.Any(vm => vm.CaptureStartUtcTimestamp == removeStartTimestamp)) {
                             FilterStartUtcTimestampItems.Remove(removeStartTimestamp);

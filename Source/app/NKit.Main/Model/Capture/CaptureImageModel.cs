@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 using ContentTypeTextNet.NKit.Setting.Capture;
 using ContentTypeTextNet.NKit.Utility.Model;
 using Microsoft.WindowsAPICodePack.Shell;
@@ -68,6 +69,18 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 var image = shellFile.Properties.System.Image;
                 ImageSetting.Width = image.HorizontalSize.Value ?? 0;
                 ImageSetting.Height = image.VerticalSize.Value ?? 0;
+            }
+        }
+
+        public bool CopyImage()
+        {
+            // UI スレッドからしか来ないっしょ
+            using(var stream = ImageFile.OpenRead()) {
+                var decoder = BitmapDecoder.Create(stream, BitmapCreateOptions.DelayCreation, BitmapCacheOption.Default);
+                var bitmap = new WriteableBitmap(decoder.Frames[0]);
+
+                var co = new ClipboardOperator();
+                return co.CopyImage(bitmap);
             }
         }
 

@@ -103,7 +103,12 @@
           </ComboBox>
         </ToolBar>
 
-        <ListBox x:Name="captureItemsContainer" Grid.Row="1" VirtualizingPanel.ScrollUnit="Pixel" ScrollViewer.CanContentScroll="True" ItemsSource="{Binding ImageItems}">
+        <ListBox x:Name="captureItemsContainer" Grid.Row="1" VirtualizingPanel.ScrollUnit="Pixel" ScrollViewer.CanContentScroll="True" ItemsSource="{Binding ImageItems}" SelectedItem="{Binding SelectedImageItem}">
+          <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseDoubleClick">
+              <i:InvokeCommandAction Command="{Binding CopySelectedImageItemCommand}" />
+            </i:EventTrigger>
+          </i:Interaction.Triggers>
           <ListBox.ItemTemplate>
             <DataTemplate>
               <StackPanel Orientation="Horizontal">

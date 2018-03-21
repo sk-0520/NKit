@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using ContentTypeTextNet.NKit.Main.Model.Capture;
 using ContentTypeTextNet.NKit.Utility.ViewModel;
+using Prism.Commands;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
 {
@@ -51,6 +53,11 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         #endregion
 
         #region command
+
+        public ICommand CopyCommand => new DelegateCommand(() => {
+            Model.CopyImage();
+        });
+
         #endregion
 
         #region function
