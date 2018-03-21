@@ -137,11 +137,11 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             }
         );
 
-        public ICommand CopySelectedImageItemCommand => new DelegateCommand(
+        public ICommand OpenSelectedImageItemCommand => new DelegateCommand(
             () => {
                 var param = default(object);
-                if(SelectedImageItem.CopyCommand.CanExecute(param)) {
-                    SelectedImageItem.CopyCommand.Execute(param);
+                if(SelectedImageItem.OpenCommand.CanExecute(param)) {
+                    SelectedImageItem.OpenCommand.Execute(param);
                 }
             },
             () => SelectedImageItem != null

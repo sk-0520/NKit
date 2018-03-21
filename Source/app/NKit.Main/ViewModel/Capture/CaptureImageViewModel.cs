@@ -58,6 +58,10 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             Model.CopyImage();
         });
 
+        public ICommand OpenCommand => new DelegateCommand(() => {
+            Model.OpenImage();
+        });
+
         #endregion
 
         #region function
