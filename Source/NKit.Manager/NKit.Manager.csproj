@@ -184,23 +184,27 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\File\exclude\marked.js.txt" />
-    <Content Include="Resources\File\AboutReleaseNotesMarkdown.html">
-      <DependentUpon>AboutReleaseNotesMarkdown.tt</DependentUpon>
+    <Content Include="Resources\File\exclude\replace-releasenote.js.txt" />
+    <Content Include="Resources\File\ReleaseNoteAll.html">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>ReleaseNoteAll.tt</DependentUpon>
     </Content>
-    <Content Include="Resources\File\AboutReleaseNotesMarkdown.tt">
+    <Content Include="Resources\File\ReleaseNoteAll.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AboutReleaseNotesMarkdown.html</LastGenOutput>
+      <LastGenOutput>ReleaseNoteAll.html</LastGenOutput>
     </Content>
-    <Content Include="Resources\File\ReleaseNoteMarkdown.html">
+    <Content Include="Resources\File\ReleaseNoteLayout.html">
+      <LastGenOutput>ReleaseNoteLayout.html1.cs</LastGenOutput>
+    </Content>
+    <Content Include="Resources\File\ReleaseNoteLatest.html">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ReleaseNoteMarkdown.tt</DependentUpon>
+      <DependentUpon>ReleaseNoteLatest.tt</DependentUpon>
     </Content>
-    <Content Include="Resources\File\ReleaseNoteMarkdown.tt">
+    <Content Include="Resources\File\ReleaseNoteLatest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ReleaseNoteMarkdown.html</LastGenOutput>
+      <LastGenOutput>ReleaseNoteLatest.html</LastGenOutput>
     </Content>
     <Content Include="Resources\NKit.Manager.ico" />
     <None Include="App.config" />

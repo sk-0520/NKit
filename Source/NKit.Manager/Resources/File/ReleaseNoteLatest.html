@@ -1387,23 +1387,34 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 }
 })(this || (typeof window !== 'undefined' ? window : global));
 
+        function replaceReleaseNoteSection(section) {
+    var viewContent = section.getElementsByClassName('view-content')[0];
+    var rawContent = section.getElementsByClassName('markdown-content')[0];
+    var makedMarkdownHtml = marked(rawContent.innerHTML);
+    viewContent.innerHTML = makedMarkdownHtml;
+}
+
         </script>
     </head>
     <body>
-        <h1>
-            <strong>${VERSION}</strong>
-            <time>${TIMESTAMP}</time>
-        </h1>
-        <p>
-            <strong>${HASH}</strong>
-        </p>
-        <div id="view-content"></div>
-        <pre id="raw-content" style="display: none">${CONTENT}</pre>
+        <h1>${TITLE}</h1>
+        <section>
+	<h2>
+		<strong class="vresion">${VERSION}</strong>
+		<time class="timestamp">${TIMESTAMP}</time>
+	</h2>
+	<p>
+		<strong class="hash">${HASH}</strong>
+	</p>
+	<div class="view-content"></div>
+	<pre class="markdown-content" style="display: none">${CONTENT}</pre>
+</section>
+
     </body>
     <script>
-        var viewContent = document.getElementById('view-content');
-        var rawContent = document.getElementById('raw-content');
-        var makedMarkdownHtml = marked(rawContent.innerHTML);
-        viewContent.innerHTML = makedMarkdownHtml;
+        (function() {
+            var section = document.getElementsByTagName('section')[0];
+            replaceReleaseNoteSection(section);
+        })();
     </script>
 </html>

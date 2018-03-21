@@ -1390,20 +1390,16 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         </script>
     </head>
     <body>
-        <h1>
-            <strong>${VERSION}</strong>
-            <time>${TIMESTAMP}</time>
-        </h1>
-        <p>
-            <strong>${HASH}</strong>
-        </p>
-        <div id="view-content"></div>
-        <pre id="raw-content" style="display: none">${CONTENT}</pre>
+        <h1>${TITLE}</h1>
+        ${ALL-CONTENTS}
     </body>
     <script>
-        var viewContent = document.getElementById('view-content');
-        var rawContent = document.getElementById('raw-content');
-        var makedMarkdownHtml = marked(rawContent.innerHTML);
-        viewContent.innerHTML = makedMarkdownHtml;
+        (function() {
+            var sections = document.getElementsByTagName('section');
+            for(var i = 0; i < sections.length; i++) {
+                var section = sections[i];
+                replaceReleaseNoteSection(section);
+            }
+        })();
     </script>
 </html>

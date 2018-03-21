@@ -57,7 +57,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         public void SetReleaseNote(Version version, string releaseHash, DateTime releaseTimestamp, string releaseNoteValue)
         {
             var replacedReleaceNoteValue = ReplaceReleaceNote(releaseNoteValue);
-            var html = Properties.Resources.File_ReleaseNoteMarkdown
+            var html = Properties.Resources.File_ReleaseNoteLatest
                 .Replace("${VERSION}", version.ToString())
                 .Replace("${TIMESTAMP}", releaseTimestamp.ToString("u"))
                 .Replace("${HASH}", releaseHash)

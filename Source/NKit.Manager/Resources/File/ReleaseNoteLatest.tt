@@ -10,23 +10,17 @@
         <meta charset="UTF-8" />
         <script>
         <#@ include file="$(ProjectDir)\Resources\File\exclude\marked.js.txt" #>
+        <#@ include file="$(ProjectDir)\Resources\File\exclude\replace-releasenote.js.txt" #>
         </script>
     </head>
     <body>
-        <h1>
-            <strong>${VERSION}</strong>
-            <time>${TIMESTAMP}</time>
-        </h1>
-        <p>
-            <strong>${HASH}</strong>
-        </p>
-        <div id="view-content"></div>
-        <pre id="raw-content" style="display: none">${CONTENT}</pre>
+        <h1>${TITLE}</h1>
+        <#@ include file="$(ProjectDir)\Resources\File\ReleaseNoteLayout.html" #>
     </body>
     <script>
-        var viewContent = document.getElementById('view-content');
-        var rawContent = document.getElementById('raw-content');
-        var makedMarkdownHtml = marked(rawContent.innerHTML);
-        viewContent.innerHTML = makedMarkdownHtml;
+        (function() {
+            var section = document.getElementsByTagName('section')[0];
+            replaceReleaseNoteSection(section);
+        })();
     </script>
 </html>

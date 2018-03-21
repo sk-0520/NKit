@@ -73,22 +73,52 @@ namespace ContentTypeTextNet.NKit.Manager.Properties {
         /// <summary>
         ///   &lt;!DOCTYPE html&gt;
         ///&lt;html&gt;
-        ///	&lt;head&gt;
-        ///		&lt;meta charset=&quot;UTF-8&quot; /&gt;
-        ///	&lt;/head&gt;
-        ///	&lt;body&gt;
-        ///		&lt;h1&gt;
-        ///			&lt;strong&gt;${VERSION}&lt;/strong&gt;
-        ///			&lt;time&gt;${TIMESTAMP}&lt;/time&gt;
-        ///		&lt;/h1&gt;
-        ///		&lt;div id=&quot;content&quot;&gt;${CONTENT}&lt;/div&gt;
-        ///	&lt;/body&gt;
-        ///&lt;/html&gt;
+        ///    &lt;head&gt;
+        ///        &lt;meta charset=&quot;UTF-8&quot; /&gt;
+        ///        &lt;script&gt;
+        ///        /**
+        /// * marked - a markdown parser
+        /// * Copyright (c) 2011-2014, Christopher Jeffrey. (MIT Licensed)
+        /// * https://github.com/chjj/marked
+        /// */
+        ///
+        ///;(function(root) {
+        ///&apos;use strict&apos;;
+        ///
+        ////**
+        /// * Block-Level Grammar
+        /// */
+        ///
+        ///var block = {
+        ///  newline: /^\n+/,
+        ///  code: /^( {4}[^\n]+\n*)+/,
+        ///  fences: noop,
+        ///  hr: /^ {0,3}((?:- *){3,}|(?:_ *){3,}|(?:\* *){3,})(?:\n+|$)/,
+        ///  heading: /^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)/,        /// [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string File_ReleaseNoteLatest {
+            get {
+                return ResourceManager.GetString("File_ReleaseNoteLatest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   &lt;section&gt;
+        ///	&lt;h2&gt;
+        ///		&lt;strong class=&quot;vresion&quot;&gt;${VERSION}&lt;/strong&gt;
+        ///		&lt;time class=&quot;timestamp&quot;&gt;${TIMESTAMP}&lt;/time&gt;
+        ///	&lt;/h2&gt;
+        ///	&lt;p&gt;
+        ///		&lt;strong class=&quot;hash&quot;&gt;${HASH}&lt;/strong&gt;
+        ///	&lt;/p&gt;
+        ///	&lt;div class=&quot;view-content&quot;&gt;&lt;/div&gt;
+        ///	&lt;pre class=&quot;markdown-content&quot; style=&quot;display: none&quot;&gt;${CONTENT}&lt;/pre&gt;
+        ///&lt;/section&gt;
         /// に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string File_ReleaseNoteMarkdown {
+        internal static string File_ReleaseNoteLayout {
             get {
-                return ResourceManager.GetString("File_ReleaseNoteMarkdown", resourceCulture);
+                return ResourceManager.GetString("File_ReleaseNoteLayout", resourceCulture);
             }
         }
     }
