@@ -103,7 +103,7 @@
           </ComboBox>
         </ToolBar>
 
-        <ListBox x:Name="captureItemsContainer" Grid.Row="1" VirtualizingPanel.ScrollUnit="Pixel" ScrollViewer.CanContentScroll="True" ItemsSource="{Binding Items}">
+        <ListBox x:Name="captureItemsContainer" Grid.Row="1" VirtualizingPanel.ScrollUnit="Pixel" ScrollViewer.CanContentScroll="True" ItemsSource="{Binding ImageItems}">
           <ListBox.ItemTemplate>
             <DataTemplate>
               <StackPanel Orientation="Horizontal">

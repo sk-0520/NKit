@@ -44,7 +44,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         DirectoryInfo CurrentCaptureDirectory { get; set; }
 
-        public ObservableCollection<CaptureImageModel> Items { get; } = new ObservableCollection<CaptureImageModel>();
+        public ObservableCollection<CaptureImageModel> Images { get; } = new ObservableCollection<CaptureImageModel>();
 
 
         #endregion
@@ -78,7 +78,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             return result;
         }
 
-        DirectoryInfo GetCaptureBaseDirectory()
+        DirectoryInfo GetCaptureImageBaseDirectory()
         {
             var workspaceDirPath = Environment.ExpandEnvironmentVariables(StartupOptions.WorkspacePath);
             var dirPath = Path.Combine(workspaceDirPath, "capture", GroupSetting.Id.ToString());
@@ -95,17 +95,17 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         public void InitializeCaptureFiles()
         {
             //TODO: 例外対応
-            var captureDirs = GetCaptureBaseDirectory()
+            var captureDirs = GetCaptureImageBaseDirectory()
                 .EnumerateDirectories(CaptureSubDirectoryNamePrefix + "*")
                 .OrderBy(d => d.Name)
             ;
-            Items.Clear();
+            Images.Clear();
             foreach(var captureDir in captureDirs) {
                 var files = GetCaptureFiles(captureDir)
                     .OrderBy(f => f.Name)
                 ;
                 foreach(var file in files) {
-                    Items.Add(CreateImageModel(file));
+                    Images.Add(CreateImageModel(file));
                 }
             }
         }
@@ -113,7 +113,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         void AddCaptureFiles()
         {
             var files = GetCaptureFiles(CurrentCaptureDirectory);
-            var addFileItems = Items
+            var addFileItems = Images
                 .Concat(files.Select(f => CreateImageModel(f)))
                 .GroupBy(i => i.ImageFile.Name)
                 .Where(g => g.Count() == 1)
@@ -122,13 +122,13 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
                 .ToList()
             ;
             foreach(var addFileItem in addFileItems) {
-                Items.Add(addFileItem);
+                Images.Add(addFileItem);
             }
         }
 
         public void RemoveAllCaptureFiles()
         {
-            var dir = GetCaptureBaseDirectory();
+            var dir = GetCaptureImageBaseDirectory();
             dir.Delete(true);
         }
 
@@ -139,7 +139,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         bool RemoveImage(CaptureImageModel image)
         {
-            Items.Remove(image);
+            Images.Remove(image);
 
             var imageSetting = GroupSetting.Images
                 .FirstOrDefault(i => IsEqualImageData(image.ImageFile.Name, image.ImageFile.Directory.Name, i))
@@ -159,7 +159,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         public bool RemoveImageAt(int index)
         {
-            var image = Items[index];
+            var image = Images[index];
             return RemoveImage(image);
         }
 
@@ -171,7 +171,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         protected override Task<PreparaResult<None>> PreparateCoreAsync(CancellationToken cancelToken)
         {
-            var baseDirectory = GetCaptureBaseDirectory();
+            var baseDirectory = GetCaptureImageBaseDirectory();
             CurrentCaptureDirectory = baseDirectory.CreateSubdirectory(CaptureSubDirectoryNamePrefix + DateTime.UtcNow.ToString("yyyyMMddHHmmss"));
 
             var id = DateTime.UtcNow.ToFileTime().ToString();
