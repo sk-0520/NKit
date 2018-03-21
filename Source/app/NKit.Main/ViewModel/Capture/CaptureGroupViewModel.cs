@@ -15,6 +15,7 @@ using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.Define;
 using ContentTypeTextNet.NKit.Utility.Model;
 using ContentTypeTextNet.NKit.Utility.ViewModel;
+using Prism.Commands;
 using Prism.Interactivity.InteractionRequest;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
@@ -119,6 +120,15 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         #endregion
 
         #region command
+
+        public ICommand RemoveImageCommand => new DelegateCommand<CaptureImageViewModel>(
+            vm => {
+                var index = ItemViewModels.IndexOf(vm);
+                Model.RemoveImageAt(index);
+            }
+        );
+
+
         #endregion
 
         #region function

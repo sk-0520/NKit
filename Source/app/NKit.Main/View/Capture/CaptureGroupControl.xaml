@@ -117,6 +117,7 @@
                   </TextBlock>
                   <TextBlock Text="{Binding CaptureUtcTimestamp, Converter={StaticResource UtcToLocalTimestampConverter}}" />
                   <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" />
+                  <Button Command="{Binding DataContext.RemoveImageCommand ,ElementName=root}" CommandParameter="{Binding}">remove</Button>
                 </StackPanel>
               </StackPanel>
             </DataTemplate>

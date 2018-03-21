@@ -51,13 +51,15 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
 
         #region function
 
+        bool IsEqualPath(string a, string b) => string.Equals(a, b, StringComparison.InvariantCultureIgnoreCase);
+        bool IsEqualImageData(string fileName, string directoryName, IReadOnlyCaptureImageSetting setting) => IsEqualPath(fileName, setting.FileName) && IsEqualPath(directoryName, setting.DirectoryName);
+
         CaptureImageModel CreateImageModel(FileInfo fileInfo)
         {
-            bool IsEqualPath(string a, string b) => string.Equals(a, b, StringComparison.InvariantCultureIgnoreCase);
 
             var fileDirName = fileInfo.Directory.Name;
             var imageSetting = GroupSetting.Images
-                .FirstOrDefault(i => IsEqualPath(i.FileName, fileInfo.Name) && IsEqualPath(i.DirectoryName, fileDirName))
+                .FirstOrDefault(i => IsEqualImageData(fileInfo.Name, fileDirName, i))
             ;
             var hasImageSetting = imageSetting != null;
             if(!hasImageSetting) {
@@ -133,6 +135,17 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
         public void CancelCapture()
         {
             Manager.CancelCapture();
+        }
+
+        public void RemoveImageAt(int index)
+        {
+            var item = Items[index];
+            Items.Remove(item);
+            var imageSetting = GroupSetting.Images
+                .FirstOrDefault(i => IsEqualImageData(item.ImageFile.Name, item.ImageFile.Directory.Name, i))
+            ;
+            GroupSetting.Images.Remove(imageSetting);
+            item.Dispose();
         }
 
         #endregion
