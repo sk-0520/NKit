@@ -110,7 +110,13 @@
                 <Image Source="{Binding ThumbnailImagePath, Converter={StaticResource FilePathToImageConverter}}" Width="{x:Static app:Constants.CaptureThumbnailSizeWidth}" Height="{x:Static app:Constants.CaptureThumbnailSizeHeight}" />
                 <StackPanel>
                   <TextBlock Text="{Binding FileName}" />
+                  <TextBlock>
+                    <Run Text="{Binding Width, Mode=OneTime}" />
+                    <Run Text=" * " />
+                    <Run Text="{Binding Height, Mode=OneTime}" />
+                  </TextBlock>
                   <TextBlock Text="{Binding CaptureUtcTimestamp, Converter={StaticResource UtcToLocalTimestampConverter}}" />
+                  <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
               </StackPanel>
             </DataTemplate>
