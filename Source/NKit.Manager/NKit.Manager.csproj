@@ -196,6 +196,9 @@
     <Content Include="Resources\File\ReleaseNoteLayout.html">
       <LastGenOutput>ReleaseNoteLayout.html1.cs</LastGenOutput>
     </Content>
+    <Content Include="doc\release-notes\ver_0-3-0.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\NKit.Manager.png" />
     <Content Include="Resources\NKit.Manager.ico" />
     <None Include="App.config" />
