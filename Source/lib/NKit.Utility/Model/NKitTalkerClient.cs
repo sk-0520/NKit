@@ -190,12 +190,15 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         public void DoSwitch(NKitTalkerClientBase client, TalkerSwicthDelegate talker, LocalSwicthDelegate local)
         {
             var utcTimestamp = DateTime.UtcNow;
+
             Exception talkerException = null;
+            var sentMessage = false;
 
             if(client != null) {
                 if(LastErrorTimestamp + RetrySpan < utcTimestamp) {
                     try {
                         talker(utcTimestamp);
+                        sentMessage = true;
                         return;
                     } catch(CommunicationException ex) {
                         talkerException = ex;
@@ -205,7 +208,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             }
 
             // WCFが死んだか、単体で動いている場合
-            if(client == null || talkerException != null) {
+            if(client == null || !sentMessage || talkerException != null) {
                 local(utcTimestamp, talkerException);
             }
         }
