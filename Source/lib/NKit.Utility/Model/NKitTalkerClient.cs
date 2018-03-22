@@ -32,6 +32,13 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         #endregion
 
+        #region function
+
+        public abstract void Open();
+        public abstract void Close();
+
+        #endregion
+
     }
 
     public abstract class NKitTalkerClientBase<TChannel> : NKitTalkerClientBase
@@ -49,7 +56,22 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         #region function
 
-        public void Open()
+        #endregion
+
+        #region NKitTalkerClientBase
+
+        public override bool IsOpend
+        {
+            get
+            {
+                if(Channel == null) {
+                    return false;
+                }
+                return Channel.State == CommunicationState.Opened;
+            }
+        }
+
+        public override void Open()
         {
             var baseUri = ServiceUri.ToString();
             var targetUri = new Uri(baseUri + "/" + Address); // Path.Combine 的なことしたいんだけどなぁ
@@ -68,29 +90,16 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             Host = Channel.CreateChannel();
         }
 
-        public void Close()
+        public override void Close()
         {
-            try {
-                Channel.Close();
-            } catch(Exception ex) {
-                // ログ出力通そうと思ったけどなんかクッソおかしなことになりそうだったのでやめた
-                Console.Error.WriteLine(ex);
-                Channel.Abort();
-            }
-        }
-
-        #endregion
-
-        #region NKitTalkerClientBase
-
-        public override bool IsOpend
-        {
-            get
-            {
-                if(Channel == null) {
-                    return false;
+            using(Channel) {
+                try {
+                    Channel.Close();
+                } catch(Exception ex) {
+                    // ログ出力通そうと思ったけどなんかクッソおかしなことになりそうだったのでやめた
+                    Console.Error.WriteLine(ex);
+                    Channel.Abort();
                 }
-                return Channel.State == CommunicationState.Opened;
             }
         }
 
@@ -197,11 +206,16 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             if(client != null) {
                 if(LastErrorTimestamp + RetrySpan < utcTimestamp) {
                     try {
+                        if(!client.IsOpend) {
+                            client.Open();
+                        }
+
                         talker(utcTimestamp);
                         sentMessage = true;
                         return;
                     } catch(CommunicationException ex) {
                         talkerException = ex;
+                        client.Close();
                     }
                     LastErrorTimestamp = utcTimestamp;
                 }
