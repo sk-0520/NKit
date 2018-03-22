@@ -187,7 +187,7 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         #region property
 
         public DateTime LastErrorTimestamp { get; set; } = DateTime.MinValue;
-        public TimeSpan RetrySpan { get; set; } = TimeSpan.FromMinutes(10);
+        public TimeSpan RetrySpan { get; set; } = TimeSpan.FromMinutes(4);
 
         #endregion
     }
