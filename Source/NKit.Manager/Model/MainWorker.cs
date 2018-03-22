@@ -475,7 +475,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             if(SelectedWorkspaceItem.Logging) {
                 // こいつはローカル時間でいい
                 ActiveWorkspace.LogFilePath = Path.Combine(workspaceDirPath, CommonUtility.WorkspaceLogDirectoryName, DateTime.Now.ToString("yyyy-MM-dd_hhmmss") + ".log");
-                ActiveWorkspace.LogWriter = File.CreateText(ActiveWorkspace.LogFilePath);
+                var writer = File.CreateText(ActiveWorkspace.LogFilePath);
+                writer.AutoFlush = true;
+                ActiveWorkspace.LogWriter = writer;
                 LogManager.AttachOutputWriter(ActiveWorkspace.LogWriter, true);
                 Logger.Information($"work space log: {ActiveWorkspace.LogFilePath}");
             } else {
