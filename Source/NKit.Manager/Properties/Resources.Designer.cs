@@ -178,6 +178,42 @@ namespace ContentTypeTextNet.NKit.Manager.Properties {
         }
         
         /// <summary>
+        ///   失敗 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_TestExecute_TestState_Fail {
+            get {
+                return ResourceManager.GetString("String_TestExecute_TestState_Fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   未処理 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_TestExecute_TestState_None {
+            get {
+                return ResourceManager.GetString("String_TestExecute_TestState_None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   OK に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_TestExecute_TestState_Ok {
+            get {
+                return ResourceManager.GetString("String_TestExecute_TestState_Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   実行中 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_TestExecute_TestState_Testing {
+            get {
+                return ResourceManager.GetString("String_TestExecute_TestState_Testing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   関連プログラム起動 - {0} に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string String_TestExecute_Title_Format {
