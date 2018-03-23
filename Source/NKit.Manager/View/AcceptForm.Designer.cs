@@ -29,7 +29,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AcceptForm));
             this.tabMain = new System.Windows.Forms.TabControl();
-            this.tabMainPageMain = new System.Windows.Forms.TabPage();
+            this.tabMainPageContent = new System.Windows.Forms.TabPage();
             this.viewMessage = new System.Windows.Forms.RichTextBox();
             this.tabMainPageLicense = new System.Windows.Forms.TabPage();
             this.viewLicense = new System.Windows.Forms.RichTextBox();
@@ -43,7 +43,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tabMain.SuspendLayout();
-            this.tabMainPageMain.SuspendLayout();
+            this.tabMainPageContent.SuspendLayout();
             this.tabMainPageLicense.SuspendLayout();
             this.tabMainPageThirdParty.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -55,7 +55,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             // tabMain
             // 
-            this.tabMain.Controls.Add(this.tabMainPageMain);
+            this.tabMain.Controls.Add(this.tabMainPageContent);
             this.tabMain.Controls.Add(this.tabMainPageLicense);
             this.tabMain.Controls.Add(this.tabMainPageThirdParty);
             this.tabMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -63,27 +63,27 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.tabMain.Location = new System.Drawing.Point(3, 3);
             this.tabMain.Name = "tabMain";
             this.tabMain.SelectedIndex = 0;
-            this.tabMain.Size = new System.Drawing.Size(370, 175);
+            this.tabMain.Size = new System.Drawing.Size(478, 277);
             this.tabMain.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabMain.TabIndex = 0;
             // 
-            // tabMainPageMain
+            // tabMainPageContent
             // 
-            this.tabMainPageMain.Controls.Add(this.viewMessage);
-            this.tabMainPageMain.Location = new System.Drawing.Point(4, 22);
-            this.tabMainPageMain.Name = "tabMainPageMain";
-            this.tabMainPageMain.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMainPageMain.Size = new System.Drawing.Size(362, 149);
-            this.tabMainPageMain.TabIndex = 0;
-            this.tabMainPageMain.Text = "内容";
-            this.tabMainPageMain.UseVisualStyleBackColor = true;
+            this.tabMainPageContent.Controls.Add(this.viewMessage);
+            this.tabMainPageContent.Location = new System.Drawing.Point(4, 22);
+            this.tabMainPageContent.Name = "tabMainPageContent";
+            this.tabMainPageContent.Padding = new System.Windows.Forms.Padding(3);
+            this.tabMainPageContent.Size = new System.Drawing.Size(470, 251);
+            this.tabMainPageContent.TabIndex = 0;
+            this.tabMainPageContent.Text = "内容";
+            this.tabMainPageContent.UseVisualStyleBackColor = true;
             // 
             // viewMessage
             // 
             this.viewMessage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.viewMessage.Location = new System.Drawing.Point(3, 3);
             this.viewMessage.Name = "viewMessage";
-            this.viewMessage.Size = new System.Drawing.Size(356, 143);
+            this.viewMessage.Size = new System.Drawing.Size(464, 245);
             this.viewMessage.TabIndex = 2;
             this.viewMessage.Text = "";
             // 
@@ -93,7 +93,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.tabMainPageLicense.Location = new System.Drawing.Point(4, 22);
             this.tabMainPageLicense.Name = "tabMainPageLicense";
             this.tabMainPageLicense.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMainPageLicense.Size = new System.Drawing.Size(362, 149);
+            this.tabMainPageLicense.Size = new System.Drawing.Size(370, 171);
             this.tabMainPageLicense.TabIndex = 2;
             this.tabMainPageLicense.Text = "ライセンス情報";
             this.tabMainPageLicense.UseVisualStyleBackColor = true;
@@ -103,7 +103,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.viewLicense.Dock = System.Windows.Forms.DockStyle.Fill;
             this.viewLicense.Location = new System.Drawing.Point(3, 3);
             this.viewLicense.Name = "viewLicense";
-            this.viewLicense.Size = new System.Drawing.Size(356, 143);
+            this.viewLicense.Size = new System.Drawing.Size(364, 165);
             this.viewLicense.TabIndex = 1;
             this.viewLicense.Text = "";
             // 
@@ -113,7 +113,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.tabMainPageThirdParty.Location = new System.Drawing.Point(4, 22);
             this.tabMainPageThirdParty.Name = "tabMainPageThirdParty";
             this.tabMainPageThirdParty.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMainPageThirdParty.Size = new System.Drawing.Size(362, 149);
+            this.tabMainPageThirdParty.Size = new System.Drawing.Size(370, 171);
             this.tabMainPageThirdParty.TabIndex = 3;
             this.tabMainPageThirdParty.Text = "サードパーティ";
             this.tabMainPageThirdParty.UseVisualStyleBackColor = true;
@@ -123,17 +123,18 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.thirdPartyLicenseControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.thirdPartyLicenseControl1.Location = new System.Drawing.Point(3, 3);
             this.thirdPartyLicenseControl1.Name = "thirdPartyLicenseControl1";
-            this.thirdPartyLicenseControl1.Size = new System.Drawing.Size(356, 143);
+            this.thirdPartyLicenseControl1.Size = new System.Drawing.Size(364, 165);
             this.thirdPartyLicenseControl1.TabIndex = 0;
             // 
             // commandCancel
             // 
+            this.commandCancel.AutoSize = true;
             this.commandCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.commandCancel.Location = new System.Drawing.Point(292, 3);
+            this.commandCancel.Location = new System.Drawing.Point(385, 3);
             this.commandCancel.Name = "commandCancel";
-            this.commandCancel.Size = new System.Drawing.Size(75, 23);
+            this.commandCancel.Size = new System.Drawing.Size(90, 23);
             this.commandCancel.TabIndex = 1;
-            this.commandCancel.Text = "使用しない";
+            this.commandCancel.Text = "使用しない(&N)";
             this.commandCancel.UseVisualStyleBackColor = true;
             this.commandCancel.Click += new System.EventHandler(this.commandCancel_Click);
             // 
@@ -143,9 +144,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.selectedRead.AutoSize = true;
             this.selectedRead.Location = new System.Drawing.Point(3, 7);
             this.selectedRead.Name = "selectedRead";
-            this.selectedRead.Size = new System.Drawing.Size(100, 16);
+            this.selectedRead.Size = new System.Drawing.Size(116, 16);
             this.selectedRead.TabIndex = 2;
-            this.selectedRead.Text = "内容を許諾する";
+            this.selectedRead.Text = "内容を許諾する(&A)";
             this.selectedRead.UseVisualStyleBackColor = true;
             this.selectedRead.CheckedChanged += new System.EventHandler(this.selectedRead_CheckedChanged);
             // 
@@ -162,7 +163,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(376, 217);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(484, 319);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // tableLayoutPanel2
@@ -175,20 +176,21 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.tableLayoutPanel2.Controls.Add(this.commanAccept, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.selectedRead, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 184);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 286);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(370, 30);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(478, 30);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
             // commanAccept
             // 
-            this.commanAccept.Location = new System.Drawing.Point(211, 3);
+            this.commanAccept.AutoSize = true;
+            this.commanAccept.Location = new System.Drawing.Point(289, 3);
             this.commanAccept.Name = "commanAccept";
-            this.commanAccept.Size = new System.Drawing.Size(75, 23);
+            this.commanAccept.Size = new System.Drawing.Size(90, 23);
             this.commanAccept.TabIndex = 1;
-            this.commanAccept.Text = "使用する";
+            this.commanAccept.Text = "使用する(&A)";
             this.commanAccept.UseVisualStyleBackColor = true;
             this.commanAccept.Click += new System.EventHandler(this.commanAccept_Click);
             // 
@@ -202,13 +204,13 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // toolStripContainer1.ContentPanel
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.tableLayoutPanel1);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(376, 217);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(484, 319);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.LeftToolStripPanelVisible = false;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer1.Name = "toolStripContainer1";
             this.toolStripContainer1.RightToolStripPanelVisible = false;
-            this.toolStripContainer1.Size = new System.Drawing.Size(376, 239);
+            this.toolStripContainer1.Size = new System.Drawing.Size(484, 341);
             this.toolStripContainer1.TabIndex = 4;
             this.toolStripContainer1.Text = "toolStripContainer1";
             this.toolStripContainer1.TopToolStripPanelVisible = false;
@@ -218,7 +220,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.statusStrip1.Dock = System.Windows.Forms.DockStyle.None;
             this.statusStrip1.Location = new System.Drawing.Point(0, 0);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(376, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(484, 22);
             this.statusStrip1.TabIndex = 0;
             // 
             // AcceptForm
@@ -226,13 +228,14 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.commandCancel;
-            this.ClientSize = new System.Drawing.Size(376, 239);
+            this.ClientSize = new System.Drawing.Size(484, 341);
             this.Controls.Add(this.toolStripContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AcceptForm";
-            this.Text = "使用許諾";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "<CODE>";
             this.tabMain.ResumeLayout(false);
-            this.tabMainPageMain.ResumeLayout(false);
+            this.tabMainPageContent.ResumeLayout(false);
             this.tabMainPageLicense.ResumeLayout(false);
             this.tabMainPageThirdParty.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -251,7 +254,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         #endregion
 
         private System.Windows.Forms.TabControl tabMain;
-        private System.Windows.Forms.TabPage tabMainPageMain;
+        private System.Windows.Forms.TabPage tabMainPageContent;
         private System.Windows.Forms.Button commandCancel;
         private System.Windows.Forms.CheckBox selectedRead;
         private System.Windows.Forms.TabPage tabMainPageLicense;
