@@ -23,6 +23,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
             Font = SystemFonts.MessageBoxFont;
             Text = CommonUtility.ReplaceWindowTitle(string.Format(Properties.Resources.String_About_Title_Format, CommonUtility.ProjectName));
+            this.commandApp.Text = string.Format(Properties.Resources.String_About_Application_Format, CommonUtility.ProjectName);
         }
 
         #region property
