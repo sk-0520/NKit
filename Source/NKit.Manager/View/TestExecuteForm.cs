@@ -125,6 +125,10 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
                 this.listApplications.Items.Add(item);
             }
+
+            foreach(ColumnHeader column in this.listApplications.Columns) {
+                column.Width = -2;
+            }
         }
 
         (ListViewItem item, ListViewSubItem stateItem) GetListViewItems(string key)
