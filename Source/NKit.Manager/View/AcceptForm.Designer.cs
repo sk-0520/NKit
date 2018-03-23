@@ -93,7 +93,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.tabMainPageLicense.Location = new System.Drawing.Point(4, 22);
             this.tabMainPageLicense.Name = "tabMainPageLicense";
             this.tabMainPageLicense.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMainPageLicense.Size = new System.Drawing.Size(370, 171);
+            this.tabMainPageLicense.Size = new System.Drawing.Size(470, 251);
             this.tabMainPageLicense.TabIndex = 2;
             this.tabMainPageLicense.Text = "ライセンス情報";
             this.tabMainPageLicense.UseVisualStyleBackColor = true;
@@ -103,7 +103,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.viewLicense.Dock = System.Windows.Forms.DockStyle.Fill;
             this.viewLicense.Location = new System.Drawing.Point(3, 3);
             this.viewLicense.Name = "viewLicense";
-            this.viewLicense.Size = new System.Drawing.Size(364, 165);
+            this.viewLicense.Size = new System.Drawing.Size(464, 245);
             this.viewLicense.TabIndex = 1;
             this.viewLicense.Text = "";
             // 
@@ -113,7 +113,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.tabMainPageThirdParty.Location = new System.Drawing.Point(4, 22);
             this.tabMainPageThirdParty.Name = "tabMainPageThirdParty";
             this.tabMainPageThirdParty.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMainPageThirdParty.Size = new System.Drawing.Size(370, 171);
+            this.tabMainPageThirdParty.Size = new System.Drawing.Size(470, 251);
             this.tabMainPageThirdParty.TabIndex = 3;
             this.tabMainPageThirdParty.Text = "サードパーティ";
             this.tabMainPageThirdParty.UseVisualStyleBackColor = true;
@@ -123,7 +123,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.thirdPartyLicenseControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.thirdPartyLicenseControl1.Location = new System.Drawing.Point(3, 3);
             this.thirdPartyLicenseControl1.Name = "thirdPartyLicenseControl1";
-            this.thirdPartyLicenseControl1.Size = new System.Drawing.Size(364, 165);
+            this.thirdPartyLicenseControl1.Size = new System.Drawing.Size(464, 245);
             this.thirdPartyLicenseControl1.TabIndex = 0;
             // 
             // commandCancel
@@ -145,7 +145,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.selectedRead.Location = new System.Drawing.Point(3, 7);
             this.selectedRead.Name = "selectedRead";
             this.selectedRead.Size = new System.Drawing.Size(116, 16);
-            this.selectedRead.TabIndex = 2;
+            this.selectedRead.TabIndex = 0;
             this.selectedRead.Text = "内容を許諾する(&A)";
             this.selectedRead.UseVisualStyleBackColor = true;
             this.selectedRead.CheckedChanged += new System.EventHandler(this.selectedRead_CheckedChanged);
@@ -164,7 +164,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.Size = new System.Drawing.Size(484, 319);
-            this.tableLayoutPanel1.TabIndex = 3;
+            this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
             // 
@@ -189,7 +189,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commanAccept.Location = new System.Drawing.Point(289, 3);
             this.commanAccept.Name = "commanAccept";
             this.commanAccept.Size = new System.Drawing.Size(90, 23);
-            this.commanAccept.TabIndex = 1;
+            this.commanAccept.TabIndex = 2;
             this.commanAccept.Text = "使用する(&A)";
             this.commanAccept.UseVisualStyleBackColor = true;
             this.commanAccept.Click += new System.EventHandler(this.commanAccept_Click);
