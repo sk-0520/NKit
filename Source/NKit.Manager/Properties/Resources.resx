@@ -139,4 +139,7 @@
   <data name="String_Accept_Title_Format" xml:space="preserve">
     <value>使用許諾 - {0}</value>
   </data>
+  <data name="String_ReleaseNote_Title_Format" xml:space="preserve">
+    <value>リリースノート - {0}</value>
+  </data>
 </root>

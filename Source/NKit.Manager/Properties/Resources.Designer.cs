@@ -158,5 +158,14 @@ namespace ContentTypeTextNet.NKit.Manager.Properties {
                 return ResourceManager.GetString("String_Accept_Title_Format", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   リリースノート - {0} に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_ReleaseNote_Title_Format {
+            get {
+                return ResourceManager.GetString("String_ReleaseNote_Title_Format", resourceCulture);
+            }
+        }
     }
 }
