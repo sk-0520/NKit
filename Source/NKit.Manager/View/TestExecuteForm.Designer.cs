@@ -91,7 +91,7 @@
             this.Controls.Add(this.commandExecute);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TestExecuteForm";
-            this.Text = "TestExecuteForm";
+            this.Text = "<CODE>";
             this.Shown += new System.EventHandler(this.TestExecuteForm_Shown);
             this.ResumeLayout(false);
 

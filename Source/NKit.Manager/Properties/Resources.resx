@@ -145,4 +145,7 @@
   <data name="String_ReleaseNote_Title_Format" xml:space="preserve">
     <value>リリースノート - {0}</value>
   </data>
+  <data name="String_TestExecute_Title_Format" xml:space="preserve">
+    <value>関連プログラム起動 - {0}</value>
+  </data>
 </root>
