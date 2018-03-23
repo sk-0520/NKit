@@ -120,8 +120,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                 var path = commandLine.GetValue("log-dir");
                 if(!string.IsNullOrWhiteSpace(path)) {
                     var dir = Directory.CreateDirectory(path);
-                    // こいつはローカル時間でいい
-                    outputLogPath = Path.Combine(dir.FullName, DateTime.Now.ToString("yyyy-MM-dd_hhmmss") + ".log");
+                    outputLogPath = Path.Combine(dir.FullName, CommonUtility.ReplaceNKitTextCurrentTime("nkit-${YYYY}-${MM}-${DD}_${hh24}${mm}${ss}.log"));
                     var writer = File.CreateText(outputLogPath);
                     writer.AutoFlush = true;
                     LogManager.AttachOutputWriter(writer, false);
@@ -473,9 +472,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
             // ワークスペースにログ出力開始
             if(SelectedWorkspaceItem.Logging) {
-                // こいつはローカル時間でいい
-                ActiveWorkspace.LogFilePath = Path.Combine(workspaceDirPath, CommonUtility.WorkspaceLogDirectoryName, DateTime.Now.ToString("yyyy-MM-dd_hhmmss") + ".log");
-                ActiveWorkspace.LogWriter = File.CreateText(ActiveWorkspace.LogFilePath);
+                ActiveWorkspace.LogFilePath = Path.Combine(workspaceDirPath, CommonUtility.WorkspaceLogDirectoryName, CommonUtility.ReplaceNKitTextCurrentTime("workspace-${YYYY}-${MM}-${DD}_${hh24}${mm}${ss}.log"));
+                var writer = File.CreateText(ActiveWorkspace.LogFilePath);
+                writer.AutoFlush = true;
+                ActiveWorkspace.LogWriter = writer;
                 LogManager.AttachOutputWriter(ActiveWorkspace.LogWriter, true);
                 Logger.Information($"work space log: {ActiveWorkspace.LogFilePath}");
             } else {

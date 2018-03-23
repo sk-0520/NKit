@@ -34,6 +34,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         #region property
 
+        public TimeSpan ReceiveTimeout { get; set; } = TimeSpan.FromHours(1);
+
         ServiceHost ServiceHost { get; set; }
         public bool IsOpend { get; private set; }
 
@@ -59,6 +61,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model
                 default:
                     throw new NotImplementedException();
             }
+
+            processLinkBinding.ReceiveTimeout = ReceiveTimeout;
 
             var serviceMetadata = ServiceHost.Description.Behaviors.Find<ServiceMetadataBehavior>();
             if(serviceMetadata == null) {

@@ -363,6 +363,10 @@ namespace ContentTypeTextNet.NKit.Common
 
             return ReplaceNKitTextCore(source, utcTimestamp, customMap);
         }
+        public static string ReplaceNKitTextCurrentTime(string source, IReadOnlyDictionary<string, string> customMap = null)
+        {
+            return ReplaceNKitText(source, DateTime.UtcNow, customMap);
+        }
 
         public static string ReplaceWindowTitle(string title)
         {
