@@ -57,7 +57,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         public void SetReleaseNote(ReleaseNoteItem item)
         {
-            this.releaseNoteControl.SetReleaseNotes("new version", new[] { item });
+            this.releaseNoteControl.SetReleaseNotes(Properties.Resources.String_ReleaseNote_NewVersion, new[] { item });
         }
 
         #endregion

@@ -160,6 +160,15 @@ namespace ContentTypeTextNet.NKit.Manager.Properties {
         }
         
         /// <summary>
+        ///   新バージョン に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_ReleaseNote_NewVersion {
+            get {
+                return ResourceManager.GetString("String_ReleaseNote_NewVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   リリースノート - {0} に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string String_ReleaseNote_Title_Format {
