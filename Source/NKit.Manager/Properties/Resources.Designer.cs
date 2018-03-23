@@ -133,6 +133,15 @@ namespace ContentTypeTextNet.NKit.Manager.Properties {
         }
         
         /// <summary>
+        ///   {0} にていて に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_About_Title_Format {
+            get {
+                return ResourceManager.GetString("String_About_Title_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   使用許諾 - {0} に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string String_Accept_Title_Format {

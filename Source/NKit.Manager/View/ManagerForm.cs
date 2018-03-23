@@ -203,6 +203,10 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.selectWorkspaceLoadToMinimize.Checked = Worker.WorkspaceLoadToMinimize;
 
             RefreshControls();
+
+#if DEBUG
+            new AboutForm().ShowDialog();
+#endif
         }
 
         private void commandWorkspaceSave_Click(object sender, EventArgs e)

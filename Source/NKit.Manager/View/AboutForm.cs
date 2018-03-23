@@ -22,7 +22,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             InitializeComponent();
 
             Font = SystemFonts.MessageBoxFont;
-            Text = CommonUtility.ReplaceWindowTitle(Text);
+            Text = CommonUtility.ReplaceWindowTitle(string.Format(Properties.Resources.String_About_Title_Format, CommonUtility.ProjectName));
         }
 
         #region property
