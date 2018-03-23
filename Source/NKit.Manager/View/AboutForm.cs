@@ -23,7 +23,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
             Font = SystemFonts.MessageBoxFont;
             Text = CommonUtility.ReplaceWindowTitle(string.Format(Properties.Resources.String_About_Title_Format, CommonUtility.ProjectName));
-            this.commandApp.Text = string.Format(Properties.Resources.String_About_Application_Format, CommonUtility.ProjectName);
         }
 
         #region property
@@ -69,7 +68,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 .OrderByDescending(i => i.Version)
                 .ToList()
             ;
-            this.releaseNoteControl1.SetReleaseNotes("history", releaseNoteItems);
+            this.releaseNoteControl1.SetReleaseNotes(Properties.Resources.String_About_History, releaseNoteItems);
         }
 
         private void commandClose_Click(object sender, EventArgs e)

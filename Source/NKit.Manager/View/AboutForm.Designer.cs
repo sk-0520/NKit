@@ -28,14 +28,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.commandClose = new System.Windows.Forms.Button();
-            this.tabInformation = new System.Windows.Forms.TabControl();
-            this.tabInformationPageThirdParty = new System.Windows.Forms.TabPage();
-            this.thirdPartyLicenseControl1 = new ContentTypeTextNet.NKit.Manager.View.ThirdPartyLicenseControl();
-            this.tabInformationPageReleaseNote = new System.Windows.Forms.TabPage();
-            this.releaseNoteControl1 = new ContentTypeTextNet.NKit.Manager.View.ReleaseNoteControl();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -46,138 +38,45 @@
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.commandApp = new System.Windows.Forms.Button();
             this.commandData = new System.Windows.Forms.Button();
+            this.tabInformation = new System.Windows.Forms.TabControl();
+            this.tabInformationPageThirdParty = new System.Windows.Forms.TabPage();
+            this.thirdPartyLicenseControl1 = new ContentTypeTextNet.NKit.Manager.View.ThirdPartyLicenseControl();
+            this.tabInformationPageReleaseNote = new System.Windows.Forms.TabPage();
+            this.releaseNoteControl1 = new ContentTypeTextNet.NKit.Manager.View.ReleaseNoteControl();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.viewVersion = new System.Windows.Forms.TextBox();
             this.commandVersionCopy = new System.Windows.Forms.Button();
-            this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.commandClose = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
-            this.tabInformation.SuspendLayout();
-            this.tabInformationPageThirdParty.SuspendLayout();
-            this.tabInformationPageReleaseNote.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
+            this.tabInformation.SuspendLayout();
+            this.tabInformationPageThirdParty.SuspendLayout();
+            this.tabInformationPageReleaseNote.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
-            this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
-            this.toolStripContainer1.ContentPanel.SuspendLayout();
-            this.toolStripContainer1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.tabInformation, 1, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(634, 312);
-            this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.AutoSize = true;
-            this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel1, 2);
-            this.flowLayoutPanel1.Controls.Add(this.commandClose);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 280);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(628, 29);
-            this.flowLayoutPanel1.TabIndex = 0;
-            // 
-            // commandClose
-            // 
-            this.commandClose.AutoSize = true;
-            this.commandClose.Location = new System.Drawing.Point(545, 3);
-            this.commandClose.Name = "commandClose";
-            this.commandClose.Size = new System.Drawing.Size(80, 23);
-            this.commandClose.TabIndex = 0;
-            this.commandClose.Text = "&OK";
-            this.commandClose.UseVisualStyleBackColor = true;
-            this.commandClose.Click += new System.EventHandler(this.commandClose_Click);
-            // 
-            // tabInformation
-            // 
-            this.tabInformation.Controls.Add(this.tabInformationPageThirdParty);
-            this.tabInformation.Controls.Add(this.tabInformationPageReleaseNote);
-            this.tabInformation.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabInformation.Location = new System.Drawing.Point(305, 3);
-            this.tabInformation.Name = "tabInformation";
-            this.tabInformation.SelectedIndex = 0;
-            this.tabInformation.Size = new System.Drawing.Size(326, 271);
-            this.tabInformation.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.tabInformation.TabIndex = 1;
-            // 
-            // tabInformationPageThirdParty
-            // 
-            this.tabInformationPageThirdParty.Controls.Add(this.thirdPartyLicenseControl1);
-            this.tabInformationPageThirdParty.Location = new System.Drawing.Point(4, 22);
-            this.tabInformationPageThirdParty.Name = "tabInformationPageThirdParty";
-            this.tabInformationPageThirdParty.Padding = new System.Windows.Forms.Padding(3);
-            this.tabInformationPageThirdParty.Size = new System.Drawing.Size(318, 245);
-            this.tabInformationPageThirdParty.TabIndex = 0;
-            this.tabInformationPageThirdParty.Text = "サードパーティ";
-            this.tabInformationPageThirdParty.UseVisualStyleBackColor = true;
-            // 
-            // thirdPartyLicenseControl1
-            // 
-            this.thirdPartyLicenseControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.thirdPartyLicenseControl1.Location = new System.Drawing.Point(3, 3);
-            this.thirdPartyLicenseControl1.Name = "thirdPartyLicenseControl1";
-            this.thirdPartyLicenseControl1.Size = new System.Drawing.Size(312, 239);
-            this.thirdPartyLicenseControl1.TabIndex = 0;
-            // 
-            // tabInformationPageReleaseNote
-            // 
-            this.tabInformationPageReleaseNote.Controls.Add(this.releaseNoteControl1);
-            this.tabInformationPageReleaseNote.Location = new System.Drawing.Point(4, 22);
-            this.tabInformationPageReleaseNote.Name = "tabInformationPageReleaseNote";
-            this.tabInformationPageReleaseNote.Padding = new System.Windows.Forms.Padding(3);
-            this.tabInformationPageReleaseNote.Size = new System.Drawing.Size(303, 245);
-            this.tabInformationPageReleaseNote.TabIndex = 1;
-            this.tabInformationPageReleaseNote.Text = "更新履歴";
-            this.tabInformationPageReleaseNote.UseVisualStyleBackColor = true;
-            // 
-            // releaseNoteControl1
-            // 
-            this.releaseNoteControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.releaseNoteControl1.IssueBaseUri = null;
-            this.releaseNoteControl1.Location = new System.Drawing.Point(3, 3);
-            this.releaseNoteControl1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.releaseNoteControl1.Name = "releaseNoteControl1";
-            this.releaseNoteControl1.Size = new System.Drawing.Size(297, 239);
-            this.releaseNoteControl1.TabIndex = 0;
             // 
             // tableLayoutPanel3
             // 
-            this.tableLayoutPanel3.AutoSize = true;
-            this.tableLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel3.ColumnCount = 1;
+            this.tableLayoutPanel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel2, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.tabInformation, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 1);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(12, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 3;
+            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(296, 232);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(640, 247);
             this.tableLayoutPanel3.TabIndex = 6;
             // 
             // tableLayoutPanel2
@@ -196,7 +95,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(305, 192);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(305, 207);
             this.tableLayoutPanel2.TabIndex = 5;
             // 
             // pictureBox1
@@ -270,16 +169,16 @@
             this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel3.Location = new System.Drawing.Point(195, 69);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(107, 120);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(107, 135);
             this.flowLayoutPanel3.TabIndex = 2;
             // 
             // commandApp
             // 
             this.commandApp.Location = new System.Drawing.Point(3, 3);
             this.commandApp.Name = "commandApp";
-            this.commandApp.Size = new System.Drawing.Size(75, 23);
+            this.commandApp.Size = new System.Drawing.Size(86, 23);
             this.commandApp.TabIndex = 2;
-            this.commandApp.Text = "<CODE:app>";
+            this.commandApp.Text = "プログラム(&P)";
             this.commandApp.UseVisualStyleBackColor = true;
             this.commandApp.Click += new System.EventHandler(this.commandApp_Click);
             // 
@@ -287,11 +186,64 @@
             // 
             this.commandData.Location = new System.Drawing.Point(3, 32);
             this.commandData.Name = "commandData";
-            this.commandData.Size = new System.Drawing.Size(75, 23);
+            this.commandData.Size = new System.Drawing.Size(86, 23);
             this.commandData.TabIndex = 2;
             this.commandData.Text = "データ(&D)";
             this.commandData.UseVisualStyleBackColor = true;
             this.commandData.Click += new System.EventHandler(this.commandData_Click);
+            // 
+            // tabInformation
+            // 
+            this.tabInformation.Controls.Add(this.tabInformationPageThirdParty);
+            this.tabInformation.Controls.Add(this.tabInformationPageReleaseNote);
+            this.tabInformation.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabInformation.Location = new System.Drawing.Point(314, 3);
+            this.tabInformation.Name = "tabInformation";
+            this.tableLayoutPanel3.SetRowSpan(this.tabInformation, 2);
+            this.tabInformation.SelectedIndex = 0;
+            this.tabInformation.Size = new System.Drawing.Size(323, 241);
+            this.tabInformation.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.tabInformation.TabIndex = 1;
+            // 
+            // tabInformationPageThirdParty
+            // 
+            this.tabInformationPageThirdParty.Controls.Add(this.thirdPartyLicenseControl1);
+            this.tabInformationPageThirdParty.Location = new System.Drawing.Point(4, 22);
+            this.tabInformationPageThirdParty.Name = "tabInformationPageThirdParty";
+            this.tabInformationPageThirdParty.Padding = new System.Windows.Forms.Padding(3);
+            this.tabInformationPageThirdParty.Size = new System.Drawing.Size(315, 215);
+            this.tabInformationPageThirdParty.TabIndex = 0;
+            this.tabInformationPageThirdParty.Text = "サードパーティ";
+            this.tabInformationPageThirdParty.UseVisualStyleBackColor = true;
+            // 
+            // thirdPartyLicenseControl1
+            // 
+            this.thirdPartyLicenseControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.thirdPartyLicenseControl1.Location = new System.Drawing.Point(3, 3);
+            this.thirdPartyLicenseControl1.Name = "thirdPartyLicenseControl1";
+            this.thirdPartyLicenseControl1.Size = new System.Drawing.Size(309, 209);
+            this.thirdPartyLicenseControl1.TabIndex = 0;
+            // 
+            // tabInformationPageReleaseNote
+            // 
+            this.tabInformationPageReleaseNote.Controls.Add(this.releaseNoteControl1);
+            this.tabInformationPageReleaseNote.Location = new System.Drawing.Point(4, 22);
+            this.tabInformationPageReleaseNote.Name = "tabInformationPageReleaseNote";
+            this.tabInformationPageReleaseNote.Padding = new System.Windows.Forms.Padding(3);
+            this.tabInformationPageReleaseNote.Size = new System.Drawing.Size(315, 217);
+            this.tabInformationPageReleaseNote.TabIndex = 1;
+            this.tabInformationPageReleaseNote.Text = "更新履歴";
+            this.tabInformationPageReleaseNote.UseVisualStyleBackColor = true;
+            // 
+            // releaseNoteControl1
+            // 
+            this.releaseNoteControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.releaseNoteControl1.IssueBaseUri = null;
+            this.releaseNoteControl1.Location = new System.Drawing.Point(3, 3);
+            this.releaseNoteControl1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.releaseNoteControl1.Name = "releaseNoteControl1";
+            this.releaseNoteControl1.Size = new System.Drawing.Size(309, 211);
+            this.releaseNoteControl1.TabIndex = 0;
             // 
             // tableLayoutPanel4
             // 
@@ -303,7 +255,7 @@
             this.tableLayoutPanel4.Controls.Add(this.viewVersion, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.commandVersionCopy, 1, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 201);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 216);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -332,34 +284,18 @@
             this.commandVersionCopy.UseVisualStyleBackColor = true;
             this.commandVersionCopy.Click += new System.EventHandler(this.commandVersionCopy_Click);
             // 
-            // toolStripContainer1
+            // commandClose
             // 
-            // 
-            // toolStripContainer1.BottomToolStripPanel
-            // 
-            this.toolStripContainer1.BottomToolStripPanel.Controls.Add(this.statusStrip1);
-            // 
-            // toolStripContainer1.ContentPanel
-            // 
-            this.toolStripContainer1.ContentPanel.Controls.Add(this.tableLayoutPanel1);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(634, 312);
-            this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolStripContainer1.LeftToolStripPanelVisible = false;
-            this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
-            this.toolStripContainer1.Name = "toolStripContainer1";
-            this.toolStripContainer1.RightToolStripPanelVisible = false;
-            this.toolStripContainer1.Size = new System.Drawing.Size(634, 334);
-            this.toolStripContainer1.TabIndex = 1;
-            this.toolStripContainer1.Text = "toolStripContainer1";
-            this.toolStripContainer1.TopToolStripPanelVisible = false;
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Dock = System.Windows.Forms.DockStyle.None;
-            this.statusStrip1.Location = new System.Drawing.Point(0, 0);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(634, 22);
-            this.statusStrip1.TabIndex = 0;
+            this.commandClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.commandClose.AutoSize = true;
+            this.commandClose.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.commandClose.Location = new System.Drawing.Point(572, 265);
+            this.commandClose.Name = "commandClose";
+            this.commandClose.Size = new System.Drawing.Size(80, 24);
+            this.commandClose.TabIndex = 0;
+            this.commandClose.Text = "&OK";
+            this.commandClose.UseVisualStyleBackColor = true;
+            this.commandClose.Click += new System.EventHandler(this.commandClose_Click);
             // 
             // tabPage1
             // 
@@ -383,21 +319,17 @@
             // 
             // AboutForm
             // 
+            this.AcceptButton = this.commandClose;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(634, 334);
-            this.Controls.Add(this.toolStripContainer1);
+            this.ClientSize = new System.Drawing.Size(664, 301);
+            this.Controls.Add(this.commandClose);
+            this.Controls.Add(this.tableLayoutPanel3);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(680, 340);
             this.Name = "AboutForm";
             this.Text = "<CODE>";
             this.Load += new System.EventHandler(this.AboutForm_Load);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
-            this.tabInformation.ResumeLayout(false);
-            this.tabInformationPageThirdParty.ResumeLayout(false);
-            this.tabInformationPageReleaseNote.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -406,27 +338,21 @@
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
             this.flowLayoutPanel3.ResumeLayout(false);
+            this.tabInformation.ResumeLayout(false);
+            this.tabInformationPageThirdParty.ResumeLayout(false);
+            this.tabInformationPageReleaseNote.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
-            this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
-            this.toolStripContainer1.BottomToolStripPanel.PerformLayout();
-            this.toolStripContainer1.ContentPanel.ResumeLayout(false);
-            this.toolStripContainer1.ResumeLayout(false);
-            this.toolStripContainer1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button commandClose;
         private System.Windows.Forms.TabControl tabInformation;
         private System.Windows.Forms.TabPage tabInformationPageThirdParty;
         private System.Windows.Forms.TabPage tabInformationPageReleaseNote;
-        private System.Windows.Forms.ToolStripContainer toolStripContainer1;
-        private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private ThirdPartyLicenseControl thirdPartyLicenseControl1;
