@@ -77,7 +77,7 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.Size = new System.Drawing.Size(640, 247);
-            this.tableLayoutPanel3.TabIndex = 6;
+            this.tableLayoutPanel3.TabIndex = 1;
             // 
             // tableLayoutPanel2
             // 
@@ -96,7 +96,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.Size = new System.Drawing.Size(305, 207);
-            this.tableLayoutPanel2.TabIndex = 5;
+            this.tableLayoutPanel2.TabIndex = 0;
             // 
             // pictureBox1
             // 
@@ -121,7 +121,7 @@
             this.flowLayoutPanel2.Location = new System.Drawing.Point(195, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(107, 60);
-            this.flowLayoutPanel2.TabIndex = 1;
+            this.flowLayoutPanel2.TabIndex = 0;
             // 
             // linkWebsite
             // 
@@ -130,7 +130,7 @@
             this.linkWebsite.Margin = new System.Windows.Forms.Padding(3, 0, 3, 8);
             this.linkWebsite.Name = "linkWebsite";
             this.linkWebsite.Size = new System.Drawing.Size(57, 12);
-            this.linkWebsite.TabIndex = 1;
+            this.linkWebsite.TabIndex = 0;
             this.linkWebsite.TabStop = true;
             this.linkWebsite.Text = "ウェブサイト";
             this.linkWebsite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkWebsite_LinkClicked);
@@ -154,7 +154,7 @@
             this.linkForum.Margin = new System.Windows.Forms.Padding(3, 0, 3, 8);
             this.linkForum.Name = "linkForum";
             this.linkForum.Size = new System.Drawing.Size(49, 12);
-            this.linkForum.TabIndex = 1;
+            this.linkForum.TabIndex = 2;
             this.linkForum.TabStop = true;
             this.linkForum.Text = "フォーラム";
             this.linkForum.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkForum_LinkClicked);
@@ -170,14 +170,14 @@
             this.flowLayoutPanel3.Location = new System.Drawing.Point(195, 69);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Size = new System.Drawing.Size(107, 135);
-            this.flowLayoutPanel3.TabIndex = 2;
+            this.flowLayoutPanel3.TabIndex = 1;
             // 
             // commandApp
             // 
             this.commandApp.Location = new System.Drawing.Point(3, 3);
             this.commandApp.Name = "commandApp";
             this.commandApp.Size = new System.Drawing.Size(86, 23);
-            this.commandApp.TabIndex = 2;
+            this.commandApp.TabIndex = 0;
             this.commandApp.Text = "プログラム(&P)";
             this.commandApp.UseVisualStyleBackColor = true;
             this.commandApp.Click += new System.EventHandler(this.commandApp_Click);
@@ -187,7 +187,7 @@
             this.commandData.Location = new System.Drawing.Point(3, 32);
             this.commandData.Name = "commandData";
             this.commandData.Size = new System.Drawing.Size(86, 23);
-            this.commandData.TabIndex = 2;
+            this.commandData.TabIndex = 1;
             this.commandData.Text = "データ(&D)";
             this.commandData.UseVisualStyleBackColor = true;
             this.commandData.Click += new System.EventHandler(this.commandData_Click);
@@ -203,7 +203,7 @@
             this.tabInformation.SelectedIndex = 0;
             this.tabInformation.Size = new System.Drawing.Size(323, 241);
             this.tabInformation.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.tabInformation.TabIndex = 1;
+            this.tabInformation.TabIndex = 2;
             // 
             // tabInformationPageThirdParty
             // 
@@ -230,7 +230,7 @@
             this.tabInformationPageReleaseNote.Location = new System.Drawing.Point(4, 22);
             this.tabInformationPageReleaseNote.Name = "tabInformationPageReleaseNote";
             this.tabInformationPageReleaseNote.Padding = new System.Windows.Forms.Padding(3);
-            this.tabInformationPageReleaseNote.Size = new System.Drawing.Size(315, 217);
+            this.tabInformationPageReleaseNote.Size = new System.Drawing.Size(315, 215);
             this.tabInformationPageReleaseNote.TabIndex = 1;
             this.tabInformationPageReleaseNote.Text = "更新履歴";
             this.tabInformationPageReleaseNote.UseVisualStyleBackColor = true;
@@ -242,7 +242,7 @@
             this.releaseNoteControl1.Location = new System.Drawing.Point(3, 3);
             this.releaseNoteControl1.MinimumSize = new System.Drawing.Size(20, 20);
             this.releaseNoteControl1.Name = "releaseNoteControl1";
-            this.releaseNoteControl1.Size = new System.Drawing.Size(309, 211);
+            this.releaseNoteControl1.Size = new System.Drawing.Size(309, 209);
             this.releaseNoteControl1.TabIndex = 0;
             // 
             // tableLayoutPanel4
@@ -260,7 +260,7 @@
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel4.Size = new System.Drawing.Size(305, 28);
-            this.tableLayoutPanel4.TabIndex = 6;
+            this.tableLayoutPanel4.TabIndex = 1;
             // 
             // viewVersion
             // 
@@ -269,7 +269,7 @@
             this.viewVersion.Name = "viewVersion";
             this.viewVersion.ReadOnly = true;
             this.viewVersion.Size = new System.Drawing.Size(235, 19);
-            this.viewVersion.TabIndex = 3;
+            this.viewVersion.TabIndex = 0;
             this.viewVersion.Text = "<CODE:VER>";
             // 
             // commandVersionCopy
@@ -279,7 +279,7 @@
             this.commandVersionCopy.Location = new System.Drawing.Point(244, 3);
             this.commandVersionCopy.Name = "commandVersionCopy";
             this.commandVersionCopy.Size = new System.Drawing.Size(58, 22);
-            this.commandVersionCopy.TabIndex = 4;
+            this.commandVersionCopy.TabIndex = 1;
             this.commandVersionCopy.Text = "コピー(&C)";
             this.commandVersionCopy.UseVisualStyleBackColor = true;
             this.commandVersionCopy.Click += new System.EventHandler(this.commandVersionCopy_Click);
