@@ -50,7 +50,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.viewVersion.Text = VersionInformation;
 
             var notesDir = new DirectoryInfo(Path.Combine(CommonUtility.GetDocumentDirectory().FullName, "release-notes"));
-            var releaseNoteItems = notesDir.EnumerateFiles("*.md")
+            var releaseNoteItems = notesDir.EnumerateFiles("ver_*.md", SearchOption.AllDirectories)
                 .Select(f => new {
                     File = f,
                     Name = Path.GetFileNameWithoutExtension(f.Name)
