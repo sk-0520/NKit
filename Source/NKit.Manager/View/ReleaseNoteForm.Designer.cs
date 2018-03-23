@@ -42,7 +42,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandClose.Name = "commandClose";
             this.commandClose.Size = new System.Drawing.Size(80, 23);
             this.commandClose.TabIndex = 0;
-            this.commandClose.Text = "ï¬Ç∂ÇÈ(&C)";
+            this.commandClose.Text = "Èñâ„Åò„Çã(&C)";
             this.commandClose.UseVisualStyleBackColor = true;
             this.commandClose.Click += new System.EventHandler(this.commandClose_Click);
             // 
@@ -54,18 +54,21 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandUpdate.Location = new System.Drawing.Point(12, 277);
             this.commandUpdate.Name = "commandUpdate";
             this.commandUpdate.Size = new System.Drawing.Size(117, 23);
-            this.commandUpdate.TabIndex = 0;
-            this.commandUpdate.Text = "ÉAÉbÉvÉfÅ[ÉgÇäJén(&U)";
+            this.commandUpdate.TabIndex = 2;
+            this.commandUpdate.Text = "„Ç¢„ÉÉ„Éó„Éá„Éº„Éà„ÇíÈñãÂßã(&U)";
             this.commandUpdate.UseVisualStyleBackColor = true;
             this.commandUpdate.Click += new System.EventHandler(this.commandUpdate_Click);
             // 
             // releaseNoteControl
             // 
+            this.releaseNoteControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.releaseNoteControl.IssueBaseUri = null;
             this.releaseNoteControl.Location = new System.Drawing.Point(12, 12);
             this.releaseNoteControl.MinimumSize = new System.Drawing.Size(20, 20);
             this.releaseNoteControl.Name = "releaseNoteControl";
-            this.releaseNoteControl.Size = new System.Drawing.Size(458, 259);
+            this.releaseNoteControl.Size = new System.Drawing.Size(458, 245);
             this.releaseNoteControl.TabIndex = 1;
             // 
             // ReleaseNoteForm
@@ -73,13 +76,14 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.AcceptButton = this.commandClose;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.commandClose;
             this.ClientSize = new System.Drawing.Size(482, 312);
             this.Controls.Add(this.releaseNoteControl);
             this.Controls.Add(this.commandUpdate);
             this.Controls.Add(this.commandClose);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimizeBox = false;
             this.Name = "ReleaseNoteForm";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "<CODE>";
             this.ResumeLayout(false);
             this.PerformLayout();
