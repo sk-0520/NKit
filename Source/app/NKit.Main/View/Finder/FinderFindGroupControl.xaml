@@ -37,21 +37,26 @@
     </Style>
 
     <Style x:Key="MatchFile_Base" TargetType="Border">
+      <Style.Triggers>
+        <Trigger Property="IsEnabled" Value="False">
+          <Setter Property="Background" Value="Gray"/>
+        </Trigger>
+      </Style.Triggers>
       <Setter Property="Width" Value="3" />
-      <!--<Setter Property="Height" Value="10" />-->
-      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Background" Value="{Binding BorderBrush, RelativeSource={RelativeSource Self}}" />
     </Style>
     <Style x:Key="MatchFile_Name" TargetType="Border" BasedOn="{StaticResource MatchFile_Base}">
-      <Setter Property="BorderBrush" Value="Red" />
+      <Setter Property="Background" Value="Red" />
     </Style>
     <Style x:Key="MatchFile_Size" TargetType="Border" BasedOn="{StaticResource MatchFile_Base}">
-      <Setter Property="BorderBrush" Value="Lime" />
+      <Setter Property="Background" Value="Lime" />
     </Style>
     <Style x:Key="MatchFile_Property" TargetType="Border" BasedOn="{StaticResource MatchFile_Base}">
-      <Setter Property="BorderBrush" Value="Yellow" />
+      <Setter Property="Background" Value="Yellow" />
     </Style>
     <Style x:Key="MatchFile_Content" TargetType="Border" BasedOn="{StaticResource MatchFile_Base}">
-      <Setter Property="BorderBrush" Value="Blue" />
+      <Setter Property="Background" Value="Blue" />
     </Style>
 
 
@@ -397,50 +402,10 @@
                         <ColumnDefinition Width="*" />
                       </Grid.ColumnDefinitions>
                       <StackPanel Style="{StaticResource MatchFilePanel}">
-                        <Border>
-                          <Border.Style>
-                            <Style TargetType="Border" BasedOn="{StaticResource MatchFile_Name}">
-                              <Style.Triggers>
-                                <DataTrigger Binding="{Binding MatchedName}" Value="False">
-                                  <Setter Property="Opacity" Value="0.3" />
-                                </DataTrigger>
-                              </Style.Triggers>
-                            </Style>
-                          </Border.Style>
-                        </Border>
-                        <Border>
-                          <Border.Style>
-                            <Style TargetType="Border" BasedOn="{StaticResource MatchFile_Size}">
-                              <Style.Triggers>
-                                <DataTrigger Binding="{Binding MatchedSize}" Value="False">
-                                  <Setter Property="Opacity" Value="0.3" />
-                                </DataTrigger>
-                              </Style.Triggers>
-                            </Style>
-                          </Border.Style>
-                        </Border>
-                        <Border>
-                          <Border.Style>
-                            <Style TargetType="Border" BasedOn="{StaticResource MatchFile_Property}">
-                              <Style.Triggers>
-                                <DataTrigger Binding="{Binding MatchedProperty}" Value="False">
-                                  <Setter Property="Opacity" Value="0.3" />
-                                </DataTrigger>
-                              </Style.Triggers>
-                            </Style>
-                          </Border.Style>
-                        </Border>
-                        <Border>
-                          <Border.Style>
-                            <Style TargetType="Border" BasedOn="{StaticResource MatchFile_Content}">
-                              <Style.Triggers>
-                                <DataTrigger Binding="{Binding MatchedContent}" Value="False">
-                                  <Setter Property="Opacity" Value="0.3" />
-                                </DataTrigger>
-                              </Style.Triggers>
-                            </Style>
-                          </Border.Style>
-                        </Border>
+                        <Border Style="{StaticResource MatchFile_Name}" IsEnabled="{Binding MatchedName, Mode=OneTime}" />
+                        <Border Style="{StaticResource MatchFile_Size}" IsEnabled="{Binding MatchedSize, Mode=OneTime}" />
+                        <Border Style="{StaticResource MatchFile_Property}" IsEnabled="{Binding MatchedProperty, Mode=OneTime}" />
+                        <Border Style="{StaticResource MatchFile_Content}" IsEnabled="{Binding MatchedContent, Mode=OneTime}" />
                       </StackPanel>
 
                       <Image Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" Width="16" Height="16" Source="{Binding FilePath, Converter={StaticResource FilePathToIconConverter}}">
