@@ -221,5 +221,32 @@ namespace ContentTypeTextNet.NKit.Manager.Properties {
                 return ResourceManager.GetString("String_TestExecute_Title_Format", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   ライセンス に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_ThirdPartyComponent_License {
+            get {
+                return ResourceManager.GetString("String_ThirdPartyComponent_License", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ライセンス URI に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_ThirdPartyComponent_LicenseUri {
+            get {
+                return ResourceManager.GetString("String_ThirdPartyComponent_LicenseUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   プロジェクト URI に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_ThirdPartyComponent_ProjectUri {
+            get {
+                return ResourceManager.GetString("String_ThirdPartyComponent_ProjectUri", resourceCulture);
+            }
+        }
     }
 }

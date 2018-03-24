@@ -160,4 +160,13 @@
   <data name="String_TestExecute_Title_Format" xml:space="preserve">
     <value>関連プログラム起動 - {0}</value>
   </data>
+  <data name="String_ThirdPartyComponent_License" xml:space="preserve">
+    <value>ライセンス</value>
+  </data>
+  <data name="String_ThirdPartyComponent_LicenseUri" xml:space="preserve">
+    <value>ライセンス URI</value>
+  </data>
+  <data name="String_ThirdPartyComponent_ProjectUri" xml:space="preserve">
+    <value>プロジェクト URI</value>
+  </data>
 </root>
