@@ -61,6 +61,9 @@
     <Compile Include="..\common\NKit.Common.Link\CommonUtility.cs">
       <Link>Common\CommonUtility.cs</Link>
     </Compile>
+    <Compile Include="..\common\NKit.Common.Link\DisplayText.cs">
+      <Link>Common\DisplayText.cs</Link>
+    </Compile>
     <Compile Include="..\common\NKit.Common.Link\Disposer.cs">
       <Link>Common\Disposer.cs</Link>
     </Compile>

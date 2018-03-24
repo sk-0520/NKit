@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonUtility.cs" />
+    <Compile Include="DisplayText.cs" />
     <Compile Include="Disposer.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="ProgramRelationUtility.cs" />

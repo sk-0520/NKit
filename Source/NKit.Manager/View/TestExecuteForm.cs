@@ -25,9 +25,13 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         enum TestState
         {
+            [EnumResourceDisplay(nameof(Properties.Resources.String_TestExecute_TestState_None))]
             None,
+            [EnumResourceDisplay(nameof(Properties.Resources.String_TestExecute_TestState_Testing))]
             Testing,
+            [EnumResourceDisplay(nameof(Properties.Resources.String_TestExecute_TestState_Ok))]
             Ok,
+            [EnumResourceDisplay(nameof(Properties.Resources.String_TestExecute_TestState_Fail))]
             Fail,
         }
 
@@ -70,26 +74,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
         #endregion
 
         #region function
-
-        static string StateTiString(TestState testState)
-        {
-            switch(testState) {
-                case TestState.None:
-                    return Properties.Resources.String_TestExecute_TestState_None;
-
-                case TestState.Testing:
-                    return Properties.Resources.String_TestExecute_TestState_Testing;
-
-                case TestState.Ok:
-                    return Properties.Resources.String_TestExecute_TestState_Ok;
-
-                case TestState.Fail:
-                    return Properties.Resources.String_TestExecute_TestState_Fail;
-
-                default:
-                    throw new NotImplementedException();
-            }
-        }
 
         public void SetApplicationManager(ApplicationManager manager)
         {
@@ -141,7 +125,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     Text = info.Name,
                 });
                 item.SubItems.Add(new ListViewItem.ListViewSubItem() {
-                    Text = StateTiString(info.State),
+                    Text = DisplayTextUtility.GetDisplayText(info.State),
                 });
 
                 this.listApplications.Items.Add(item);
@@ -174,7 +158,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             info.State = testState;
 
             var action = new Action(() => {
-                stateItem.Text = StateTiString(info.State);
+                stateItem.Text = DisplayTextUtility.GetDisplayText(info.State);
             });
             if(InvokeRequired) {
                 Invoke(action);
