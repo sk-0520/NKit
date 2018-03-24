@@ -27,9 +27,34 @@
     <app_utility_view_converter:BinaryToTextConverter x:Key="BinaryToTextConverter" />
     <app_utility_view_converter:HumanLikeByteConverter x:Key="HumanLikeByteConverterSize" SizeFormat="{}{0:###0}" />
     <app_utility_view_converter:HumanLikeByteConverter x:Key="HumanLikeByteConverterUnit" SizeFormat="{}{1}" />
+    <app_utility_view_converter:HumanLikeByteConverter x:Key="HumanLikeByteConverter" />
     <app_utility_view_converter:DoubleToParameterPercentConverter x:Key="DoubleToParameterPercentConverter" />
     <app_utility_view_converter:DoubleToPercentConverter x:Key="DoubleToPercentConverter" />
     <app_main_view_converter:FilePathToIconConverter x:Key="FilePathToIconConverter" />
+
+    <Style x:Key="MatchFilePanel" TargetType="StackPanel">
+      <Setter Property="Orientation" Value="Horizontal" />
+    </Style>
+
+    <Style x:Key="MatchFile_Base" TargetType="Border">
+      <Setter Property="Width" Value="3" />
+      <!--<Setter Property="Height" Value="10" />-->
+      <Setter Property="BorderThickness" Value="1" />
+    </Style>
+    <Style x:Key="MatchFile_Name" TargetType="Border" BasedOn="{StaticResource MatchFile_Base}">
+      <Setter Property="BorderBrush" Value="Red" />
+    </Style>
+    <Style x:Key="MatchFile_Size" TargetType="Border" BasedOn="{StaticResource MatchFile_Base}">
+      <Setter Property="BorderBrush" Value="Lime" />
+    </Style>
+    <Style x:Key="MatchFile_Property" TargetType="Border" BasedOn="{StaticResource MatchFile_Base}">
+      <Setter Property="BorderBrush" Value="Yellow" />
+    </Style>
+    <Style x:Key="MatchFile_Content" TargetType="Border" BasedOn="{StaticResource MatchFile_Base}">
+      <Setter Property="BorderBrush" Value="Blue" />
+    </Style>
+
+
   </UserControl.Resources>
   <Grid>
     <Grid.ColumnDefinitions>
@@ -46,75 +71,147 @@
 
       <ScrollViewer Grid.Row="0">
         <StackPanel>
-          <Expander Header="group">
-            <StackPanel>
-              <Label>group:</Label>
-              <TextBox Text="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}" />
+          <Expander Header="グループ設定">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
 
-              <Button Command="{Binding SetDefaultSettingCommand}">set default</Button>
-            </StackPanel>
+              <Label Grid.Row="0" Grid.Column="0" Target="{Binding ElementName=inputGroupName}">グループ名(_G):</Label>
+              <TextBox x:Name="inputGroupName" Grid.Row="0" Grid.Column="1" Text="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}" />
+
+              <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding SetDefaultSettingCommand}">現在設定を規定値にする</Button>
+            </Grid>
           </Expander>
 
-          <Label>dir:</Label>
-          <TextBox Text="{Binding RootDirectoryPath, UpdateSourceTrigger=PropertyChanged}" />
-          <Button Command="{Binding UpRootDirectoryPathCommand}">up</Button>
-          <Button Command="{Binding SelectRootDirectoryPathCommand}">open</Button>
-          <Label>limit:</Label>
-          <Grid>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+          <GroupBox Header="ディレクトリ">
+            <StackPanel>
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <Slider Grid.Column="0" Minimum="0" Maximum="10" Value="{Binding DirectoryLimitLevel}"  />
-            <TextBox Grid.Column="1" Text="{Binding DirectoryLimitLevel}" />
-          </Grid>
-          <CheckBox IsChecked="{Binding FindHiddenDirectory}">FindHiddenDirectory</CheckBox>
-          <CheckBox IsChecked="{Binding FindDotDirectory}">FindDotDirectory</CheckBox>
+                <Button Grid.Column="0" Command="{Binding UpRootDirectoryPathCommand}">
+                  <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_Arrow-Up}" />
+                </Button>
+                <TextBox Grid.Column="1" Text="{Binding RootDirectoryPath, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Grid.Column="2" Command="{Binding SelectRootDirectoryPathCommand}">
+                  <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_FolderOpen}" />
+                </Button>
+              </Grid>
 
-          <Label>name:</Label>
-          <TextBox Text="{Binding FileNameSearchPattern, UpdateSourceTrigger=PropertyChanged}"/>
-          <CheckBox IsChecked="{Binding FileNameCase}">FileNameCase</CheckBox>
+              <Grid>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-          <Label>type:</Label>
-          <app_main_view_control:SearchPatternSelectControl SearchPatternKind="{Binding FileNameSearchPatternKind, Mode=TwoWay}" />
+                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">階層制限(_D):</Label>
+                <Slider Grid.Row="1" Grid.Column="0" Minimum="0" Maximum="10" Value="{Binding DirectoryLimitLevel}" />
+                <TextBlock Grid.Row="1" Grid.Column="1">
+                  <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding DirectoryLimitLevel}" Value="0">
+                          <Setter Property="Text" Value="無制限" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                      <Setter Property="Text" Value="{Binding DirectoryLimitLevel}" />
+                    </Style>
+                  </TextBlock.Style>
+                </TextBlock>
+              </Grid>
 
-          <CheckBox IsChecked="{Binding FindDotFile}">FindDotFile</CheckBox>
-          <CheckBox IsChecked="{Binding FindFileNameOnly}">FindFileNameOnly</CheckBox>
+              <Separator Style="{StaticResource SmallPadding}" />
 
-          <Label>size max:</Label>
-          <Grid>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+              <CheckBox ToolTip="ディレクトリのファイル属性で隠しファイルが有効なディレクトリ" IsChecked="{Binding FindHiddenDirectory}" Style="{StaticResource VerticalCheckBox}">属性による隠しディレクトリも検索する</CheckBox>
+              <CheckBox ToolTip="ディレクトリ名の先頭が . のディレクトリ" IsChecked="{Binding FindDotDirectory}" Style="{StaticResource VerticalCheckBox}">名前による隠しディレクトリも検索する</CheckBox>
+            </StackPanel>
+          </GroupBox>
 
-            <Slider Grid.Column="0" Minimum="0" Maximum="9999999" Value="{Binding FileSizeLimitMaximum}"  />
-            <TextBox Grid.Column="1" Text="{Binding FileSizeLimitMaximum}" />
-          </Grid>
+          <GroupBox Header="ファイル名">
+            <StackPanel>
+              <TextBox Text="{Binding FileNameSearchPattern, UpdateSourceTrigger=PropertyChanged}"/>
+              <Separator Style="{StaticResource SmallPadding}" />
+
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0">一致条件:</Label>
+                <app_main_view_control:SearchPatternSelectControl Grid.Column="1" SearchPatternKind="{Binding FileNameSearchPatternKind, Mode=TwoWay}" />
+              </Grid>
+
+              <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FileNameCase}">大文字小文字を区別する</CheckBox>
+              <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FindDotFile}">属性による隠しファイルも検索する</CheckBox>
+              <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FindFileNameOnly}">拡張子のないファイルも検索する</CheckBox>
+
+            </StackPanel>
+          </GroupBox>
+
+          <GroupBox Header="検索ファイルサイズ上限">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </Grid.ColumnDefinitions>
+
+              <!-- 256 MB の選定に意味はない -->
+              <Slider Grid.Column="0" Minimum="0" Maximum="268435456" Value="{Binding FileSizeLimitMaximum}"  />
+              <TextBlock Grid.Column="1">
+                <TextBlock.Style>
+                  <Style TargetType="TextBlock">
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding FileSizeLimitMaximum}" Value="0">
+                        <Setter Property="Text" Value="無制限" />
+                      </DataTrigger>
+                    </Style.Triggers>
+                    <Setter Property="Text" Value="{Binding FileSizeLimitMaximum, Converter={StaticResource HumanLikeByteConverter}}" />
+                  </Style>
+                </TextBlock.Style>
+              </TextBlock>
+            </Grid>
+          </GroupBox>
 
           <Separator />
 
           <Expander IsExpanded="{Binding FindFileProperty}">
             <Expander.Header>
-              <CheckBox IsChecked="{Binding FindFileProperty}">FindFileProperty</CheckBox>
+              <CheckBox IsChecked="{Binding FindFileProperty}">プロパティを検索条件に追加</CheckBox>
             </Expander.Header>
             <StackPanel>
-              <app_main_view_control:FlagMatchSelectControl FlagMatchKind="{Binding FilePropertyFileAttributeFlagMatchKind, Mode=TwoWay}" />
+              <GroupBox Header="属性">
+                <StackPanel>
+                  <app_main_view_control:FlagMatchSelectControl FlagMatchKind="{Binding FilePropertyFileAttributeFlagMatchKind, Mode=TwoWay}" />
 
-              <CheckBox IsChecked="{Binding FilePropertyAttributeIsArchive}">FilePropertyAttributeIsArchive</CheckBox>
-              <CheckBox IsChecked="{Binding FilePropertyAttributeIsCompressed}">FilePropertyAttributeIsCompressed</CheckBox>
-              <CheckBox IsChecked="{Binding FilePropertyAttributeIsEncrypted}">FilePropertyAttributeIsEncrypted</CheckBox>
-              <CheckBox IsChecked="{Binding FilePropertyAttributeIsHidden}">FilePropertyAttributeIsHidden</CheckBox>
-              <CheckBox IsChecked="{Binding FilePropertyAttributeIsIntegrityStream}">FilePropertyAttributeIsIntegrityStream</CheckBox>
-              <CheckBox IsChecked="{Binding FilePropertyAttributeIsNoScrubData}">FilePropertyAttributeIsNoScrubData</CheckBox>
-              <CheckBox IsChecked="{Binding FilePropertyAttributeIsNotContentIndexed}">FilePropertyAttributeIsNotContentIndexed</CheckBox>
-              <CheckBox IsChecked="{Binding FilePropertyAttributeIsOffline}">FilePropertyAttributeIsOffline</CheckBox>
-              <CheckBox IsChecked="{Binding FilePropertyAttributeIsReadOnly}">FilePropertyAttributeIsReadOnly</CheckBox>
-              <CheckBox IsChecked="{Binding FilePropertyAttributeIsReparsePoint}">FilePropertyAttributeIsReparsePoint</CheckBox>
-              <CheckBox IsChecked="{Binding FilePropertyAttributeIsSparseFile}">FilePropertyAttributeIsSparseFile</CheckBox>
-              <CheckBox IsChecked="{Binding FilePropertyAttributeIsSystem}">FilePropertyAttributeIsSystem</CheckBox>
-              <CheckBox IsChecked="{Binding FilePropertyAttributeIsTemporary}">FilePropertyAttributeIsTemporary</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FilePropertyAttributeIsArchive}">アーカイブ</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FilePropertyAttributeIsCompressed}">圧縮</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FilePropertyAttributeIsEncrypted}">暗号化</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FilePropertyAttributeIsHidden}">隠しファイル</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FilePropertyAttributeIsIntegrityStream}">データ整合性サポート</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FilePropertyAttributeIsNoScrubData}">データ整合性除外</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FilePropertyAttributeIsNotContentIndexed}">インデックス未作成</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FilePropertyAttributeIsOffline}">オフライン</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FilePropertyAttributeIsReadOnly}">読み込み専用</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FilePropertyAttributeIsReparsePoint}">ユーザー定義データブロック</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FilePropertyAttributeIsSparseFile}">スパースファイル</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FilePropertyAttributeIsSystem}">システムファイル</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FilePropertyAttributeIsTemporary}">一時ファイル</CheckBox>
+                </StackPanel>
+              </GroupBox>
             </StackPanel>
           </Expander>
 
@@ -122,41 +219,48 @@
 
           <Expander IsExpanded="{Binding FindFileContent}">
             <Expander.Header>
-              <CheckBox IsChecked="{Binding FindFileContent}">FindFileContent</CheckBox>
+              <CheckBox IsChecked="{Binding FindFileContent}">内容を検索条件に追加</CheckBox>
             </Expander.Header>
             <StackPanel>
-              <Label>content:</Label>
               <TextBox Text="{Binding FileContentSearchPattern}" />
-              <CheckBox IsChecked="{Binding FileContentCase}">FileContentCase</CheckBox>
+              <Separator Style="{StaticResource SmallPadding}" />
 
-              <Label>type:</Label>
-              <app_main_view_control:SearchPatternSelectControl SearchPatternKind="{Binding FileContentSearchPatternKind, Mode=TwoWay}" />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-              <CheckBox IsChecked="{Binding IsEnabledFileContentSizeLimit}">IsEnabledFileContentSizeLimit</CheckBox>
+                <Label Grid.Column="0">一致条件:</Label>
+                <app_main_view_control:SearchPatternSelectControl SearchPatternKind="{Binding FileContentSearchPatternKind, Mode=TwoWay}"  Grid.Column="1"/>
+              </Grid>
+
+              <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FileContentCase}">大文字小文字を区別する</CheckBox>
+              <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding IsEnabledFileContentSizeLimit}">検索ファイルサイズ上限を守る</CheckBox>
 
               <GroupBox>
                 <GroupBox.Header>
-                  <CheckBox IsChecked="{Binding MicrosoftOfficeContentIsEnabled}">office</CheckBox>
+                  <CheckBox IsChecked="{Binding MicrosoftOfficeContentIsEnabled}">Microsoft Office</CheckBox>
                 </GroupBox.Header>
                 <StackPanel>
-                  <CheckBox IsChecked="{Binding MicrosoftOfficeContentSheetName}">SheetName</CheckBox>
-                  <CheckBox IsChecked="{Binding MicrosoftOfficeContentPriorityFormula}">PriorityFormula</CheckBox>
-                  <CheckBox IsChecked="{Binding MicrosoftOfficeContentCommentInCell}" ToolTip="どんだけ頑張っても null なんですが！ あと xls 形式だとシェイプでコメント取れるってどういう事なんすか！">CommentInCell(TODO)</CheckBox>
-                  <CheckBox IsChecked="{Binding MicrosoftOfficeContentTextInShape}">TextInShape</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding MicrosoftOfficeContentSheetName}">シート名</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding MicrosoftOfficeContentPriorityFormula}">数式を優先</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding MicrosoftOfficeContentCommentInCell}" ToolTip="どんだけ頑張っても null なんですが！ あと xls 形式だとシェイプでコメント取れるってどういう事なんすか！">コメント(TODO)</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding MicrosoftOfficeContentTextInShape}">オートシェイプ</CheckBox>
                 </StackPanel>
               </GroupBox>
 
               <GroupBox>
                 <GroupBox.Header>
-                  <CheckBox IsChecked="{Binding XmlHtmlContentIsEnabled}">xml/html</CheckBox>
+                  <CheckBox IsChecked="{Binding XmlHtmlContentIsEnabled}">XML/HTML</CheckBox>
                 </GroupBox.Header>
                 <StackPanel>
-                  <CheckBox IsChecked="{Binding XmlContentElement}">Element</CheckBox>
-                  <CheckBox IsChecked="{Binding XmlContentText}">Text</CheckBox>
-                  <CheckBox IsChecked="{Binding XmlContentAttributeKey}">AttributeKey</CheckBox>
-                  <CheckBox IsChecked="{Binding XmlContentAttributeValue}">AttributeValue</CheckBox>
-                  <CheckBox IsChecked="{Binding XmlContentComment}">Comment</CheckBox>
-                  <CheckBox IsChecked="{Binding XmlContentIgnoreHtmlLinkValue}">
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding XmlContentElement}">要素</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding XmlContentText}">テキスト要素</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding XmlContentAttributeKey}">属性名</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding XmlContentAttributeValue}">属性値</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding XmlContentComment}">コメント</CheckBox>
+                  <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding XmlContentIgnoreHtmlLinkValue}">
                     <TextBlock TextDecorations="Strikethrough">IgnoreHtmlLinkValue</TextBlock>
                   </CheckBox>
                 </StackPanel>
@@ -178,22 +282,43 @@
       </Grid.RowDefinitions>
 
       <ToolBar Grid.Row="0">
-        <CheckBox IsChecked="{Binding IsEnabledHiddenFileFiler}">hidden</CheckBox>
-        <CheckBox IsChecked="{Binding IsEnabledFileNameFilter}">name</CheckBox>
-        <CheckBox IsChecked="{Binding IsEnabledFileSizeFilter}">size</CheckBox>
-        <CheckBox IsChecked="{Binding IsEnabledFilePropertyFilter}">prop</CheckBox>
-        <CheckBox IsChecked="{Binding IsEnabledFileContentFilter}">content</CheckBox>
+        <Label>フィルタ:</Label>
+        <CheckBox IsChecked="{Binding IsEnabledHiddenFileFiler}">隠しファイル</CheckBox>
+        <CheckBox IsChecked="{Binding IsEnabledFileNameFilter}">
+          <StackPanel Style="{StaticResource MatchFilePanel}">
+            <Border Style="{StaticResource MatchFile_Name}" />
+            <AccessText>ファイル名</AccessText>
+          </StackPanel>
+        </CheckBox>
+        <CheckBox IsChecked="{Binding IsEnabledFileSizeFilter}">
+          <StackPanel Style="{StaticResource MatchFilePanel}">
+            <Border Style="{StaticResource MatchFile_Size}" />
+            <AccessText>サイズ</AccessText>
+          </StackPanel>
+        </CheckBox>
+        <CheckBox IsChecked="{Binding IsEnabledFilePropertyFilter}">
+          <StackPanel Style="{StaticResource MatchFilePanel}">
+            <Border Style="{StaticResource MatchFile_Property}" />
+            <AccessText>プロパティ</AccessText>
+          </StackPanel>
+        </CheckBox>
+        <CheckBox IsChecked="{Binding IsEnabledFileContentFilter}">
+          <StackPanel Style="{StaticResource MatchFilePanel}">
+            <Border Style="{StaticResource MatchFile_Content}" />
+            <AccessText>内容</AccessText>
+          </StackPanel>
+        </CheckBox>
 
         <Separator />
 
-        <TextBlock>
-          <Run>current:</Run>
+        <TextBlock VerticalAlignment="Center">
+          <Run>表示数:</Run>
           <Run Text="{Binding Items.Count, Mode=OneWay}" />
           <Run>/</Run>
-          <Run>find:</Run>
+          <Run>検索一致:</Run>
           <Run Text="{Binding EnabledItemsCount, Mode=OneWay}" />
           <Run>/</Run>
-          <Run>total:</Run>
+          <Run>検索数:</Run>
           <Run Text="{Binding TotalItemsCount, Mode=OneWay}" />
         </TextBlock>
 
@@ -249,44 +374,78 @@
           </ListView.ItemContainerStyle>
           <ListView.View>
             <GridView>
-              <GridViewColumn Header="RelativeDirectoryPath" DisplayMemberBinding="{Binding RelativeDirectoryPath}" />
+              <GridViewColumn Header="ディレクトリ" DisplayMemberBinding="{Binding RelativeDirectoryPath}" />
               <GridViewColumn>
                 <GridViewColumn.Header>
                   <Grid HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="Auto" />
                       <ColumnDefinition Width="*" />
                       <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock  Grid.Column="0">上下</TextBlock>
-                    <TextBlock Grid.Column="1">FileName</TextBlock>
-                    <TextBox Grid.Column="2" MinWidth="50" Text="{Binding EasyFileNameFilterPattern, UpdateSourceTrigger=PropertyChanged, Delay=300}" />
+                    <TextBlock Grid.Column="0">ファイル名</TextBlock>
+                    <TextBox Grid.Column="1" MinWidth="50" Text="{Binding EasyFileNameFilterPattern, UpdateSourceTrigger=PropertyChanged, Delay=300}" />
                   </Grid>
                 </GridViewColumn.Header>
                 <GridViewColumn.CellTemplate>
                   <DataTemplate>
                     <!-- 暫定。 背景色変えるとかそんなので対応したい -->
                     <Grid>
-                      <Grid.RowDefinitions>
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                      </Grid.RowDefinitions>
                       <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                       </Grid.ColumnDefinitions>
-                      <ToggleButton Grid.Row="0" FontSize="3" IsChecked="{Binding MatchedName, Mode=OneTime}">name</ToggleButton>
-                      <ToggleButton Grid.Row="1" FontSize="3" IsChecked="{Binding MatchedSize, Mode=OneTime}">size</ToggleButton>
-                      <ToggleButton Grid.Row="2" FontSize="3" IsChecked="{Binding MatchedProperty, Mode=OneTime}">prop</ToggleButton>
-                      <ToggleButton Grid.Row="3" FontSize="3" IsChecked="{Binding MatchedContent, Mode=OneTime}">body</ToggleButton>
+                      <StackPanel Style="{StaticResource MatchFilePanel}">
+                        <Border>
+                          <Border.Style>
+                            <Style TargetType="Border" BasedOn="{StaticResource MatchFile_Name}">
+                              <Style.Triggers>
+                                <DataTrigger Binding="{Binding MatchedName}" Value="False">
+                                  <Setter Property="Opacity" Value="0.3" />
+                                </DataTrigger>
+                              </Style.Triggers>
+                            </Style>
+                          </Border.Style>
+                        </Border>
+                        <Border>
+                          <Border.Style>
+                            <Style TargetType="Border" BasedOn="{StaticResource MatchFile_Size}">
+                              <Style.Triggers>
+                                <DataTrigger Binding="{Binding MatchedSize}" Value="False">
+                                  <Setter Property="Opacity" Value="0.3" />
+                                </DataTrigger>
+                              </Style.Triggers>
+                            </Style>
+                          </Border.Style>
+                        </Border>
+                        <Border>
+                          <Border.Style>
+                            <Style TargetType="Border" BasedOn="{StaticResource MatchFile_Property}">
+                              <Style.Triggers>
+                                <DataTrigger Binding="{Binding MatchedProperty}" Value="False">
+                                  <Setter Property="Opacity" Value="0.3" />
+                                </DataTrigger>
+                              </Style.Triggers>
+                            </Style>
+                          </Border.Style>
+                        </Border>
+                        <Border>
+                          <Border.Style>
+                            <Style TargetType="Border" BasedOn="{StaticResource MatchFile_Content}">
+                              <Style.Triggers>
+                                <DataTrigger Binding="{Binding MatchedContent}" Value="False">
+                                  <Setter Property="Opacity" Value="0.3" />
+                                </DataTrigger>
+                              </Style.Triggers>
+                            </Style>
+                          </Border.Style>
+                        </Border>
+                      </StackPanel>
 
-                      <Image Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" Source="{Binding FilePath, Converter={StaticResource FilePathToIconConverter}}">
+                      <Image Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" Width="16" Height="16" Source="{Binding FilePath, Converter={StaticResource FilePathToIconConverter}}">
                         <Image.Style>
-                          <Style TargetType="Image">
+                          <Style TargetType="Image" BasedOn="{StaticResource {x:Type Image}}">
                             <Style.Triggers>
                               <DataTrigger Binding="{Binding IsHiddenFile}" Value="True">
                                 <Setter Property="Opacity" Value="0.6" />
@@ -314,20 +473,18 @@
                 <GridViewColumn.Header>
                   <Grid HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="Auto" />
                       <ColumnDefinition Width="*" />
                       <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock  Grid.Column="0">上下</TextBlock>
-                    <TextBlock Grid.Column="1">Extension</TextBlock>
-                    <ComboBox Grid.Column="2" MinWidth="40" IsEditable="True" Text="{Binding EasyExtensionFilterPattern, UpdateSourceTrigger=PropertyChanged, Delay=300}" ItemsSource="{Binding ExtensionItems}" />
+                    <TextBlock Grid.Column="0">拡張子</TextBlock>
+                    <ComboBox Grid.Column="1" MinWidth="40" IsEditable="True" Text="{Binding EasyExtensionFilterPattern, UpdateSourceTrigger=PropertyChanged, Delay=300}" ItemsSource="{Binding ExtensionItems}" />
                   </Grid>
                 </GridViewColumn.Header>
               </GridViewColumn>
 
-              <GridViewColumn Header="size" DisplayMemberBinding="{Binding FileSize, Converter={StaticResource HumanLikeByteConverterSize}, Mode=OneWay}" />
-              <GridViewColumn Header="unit" DisplayMemberBinding="{Binding FileSize, Converter={StaticResource HumanLikeByteConverterUnit}, Mode=OneWay}" />
+              <GridViewColumn Header="サイズ" DisplayMemberBinding="{Binding FileSize, Converter={StaticResource HumanLikeByteConverterSize}, Mode=OneWay}" />
+              <GridViewColumn Header="単位" DisplayMemberBinding="{Binding FileSize, Converter={StaticResource HumanLikeByteConverterUnit}, Mode=OneWay}" />
             </GridView>
           </ListView.View>
           <ListView.ContextMenu>
