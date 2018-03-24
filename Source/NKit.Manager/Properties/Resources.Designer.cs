@@ -201,6 +201,49 @@ namespace ContentTypeTextNet.NKit.Manager.Properties {
         }
         
         /// <summary>
+        ///   選択されたワークスペースはロックされています。
+        ///他のプログラムで使用されているか、正常に終了しなかった可能性があります。
+        ///
+        ///ロックを強制解除するには Shift キーを押しながら読み込みボタンを押下してください。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_Manager_Load_LockedNormal_Message {
+            get {
+                return ResourceManager.GetString("String_Manager_Load_LockedNormal_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ワークスペースロック中 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_Manager_Load_LockedNormal_Title {
+            get {
+                return ResourceManager.GetString("String_Manager_Load_LockedNormal_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   選択されたワークスペースはロックされています。
+        ///
+        ///他のプログラムで使用されている場合、ワークスペース設定などに不整合が発生する可能性があります。
+        ///
+        ///ロックを解除しますか。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_Manager_Load_LockedUnlock_Message {
+            get {
+                return ResourceManager.GetString("String_Manager_Load_LockedUnlock_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ワークスペースロック解除 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_Manager_Load_LockedUnlock_Title {
+            get {
+                return ResourceManager.GetString("String_Manager_Load_LockedUnlock_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   新バージョン に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string String_ReleaseNote_NewVersion {

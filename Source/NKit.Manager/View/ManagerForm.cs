@@ -277,7 +277,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             if(Worker.IsLockedSelectedWorkspace()) {
                 if((ModifierKeys & Keys.Shift) == Keys.Shift) {
-                    var result = MessageBox.Show("workspace is locked, unlock?", "force", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                    var result = MessageBox.Show(Properties.Resources.String_Manager_Load_LockedUnlock_Message, Properties.Resources.String_Manager_Load_LockedUnlock_Title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
                     if(result != DialogResult.Yes) {
                         return;
                     }
@@ -285,7 +285,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                         return;
                     }
                 } else {
-                    MessageBox.Show("workspace is locked");
+                    MessageBox.Show(Properties.Resources.String_Manager_Load_LockedNormal_Message, Properties.Resources.String_Manager_Load_LockedNormal_Title, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
             }
