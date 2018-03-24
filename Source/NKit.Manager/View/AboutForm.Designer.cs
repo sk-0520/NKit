@@ -329,7 +329,7 @@
             this.MinimumSize = new System.Drawing.Size(680, 340);
             this.Name = "AboutForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "<CODE>";
             this.Load += new System.EventHandler(this.AboutForm_Load);
             this.tableLayoutPanel3.ResumeLayout(false);

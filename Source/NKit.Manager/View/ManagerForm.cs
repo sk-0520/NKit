@@ -205,8 +205,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
             RefreshControls();
 
 #if DEBUG
-            this.commandTestExecute.PerformClick();
-            Close();
+            //this.commandTestExecute.PerformClick();
+            //Close();
 #endif
         }
 
