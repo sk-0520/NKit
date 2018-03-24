@@ -123,7 +123,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(262, 36);
             this.label1.TabIndex = 2;
-            this.label1.Text = "本処理はアンチウィルスソフトウェアや実行監視ソフトウェアに対して前もって関連プログラムを実行を試験するための機能です。";
+            this.label1.Text = "本処理はアンチウィルスソフトウェアや実行監視ソフトウェアに対して、事前に関連プログラム起動を行い実行可能かどうかを試験するための機能です。";
             // 
             // TestExecuteForm
             // 
