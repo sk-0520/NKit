@@ -50,7 +50,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.linkSelectKey.Text = model.Bag.SelectKeys.ToString();
             this.labelTakeShotKey.Text = model.Bag.ShotKeys.ToString();
             this.linkExitKey.Text = model.Bag.ExitKey.ToString();
-            this.labelContinuation.Text = model.Bag.IsContinuation.ToString();
+            this.labelContinuation.Text = model.Bag.IsContinuation
+                ? Properties.Resources.String_Continuation_Enabled
+                : Properties.Resources.String_Continuation_Disabled
+            ;
         }
         #endregion
 

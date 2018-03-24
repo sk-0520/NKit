@@ -39,10 +39,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
                 NativeMethods.GetClassName(hWnd, classBuffer, textBuffer.Capacity);
 
                 this.labelCaption.Text = textBuffer.ToString();
-                this.labelLocation.Text = hWndRectangle.Location.ToString();
-                this.labelSize.Text = hWndRectangle.Size.ToString();
+                this.labelLocation.Text = $"{hWndRectangle.Location.X}, {hWndRectangle.Location.Y}";
+                this.labelSize.Text = $"{hWndRectangle.Size.Width} x {hWndRectangle.Size.Height}";
                 this.labelClass.Text = classBuffer.ToString();
-                this.labelHandle.Text = hWnd.ToString();
+                this.labelHandle.Text = hWnd.ToString(IntPtr.Size == 4 ? "x08": "x016");
             }
 
         }
