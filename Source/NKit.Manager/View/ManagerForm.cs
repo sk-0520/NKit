@@ -55,6 +55,19 @@ namespace ContentTypeTextNet.NKit.Manager.View
             Worker = worker;
             Worker.WorkspaceExited += Worker_WorkspaceExited;
             Worker.OutputLog += Worker_OutputLog;
+
+            var windowLocation = Worker.WindowArea.Location;
+            var windowSize = Worker.WindowArea.Size;
+
+            var locationError = !Screen.AllScreens.Any(s => s.Bounds.Contains(windowLocation));
+            var sizeError = windowSize.Width <= 0 || windowSize.Height <= 0;
+
+            if(Worker.IsFirstExecute || sizeError || locationError) {
+                StartPosition = FormStartPosition.CenterScreen;
+            } else {
+                Location = windowLocation;
+                Size = windowSize;
+            }
         }
 
         void SetInputControl(string name, string directoryPath, bool logging)
@@ -327,6 +340,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private void ManagerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = !Worker.CheckCanExit();
+
+            if(!e.Cancel) {
+                if(WindowState == FormWindowState.Normal) {
+                    Worker.WindowArea = new Rectangle(Location, Size);
+                }
+            }
         }
 
         private async void commandCheckUpdate_Click(object sender, EventArgs e)

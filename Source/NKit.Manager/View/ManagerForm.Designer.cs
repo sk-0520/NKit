@@ -348,6 +348,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.Controls.Add(this.selectWorkspace);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ManagerForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ManagerForm_FormClosing);
             this.Load += new System.EventHandler(this.ManagerForm_Load);
