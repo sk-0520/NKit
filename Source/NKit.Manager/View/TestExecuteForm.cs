@@ -25,9 +25,13 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         enum TestState
         {
+            [EnumResourceDisplay(nameof(Properties.Resources.String_TestExecute_TestState_None))]
             None,
+            [EnumResourceDisplay(nameof(Properties.Resources.String_TestExecute_TestState_Testing))]
             Testing,
+            [EnumResourceDisplay(nameof(Properties.Resources.String_TestExecute_TestState_Ok))]
             Ok,
+            [EnumResourceDisplay(nameof(Properties.Resources.String_TestExecute_TestState_Fail))]
             Fail,
         }
 
@@ -53,7 +57,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             InitializeComponent();
 
             Font = SystemFonts.MessageBoxFont;
-            Text = CommonUtility.ReplaceWindowTitle(Text);
+            Text = CommonUtility.ReplaceWindowTitle(string.Format(Properties.Resources.String_TestExecute_Title_Format, CommonUtility.ProjectName));
         }
 
         #region property
@@ -70,6 +74,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         #endregion
 
         #region function
+
         public void SetApplicationManager(ApplicationManager manager)
         {
             Manager = manager;
@@ -120,10 +125,14 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     Text = info.Name,
                 });
                 item.SubItems.Add(new ListViewItem.ListViewSubItem() {
-                    Text = info.State.ToString(),
+                    Text = DisplayTextUtility.GetDisplayText(info.State),
                 });
 
                 this.listApplications.Items.Add(item);
+            }
+
+            foreach(ColumnHeader column in this.listApplications.Columns) {
+                column.Width = -2;
             }
         }
 
@@ -149,7 +158,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             info.State = testState;
 
             var action = new Action(() => {
-                stateItem.Text = info.State.ToString();
+                stateItem.Text = DisplayTextUtility.GetDisplayText(info.State);
             });
             if(InvokeRequired) {
                 Invoke(action);

@@ -23,7 +23,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             InitializeComponent();
 
             Font = SystemFonts.MessageBoxFont;
-            Text = CommonUtility.ReplaceWindowTitle(Text);
+            Text = CommonUtility.ReplaceWindowTitle(string.Format(Properties.Resources.String_ReleaseNote_Title_Format, CommonUtility.ProjectName));
         }
 
         #region property
@@ -57,7 +57,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         public void SetReleaseNote(ReleaseNoteItem item)
         {
-            this.releaseNoteControl.SetReleaseNotes("new version", new[] { item });
+            this.releaseNoteControl.SetReleaseNotes(Properties.Resources.String_ReleaseNote_NewVersion, new[] { item });
         }
 
         #endregion
