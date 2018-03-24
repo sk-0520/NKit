@@ -145,6 +145,9 @@
   <data name="String_Accept_Title_Format" xml:space="preserve">
     <value>使用許諾 - {0}</value>
   </data>
+  <data name="String_Manager_About_Format" xml:space="preserve">
+    <value>{0} について(&amp;A)</value>
+  </data>
   <data name="String_ReleaseNote_NewVersion" xml:space="preserve">
     <value>新バージョン</value>
   </data>

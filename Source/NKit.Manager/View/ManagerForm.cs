@@ -210,7 +210,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.statusbarLabelBuildType.Text = CommonUtility.BuildType;
             this.statusbarLabelVersion.Text = assembly.GetName().Version.ToString();
             this.statusbarLabelHash.Text = FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;
-
+            this.commandShowAbout.Text = string.Format(Properties.Resources.String_Manager_About_Format, CommonUtility.ProjectName);
             // 設定値をどばーっと反映
             Worker.ListupWorkspace(this.selectWorkspace, Guid.Empty);
             this.selectWorkspaceLoadToMinimize.Checked = Worker.WorkspaceLoadToMinimize;

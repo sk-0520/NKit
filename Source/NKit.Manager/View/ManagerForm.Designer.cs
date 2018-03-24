@@ -83,8 +83,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             // selectWorkspace
             // 
+            this.selectWorkspace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel2.SetColumnSpan(this.selectWorkspace, 3);
-            this.selectWorkspace.Dock = System.Windows.Forms.DockStyle.Fill;
             this.selectWorkspace.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.selectWorkspace.FormattingEnabled = true;
             this.selectWorkspace.Location = new System.Drawing.Point(98, 3);
@@ -99,7 +99,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandWorkspaceLoad.Name = "commandWorkspaceLoad";
             this.commandWorkspaceLoad.Size = new System.Drawing.Size(85, 23);
             this.commandWorkspaceLoad.TabIndex = 2;
-            this.commandWorkspaceLoad.Text = "load";
+            this.commandWorkspaceLoad.Text = "読み込み(&L)";
             this.commandWorkspaceLoad.UseVisualStyleBackColor = true;
             this.commandWorkspaceLoad.Click += new System.EventHandler(this.commandWorkspaceLoad_Click);
             // 
@@ -109,7 +109,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandWorkspaceClose.Name = "commandWorkspaceClose";
             this.commandWorkspaceClose.Size = new System.Drawing.Size(85, 23);
             this.commandWorkspaceClose.TabIndex = 6;
-            this.commandWorkspaceClose.Text = "close";
+            this.commandWorkspaceClose.Text = "閉じる(&X)";
             this.commandWorkspaceClose.UseVisualStyleBackColor = true;
             this.commandWorkspaceClose.Click += new System.EventHandler(this.commandWorkspaceClose_Click);
             // 
@@ -119,7 +119,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandWorkspaceCreate.Name = "commandWorkspaceCreate";
             this.commandWorkspaceCreate.Size = new System.Drawing.Size(85, 23);
             this.commandWorkspaceCreate.TabIndex = 4;
-            this.commandWorkspaceCreate.Text = "create";
+            this.commandWorkspaceCreate.Text = "作成(&N)";
             this.commandWorkspaceCreate.UseVisualStyleBackColor = true;
             this.commandWorkspaceCreate.Click += new System.EventHandler(this.commandWorkspaceCreate_Click);
             // 
@@ -185,7 +185,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandWorkspaceCopy.Name = "commandWorkspaceCopy";
             this.commandWorkspaceCopy.Size = new System.Drawing.Size(85, 23);
             this.commandWorkspaceCopy.TabIndex = 5;
-            this.commandWorkspaceCopy.Text = "copy";
+            this.commandWorkspaceCopy.Text = "コピー(&C)";
             this.commandWorkspaceCopy.UseVisualStyleBackColor = true;
             this.commandWorkspaceCopy.Click += new System.EventHandler(this.commandWorkspaceCopy_Click);
             // 
@@ -225,31 +225,31 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             // commandCheckUpdate
             // 
-            this.commandCheckUpdate.Location = new System.Drawing.Point(165, 3);
+            this.commandCheckUpdate.Location = new System.Drawing.Point(219, 3);
             this.commandCheckUpdate.Name = "commandCheckUpdate";
-            this.commandCheckUpdate.Size = new System.Drawing.Size(75, 23);
+            this.commandCheckUpdate.Size = new System.Drawing.Size(102, 23);
             this.commandCheckUpdate.TabIndex = 2;
-            this.commandCheckUpdate.Text = "check up";
+            this.commandCheckUpdate.Text = "アップデート確認(&H)";
             this.commandCheckUpdate.UseVisualStyleBackColor = true;
             this.commandCheckUpdate.Click += new System.EventHandler(this.commandCheckUpdate_Click);
             // 
             // commandExecuteUpdate
             // 
-            this.commandExecuteUpdate.Location = new System.Drawing.Point(327, 3);
+            this.commandExecuteUpdate.Location = new System.Drawing.Point(435, 3);
             this.commandExecuteUpdate.Name = "commandExecuteUpdate";
-            this.commandExecuteUpdate.Size = new System.Drawing.Size(75, 23);
+            this.commandExecuteUpdate.Size = new System.Drawing.Size(102, 23);
             this.commandExecuteUpdate.TabIndex = 4;
-            this.commandExecuteUpdate.Text = "start up";
+            this.commandExecuteUpdate.Text = "アップデート実行(&U)";
             this.commandExecuteUpdate.UseVisualStyleBackColor = true;
             this.commandExecuteUpdate.Click += new System.EventHandler(this.commandExecuteUpdate_Click);
             // 
             // commandShowReleaseNote
             // 
-            this.commandShowReleaseNote.Location = new System.Drawing.Point(246, 3);
+            this.commandShowReleaseNote.Location = new System.Drawing.Point(327, 3);
             this.commandShowReleaseNote.Name = "commandShowReleaseNote";
-            this.commandShowReleaseNote.Size = new System.Drawing.Size(75, 23);
+            this.commandShowReleaseNote.Size = new System.Drawing.Size(102, 23);
             this.commandShowReleaseNote.TabIndex = 3;
-            this.commandShowReleaseNote.Text = "note";
+            this.commandShowReleaseNote.Text = "リリースノート(&R)";
             this.commandShowReleaseNote.UseVisualStyleBackColor = true;
             this.commandShowReleaseNote.Click += new System.EventHandler(this.commandShowReleaseNote_Click);
             // 
@@ -257,9 +257,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             this.commandTestExecute.Location = new System.Drawing.Point(3, 3);
             this.commandTestExecute.Name = "commandTestExecute";
-            this.commandTestExecute.Size = new System.Drawing.Size(75, 23);
+            this.commandTestExecute.Size = new System.Drawing.Size(102, 23);
             this.commandTestExecute.TabIndex = 0;
-            this.commandTestExecute.Text = "test exec";
+            this.commandTestExecute.Text = "試験起動(&E)";
             this.commandTestExecute.UseVisualStyleBackColor = true;
             this.commandTestExecute.Click += new System.EventHandler(this.commandTestExecute_Click);
             // 
@@ -273,9 +273,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.selectWorkspaceLoadToMinimize.AutoSize = true;
             this.selectWorkspaceLoadToMinimize.Location = new System.Drawing.Point(3, 3);
             this.selectWorkspaceLoadToMinimize.Name = "selectWorkspaceLoadToMinimize";
-            this.selectWorkspaceLoadToMinimize.Size = new System.Drawing.Size(189, 16);
+            this.selectWorkspaceLoadToMinimize.Size = new System.Drawing.Size(211, 16);
             this.selectWorkspaceLoadToMinimize.TabIndex = 0;
-            this.selectWorkspaceLoadToMinimize.Text = "ワークスペース実行時に最小化する";
+            this.selectWorkspaceLoadToMinimize.Text = "ワークスペース読み込み時に最小化する";
             this.selectWorkspaceLoadToMinimize.UseVisualStyleBackColor = true;
             this.selectWorkspaceLoadToMinimize.CheckedChanged += new System.EventHandler(this.selectWorkspaceLoadToMinimize_CheckedChanged);
             // 
@@ -292,11 +292,11 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             // commandShowAbout
             // 
-            this.commandShowAbout.Location = new System.Drawing.Point(84, 3);
+            this.commandShowAbout.Location = new System.Drawing.Point(111, 3);
             this.commandShowAbout.Name = "commandShowAbout";
-            this.commandShowAbout.Size = new System.Drawing.Size(75, 23);
+            this.commandShowAbout.Size = new System.Drawing.Size(102, 23);
             this.commandShowAbout.TabIndex = 1;
-            this.commandShowAbout.Text = "about";
+            this.commandShowAbout.Text = "<CODE:ABOUT>";
             this.commandShowAbout.UseVisualStyleBackColor = true;
             this.commandShowAbout.Click += new System.EventHandler(this.commandShowAbout_Click);
             // 
@@ -400,7 +400,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             // flowLayoutPanel3
             // 
-            this.flowLayoutPanel3.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.flowLayoutPanel3.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.flowLayoutPanel3.AutoSize = true;
             this.flowLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel3.Controls.Add(this.commandTestExecute);
@@ -408,9 +408,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.flowLayoutPanel3.Controls.Add(this.commandCheckUpdate);
             this.flowLayoutPanel3.Controls.Add(this.commandShowReleaseNote);
             this.flowLayoutPanel3.Controls.Add(this.commandExecuteUpdate);
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 98);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(17, 98);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(405, 29);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(540, 29);
             this.flowLayoutPanel3.TabIndex = 1;
             // 
             // tableLayoutPanel3
@@ -510,7 +510,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ManagerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Form1";
+            this.Text = "<CODE>";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ManagerForm_FormClosing);
             this.Load += new System.EventHandler(this.ManagerForm_Load);
             this.Shown += new System.EventHandler(this.ManagerForm_Shown);
