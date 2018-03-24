@@ -26,7 +26,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             InitializeComponent();
 
             Font = SystemFonts.MessageBoxFont;
-            Text = CommonUtility.ReplaceWindowTitle(Text);
+            Text = CommonUtility.ReplaceWindowTitle(CommonUtility.ProjectName);
 
             this.notifyIcon.Icon = Icon;
 
@@ -207,9 +207,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private void ManagerForm_Load(object sender, EventArgs e)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            this.labelBuildType.Text = CommonUtility.BuildType;
-            this.labelVersionNumber.Text = assembly.GetName().Version.ToString();
-            this.labelVersionHash.Text = FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;
+            this.statusbarLabelBuildType.Text = CommonUtility.BuildType;
+            this.statusbarLabelVersion.Text = assembly.GetName().Version.ToString();
+            this.statusbarLabelHash.Text = FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;
 
             // 設定値をどばーっと反映
             Worker.ListupWorkspace(this.selectWorkspace, Guid.Empty);

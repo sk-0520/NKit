@@ -75,26 +75,38 @@ namespace ContentTypeTextNet.NKit.Manager.Properties {
         ///&lt;html&gt;
         ///    &lt;head&gt;
         ///        &lt;meta charset=&quot;UTF-8&quot; /&gt;
-        ///        &lt;script&gt;
-        ///        /**
-        /// * marked - a markdown parser
-        /// * Copyright (c) 2011-2014, Christopher Jeffrey. (MIT Licensed)
-        /// * https://github.com/chjj/marked
-        /// */
+        ///        &lt;style&gt;
+        ///        /* リリースノート専用スタイルシート */
         ///
-        ///;(function(root) {
-        ///&apos;use strict&apos;;
+        ///html {
+        ///	font-family: &apos;Verdana&apos;,&apos;Meiryo UI&apos;,&apos;メイリオ&apos;, Meiryo,YuGothic,&apos;Yu Gothic&apos;,monospace;
+        ///	font-size: 14pt;
+        ///}
         ///
-        ////**
-        /// * Block-Level Grammar
-        /// */
+        ///body {
+        ///	color: #333333;
+        ///	background: #efefef;
+        ///}
         ///
-        ///var block = {
-        ///  newline: /^\n+/,
-        ///  code: /^( {4}[^\n]+\n*)+/,
-        ///  fences: noop,
-        ///  hr: /^ {0,3}((?:- *){3,}|(?:_ *){3,}|(?:\* *){3,})(?:\n+|$)/,
-        ///  heading: /^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)/,        /// [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        ///h1 {
+        ///	text-align: center;
+        ///	border-bottom: 3px double #cccccc;
+        ///	font-size: 140%;
+        ///}
+        ///
+        ///section {
+        ///	padding: 0 inherit 1em inherit;
+        ///}
+        ///
+        ///h2 {
+        ///	font-size: 120%;
+        ///}
+        ///
+        ///*.version {
+        ///	font-weight: bold;
+        ///}
+        ///
+        ///*.timestamp  [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string File_ReleaseNoteDocument {
             get {
@@ -112,13 +124,33 @@ namespace ContentTypeTextNet.NKit.Manager.Properties {
         ///		&lt;strong class=&quot;hash&quot;&gt;${HASH}&lt;/strong&gt;
         ///	&lt;/p&gt;
         ///	&lt;div class=&quot;view-content&quot;&gt;&lt;/div&gt;
-        ///	&lt;pre class=&quot;markdown-content&quot; style=&quot;display: none&quot;&gt;${CONTENT}&lt;/pre&gt;
+        ///	&lt;pre class=&quot;markdown-content&quot;&gt;${CONTENT}&lt;/pre&gt;
         ///&lt;/section&gt;
         /// に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string File_ReleaseNoteLayout {
             get {
                 return ResourceManager.GetString("File_ReleaseNoteLayout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap Image_Delete {
+            get {
+                object obj = ResourceManager.GetObject("Image_Delete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap Image_FolderOpen {
+            get {
+                object obj = ResourceManager.GetObject("Image_FolderOpen", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

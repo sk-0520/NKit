@@ -210,6 +210,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\NKit.Manager.png" />
+    <Content Include="Resources\Image\FolderOpen.png" />
+    <Content Include="Resources\Image\Delete.png" />
     <Content Include="Resources\NKit.Manager.ico" />
     <None Include="App.config" />
     <Content Include="%40NKit.user.tt">
