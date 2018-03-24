@@ -34,4 +34,8 @@
     <Setter Property="Stretch" Value="UniformToFill" />
   </Style>
 
+  <Style x:Key="IconPanel" TargetType="StackPanel">
+    <Setter Property="Orientation" Value="Horizontal" />
+  </Style>
+
 </ResourceDictionary>

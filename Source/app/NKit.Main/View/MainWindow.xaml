@@ -19,7 +19,7 @@
   Width="640"
   Height="480"
   ResizeMode="CanResizeWithGrip"
-  
+
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d"
 >
@@ -37,7 +37,14 @@
         <ScaleTransform ScaleX="{Binding Value, ElementName=tuneScale}" ScaleY="{Binding Value, ElementName=tuneScale}" />
       </TabControl.LayoutTransform>
 
-      <TabItem Header="finder" DataContext="{Binding FinderManager}">
+      <TabItem DataContext="{Binding FinderManager}">
+        <TabItem.Header>
+          <StackPanel Style="{StaticResource IconPanel}">
+            <Control Template="{StaticResource Image_Search-Small}" />
+            <TextBlock>ファインダー</TextBlock>
+          </StackPanel>
+        </TabItem.Header>
+
         <app_main_view_finder:FinderManagerControl />
       </TabItem>
 

@@ -349,11 +349,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Resources\ImageDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ImageDictionary.tt</DependentUpon>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\Resources\Theme\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Control\RunnableControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Resources\ImageDictionaryCore.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -423,6 +434,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>%40NKit.Main.user.config</LastGenOutput>
       <DependentUpon>App.config</DependentUpon>
+    </Content>
+    <Content Include="View\Resources\ImageDictionary.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ImageDictionary.xaml</LastGenOutput>
     </Content>
     <Resource Include="Resources\NKit.Main.ico" />
   </ItemGroup>
