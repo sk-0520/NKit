@@ -40,7 +40,7 @@
       <TabItem DataContext="{Binding FinderManager}">
         <TabItem.Header>
           <StackPanel Style="{StaticResource IconPanel}">
-            <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_Search}" />
+            <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_Finder}" />
             <TextBlock>ファインダー</TextBlock>
           </StackPanel>
         </TabItem.Header>
@@ -52,7 +52,13 @@
         <app_main_view_file:FileManagerControl />
       </TabItem>
 
-      <TabItem Header="capture" DataContext="{Binding CaptureManager}">
+      <TabItem DataContext="{Binding CaptureManager}">
+        <TabItem.Header>
+          <StackPanel Style="{StaticResource IconPanel}">
+            <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_Capture}" />
+            <TextBlock>キャプチャ</TextBlock>
+          </StackPanel>
+        </TabItem.Header>
         <app_main_view_capture:CaptureManagerControl />
       </TabItem>
 
@@ -64,7 +70,14 @@
         <app_main_view_systemenv:SystemEnvironmentManagerControl />
       </TabItem>
 
-      <TabItem Header="nkit" DataContext="{Binding NKitManager}">
+      <TabItem DataContext="{Binding NKitManager}">
+        <TabItem.Header>
+          <StackPanel Style="{StaticResource IconPanel}">
+            <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_NKit}" />
+            <TextBlock>NKit</TextBlock>
+          </StackPanel>
+        </TabItem.Header>
+
         <app_main_view_nkit:NKitManagerControl />
       </TabItem>
 
