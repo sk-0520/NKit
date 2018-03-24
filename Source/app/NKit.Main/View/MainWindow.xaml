@@ -40,7 +40,7 @@
       <TabItem DataContext="{Binding FinderManager}">
         <TabItem.Header>
           <StackPanel Style="{StaticResource IconPanel}">
-            <Control Template="{StaticResource Image_Search-Small}" />
+            <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_Search}" />
             <TextBlock>ファインダー</TextBlock>
           </StackPanel>
         </TabItem.Header>
