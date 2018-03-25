@@ -40,7 +40,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
               </Grid.RowDefinitions>
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -97,20 +96,19 @@
               </Grid>
 
 
-              <!-- こいつらいるかぁ？ -->
-              <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-                <Button Content="ファイルを開く" Command="{Binding SingleItem.OpenFileCommand, ElementName=root}" />
-                <Button Content="親ディレクトリを昇" Command="{Binding SingleItem.OpenDirectoryCommand, ElementName=root}"/>
-                <Button Content="プロパティ" Command="{Binding SingleItem.ShowPropertyCommand, ElementName=root}" />
+              <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ToolTip="こいつらは消える運命" >
+                <StackPanel Orientation="Horizontal">
+                  <Button Content="ファイルを開く" Command="{Binding SingleItem.OpenFileCommand, ElementName=root}" />
+                  <Button Content="親ディレクトリを昇" Command="{Binding SingleItem.OpenDirectoryCommand, ElementName=root}"/>
+                  <Button Content="プロパティ" Command="{Binding SingleItem.ShowPropertyCommand, ElementName=root}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                  <Button Content="ファイルをコピー"  Command="{Binding SingleItem.CopyFileCommand, ElementName=root}"/>
+                  <Button Content="ファイル名をコピー"  Command="{Binding SingleItem.CopyNameWithExtensionCommand, ElementName=root}"/>
+                  <Button Content="拡張子を外したファイル名をコピー"  Command="{Binding SingleItem.CopyNameWithoutExtensionCommand, ElementName=root}"/>
+                  <Button Content="親ディレクトリをコピー"  Command="{Binding SingleItem.CopyDirectoryCommand, ElementName=root}"/>
+                </StackPanel>
               </StackPanel>
-              <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-                <Button Content="ファイルをコピー"  Command="{Binding SingleItem.CopyFileCommand, ElementName=root}"/>
-                <Button Content="ファイル名をコピー"  Command="{Binding SingleItem.CopyNameWithExtensionCommand, ElementName=root}"/>
-                <Button Content="拡張子を外したファイル名をコピー"  Command="{Binding SingleItem.CopyNameWithoutExtensionCommand, ElementName=root}"/>
-                <Button Content="親ディレクトリをコピー"  Command="{Binding SingleItem.CopyDirectoryCommand, ElementName=root}"/>
-              </StackPanel>
-
-
 
             </Grid>
 
@@ -122,10 +120,22 @@
       <TabItem Header="text" IsSelected="{Binding SingleItem.IsSelectedContentText, ElementName=root}" Visibility="{Binding SingleItem.ContentIsText, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
         <ScrollViewer>
           <StackPanel DataContext="{Binding SingleItem.ContentText, ElementName=root}">
-            <Label>Encoding:</Label>
-            <TextBlock Text="{Binding EncodingCheck.Encoding, Mode=OneTime}" />
-            <Label>Matches:</Label>
-            <app_main_view_control:TextSearchMatchControl ItemsSource="{Binding SingleItem.ContentMatches, Mode=TwoWay, ElementName=root}" UserSelectedCommand="{Binding SingleItem.OpenTextFileCommand, Mode=TwoWay, ElementName=root}" />
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+
+              <Label Grid.Row="0" Grid.Column="0">Encoding:</Label>
+              <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding EncodingCheck.Encoding, Mode=OneTime}" />
+
+              <Label Grid.Row="1" Grid.Column="0">Matches:</Label>
+              <app_main_view_control:TextSearchMatchControl  Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SingleItem.ContentMatches, Mode=TwoWay, ElementName=root}" UserSelectedCommand="{Binding SingleItem.OpenTextFileCommand, Mode=TwoWay, ElementName=root}" />
+            </Grid>
           </StackPanel>
 
         </ScrollViewer>
