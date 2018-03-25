@@ -459,14 +459,14 @@
                   <Setter Property="IsEnabled" Value="{Binding SelectedItem, Converter={StaticResource NotNullToBooleanConverter}}" />
                 </Style>
               </ContextMenu.Resources>
-              <MenuItem Header="open: file" Command="{Binding SelectedItem.OpenFileCommand}" />
-              <MenuItem Header="open: directory" Command="{Binding SelectedItem.OpenDirectoryCommand}"/>
-              <MenuItem Header="show: property" Command="{Binding SelectedItem.ShowPropertyCommand}" />
+              <MenuItem Header="ファイルを開く" Command="{Binding SelectedItem.OpenFileCommand}" />
+              <MenuItem Header="親ディレクトリを開く" Command="{Binding SelectedItem.OpenDirectoryCommand}"/>
+              <MenuItem Header="プロパティ" Command="{Binding SelectedItem.ShowPropertyCommand}" />
               <Separator />
-              <MenuItem Header="copy: file"  Command="{Binding SelectedItem.CopyFileCommand}"/>
-              <MenuItem Header="copy: name(with ext)"  Command="{Binding SelectedItem.CopyNameWithExtensionCommand}"/>
-              <MenuItem Header="copy: name(without ext)"  Command="{Binding SelectedItem.CopyNameWithoutExtensionCommand}"/>
-              <MenuItem Header="copy: directory"  Command="{Binding SelectedItem.CopyDirectoryCommand}"/>
+              <MenuItem Header="ファイルをコピー"  Command="{Binding SelectedItem.CopyFileCommand}"/>
+              <MenuItem Header="ファイル名をコピー"  Command="{Binding SelectedItem.CopyNameWithExtensionCommand}"/>
+              <MenuItem Header="拡張子を外したファイル名をコピー"  Command="{Binding SelectedItem.CopyNameWithoutExtensionCommand}"/>
+              <MenuItem Header="親ディレクトリをコピー"  Command="{Binding SelectedItem.CopyDirectoryCommand}"/>
             </ContextMenu>
           </ListView.ContextMenu>
         </ListView>
