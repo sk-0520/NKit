@@ -117,7 +117,7 @@
         </ScrollViewer>
       </TabItem>
 
-      <TabItem Header="text" IsSelected="{Binding SingleItem.IsSelectedContentText, ElementName=root}" Visibility="{Binding SingleItem.ContentIsText, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
+      <TabItem Header="テキスト" IsSelected="{Binding SingleItem.IsSelectedContentText, ElementName=root}" Visibility="{Binding SingleItem.ContentIsText, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
         <ScrollViewer>
           <StackPanel DataContext="{Binding SingleItem.ContentText, ElementName=root}">
             <Grid>
@@ -130,10 +130,10 @@
                 <ColumnDefinition Width="*" />
               </Grid.ColumnDefinitions>
 
-              <Label Grid.Row="0" Grid.Column="0">Encoding:</Label>
+              <Label Grid.Row="0" Grid.Column="0">エンコーディング:</Label>
               <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding EncodingCheck.Encoding, Mode=OneTime}" />
 
-              <Label Grid.Row="1" Grid.Column="0">Matches:</Label>
+              <Label Grid.Row="1" Grid.Column="0">一致:</Label>
               <app_main_view_control:TextSearchMatchControl  Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SingleItem.ContentMatches, Mode=TwoWay, ElementName=root}" UserSelectedCommand="{Binding SingleItem.OpenTextFileCommand, Mode=TwoWay, ElementName=root}" />
             </Grid>
           </StackPanel>
@@ -141,34 +141,67 @@
         </ScrollViewer>
       </TabItem>
 
-      <TabItem Header="office" IsSelected="{Binding SingleItem.IsSelectedContentMsOffice, ElementName=root}" Visibility="{Binding SingleItem.ContentIsMsOffice, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
+      <TabItem Header="MS Office" IsSelected="{Binding SingleItem.IsSelectedContentMsOffice, ElementName=root}" Visibility="{Binding SingleItem.ContentIsMsOffice, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
         <ScrollViewer>
-          <StackPanel DataContext="{Binding SingleItem.ContentMsOffice, ElementName=root}">
-            <Label>type:</Label>
-            <TextBlock Text="{Binding OfficeType}" />
-            <ContentControl>
+          <Grid DataContext="{Binding SingleItem.ContentMsOffice, ElementName=root}">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+
+            <Label Grid.Row="0" Grid.Column="0">種類:</Label>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding OfficeType}" />
+
+            <ContentControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
               <ContentControl.Resources>
                 <StackPanel x:Key="Excel">
                   <ItemsControl ItemsSource="{Binding MatchSheet}">
                     <ItemsControl.ItemTemplate>
                       <DataTemplate>
-                        <StackPanel>
-                          <Label>sheet:</Label>
-                          <app_main_view_control:TextSearchMatchControl IsSelectable="False" ShowSingleLine="True" ShowSingleUnmatchText="{Binding SheetName}" ItemsSource="{Binding SheetNameResult.Matches}" />
+                        <Grid>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                          </Grid.ColumnDefinitions>
 
-                          <Label>cells:</Label>
-                          <app_main_view_control:TextSearchMatchControl ItemsSource="{Binding CellResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}" UserSelectedCommand="{Binding SingleItem.OpenMsOfficeExcelFileCommand, ElementName=root}" />
+                          <Label Grid.Row="0" Grid.Column="0">
+                            <app_main_view_control:TextSearchMatchControl Grid.Row="0" Grid.Column="1" IsSelectable="False" ShowSingleLine="True" ShowSingleUnmatchText="{Binding SheetName}" ItemsSource="{Binding SheetNameResult.Matches}" />
+                          </Label>
 
-                          <Label>shape:</Label>
-                          <app_main_view_control:TextSearchMatchControl ItemsSource="{Binding ShapeResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}" UserSelectedCommand="{Binding SingleItem.OpenMsOfficeExcelFileCommand, ElementName=root}" />
-                        </StackPanel>
+                          <Grid Grid.Row="0" Grid.Column="1">
+                            <Grid.RowDefinitions>
+                              <RowDefinition Height="Auto" />
+                              <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="Auto" />
+                              <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0">セル:</Label>
+                            <app_main_view_control:TextSearchMatchControl Grid.Row="0" Grid.Column="1" ItemsSource="{Binding CellResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}" UserSelectedCommand="{Binding SingleItem.OpenMsOfficeExcelFileCommand, ElementName=root}" />
+
+                            <Label Grid.Row="1" Grid.Column="0">オートシェイプ:</Label>
+                            <app_main_view_control:TextSearchMatchControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding ShapeResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}" UserSelectedCommand="{Binding SingleItem.OpenMsOfficeExcelFileCommand, ElementName=root}" />
+                          </Grid>
+                        </Grid>
                       </DataTemplate>
                     </ItemsControl.ItemTemplate>
                   </ItemsControl>
                 </StackPanel>
                 <StackPanel x:Key="Word">
-                  <Label>elements:</Label>
-                  <app_main_view_control:TextSearchMatchControl ItemsSource="{Binding SingleItem.ContentMsOfficeWordElements, Mode=TwoWay, ElementName=root}" UserSelectedCommand="{Binding SingleItem.OpenMsOfficeWordFileCommand, Mode=TwoWay, ElementName=root}"  />
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">要素:</Label>
+                    <app_main_view_control:TextSearchMatchControl Grid.Column="1" ItemsSource="{Binding SingleItem.ContentMsOfficeWordElements, Mode=TwoWay, ElementName=root}" UserSelectedCommand="{Binding SingleItem.OpenMsOfficeWordFileCommand, Mode=TwoWay, ElementName=root}"  />
+                  </Grid>
                 </StackPanel>
               </ContentControl.Resources>
               <ContentControl.Style>
@@ -193,7 +226,7 @@
                 </Style>
               </ContentControl.Style>
             </ContentControl>
-          </StackPanel>
+          </Grid>
 
         </ScrollViewer>
       </TabItem>
