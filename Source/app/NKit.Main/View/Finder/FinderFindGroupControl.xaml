@@ -285,7 +285,7 @@
       </ScrollViewer>
 
       <!--<Button Grid.Row="1" Command="{Binding RunCommand}">find!</Button>-->
-      <app_main_view_control:RunnableControl Grid.Row="1" RunnableItem="{Binding}" />
+      <app_main_view_control:RunnableControl Grid.Row="1" RunContent="{x:Null}" CancelContent="{x:Null}" RunnableItem="{Binding}" />
     </Grid>
 
     <Grid Grid.Column="2">
