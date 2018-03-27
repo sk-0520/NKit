@@ -200,7 +200,15 @@
             <StackPanel>
               <GroupBox Header="属性">
                 <StackPanel>
-                  <app_main_view_control:FlagMatchSelectControl FlagMatchKind="{Binding FilePropertyFileAttributeFlagMatchKind, Mode=TwoWay}" />
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0">フラグ条件:</Label>
+                    <app_main_view_control:FlagMatchSelectControl Grid.Column="1" FlagMatchKind="{Binding FilePropertyFileAttributeFlagMatchKind, Mode=TwoWay}" />
+                  </Grid>
 
                   <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FilePropertyAttributeIsArchive}">アーカイブ</CheckBox>
                   <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding FilePropertyAttributeIsCompressed}">圧縮</CheckBox>
