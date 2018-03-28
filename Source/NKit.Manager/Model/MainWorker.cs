@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -77,6 +78,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             set { ManagerSetting.Accepted = value; }
         }
 
+        public Rectangle WindowArea {
+            get { return ManagerSetting.WindowArea; }
+            set { ManagerSetting.WindowArea = value; }
+        }
         public bool WorkspaceLoadToMinimize
         {
             get { return ManagerSetting.Workspace.WorkspaceLoadToMinimize; }

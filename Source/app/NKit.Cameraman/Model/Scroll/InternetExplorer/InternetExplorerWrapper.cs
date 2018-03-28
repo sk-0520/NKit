@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using ContentTypeTextNet.Library.PInvoke.Windows;
 using ContentTypeTextNet.NKit.Utility.Model;
 using ContentTypeTextNet.NKit.Utility.Model.Unmanaged;
-using mshtml;
+using MSHTML;
 using SHDocVw;
 
 namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer

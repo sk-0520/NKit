@@ -41,161 +41,173 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.inputWorkspaceDirectoryPath = new System.Windows.Forms.TextBox();
             this.commandWorkspaceCopy = new System.Windows.Forms.Button();
             this.commandWorkspaceDelete = new System.Windows.Forms.Button();
-            this.panelWorkspace = new System.Windows.Forms.Panel();
             this.selectLogging = new System.Windows.Forms.CheckBox();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.viewLog = new System.Windows.Forms.RichTextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.commandCheckUpdate = new System.Windows.Forms.Button();
             this.commandExecuteUpdate = new System.Windows.Forms.Button();
             this.commandShowReleaseNote = new System.Windows.Forms.Button();
-            this.labelVersionNumber = new System.Windows.Forms.Label();
-            this.labelVersionHash = new System.Windows.Forms.Label();
-            this.labelBuildType = new System.Windows.Forms.Label();
             this.commandTestExecute = new System.Windows.Forms.Button();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.selectWorkspaceLoadToMinimize = new System.Windows.Forms.CheckBox();
             this.selectWorkspaceRunningMinimizeToNotifyArea = new System.Windows.Forms.CheckBox();
             this.commandShowAbout = new System.Windows.Forms.Button();
-            this.panelWorkspace.SuspendLayout();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+            this.statusbar = new System.Windows.Forms.StatusStrip();
+            this.statusbarLabelBuildType = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusbarLabelVersion = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusbarLabelHash = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel3.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
+            this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
+            this.toolStripContainer1.ContentPanel.SuspendLayout();
+            this.toolStripContainer1.SuspendLayout();
+            this.statusbar.SuspendLayout();
             this.SuspendLayout();
             // 
             // selectWorkspace
             // 
+            this.selectWorkspace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel2.SetColumnSpan(this.selectWorkspace, 3);
             this.selectWorkspace.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.selectWorkspace.FormattingEnabled = true;
-            this.selectWorkspace.Location = new System.Drawing.Point(93, 12);
+            this.selectWorkspace.Location = new System.Drawing.Point(98, 3);
             this.selectWorkspace.Name = "selectWorkspace";
-            this.selectWorkspace.Size = new System.Drawing.Size(215, 20);
-            this.selectWorkspace.TabIndex = 0;
+            this.selectWorkspace.Size = new System.Drawing.Size(468, 20);
+            this.selectWorkspace.TabIndex = 1;
             this.selectWorkspace.SelectedIndexChanged += new System.EventHandler(this.selectWorkspace_SelectedIndexChanged);
             // 
             // commandWorkspaceLoad
             // 
-            this.commandWorkspaceLoad.Location = new System.Drawing.Point(249, 38);
+            this.commandWorkspaceLoad.Location = new System.Drawing.Point(98, 29);
             this.commandWorkspaceLoad.Name = "commandWorkspaceLoad";
-            this.commandWorkspaceLoad.Size = new System.Drawing.Size(75, 23);
-            this.commandWorkspaceLoad.TabIndex = 1;
-            this.commandWorkspaceLoad.Text = "load";
+            this.commandWorkspaceLoad.Size = new System.Drawing.Size(85, 23);
+            this.commandWorkspaceLoad.TabIndex = 2;
+            this.commandWorkspaceLoad.Text = "読み込み(&L)";
             this.commandWorkspaceLoad.UseVisualStyleBackColor = true;
             this.commandWorkspaceLoad.Click += new System.EventHandler(this.commandWorkspaceLoad_Click);
             // 
             // commandWorkspaceClose
             // 
-            this.commandWorkspaceClose.Location = new System.Drawing.Point(256, 79);
+            this.commandWorkspaceClose.Location = new System.Drawing.Point(98, 58);
             this.commandWorkspaceClose.Name = "commandWorkspaceClose";
-            this.commandWorkspaceClose.Size = new System.Drawing.Size(75, 23);
-            this.commandWorkspaceClose.TabIndex = 1;
-            this.commandWorkspaceClose.Text = "close";
+            this.commandWorkspaceClose.Size = new System.Drawing.Size(85, 23);
+            this.commandWorkspaceClose.TabIndex = 6;
+            this.commandWorkspaceClose.Text = "閉じる(&X)";
             this.commandWorkspaceClose.UseVisualStyleBackColor = true;
             this.commandWorkspaceClose.Click += new System.EventHandler(this.commandWorkspaceClose_Click);
             // 
             // commandWorkspaceCreate
             // 
-            this.commandWorkspaceCreate.Location = new System.Drawing.Point(49, 38);
+            this.commandWorkspaceCreate.Location = new System.Drawing.Point(481, 29);
             this.commandWorkspaceCreate.Name = "commandWorkspaceCreate";
-            this.commandWorkspaceCreate.Size = new System.Drawing.Size(75, 23);
-            this.commandWorkspaceCreate.TabIndex = 1;
-            this.commandWorkspaceCreate.Text = "create";
+            this.commandWorkspaceCreate.Size = new System.Drawing.Size(85, 23);
+            this.commandWorkspaceCreate.TabIndex = 4;
+            this.commandWorkspaceCreate.Text = "作成(&N)";
             this.commandWorkspaceCreate.UseVisualStyleBackColor = true;
             this.commandWorkspaceCreate.Click += new System.EventHandler(this.commandWorkspaceCreate_Click);
             // 
             // label1
             // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 10);
+            this.label1.Location = new System.Drawing.Point(3, 6);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(32, 12);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "name";
+            this.label1.Size = new System.Drawing.Size(47, 12);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "名前(&N):";
             // 
             // label2
             // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 35);
+            this.label2.Location = new System.Drawing.Point(3, 33);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(18, 12);
+            this.label2.Size = new System.Drawing.Size(57, 12);
             this.label2.TabIndex = 2;
-            this.label2.Text = "dir";
+            this.label2.Text = "フォルダ(&F):";
             // 
             // commandWorkspaceSave
             // 
-            this.commandWorkspaceSave.Location = new System.Drawing.Point(153, 35);
+            this.commandWorkspaceSave.Location = new System.Drawing.Point(3, 3);
             this.commandWorkspaceSave.Name = "commandWorkspaceSave";
             this.commandWorkspaceSave.Size = new System.Drawing.Size(75, 23);
-            this.commandWorkspaceSave.TabIndex = 1;
-            this.commandWorkspaceSave.Text = "save";
+            this.commandWorkspaceSave.TabIndex = 0;
+            this.commandWorkspaceSave.Text = "保存(&S)";
             this.commandWorkspaceSave.UseVisualStyleBackColor = true;
             this.commandWorkspaceSave.Click += new System.EventHandler(this.commandWorkspaceSave_Click);
             // 
             // commandWorkspaceDirectorySelect
             // 
-            this.commandWorkspaceDirectorySelect.Location = new System.Drawing.Point(101, 60);
+            this.commandWorkspaceDirectorySelect.Image = global::ContentTypeTextNet.NKit.Manager.Properties.Resources.Image_FolderOpen;
+            this.commandWorkspaceDirectorySelect.Location = new System.Drawing.Point(218, 28);
             this.commandWorkspaceDirectorySelect.Name = "commandWorkspaceDirectorySelect";
-            this.commandWorkspaceDirectorySelect.Size = new System.Drawing.Size(75, 23);
-            this.commandWorkspaceDirectorySelect.TabIndex = 3;
-            this.commandWorkspaceDirectorySelect.Text = "dir";
+            this.commandWorkspaceDirectorySelect.Size = new System.Drawing.Size(32, 23);
+            this.commandWorkspaceDirectorySelect.TabIndex = 4;
             this.commandWorkspaceDirectorySelect.UseVisualStyleBackColor = true;
             this.commandWorkspaceDirectorySelect.Click += new System.EventHandler(this.commandWorkspaceDirectorySelect_Click);
             // 
             // inputWorkspaceName
             // 
-            this.inputWorkspaceName.Location = new System.Drawing.Point(47, 7);
+            this.inputWorkspaceName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.inputWorkspaceName.Location = new System.Drawing.Point(66, 3);
             this.inputWorkspaceName.Name = "inputWorkspaceName";
-            this.inputWorkspaceName.Size = new System.Drawing.Size(100, 19);
-            this.inputWorkspaceName.TabIndex = 4;
+            this.inputWorkspaceName.Size = new System.Drawing.Size(146, 19);
+            this.inputWorkspaceName.TabIndex = 1;
             // 
             // inputWorkspaceDirectoryPath
             // 
-            this.inputWorkspaceDirectoryPath.Location = new System.Drawing.Point(47, 35);
+            this.inputWorkspaceDirectoryPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.inputWorkspaceDirectoryPath.Location = new System.Drawing.Point(66, 30);
             this.inputWorkspaceDirectoryPath.Name = "inputWorkspaceDirectoryPath";
-            this.inputWorkspaceDirectoryPath.Size = new System.Drawing.Size(100, 19);
-            this.inputWorkspaceDirectoryPath.TabIndex = 4;
+            this.inputWorkspaceDirectoryPath.Size = new System.Drawing.Size(146, 19);
+            this.inputWorkspaceDirectoryPath.TabIndex = 3;
             // 
             // commandWorkspaceCopy
             // 
-            this.commandWorkspaceCopy.Location = new System.Drawing.Point(12, 9);
+            this.commandWorkspaceCopy.Location = new System.Drawing.Point(481, 58);
             this.commandWorkspaceCopy.Name = "commandWorkspaceCopy";
-            this.commandWorkspaceCopy.Size = new System.Drawing.Size(75, 23);
-            this.commandWorkspaceCopy.TabIndex = 1;
-            this.commandWorkspaceCopy.Text = "copy";
+            this.commandWorkspaceCopy.Size = new System.Drawing.Size(85, 23);
+            this.commandWorkspaceCopy.TabIndex = 5;
+            this.commandWorkspaceCopy.Text = "コピー(&C)";
             this.commandWorkspaceCopy.UseVisualStyleBackColor = true;
             this.commandWorkspaceCopy.Click += new System.EventHandler(this.commandWorkspaceCopy_Click);
             // 
             // commandWorkspaceDelete
             // 
-            this.commandWorkspaceDelete.Location = new System.Drawing.Point(167, 3);
+            this.commandWorkspaceDelete.Location = new System.Drawing.Point(84, 3);
             this.commandWorkspaceDelete.Name = "commandWorkspaceDelete";
             this.commandWorkspaceDelete.Size = new System.Drawing.Size(75, 23);
             this.commandWorkspaceDelete.TabIndex = 1;
-            this.commandWorkspaceDelete.Text = "delete";
+            this.commandWorkspaceDelete.Text = "削除(&D)";
             this.commandWorkspaceDelete.UseVisualStyleBackColor = true;
             this.commandWorkspaceDelete.Click += new System.EventHandler(this.commandWorkspaceDelete_Click);
-            // 
-            // panelWorkspace
-            // 
-            this.panelWorkspace.Controls.Add(this.selectLogging);
-            this.panelWorkspace.Controls.Add(this.inputWorkspaceName);
-            this.panelWorkspace.Controls.Add(this.inputWorkspaceDirectoryPath);
-            this.panelWorkspace.Controls.Add(this.commandWorkspaceDelete);
-            this.panelWorkspace.Controls.Add(this.commandWorkspaceSave);
-            this.panelWorkspace.Controls.Add(this.label1);
-            this.panelWorkspace.Controls.Add(this.label2);
-            this.panelWorkspace.Controls.Add(this.commandWorkspaceDirectorySelect);
-            this.panelWorkspace.Location = new System.Drawing.Point(354, 0);
-            this.panelWorkspace.Name = "panelWorkspace";
-            this.panelWorkspace.Size = new System.Drawing.Size(246, 92);
-            this.panelWorkspace.TabIndex = 5;
             // 
             // selectLogging
             // 
             this.selectLogging.AutoSize = true;
-            this.selectLogging.Location = new System.Drawing.Point(11, 60);
+            this.tableLayoutPanel1.SetColumnSpan(this.selectLogging, 3);
+            this.selectLogging.Location = new System.Drawing.Point(3, 57);
             this.selectLogging.Name = "selectLogging";
-            this.selectLogging.Size = new System.Drawing.Size(39, 16);
+            this.selectLogging.Size = new System.Drawing.Size(108, 16);
             this.selectLogging.TabIndex = 5;
-            this.selectLogging.Text = "log";
+            this.selectLogging.Text = "ログを出力する(&L)";
             this.selectLogging.UseVisualStyleBackColor = true;
             // 
             // errorProvider
@@ -204,85 +216,50 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             // viewLog
             // 
-            this.viewLog.Location = new System.Drawing.Point(57, 108);
+            this.viewLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.viewLog.Location = new System.Drawing.Point(23, 3);
             this.viewLog.Name = "viewLog";
-            this.viewLog.Size = new System.Drawing.Size(525, 134);
+            this.viewLog.Size = new System.Drawing.Size(812, 92);
             this.viewLog.TabIndex = 6;
             this.viewLog.Text = "";
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(116, 71);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(56, 12);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "こーじちゅう";
-            // 
             // commandCheckUpdate
             // 
-            this.commandCheckUpdate.Location = new System.Drawing.Point(12, 66);
+            this.commandCheckUpdate.Location = new System.Drawing.Point(219, 3);
             this.commandCheckUpdate.Name = "commandCheckUpdate";
-            this.commandCheckUpdate.Size = new System.Drawing.Size(75, 23);
-            this.commandCheckUpdate.TabIndex = 1;
-            this.commandCheckUpdate.Text = "check up";
+            this.commandCheckUpdate.Size = new System.Drawing.Size(102, 23);
+            this.commandCheckUpdate.TabIndex = 2;
+            this.commandCheckUpdate.Text = "アップデート確認(&H)";
             this.commandCheckUpdate.UseVisualStyleBackColor = true;
             this.commandCheckUpdate.Click += new System.EventHandler(this.commandCheckUpdate_Click);
             // 
             // commandExecuteUpdate
             // 
-            this.commandExecuteUpdate.Location = new System.Drawing.Point(2, 95);
+            this.commandExecuteUpdate.Location = new System.Drawing.Point(435, 3);
             this.commandExecuteUpdate.Name = "commandExecuteUpdate";
-            this.commandExecuteUpdate.Size = new System.Drawing.Size(75, 23);
-            this.commandExecuteUpdate.TabIndex = 1;
-            this.commandExecuteUpdate.Text = "start up";
+            this.commandExecuteUpdate.Size = new System.Drawing.Size(102, 23);
+            this.commandExecuteUpdate.TabIndex = 4;
+            this.commandExecuteUpdate.Text = "アップデート実行(&U)";
             this.commandExecuteUpdate.UseVisualStyleBackColor = true;
             this.commandExecuteUpdate.Click += new System.EventHandler(this.commandExecuteUpdate_Click);
             // 
             // commandShowReleaseNote
             // 
-            this.commandShowReleaseNote.Location = new System.Drawing.Point(83, 95);
+            this.commandShowReleaseNote.Location = new System.Drawing.Point(327, 3);
             this.commandShowReleaseNote.Name = "commandShowReleaseNote";
-            this.commandShowReleaseNote.Size = new System.Drawing.Size(75, 23);
-            this.commandShowReleaseNote.TabIndex = 7;
-            this.commandShowReleaseNote.Text = "note";
+            this.commandShowReleaseNote.Size = new System.Drawing.Size(102, 23);
+            this.commandShowReleaseNote.TabIndex = 3;
+            this.commandShowReleaseNote.Text = "リリースノート(&R)";
             this.commandShowReleaseNote.UseVisualStyleBackColor = true;
             this.commandShowReleaseNote.Click += new System.EventHandler(this.commandShowReleaseNote_Click);
             // 
-            // labelVersionNumber
-            // 
-            this.labelVersionNumber.AutoSize = true;
-            this.labelVersionNumber.Location = new System.Drawing.Point(81, 257);
-            this.labelVersionNumber.Name = "labelVersionNumber";
-            this.labelVersionNumber.Size = new System.Drawing.Size(107, 12);
-            this.labelVersionNumber.TabIndex = 8;
-            this.labelVersionNumber.Text = "labelVersionNumber";
-            // 
-            // labelVersionHash
-            // 
-            this.labelVersionHash.AutoSize = true;
-            this.labelVersionHash.Location = new System.Drawing.Point(186, 248);
-            this.labelVersionHash.Name = "labelVersionHash";
-            this.labelVersionHash.Size = new System.Drawing.Size(94, 12);
-            this.labelVersionHash.TabIndex = 8;
-            this.labelVersionHash.Text = "labelVersionHash";
-            // 
-            // labelBuildType
-            // 
-            this.labelBuildType.AutoSize = true;
-            this.labelBuildType.Location = new System.Drawing.Point(12, 245);
-            this.labelBuildType.Name = "labelBuildType";
-            this.labelBuildType.Size = new System.Drawing.Size(80, 12);
-            this.labelBuildType.TabIndex = 8;
-            this.labelBuildType.Text = "labelBuildType";
-            // 
             // commandTestExecute
             // 
-            this.commandTestExecute.Location = new System.Drawing.Point(140, 38);
+            this.commandTestExecute.Location = new System.Drawing.Point(3, 3);
             this.commandTestExecute.Name = "commandTestExecute";
-            this.commandTestExecute.Size = new System.Drawing.Size(75, 23);
-            this.commandTestExecute.TabIndex = 9;
-            this.commandTestExecute.Text = "test exec";
+            this.commandTestExecute.Size = new System.Drawing.Size(102, 23);
+            this.commandTestExecute.TabIndex = 0;
+            this.commandTestExecute.Text = "試験起動(&E)";
             this.commandTestExecute.UseVisualStyleBackColor = true;
             this.commandTestExecute.Click += new System.EventHandler(this.commandTestExecute_Click);
             // 
@@ -294,70 +271,273 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // selectWorkspaceLoadToMinimize
             // 
             this.selectWorkspaceLoadToMinimize.AutoSize = true;
-            this.selectWorkspaceLoadToMinimize.Location = new System.Drawing.Point(204, 60);
+            this.selectWorkspaceLoadToMinimize.Location = new System.Drawing.Point(3, 3);
             this.selectWorkspaceLoadToMinimize.Name = "selectWorkspaceLoadToMinimize";
-            this.selectWorkspaceLoadToMinimize.Size = new System.Drawing.Size(92, 16);
-            this.selectWorkspaceLoadToMinimize.TabIndex = 5;
-            this.selectWorkspaceLoadToMinimize.Text = "load -> small";
+            this.selectWorkspaceLoadToMinimize.Size = new System.Drawing.Size(211, 16);
+            this.selectWorkspaceLoadToMinimize.TabIndex = 0;
+            this.selectWorkspaceLoadToMinimize.Text = "ワークスペース読み込み時に最小化する";
             this.selectWorkspaceLoadToMinimize.UseVisualStyleBackColor = true;
             this.selectWorkspaceLoadToMinimize.CheckedChanged += new System.EventHandler(this.selectWorkspaceLoadToMinimize_CheckedChanged);
             // 
             // selectWorkspaceRunningMinimizeToNotifyArea
             // 
             this.selectWorkspaceRunningMinimizeToNotifyArea.AutoSize = true;
-            this.selectWorkspaceRunningMinimizeToNotifyArea.Location = new System.Drawing.Point(164, 82);
+            this.selectWorkspaceRunningMinimizeToNotifyArea.Location = new System.Drawing.Point(3, 25);
             this.selectWorkspaceRunningMinimizeToNotifyArea.Name = "selectWorkspaceRunningMinimizeToNotifyArea";
-            this.selectWorkspaceRunningMinimizeToNotifyArea.Size = new System.Drawing.Size(92, 16);
-            this.selectWorkspaceRunningMinimizeToNotifyArea.TabIndex = 10;
-            this.selectWorkspaceRunningMinimizeToNotifyArea.Text = "small -> icon";
+            this.selectWorkspaceRunningMinimizeToNotifyArea.Size = new System.Drawing.Size(280, 16);
+            this.selectWorkspaceRunningMinimizeToNotifyArea.TabIndex = 1;
+            this.selectWorkspaceRunningMinimizeToNotifyArea.Text = "ワークスペース実行中に最小化で通知領域に移動する";
             this.selectWorkspaceRunningMinimizeToNotifyArea.UseVisualStyleBackColor = true;
             this.selectWorkspaceRunningMinimizeToNotifyArea.CheckedChanged += new System.EventHandler(this.selectWorkspaceRunningMinimizeToNotifyArea_CheckedChanged);
             // 
             // commandShowAbout
             // 
-            this.commandShowAbout.Location = new System.Drawing.Point(2, 148);
+            this.commandShowAbout.Location = new System.Drawing.Point(111, 3);
             this.commandShowAbout.Name = "commandShowAbout";
-            this.commandShowAbout.Size = new System.Drawing.Size(75, 23);
-            this.commandShowAbout.TabIndex = 11;
-            this.commandShowAbout.Text = "about";
+            this.commandShowAbout.Size = new System.Drawing.Size(102, 23);
+            this.commandShowAbout.TabIndex = 1;
+            this.commandShowAbout.Text = "<CODE:ABOUT>";
             this.commandShowAbout.UseVisualStyleBackColor = true;
             this.commandShowAbout.Click += new System.EventHandler(this.commandShowAbout_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.AutoSize = true;
+            this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox1.Controls.Add(this.tableLayoutPanel1);
+            this.groupBox1.Location = new System.Drawing.Point(578, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.tableLayoutPanel4.SetRowSpan(this.groupBox1, 2);
+            this.groupBox1.Size = new System.Drawing.Size(259, 129);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "ワークスペース設定";
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.tableLayoutPanel1.Controls.Add(this.selectLogging, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.inputWorkspaceName, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.commandWorkspaceDirectorySelect, 2, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.inputWorkspaceDirectoryPath, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 3);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 15);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(253, 111);
+            this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoSize = true;
+            this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel1, 3);
+            this.flowLayoutPanel1.Controls.Add(this.commandWorkspaceSave);
+            this.flowLayoutPanel1.Controls.Add(this.commandWorkspaceDelete);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 79);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(247, 29);
+            this.flowLayoutPanel1.TabIndex = 6;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.AutoSize = true;
+            this.tableLayoutPanel2.ColumnCount = 4;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.Controls.Add(this.selectWorkspace, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label4, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.commandWorkspaceLoad, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.commandWorkspaceClose, 1, 2);
+            this.tableLayoutPanel2.Controls.Add(this.commandWorkspaceCopy, 3, 2);
+            this.tableLayoutPanel2.Controls.Add(this.commandWorkspaceCreate, 3, 1);
+            this.tableLayoutPanel2.Controls.Add(this.flowLayoutPanel2, 2, 1);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 3;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(569, 84);
+            this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // label4
+            // 
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 7);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(89, 12);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "ワークスペース(&W):";
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.AutoSize = true;
+            this.flowLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel2.Controls.Add(this.selectWorkspaceLoadToMinimize);
+            this.flowLayoutPanel2.Controls.Add(this.selectWorkspaceRunningMinimizeToNotifyArea);
+            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(189, 29);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.tableLayoutPanel2.SetRowSpan(this.flowLayoutPanel2, 2);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(286, 44);
+            this.flowLayoutPanel2.TabIndex = 3;
+            // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.flowLayoutPanel3.AutoSize = true;
+            this.flowLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel3.Controls.Add(this.commandTestExecute);
+            this.flowLayoutPanel3.Controls.Add(this.commandShowAbout);
+            this.flowLayoutPanel3.Controls.Add(this.commandCheckUpdate);
+            this.flowLayoutPanel3.Controls.Add(this.commandShowReleaseNote);
+            this.flowLayoutPanel3.Controls.Add(this.commandExecuteUpdate);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(17, 98);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(540, 29);
+            this.flowLayoutPanel3.TabIndex = 1;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.AutoSize = true;
+            this.tableLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel4.SetColumnSpan(this.tableLayoutPanel3, 2);
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.viewLog, 1, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 138);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(838, 98);
+            this.tableLayoutPanel3.TabIndex = 9;
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.AutoSize = true;
+            this.tableLayoutPanel4.ColumnCount = 2;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel2, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel3, 0, 2);
+            this.tableLayoutPanel4.Controls.Add(this.flowLayoutPanel3, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.groupBox1, 1, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 3;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(844, 239);
+            this.tableLayoutPanel4.TabIndex = 10;
+            // 
+            // toolStripContainer1
+            // 
+            // 
+            // toolStripContainer1.BottomToolStripPanel
+            // 
+            this.toolStripContainer1.BottomToolStripPanel.Controls.Add(this.statusbar);
+            // 
+            // toolStripContainer1.ContentPanel
+            // 
+            this.toolStripContainer1.ContentPanel.Controls.Add(this.tableLayoutPanel4);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(844, 239);
+            this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolStripContainer1.LeftToolStripPanelVisible = false;
+            this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
+            this.toolStripContainer1.Name = "toolStripContainer1";
+            this.toolStripContainer1.RightToolStripPanelVisible = false;
+            this.toolStripContainer1.Size = new System.Drawing.Size(844, 261);
+            this.toolStripContainer1.TabIndex = 11;
+            this.toolStripContainer1.Text = "toolStripContainer1";
+            this.toolStripContainer1.TopToolStripPanelVisible = false;
+            // 
+            // statusbar
+            // 
+            this.statusbar.Dock = System.Windows.Forms.DockStyle.None;
+            this.statusbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusbarLabelBuildType,
+            this.statusbarLabelVersion,
+            this.statusbarLabelHash});
+            this.statusbar.Location = new System.Drawing.Point(0, 0);
+            this.statusbar.Name = "statusbar";
+            this.statusbar.Size = new System.Drawing.Size(844, 22);
+            this.statusbar.TabIndex = 0;
+            // 
+            // statusbarLabelBuildType
+            // 
+            this.statusbarLabelBuildType.Name = "statusbarLabelBuildType";
+            this.statusbarLabelBuildType.Size = new System.Drawing.Size(88, 17);
+            this.statusbarLabelBuildType.Text = "<CODE:BUILD>";
+            // 
+            // statusbarLabelVersion
+            // 
+            this.statusbarLabelVersion.Name = "statusbarLabelVersion";
+            this.statusbarLabelVersion.Size = new System.Drawing.Size(103, 17);
+            this.statusbarLabelVersion.Text = "<CODE:VERSION>";
+            // 
+            // statusbarLabelHash
+            // 
+            this.statusbarLabelHash.Name = "statusbarLabelHash";
+            this.statusbarLabelHash.Size = new System.Drawing.Size(88, 17);
+            this.statusbarLabelHash.Text = "<CODE:HASH>";
             // 
             // ManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(654, 266);
-            this.Controls.Add(this.commandShowAbout);
-            this.Controls.Add(this.selectWorkspaceRunningMinimizeToNotifyArea);
-            this.Controls.Add(this.selectWorkspaceLoadToMinimize);
-            this.Controls.Add(this.commandTestExecute);
-            this.Controls.Add(this.labelVersionHash);
-            this.Controls.Add(this.labelBuildType);
-            this.Controls.Add(this.labelVersionNumber);
-            this.Controls.Add(this.commandShowReleaseNote);
-            this.Controls.Add(this.viewLog);
-            this.Controls.Add(this.panelWorkspace);
-            this.Controls.Add(this.commandWorkspaceClose);
-            this.Controls.Add(this.commandWorkspaceCopy);
-            this.Controls.Add(this.commandExecuteUpdate);
-            this.Controls.Add(this.commandCheckUpdate);
-            this.Controls.Add(this.commandWorkspaceCreate);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.commandWorkspaceLoad);
-            this.Controls.Add(this.selectWorkspace);
+            this.ClientSize = new System.Drawing.Size(844, 261);
+            this.Controls.Add(this.toolStripContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ManagerForm";
-            this.Text = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.Text = "<CODE>";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ManagerForm_FormClosing);
             this.Load += new System.EventHandler(this.ManagerForm_Load);
             this.Shown += new System.EventHandler(this.ManagerForm_Shown);
             this.SizeChanged += new System.EventHandler(this.ManagerForm_SizeChanged);
-            this.panelWorkspace.ResumeLayout(false);
-            this.panelWorkspace.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
+            this.flowLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
+            this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
+            this.toolStripContainer1.BottomToolStripPanel.PerformLayout();
+            this.toolStripContainer1.ContentPanel.ResumeLayout(false);
+            this.toolStripContainer1.ContentPanel.PerformLayout();
+            this.toolStripContainer1.ResumeLayout(false);
+            this.toolStripContainer1.PerformLayout();
+            this.statusbar.ResumeLayout(false);
+            this.statusbar.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -375,22 +555,31 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.TextBox inputWorkspaceDirectoryPath;
         private System.Windows.Forms.Button commandWorkspaceCopy;
         private System.Windows.Forms.Button commandWorkspaceDelete;
-        private System.Windows.Forms.Panel panelWorkspace;
         private System.Windows.Forms.ErrorProvider errorProvider;
         private System.Windows.Forms.RichTextBox viewLog;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox selectLogging;
         private System.Windows.Forms.Button commandExecuteUpdate;
         private System.Windows.Forms.Button commandCheckUpdate;
         private System.Windows.Forms.Button commandShowReleaseNote;
-        private System.Windows.Forms.Label labelVersionHash;
-        private System.Windows.Forms.Label labelBuildType;
-        private System.Windows.Forms.Label labelVersionNumber;
         private System.Windows.Forms.Button commandTestExecute;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.CheckBox selectWorkspaceLoadToMinimize;
         private System.Windows.Forms.CheckBox selectWorkspaceRunningMinimizeToNotifyArea;
         private System.Windows.Forms.Button commandShowAbout;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.ToolStripContainer toolStripContainer1;
+        private System.Windows.Forms.StatusStrip statusbar;
+        private System.Windows.Forms.ToolStripStatusLabel statusbarLabelBuildType;
+        private System.Windows.Forms.ToolStripStatusLabel statusbarLabelVersion;
+        private System.Windows.Forms.ToolStripStatusLabel statusbarLabelHash;
     }
 }
 

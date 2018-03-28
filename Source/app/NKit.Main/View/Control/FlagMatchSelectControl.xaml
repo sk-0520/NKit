@@ -17,9 +17,9 @@
   </UserControl.Resources>
   <Grid>
     <StackPanel>
-      <RadioButton IsChecked="{Binding FlagMatchKind, ElementName=root, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:FlagMatchKind.Has}}" Content="Has" />
-      <RadioButton IsChecked="{Binding FlagMatchKind, ElementName=root, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:FlagMatchKind.Approximate}}" Content="Approximate" />
-      <RadioButton IsChecked="{Binding FlagMatchKind, ElementName=root, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:FlagMatchKind.Full}}" Content="Full" />
+      <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding FlagMatchKind, ElementName=root, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:FlagMatchKind.Has}}" Content="一つでも一致" />
+      <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding FlagMatchKind, ElementName=root, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:FlagMatchKind.Approximate}}" Content="指定フラグを満たす" />
+      <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding FlagMatchKind, ElementName=root, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:FlagMatchKind.Full}}" Content="完全一致" />
     </StackPanel>
   </Grid>
 </UserControl>

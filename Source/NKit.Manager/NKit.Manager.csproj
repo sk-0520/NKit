@@ -61,6 +61,9 @@
     <Compile Include="..\common\NKit.Common.Link\CommonUtility.cs">
       <Link>Common\CommonUtility.cs</Link>
     </Compile>
+    <Compile Include="..\common\NKit.Common.Link\DisplayText.cs">
+      <Link>Common\DisplayText.cs</Link>
+    </Compile>
     <Compile Include="..\common\NKit.Common.Link\Disposer.cs">
       <Link>Common\Disposer.cs</Link>
     </Compile>
@@ -187,6 +190,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\File\exclude\marked.js" />
+    <Content Include="Resources\File\exclude\release-note.css" />
     <Content Include="Resources\File\ReleaseNoteDocument.html">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -206,6 +210,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\NKit.Manager.png" />
+    <Content Include="Resources\Image\FolderOpen.png" />
+    <Content Include="Resources\Image\Delete.png" />
     <Content Include="Resources\NKit.Manager.ico" />
     <None Include="App.config" />
     <Content Include="%40NKit.user.tt">

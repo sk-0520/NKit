@@ -26,7 +26,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             InitializeComponent();
 
             Font = SystemFonts.MessageBoxFont;
-            Text = CommonUtility.ReplaceWindowTitle(Text);
+            Text = CommonUtility.ReplaceWindowTitle(CommonUtility.ProjectName);
 
             this.notifyIcon.Icon = Icon;
 
@@ -55,6 +55,19 @@ namespace ContentTypeTextNet.NKit.Manager.View
             Worker = worker;
             Worker.WorkspaceExited += Worker_WorkspaceExited;
             Worker.OutputLog += Worker_OutputLog;
+
+            var windowLocation = Worker.WindowArea.Location;
+            var windowSize = Worker.WindowArea.Size;
+
+            var locationError = !Screen.AllScreens.Any(s => s.Bounds.Contains(windowLocation));
+            var sizeError = windowSize.Width <= 0 || windowSize.Height <= 0;
+
+            if(Worker.IsFirstExecute || sizeError || locationError) {
+                StartPosition = FormStartPosition.CenterScreen;
+            } else {
+                Location = windowLocation;
+                Size = windowSize;
+            }
         }
 
         void SetInputControl(string name, string directoryPath, bool logging)
@@ -194,15 +207,20 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private void ManagerForm_Load(object sender, EventArgs e)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            this.labelBuildType.Text = CommonUtility.BuildType;
-            this.labelVersionNumber.Text = assembly.GetName().Version.ToString();
-            this.labelVersionHash.Text = FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;
-
+            this.statusbarLabelBuildType.Text = CommonUtility.BuildType;
+            this.statusbarLabelVersion.Text = assembly.GetName().Version.ToString();
+            this.statusbarLabelHash.Text = FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;
+            this.commandShowAbout.Text = string.Format(Properties.Resources.String_Manager_About_Format, CommonUtility.ProjectName);
             // 設定値をどばーっと反映
             Worker.ListupWorkspace(this.selectWorkspace, Guid.Empty);
             this.selectWorkspaceLoadToMinimize.Checked = Worker.WorkspaceLoadToMinimize;
 
             RefreshControls();
+
+#if DEBUG
+            //this.commandTestExecute.PerformClick();
+            //Close();
+#endif
         }
 
         private void commandWorkspaceSave_Click(object sender, EventArgs e)
@@ -259,7 +277,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             if(Worker.IsLockedSelectedWorkspace()) {
                 if((ModifierKeys & Keys.Shift) == Keys.Shift) {
-                    var result = MessageBox.Show("workspace is locked, unlock?", "force", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                    var result = MessageBox.Show(Properties.Resources.String_Manager_Load_LockedUnlock_Message, Properties.Resources.String_Manager_Load_LockedUnlock_Title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
                     if(result != DialogResult.Yes) {
                         return;
                     }
@@ -267,7 +285,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                         return;
                     }
                 } else {
-                    MessageBox.Show("workspace is locked");
+                    MessageBox.Show(Properties.Resources.String_Manager_Load_LockedNormal_Message, Properties.Resources.String_Manager_Load_LockedNormal_Title, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
             }
@@ -322,6 +340,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private void ManagerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = !Worker.CheckCanExit();
+
+            if(!e.Cancel) {
+                if(WindowState == FormWindowState.Normal) {
+                    Worker.WindowArea = new Rectangle(Location, Size);
+                }
+            }
         }
 
         private async void commandCheckUpdate_Click(object sender, EventArgs e)

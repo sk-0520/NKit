@@ -20,9 +20,9 @@
   </UserControl.Resources>
   <Grid>
     <StackPanel>
-      <RadioButton IsChecked="{Binding SearchPatternKind, ElementName=root, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:SearchPatternKind.PartialMatch}}" Content="PartialMatch" />
-      <RadioButton IsChecked="{Binding SearchPatternKind, ElementName=root, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:SearchPatternKind.WildcardCharacter}}" Content="WildcardCharacter" />
-      <RadioButton IsChecked="{Binding SearchPatternKind, ElementName=root, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:SearchPatternKind.Regex}}" Content="Regex" />
+      <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding SearchPatternKind, ElementName=root, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:SearchPatternKind.PartialMatch}}" Content="部分一致" />
+      <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding SearchPatternKind, ElementName=root, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:SearchPatternKind.WildcardCharacter}}" Content="ワイルドカード" />
+      <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding SearchPatternKind, ElementName=root, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:SearchPatternKind.Regex}}" Content="正規表現" />
     </StackPanel>
   </Grid>
 </UserControl>

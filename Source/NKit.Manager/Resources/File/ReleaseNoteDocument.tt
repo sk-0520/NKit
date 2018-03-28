@@ -8,12 +8,16 @@
 <html>
     <head>
         <meta charset="UTF-8" />
+        <style>
+        <#@ include file="$(ProjectDir)\Resources\File\exclude\release-note.css" #>
+        </style>
         <script>
         <#@ include file="$(ProjectDir)\Resources\File\exclude\marked.js" #>
 
         function replaceReleaseNoteSection(section) {
             var viewContent = section.getElementsByClassName('view-content')[0];
             var rawContent = section.getElementsByClassName('markdown-content')[0];
+            rawContent.style.display = 'none';
             var makedMarkdownHtml = marked(rawContent.innerHTML);
             viewContent.innerHTML = makedMarkdownHtml;
         }

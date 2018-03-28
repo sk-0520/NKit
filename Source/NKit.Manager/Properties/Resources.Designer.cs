@@ -75,26 +75,38 @@ namespace ContentTypeTextNet.NKit.Manager.Properties {
         ///&lt;html&gt;
         ///    &lt;head&gt;
         ///        &lt;meta charset=&quot;UTF-8&quot; /&gt;
-        ///        &lt;script&gt;
-        ///        /**
-        /// * marked - a markdown parser
-        /// * Copyright (c) 2011-2014, Christopher Jeffrey. (MIT Licensed)
-        /// * https://github.com/chjj/marked
-        /// */
+        ///        &lt;style&gt;
+        ///        /* リリースノート専用スタイルシート */
         ///
-        ///;(function(root) {
-        ///&apos;use strict&apos;;
+        ///html {
+        ///	font-family: &apos;Verdana&apos;,&apos;Meiryo UI&apos;,&apos;メイリオ&apos;, Meiryo,YuGothic,&apos;Yu Gothic&apos;,monospace;
+        ///	font-size: 14pt;
+        ///}
         ///
-        ////**
-        /// * Block-Level Grammar
-        /// */
+        ///body {
+        ///	color: #333333;
+        ///	background: #efefef;
+        ///}
         ///
-        ///var block = {
-        ///  newline: /^\n+/,
-        ///  code: /^( {4}[^\n]+\n*)+/,
-        ///  fences: noop,
-        ///  hr: /^ {0,3}((?:- *){3,}|(?:_ *){3,}|(?:\* *){3,})(?:\n+|$)/,
-        ///  heading: /^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)/,        /// [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        ///h1 {
+        ///	text-align: center;
+        ///	border-bottom: 3px double #cccccc;
+        ///	font-size: 140%;
+        ///}
+        ///
+        ///section {
+        ///	padding: 0 inherit 1em inherit;
+        ///}
+        ///
+        ///h2 {
+        ///	font-size: 120%;
+        ///}
+        ///
+        ///*.version {
+        ///	font-weight: bold;
+        ///}
+        ///
+        ///*.timestamp  [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string File_ReleaseNoteDocument {
             get {
@@ -112,7 +124,7 @@ namespace ContentTypeTextNet.NKit.Manager.Properties {
         ///		&lt;strong class=&quot;hash&quot;&gt;${HASH}&lt;/strong&gt;
         ///	&lt;/p&gt;
         ///	&lt;div class=&quot;view-content&quot;&gt;&lt;/div&gt;
-        ///	&lt;pre class=&quot;markdown-content&quot; style=&quot;display: none&quot;&gt;${CONTENT}&lt;/pre&gt;
+        ///	&lt;pre class=&quot;markdown-content&quot;&gt;${CONTENT}&lt;/pre&gt;
         ///&lt;/section&gt;
         /// に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -125,10 +137,199 @@ namespace ContentTypeTextNet.NKit.Manager.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
+        internal static System.Drawing.Bitmap Image_Delete {
+            get {
+                object obj = ResourceManager.GetObject("Image_Delete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap Image_FolderOpen {
+            get {
+                object obj = ResourceManager.GetObject("Image_FolderOpen", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
         internal static System.Drawing.Bitmap NKit_Manager {
             get {
                 object obj = ResourceManager.GetObject("NKit_Manager", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   更新履歴一覧 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_About_History {
+            get {
+                return ResourceManager.GetString("String_About_History", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   {0} にていて に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_About_Title_Format {
+            get {
+                return ResourceManager.GetString("String_About_Title_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   使用許諾 - {0} に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_Accept_Title_Format {
+            get {
+                return ResourceManager.GetString("String_Accept_Title_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   {0} について(&amp;A) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_Manager_About_Format {
+            get {
+                return ResourceManager.GetString("String_Manager_About_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   選択されたワークスペースはロックされています。
+        ///他のプログラムで使用されているか、正常に終了しなかった可能性があります。
+        ///
+        ///ロックを強制解除するには Shift キーを押しながら読み込みボタンを押下してください。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_Manager_Load_LockedNormal_Message {
+            get {
+                return ResourceManager.GetString("String_Manager_Load_LockedNormal_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ワークスペースロック中 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_Manager_Load_LockedNormal_Title {
+            get {
+                return ResourceManager.GetString("String_Manager_Load_LockedNormal_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   選択されたワークスペースはロックされています。
+        ///
+        ///他のプログラムで使用されている場合、ワークスペース設定などに不整合が発生する可能性があります。
+        ///
+        ///ロックを解除しますか。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_Manager_Load_LockedUnlock_Message {
+            get {
+                return ResourceManager.GetString("String_Manager_Load_LockedUnlock_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ワークスペースロック解除 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_Manager_Load_LockedUnlock_Title {
+            get {
+                return ResourceManager.GetString("String_Manager_Load_LockedUnlock_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   新バージョン に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_ReleaseNote_NewVersion {
+            get {
+                return ResourceManager.GetString("String_ReleaseNote_NewVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   リリースノート - {0} に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_ReleaseNote_Title_Format {
+            get {
+                return ResourceManager.GetString("String_ReleaseNote_Title_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   失敗 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_TestExecute_TestState_Fail {
+            get {
+                return ResourceManager.GetString("String_TestExecute_TestState_Fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   未処理 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_TestExecute_TestState_None {
+            get {
+                return ResourceManager.GetString("String_TestExecute_TestState_None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   OK に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_TestExecute_TestState_Ok {
+            get {
+                return ResourceManager.GetString("String_TestExecute_TestState_Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   実行中 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_TestExecute_TestState_Testing {
+            get {
+                return ResourceManager.GetString("String_TestExecute_TestState_Testing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   関連プログラム起動 - {0} に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_TestExecute_Title_Format {
+            get {
+                return ResourceManager.GetString("String_TestExecute_Title_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ライセンス に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_ThirdPartyComponent_License {
+            get {
+                return ResourceManager.GetString("String_ThirdPartyComponent_License", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ライセンス URI に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_ThirdPartyComponent_LicenseUri {
+            get {
+                return ResourceManager.GetString("String_ThirdPartyComponent_LicenseUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   プロジェクト URI に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_ThirdPartyComponent_ProjectUri {
+            get {
+                return ResourceManager.GetString("String_ThirdPartyComponent_ProjectUri", resourceCulture);
             }
         }
     }

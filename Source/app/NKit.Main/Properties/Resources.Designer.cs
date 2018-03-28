@@ -22,7 +22,7 @@ namespace ContentTypeTextNet.NKit.Main.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace ContentTypeTextNet.NKit.Main.Properties {
         ///   このクラスで使用されているキャッシュされた ResourceManager インスタンスを返します。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ContentTypeTextNet.NKit.Main.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace ContentTypeTextNet.NKit.Main.Properties {
         ///   現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,36 +63,54 @@ namespace ContentTypeTextNet.NKit.Main.Properties {
         /// <summary>
         ///   new group に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string String_Capture_CaptureGroup_NewGroupName {
+        public static string String_Capture_CaptureGroup_NewGroupName {
             get {
                 return ResourceManager.GetString("String_Capture_CaptureGroup_NewGroupName", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   フッタ要素を隠す に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Capture_InternetExplorerFooterHideTitle {
+            get {
+                return ResourceManager.GetString("String_Capture_InternetExplorerFooterHideTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ヘッダ要素を隠す に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Capture_InternetExplorerHeaderHideTitle {
+            get {
+                return ResourceManager.GetString("String_Capture_InternetExplorerHeaderHideTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   new group に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string String_Finder_FindGroup_NewGroupName {
+        public static string String_Finder_FindGroup_NewGroupName {
             get {
                 return ResourceManager.GetString("String_Finder_FindGroup_NewGroupName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   cancel に類似しているローカライズされた文字列を検索します。
+        ///   取消 に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string String_View_Control_RunnableControl_CancelContent_Text {
+        public static string String_View_Control_RunnableControl_CancelText {
             get {
-                return ResourceManager.GetString("String_View_Control_RunnableControl_CancelContent_Text", resourceCulture);
+                return ResourceManager.GetString("String_View_Control_RunnableControl_CancelText", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   run に類似しているローカライズされた文字列を検索します。
+        ///   実行 に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string String_View_Control_RunnableControl_RunContent_Text {
+        public static string String_View_Control_RunnableControl_RunText {
             get {
-                return ResourceManager.GetString("String_View_Control_RunnableControl_RunContent_Text", resourceCulture);
+                return ResourceManager.GetString("String_View_Control_RunnableControl_RunText", resourceCulture);
             }
         }
     }
