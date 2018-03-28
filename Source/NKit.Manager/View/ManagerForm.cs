@@ -321,6 +321,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             if(!this.viewLog.IsDisposed) {
                 var write = new Action(() => {
+                    this.viewLog.SuspendLayout();
+
+                    while(Constants.LogViewLimit <= this.viewLog.Items.Count) {
+                        this.viewLog.Items.RemoveAt(0);
+                    }
+
                     var timestampItem = new ListViewItem(CommonUtility.ReplaceNKitText("${YYYY}/${MM}/${DD} ${hh24}:${mm}:${ss}", e.UtcTimestamp));
                     var kindSubItem = timestampItem.SubItems.Add(e.LogData.Kind.ToString());
                     var senderSubItem = timestampItem.SubItems.Add(e.SenderApplication.ToString());
@@ -330,6 +336,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     this.viewLog.Items.Add(timestampItem);
 
                     this.viewLog.Items[this.viewLog.Items.Count - 1].EnsureVisible();
+
+                    this.viewLog.ResumeLayout();
                 });
 
                 if(!this.viewLog.Created) {
