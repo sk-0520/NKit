@@ -120,6 +120,12 @@
   <data name="String_Capture_CaptureGroup_NewGroupName" xml:space="preserve">
     <value>new group</value>
   </data>
+  <data name="String_Capture_InternetExplorerFooterHideTitle" xml:space="preserve">
+    <value>フッタ要素を隠す</value>
+  </data>
+  <data name="String_Capture_InternetExplorerHeaderHideTitle" xml:space="preserve">
+    <value>ヘッダ要素を隠す</value>
+  </data>
   <data name="String_Finder_FindGroup_NewGroupName" xml:space="preserve">
     <value>new group</value>
   </data>

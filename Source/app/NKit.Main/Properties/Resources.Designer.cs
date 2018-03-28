@@ -70,6 +70,24 @@ namespace ContentTypeTextNet.NKit.Main.Properties {
         }
         
         /// <summary>
+        ///   フッタ要素を隠す に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Capture_InternetExplorerFooterHideTitle {
+            get {
+                return ResourceManager.GetString("String_Capture_InternetExplorerFooterHideTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ヘッダ要素を隠す に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Capture_InternetExplorerHeaderHideTitle {
+            get {
+                return ResourceManager.GetString("String_Capture_InternetExplorerHeaderHideTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   new group に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_Finder_FindGroup_NewGroupName {

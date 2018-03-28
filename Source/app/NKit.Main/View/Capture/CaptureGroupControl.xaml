@@ -15,6 +15,7 @@
   xmlns:app_utility_view_converter="clr-namespace:ContentTypeTextNet.NKit.Utility.View.Converter;assembly=NKit.Utility"
 
   xmlns:app="clr-namespace:ContentTypeTextNet.NKit.Main"
+  xmlns:app_main_properties="clr-namespace:ContentTypeTextNet.NKit.Main.Properties"
   xmlns:app_main_view_control="clr-namespace:ContentTypeTextNet.NKit.Main.View.Control"
   xmlns:app_main_view_capture="clr-namespace:ContentTypeTextNet.NKit.Main.View.Capture"
 
@@ -90,8 +91,9 @@
               <CheckBox IsChecked="{Binding OverwriteScrollSetting}">スクロール設定を上書きする</CheckBox>
             </GroupBox.Header>
             <StackPanel>
-              <app_main_view_capture:InternetExplorerScrollHideCaptureControl HideTitle="hide header(default: *)" IsEnabledHide="{Binding IsEnabledHideHeader, Mode=TwoWay}" HideElement="{Binding HideHeaderElement, Mode=TwoWay}" />
-              <app_main_view_capture:InternetExplorerScrollHideCaptureControl HideTitle="hide footer(default: *)" IsEnabledHide="{Binding IsEnabledHideFooter, Mode=TwoWay}" HideElement="{Binding HideFooterElement, Mode=TwoWay}" />
+              <app_main_view_capture:InternetExplorerScrollHideCaptureControl HideTitle="{x:Static app_main_properties:Resources.String_Capture_InternetExplorerHeaderHideTitle}" IsEnabledHide="{Binding IsEnabledHideHeader, Mode=TwoWay}" HideElement="{Binding HideHeaderElement, Mode=TwoWay}" />
+              <Separator />
+              <app_main_view_capture:InternetExplorerScrollHideCaptureControl HideTitle="{x:Static app_main_properties:Resources.String_Capture_InternetExplorerFooterHideTitle}" IsEnabledHide="{Binding IsEnabledHideFooter, Mode=TwoWay}" HideElement="{Binding HideFooterElement, Mode=TwoWay}" />
             </StackPanel>
 
           </GroupBox>
