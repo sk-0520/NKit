@@ -28,7 +28,10 @@
             <DataTrigger Binding="{Binding RunContent, ElementName=root}" Value="{x:Null}">
               <Setter Property="Content">
                 <Setter.Value>
-                  <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_Run}" />
+                  <StackPanel Style="{StaticResource IconPanel}">
+                    <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_Run}" />
+                    <TextBlock Text="{Binding RunText, ElementName=root}" />
+                  </StackPanel>
                 </Setter.Value>
               </Setter>
             </DataTrigger>
@@ -51,7 +54,10 @@
             <DataTrigger Binding="{Binding CancelContent, ElementName=root}" Value="{x:Null}">
               <Setter Property="Content">
                 <Setter.Value>
-                  <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_Cancel}" />
+                  <StackPanel Style="{StaticResource IconPanel}">
+                    <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_Cancel}" />
+                    <TextBlock Text="{Binding CancelText, ElementName=root}" />
+                  </StackPanel>
                 </Setter.Value>
               </Setter>
             </DataTrigger>

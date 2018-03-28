@@ -123,10 +123,10 @@
   <data name="String_Finder_FindGroup_NewGroupName" xml:space="preserve">
     <value>new group</value>
   </data>
-  <data name="String_View_Control_RunnableControl_CancelContent_Text" xml:space="preserve">
-    <value>cancel</value>
+  <data name="String_View_Control_RunnableControl_CancelText" xml:space="preserve">
+    <value>取消</value>
   </data>
-  <data name="String_View_Control_RunnableControl_RunContent_Text" xml:space="preserve">
-    <value>run</value>
+  <data name="String_View_Control_RunnableControl_RunText" xml:space="preserve">
+    <value>実行</value>
   </data>
 </root>
