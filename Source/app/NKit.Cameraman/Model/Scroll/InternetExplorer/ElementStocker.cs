@@ -16,7 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Utility.Model.Unmanaged;
-using MSHTML;
+using mshtml;
 
 namespace ContentTypeTextNet.NKit.Cameraman.Model.Scroll.InternetExplorer
 {
