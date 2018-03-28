@@ -138,7 +138,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
                 EncodingCheck = encodingCheckResult,
             };
 
-            foreach(var line in CommonUtility.ReadLines(reader).Select((s, i) => (value: s, number: i + 1))) {
+            foreach(var line in TextUtility.ReadLines(reader).Select((s, i) => (value: s, number: i + 1))) {
                 var macthes = regex.Matches(line.value).Cast<Match>();
                 foreach(var match in macthes) {
                     var searchMatch = CreateMatchObject(line.number, match.Index, match.Length, line.value);

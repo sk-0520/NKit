@@ -111,6 +111,9 @@
     <Compile Include="..\..\common\NKit.Common.Link\Talk.cs">
       <Link>Common\Talk.cs</Link>
     </Compile>
+    <Compile Include="..\..\common\NKit.Common.Link\TextUtility.cs">
+      <Link>Common\TextUtility.cs</Link>
+    </Compile>
     <Compile Include="Attribute\PixelKindAttribute.cs" />
     <Compile Include="Compatible\Forms\CompatibleFormWindow.cs" />
     <Compile Include="Compatible\Forms\DrawingUtility.cs" />
@@ -127,7 +130,6 @@
     <Compile Include="Model\RunnableModel.cs" />
     <Compile Include="Model\Serializer.cs" />
     <Compile Include="Model\ShortcutFile.cs" />
-    <Compile Include="Model\TextUtility.cs" />
     <Compile Include="Model\UIUtility.cs" />
     <Compile Include="Model\Unmanaged\Com.cs" />
     <Compile Include="Model\Unmanaged\Gdi.cs" />

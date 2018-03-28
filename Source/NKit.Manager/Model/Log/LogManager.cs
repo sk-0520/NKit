@@ -98,7 +98,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
             var writeValue = $"{logTimestamp} {senderApplication} {logData.Kind} {logData.Subject} {logData.Message}";
             if(!string.IsNullOrEmpty(logData.Detail)) {
                 writeValue += Environment.NewLine;
-                writeValue += string.Join(Environment.NewLine, CommonUtility.ReadLines(logData.Detail).Select(s => "\t" + s));
+                writeValue += string.Join(Environment.NewLine, TextUtility.ReadLines(logData.Detail).Select(s => "\t" + s));
             }
 
             foreach(var data in Writers) {

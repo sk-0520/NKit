@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace ContentTypeTextNet.NKit.Utility.Model
+namespace ContentTypeTextNet.NKit.Common
 {
     public static class TextUtility
     {
@@ -104,6 +105,25 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             return ReplaceRangeFromDictionary(src, "${", "}", map);
         }
 
+
+        public static IEnumerable<string> ReadLines(string text)
+        {
+            using(var reader = new StringReader(text)) {
+                return ReadLines(reader);
+            }
+        }
+
+        public static IEnumerable<string> ReadLines(TextReader reader)
+        {
+            if(reader == null) {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
+            string line;
+            while((line = reader.ReadLine()) != null) {
+                yield return line;
+            }
+        }
 
         #endregion
     }

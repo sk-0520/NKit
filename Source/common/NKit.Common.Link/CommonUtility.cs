@@ -319,27 +319,11 @@ namespace ContentTypeTextNet.NKit.Common
                 }
             }
 
-            var regex = new Regex(@"\${(.+?)}");
-            return regex.Replace(source, m => {
-                if(!m.Success) {
-                    return m.Value;
-                }
-                var key = m.Groups[1].Value;
-                if(string.IsNullOrEmpty(key)) {
-                    return m.Value;
-                }
-
-                if(map.TryGetValue(key, out var value)) {
-                    return value;
-                }
-
-                return key;
-            });
+            return TextUtility.ReplaceFromDictionary(source, map);
         }
 
         /// <summary>
         /// 共通的に使用する文字列置き換え処理。
-        /// <para>やってることは <see cref="ContentTypeTextNet.NKit.Utility.Model.TextUtility.ReplaceFromDictionary"/> と一緒だけどマネージャがアセンブリ参照できない。</para>
         /// </summary>
         /// <param name="source"></param>
         /// <param name="customMap"></param>
@@ -377,24 +361,6 @@ namespace ContentTypeTextNet.NKit.Common
 #endif
         }
 
-        public static IEnumerable<string> ReadLines(string text)
-        {
-            using(var reader = new StringReader(text)) {
-                return ReadLines(reader);
-            }
-        }
-
-        public static IEnumerable<string> ReadLines(TextReader reader)
-        {
-            if(reader == null) {
-                throw new ArgumentNullException(nameof(reader));
-            }
-
-            string line;
-            while((line = reader.ReadLine()) != null) {
-                yield return line;
-            }
-        }
 
         #endregion
     }
