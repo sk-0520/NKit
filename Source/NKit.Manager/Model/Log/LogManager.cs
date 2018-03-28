@@ -89,10 +89,18 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
             }
         }
 
+
+
         void Write(DateTime utcTimestamp, NKitApplicationKind senderApplication, NKitLogData logData)
         {
             var logTimestamp = CommonUtility.ReplaceNKitText(Constants.LogTimestampFormat, utcTimestamp);
-            var writeValue = $"{logTimestamp} {senderApplication} {logData.Kind} {logData.Subject} {logData.Message} {logData.Detail}";
+
+            var writeValue = $"{logTimestamp} {senderApplication} {logData.Kind} {logData.Subject} {logData.Message}";
+            if(!string.IsNullOrEmpty(logData.Detail)) {
+                writeValue += Environment.NewLine;
+                writeValue += string.Join(Environment.NewLine, CommonUtility.ReadLines(logData.Detail).Select(s => "\t" + s));
+            }
+
             foreach(var data in Writers) {
                 data.Writer.WriteLine(writeValue);
             }

@@ -377,6 +377,25 @@ namespace ContentTypeTextNet.NKit.Common
 #endif
         }
 
+        public static IEnumerable<string> ReadLines(string text)
+        {
+            using(var reader = new StringReader(text)) {
+                return ReadLines(reader);
+            }
+        }
+
+        public static IEnumerable<string> ReadLines(TextReader reader)
+        {
+            if(reader == null) {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
+            string line;
+            while((line = reader.ReadLine()) != null) {
+                yield return line;
+            }
+        }
+
         #endregion
     }
 }
