@@ -18,11 +18,17 @@
   </UserControl.Resources>
   <Grid>
     <StackPanel Orientation="Horizontal">
-      <ComboBox ItemsSource="{Binding ItemsSource, ElementName=root}" SelectedItem="{Binding Key, ElementName=root}" />
+      <ComboBox VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Item"  VirtualizingPanel.VirtualizationMode="Recycling" ItemsSource="{Binding ItemsSource, ElementName=root}" SelectedItem="{Binding Key, ElementName=root}">
+        <ComboBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <VirtualizingStackPanel />
+          </ItemsPanelTemplate>
+        </ComboBox.ItemsPanel>
+      </ComboBox>
       <StackPanel Orientation="Horizontal">
-        <CheckBox IsChecked="{Binding ModifierKeys, ElementName=root, Converter={StaticResource ModifierKeysToBooleanConverter}, ConverterParameter={x:Static system_windows_input:ModifierKeys.Control}}">ctrl</CheckBox>
-        <CheckBox IsChecked="{Binding ModifierKeys, ElementName=root, Converter={StaticResource ModifierKeysToBooleanConverter}, ConverterParameter={x:Static system_windows_input:ModifierKeys.Shift}}">shift</CheckBox>
-        <CheckBox IsChecked="{Binding ModifierKeys, ElementName=root, Converter={StaticResource ModifierKeysToBooleanConverter}, ConverterParameter={x:Static system_windows_input:ModifierKeys.Alt}}">alt</CheckBox>
+        <CheckBox Style="{StaticResource HorizontalCheckBox}" IsChecked="{Binding ModifierKeys, ElementName=root, Converter={StaticResource ModifierKeysToBooleanConverter}, ConverterParameter={x:Static system_windows_input:ModifierKeys.Control}}">Ctrl</CheckBox>
+        <CheckBox Style="{StaticResource HorizontalCheckBox}" IsChecked="{Binding ModifierKeys, ElementName=root, Converter={StaticResource ModifierKeysToBooleanConverter}, ConverterParameter={x:Static system_windows_input:ModifierKeys.Shift}}">Shift</CheckBox>
+        <CheckBox Style="{StaticResource HorizontalCheckBox}" IsChecked="{Binding ModifierKeys, ElementName=root, Converter={StaticResource ModifierKeysToBooleanConverter}, ConverterParameter={x:Static system_windows_input:ModifierKeys.Alt}}">Alt</CheckBox>
       </StackPanel>
     </StackPanel>
   </Grid>
