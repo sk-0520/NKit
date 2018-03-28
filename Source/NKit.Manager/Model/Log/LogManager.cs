@@ -36,15 +36,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
         public DateTime UtcTimestamp { get; set; }
 
         public NKitApplicationKind SenderApplication { get; set; }
-
-        public NKitLogKind LogKind { get; set; }
-        public string Message { get; set; }
-        public string Detail { get; set; }
-        public int ProcessId { get; set; }
-        public int ThreadId { get; set; }
-        public string CallerMemberName { get; set; }
-        public string CallerFilePath { get; set; }
-        public int CallerLineNumber { get; set; }
+        public NKitLogData LogData { get; set; }
 
 
         #endregion
@@ -84,55 +76,67 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
 
         #region function
 
-        void OnLogWrite(string writeValue, DateTime utcTimestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int processId, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
+        void OnLogWrite(string writeValue, DateTime utcTimestamp, NKitApplicationKind senderApplication, NKitLogData logData)
         {
             if(LogWrite != null) {
                 var e = new LogEventArgs() {
                     WriteValue = writeValue,
                     UtcTimestamp = utcTimestamp,
                     SenderApplication = senderApplication,
-                    LogKind = logKind,
-                    Message = message,
-                    Detail = detail,
-                    ProcessId = processId,
-                    ThreadId = threadId,
-                    CallerMemberName = callerMemberName,
-                    CallerFilePath = callerFilePath,
-                    CallerLineNumber = callerLineNumber,
+                    LogData = logData,
                 };
                 LogWrite(this, e);
             }
         }
 
-        void Write(DateTime utcTimestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int processId, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
+        void Write(DateTime utcTimestamp, NKitApplicationKind senderApplication, NKitLogData logData)
         {
             var logTimestamp = CommonUtility.ReplaceNKitText(Constants.LogTimestampFormat, utcTimestamp);
-            var writeValue = $"{logTimestamp} {senderApplication} {logKind} {subject} {message} {detail}";
+            var writeValue = $"{logTimestamp} {senderApplication} {logData.Kind} {logData.Subject} {logData.Message} {logData.Detail}";
             foreach(var data in Writers) {
                 data.Writer.WriteLine(writeValue);
             }
 
-            OnLogWrite(writeValue, utcTimestamp, senderApplication, logKind, subject, message, detail, processId, threadId, callerFilePath, callerFilePath, callerLineNumber);
+            OnLogWrite(writeValue, utcTimestamp, senderApplication, logData);
+        }
+
+        NKitLogData CreateLogData(NKitLogKind logKind, string subject, string message, string detail, string callerMemberName, string callerFilePath, int callerLineNumber)
+        {
+            return new NKitLogData() {
+                Kind = logKind,
+                Subject = subject,
+                Message = message,
+                Detail = detail,
+                CallerMemberName = callerMemberName,
+                CallerFilePath = callerFilePath,
+                CallerLineNumber = callerLineNumber,
+                ProcessId = Process.GetCurrentProcess().Id,
+                TheadId = Thread.CurrentThread.ManagedThreadId,
+            };
         }
 
         void WriteDetail(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
-            Write(DateTime.UtcNow, senderApplication, logKind, subject, message, detail, Process.GetCurrentProcess().Id, Thread.CurrentThread.ManagedThreadId, callerFilePath, callerFilePath, callerLineNumber);
+            var logData = CreateLogData(logKind, subject, message, detail, callerMemberName, callerFilePath, callerLineNumber);
+            Write(DateTime.UtcNow, senderApplication, logData);
         }
+
 
         void WriteMessage(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
-            Write(DateTime.UtcNow, senderApplication, logKind, subject, message, null, Process.GetCurrentProcess().Id, Thread.CurrentThread.ManagedThreadId, callerFilePath, callerFilePath, callerLineNumber);
+            var logData = CreateLogData(logKind, subject, message, null, callerMemberName, callerFilePath, callerLineNumber);
+            Write(DateTime.UtcNow, senderApplication, logData);
         }
 
         void WriteException(NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, Exception ex, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
-            Write(DateTime.UtcNow, senderApplication, logKind, subject, ex.Message, ex.ToString(), Process.GetCurrentProcess().Id, Thread.CurrentThread.ManagedThreadId, callerFilePath, callerFilePath, callerLineNumber);
+            var logData = CreateLogData(logKind, subject, ex.Message, ex.ToString(), callerMemberName, callerFilePath, callerLineNumber);
+            Write(DateTime.UtcNow, senderApplication, logData);
         }
 
         public void WriteTalkLog(TalkLoggingWriteEventArgs e)
         {
-            Write(e.UtcTimestamp, e.SenderApplication, e.LogKind, e.Subject, e.Message, e.Detail, e.ProcessId, e.TheadId, e.CallerMemberName, e.CallerFilePath, e.CallerLineNumber);
+            Write(e.UtcTimestamp, e.SenderApplication, e.LogData);
         }
 
         /// <summary>
