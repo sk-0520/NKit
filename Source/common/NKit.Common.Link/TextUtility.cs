@@ -109,7 +109,10 @@ namespace ContentTypeTextNet.NKit.Common
         public static IEnumerable<string> ReadLines(string text)
         {
             using(var reader = new StringReader(text)) {
-                return ReadLines(reader);
+                string line;
+                while((line = reader.ReadLine()) != null) {
+                    yield return line;
+                }
             }
         }
 
