@@ -6,6 +6,7 @@
   x:Class="ContentTypeTextNet.NKit.Main.View.Capture.CaptureGroupControl"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:sys="clr-namespace:System;assembly=mscorlib"
 
   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
   xmlns:prism="http://prismlibrary.com/"
@@ -120,7 +121,18 @@
             </ComboBox.ItemsPanel>
             <ComboBox.ItemTemplate>
               <DataTemplate>
-                <TextBlock Text="{Binding Converter={StaticResource UtcToLocalTimestampConverter}}" />
+                <TextBlock>
+                  <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding}" Value="{x:Static sys:DateTime.MinValue}">
+                          <Setter Property="Text" Value="全件表示" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                      <Setter Property="Text" Value="{Binding Converter={StaticResource UtcToLocalTimestampConverter}}" />
+                    </Style>
+                  </TextBlock.Style>
+                </TextBlock>
               </DataTemplate>
             </ComboBox.ItemTemplate>
           </ComboBox>
@@ -132,29 +144,60 @@
               <i:InvokeCommandAction Command="{Binding OpenSelectedImageItemCommand}" />
             </i:EventTrigger>
           </i:Interaction.Triggers>
+          <ListBox.ItemContainerStyle>
+            <Style TargetType="ListBoxItem">
+              <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            </Style>
+          </ListBox.ItemContainerStyle>
           <ListBox.ItemTemplate>
             <DataTemplate>
-              <StackPanel Orientation="Horizontal">
-                <Grid x:Name="imageContainer">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <Grid x:Name="imageContainer" Grid.Column="0">
                   <TextBlock>
                     <Hyperlink TextDecorations="{x:Null}" Command="{Binding CopyCommand}" >
                       <Image Source="{Binding ThumbnailImagePath, Converter={StaticResource FilePathToImageConverter}}" Width="{x:Static app:Constants.CaptureThumbnailSizeWidth}" Height="{x:Static app:Constants.CaptureThumbnailSizeHeight}" />
                     </Hyperlink>
                   </TextBlock>
-                  <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Right" Visibility="{Binding IsMouseOver, ElementName=imageContainer, Converter={StaticResource BooleanToVisibilityConverter}}">copy</TextBlock>
+                  <TextBlock IsHitTestVisible="False" VerticalAlignment="Bottom" HorizontalAlignment="Right" Visibility="{Binding IsMouseOver, ElementName=imageContainer, Converter={StaticResource BooleanToVisibilityConverter}}">copy</TextBlock>
                 </Grid>
-                <StackPanel>
-                  <TextBlock Text="{Binding FileName}" />
-                  <TextBlock>
+                <Grid Grid.Column="1">
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                  </Grid.RowDefinitions>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+
+                  <Label Grid.Row="0" Grid.Column="0">日時:</Label>
+                  <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CaptureUtcTimestamp, Converter={StaticResource UtcToLocalTimestampConverter}}" />
+
+                  <Label Grid.Row="1" Grid.Column="0">サイズ:</Label>
+                  <TextBlock Grid.Row="1" Grid.Column="1">
                     <Run Text="{Binding Width, Mode=OneTime}" />
                     <Run Text=" * " />
                     <Run Text="{Binding Height, Mode=OneTime}" />
                   </TextBlock>
-                  <TextBlock Text="{Binding CaptureUtcTimestamp, Converter={StaticResource UtcToLocalTimestampConverter}}" />
-                  <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" />
-                  <Button Command="{Binding DataContext.RemoveImageCommand ,ElementName=root}" CommandParameter="{Binding}">remove</Button>
-                </StackPanel>
-              </StackPanel>
+
+                  <Label Grid.Row="2" Grid.Column="0">コメント:</Label>
+                  <Grid Grid.Row="2" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Column="0" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" />
+                    <Button Grid.Column="1" Margin="{StaticResource LeftMargin}" Command="{Binding DataContext.RemoveImageCommand ,ElementName=root}" CommandParameter="{Binding}">削除</Button>
+                  </Grid>
+                </Grid>
+              </Grid>
             </DataTemplate>
           </ListBox.ItemTemplate>
         </ListBox>
