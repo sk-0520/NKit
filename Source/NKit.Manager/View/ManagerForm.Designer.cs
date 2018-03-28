@@ -59,18 +59,18 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
-            this.statusbar = new System.Windows.Forms.StatusStrip();
-            this.statusbarLabelBuildType = new System.Windows.Forms.ToolStripStatusLabel();
-            this.statusbarLabelVersion = new System.Windows.Forms.ToolStripStatusLabel();
-            this.statusbarLabelHash = new System.Windows.Forms.ToolStripStatusLabel();
             this.viewLog = new System.Windows.Forms.ListView();
             this.viewLogColumnTimestamp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.viewLogColumnKind = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.viewLogColumnSender = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.viewLogColumnSubject = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.viewLogColumnMessage = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+            this.statusbar = new System.Windows.Forms.StatusStrip();
+            this.statusbarLabelBuildType = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusbarLabelVersion = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusbarLabelHash = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -426,6 +426,47 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.tableLayoutPanel3.Size = new System.Drawing.Size(838, 98);
             this.tableLayoutPanel3.TabIndex = 9;
             // 
+            // viewLog
+            // 
+            this.viewLog.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.viewLogColumnTimestamp,
+            this.viewLogColumnKind,
+            this.viewLogColumnSender,
+            this.viewLogColumnSubject,
+            this.viewLogColumnMessage});
+            this.viewLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.viewLog.FullRowSelect = true;
+            this.viewLog.GridLines = true;
+            this.viewLog.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.viewLog.HideSelection = false;
+            this.viewLog.Location = new System.Drawing.Point(23, 3);
+            this.viewLog.MultiSelect = false;
+            this.viewLog.Name = "viewLog";
+            this.viewLog.Size = new System.Drawing.Size(812, 92);
+            this.viewLog.TabIndex = 0;
+            this.viewLog.UseCompatibleStateImageBehavior = false;
+            this.viewLog.View = System.Windows.Forms.View.Details;
+            // 
+            // viewLogColumnTimestamp
+            // 
+            this.viewLogColumnTimestamp.Text = "タイムスタンプ";
+            // 
+            // viewLogColumnKind
+            // 
+            this.viewLogColumnKind.Text = "種別";
+            // 
+            // viewLogColumnSender
+            // 
+            this.viewLogColumnSender.Text = "送り元";
+            // 
+            // viewLogColumnSubject
+            // 
+            this.viewLogColumnSubject.Text = "グループ";
+            // 
+            // viewLogColumnMessage
+            // 
+            this.viewLogColumnMessage.Text = "メッセージ";
+            // 
             // tableLayoutPanel4
             // 
             this.tableLayoutPanel4.AutoSize = true;
@@ -496,22 +537,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.statusbarLabelHash.Name = "statusbarLabelHash";
             this.statusbarLabelHash.Size = new System.Drawing.Size(88, 17);
             this.statusbarLabelHash.Text = "<CODE:HASH>";
-            // 
-            // viewLog
-            // 
-            this.viewLog.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.viewLogColumnTimestamp,
-            this.viewLogColumnKind,
-            this.viewLogColumnSender,
-            this.viewLogColumnSubject,
-            this.viewLogColumnMessage});
-            this.viewLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.viewLog.Location = new System.Drawing.Point(23, 3);
-            this.viewLog.Name = "viewLog";
-            this.viewLog.Size = new System.Drawing.Size(812, 92);
-            this.viewLog.TabIndex = 0;
-            this.viewLog.UseCompatibleStateImageBehavior = false;
-            this.viewLog.View = System.Windows.Forms.View.Details;
             // 
             // ManagerForm
             // 
