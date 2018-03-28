@@ -328,6 +328,14 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     }
 
                     var timestampItem = new ListViewItem(CommonUtility.ReplaceNKitText("${YYYY}/${MM}/${DD} ${hh24}:${mm}:${ss}", e.UtcTimestamp));
+                    switch(e.LogData.Kind) {
+                        case NKitLogKind.Warning:
+                            timestampItem.BackColor = Color.DarkKhaki;
+                            break;
+
+                        default:
+                            break;
+                    }
                     var kindSubItem = timestampItem.SubItems.Add(e.LogData.Kind.ToString());
                     var senderSubItem = timestampItem.SubItems.Add(e.SenderApplication.ToString());
                     var subjectSubItem = timestampItem.SubItems.Add(e.LogData.Subject);
