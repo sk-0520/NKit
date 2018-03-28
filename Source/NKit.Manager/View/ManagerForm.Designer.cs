@@ -438,7 +438,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.viewLog.FullRowSelect = true;
             this.viewLog.GridLines = true;
             this.viewLog.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.viewLog.HideSelection = false;
             this.viewLog.Location = new System.Drawing.Point(23, 3);
             this.viewLog.MultiSelect = false;
             this.viewLog.Name = "viewLog";

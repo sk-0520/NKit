@@ -203,6 +203,46 @@ namespace ContentTypeTextNet.NKit.Manager.View
             AboutForm.Show(this);
         }
 
+        private void SetViewStyle(ListViewItem listViewItem, NKitApplicationKind senderApplication, NKitLogData logData)
+        {
+            switch(logData.Kind) {
+                case NKitLogKind.Trace:
+                    listViewItem.ForeColor = Color.Gray;
+                    listViewItem.BackColor = Color.LightGray;
+                    break;
+
+                case NKitLogKind.Debug:
+                    listViewItem.ForeColor = Color.Gray;
+                    listViewItem.BackColor = this.viewLog.BackColor;
+                    break;
+
+                case NKitLogKind.Information:
+                    listViewItem.ForeColor = this.viewLog.ForeColor;
+                    listViewItem.BackColor = this.viewLog.BackColor;
+                    break;
+
+                case NKitLogKind.Warning:
+                    listViewItem.ForeColor = Color.Black;
+                    listViewItem.BackColor = Color.DarkKhaki;
+                    break;
+
+                case NKitLogKind.Error:
+                    listViewItem.ForeColor = Color.Black;
+                    listViewItem.BackColor = Color.Orange;
+                    break;
+
+                case NKitLogKind.Fatal:
+                    listViewItem.ForeColor = Color.Black;
+                    listViewItem.BackColor = Color.Red;
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+
+
         #endregion
 
         private void ManagerForm_Load(object sender, EventArgs e)
@@ -328,14 +368,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     }
 
                     var timestampItem = new ListViewItem(CommonUtility.ReplaceNKitText("${YYYY}/${MM}/${DD} ${hh24}:${mm}:${ss}", e.UtcTimestamp));
-                    switch(e.LogData.Kind) {
-                        case NKitLogKind.Warning:
-                            timestampItem.BackColor = Color.DarkKhaki;
-                            break;
-
-                        default:
-                            break;
-                    }
+                    SetViewStyle(timestampItem, e.SenderApplication, e.LogData);
                     var kindSubItem = timestampItem.SubItems.Add(e.LogData.Kind.ToString());
                     var senderSubItem = timestampItem.SubItems.Add(e.SenderApplication.ToString());
                     var subjectSubItem = timestampItem.SubItems.Add(e.LogData.Subject);
