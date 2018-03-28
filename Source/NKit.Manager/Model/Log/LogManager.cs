@@ -96,7 +96,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
             var logTimestamp = CommonUtility.ReplaceNKitText(Constants.LogTimestampFormat, utcTimestamp);
 
             // TODO: ログに出せる情報は全部出す
-            var writeValue = $"{logTimestamp} {senderApplication} {logData.Kind} {logData.Subject} {logData.Message}, {logData.ProcessId}:{logData.TheadId}";
+            var writeValue = $"{logTimestamp} {logData.Kind} {senderApplication} {logData.Subject} {logData.Message}, {logData.ProcessId}:{logData.TheadId}";
             if(!string.IsNullOrEmpty(logData.Detail)) {
                 writeValue += Environment.NewLine;
                 writeValue += string.Join(Environment.NewLine, TextUtility.ReadLines(logData.Detail).Select(s => ">\t" + s));

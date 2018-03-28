@@ -16,6 +16,7 @@ using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Manager.Define;
 using ContentTypeTextNet.NKit.Manager.Model;
 using ContentTypeTextNet.NKit.Manager.Model.Log;
+using static System.Windows.Forms.ListViewItem;
 
 namespace ContentTypeTextNet.NKit.Manager.View
 {
@@ -221,6 +222,11 @@ namespace ContentTypeTextNet.NKit.Manager.View
             //this.commandTestExecute.PerformClick();
             //Close();
 #endif
+            this.viewLogColumnTimestamp.Width = -1;
+            //this.viewLogColumnKind.Width = -1;
+            //this.viewLogColumnSender.Width = -1;
+            //this.viewLogColumnSubject.Width = -1;
+            this.viewLogColumnMessage.Width = -2;
         }
 
         private void commandWorkspaceSave_Click(object sender, EventArgs e)
@@ -315,9 +321,15 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             if(!this.viewLog.IsDisposed) {
                 var write = new Action(() => {
-                    this.viewLog.Focus();
-                    this.viewLog.AppendText(e.WriteValue);
-                    this.viewLog.AppendText(Environment.NewLine);
+                    var timestampItem = new ListViewItem(CommonUtility.ReplaceNKitText("${YYYY}/${MM}/${DD} ${hh24}:${mm}:${ss}", e.UtcTimestamp));
+                    var kindSubItem = timestampItem.SubItems.Add(e.LogData.Kind.ToString());
+                    var senderSubItem = timestampItem.SubItems.Add(e.SenderApplication.ToString());
+                    var subjectSubItem = timestampItem.SubItems.Add(e.LogData.Subject);
+                    var messageSubItem = timestampItem.SubItems.Add(e.LogData.Message);
+
+                    this.viewLog.Items.Add(timestampItem);
+
+                    this.viewLog.Items[this.viewLog.Items.Count - 1].EnsureVisible();
                 });
 
                 if(!this.viewLog.Created) {
