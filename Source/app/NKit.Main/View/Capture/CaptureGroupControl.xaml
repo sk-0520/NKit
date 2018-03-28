@@ -50,26 +50,43 @@
 
       <ScrollViewer Grid.Row="0">
         <StackPanel>
-          <Label>name:</Label>
-          <TextBox Text="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}" />
+          <Expander Header="グループ設定">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              
+              <Label Grid.Column="0">グループ名(_G):</Label>
+              <TextBox Grid.Column="1" Text="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+          </Expander>
 
-          <Label>capture mode:</Label>
-          <StackPanel>
-            <!--
-            これはまずい
-            <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Screen}}" Content="Screen" />
-            -->
-            <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Window}}" Content="Window" />
-            <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Client}}" Content="Client" />
-            <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Control}}" Content="Control" />
-            <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Scroll}}" Content="Scroll" />
-          </StackPanel>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-          <CheckBox IsChecked="{Binding IsImmediateSelect}">IsImmediateSelect</CheckBox>
+            <Label Grid.Column="0">対象:</Label>
+            <StackPanel Grid.Column="1">
+              <!--
+              これはまずい
+              <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Screen}}" Content="Screen" />
+              -->
+              <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Window}}" Content="ウィンドウ" />
+              <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Client}}" Content="クライアント領域" />
+              <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Control}}" Content="コントロール" />
+              <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Scroll}}" Content="スクロール領域" />
+            </StackPanel>
+
+          </Grid>
+
+          <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding IsImmediateSelect}">すぐに選択を始める</CheckBox>
 
           <GroupBox>
             <GroupBox.Header>
-              <CheckBox IsChecked="{Binding OverwriteScrollSetting}">OverwriteScrollSetting</CheckBox>
+              <CheckBox IsChecked="{Binding OverwriteScrollSetting}">スクロール設定を上書きする</CheckBox>
             </GroupBox.Header>
             <StackPanel>
               <app_main_view_capture:InternetExplorerScrollHideCaptureControl HideTitle="hide header(default: *)" IsEnabledHide="{Binding IsEnabledHideHeader, Mode=TwoWay}" HideElement="{Binding HideHeaderElement, Mode=TwoWay}" />
@@ -94,8 +111,13 @@
         </Grid.RowDefinitions>
 
         <ToolBar Grid.Row="0">
-          <Label>filter</Label>
-          <ComboBox IsEditable="False" ItemsSource="{Binding FilterStartUtcTimestampItems}" SelectedItem="{Binding SelectedFilterStartUtcTimestamp}">
+          <Label>フィルタ:</Label>
+          <ComboBox VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Standard" IsEditable="False" ItemsSource="{Binding FilterStartUtcTimestampItems}" SelectedItem="{Binding SelectedFilterStartUtcTimestamp}">
+            <ComboBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <VirtualizingStackPanel />
+              </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
             <ComboBox.ItemTemplate>
               <DataTemplate>
                 <TextBlock Text="{Binding Converter={StaticResource UtcToLocalTimestampConverter}}" />
