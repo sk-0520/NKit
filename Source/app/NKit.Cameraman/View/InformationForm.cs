@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -76,22 +77,36 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
         public void Attach(IntPtr hWnd, Rectangle hWndRectangle)
         {
+            var sw = Stopwatch.StartNew();
             SuspendLayout();
             using(new ActionDisposer(d => ResumeLayout())) {
+                Debug.WriteLine($"INFO, 1 {sw.Elapsed}");
                 Visible = true;
+                Debug.WriteLine($"INFO, 2 {sw.Elapsed}");
                 Opacity = WindowStateOpacity;
 
+                Debug.WriteLine($"INFO, 3 {sw.Elapsed}");
                 var nowOffset = Cursor.Position;
+                Debug.WriteLine($"INFO, 4 {sw.Elapsed}");
                 nowOffset.Offset(OffsetPoint);
+                Debug.WriteLine($"INFO, 5 {sw.Elapsed}");
                 Location = nowOffset;
 
+                Debug.WriteLine($"INFO, 6 {sw.Elapsed}");
                 this.windowStatusControl.Attach(hWnd, hWndRectangle);
+                Debug.WriteLine($"INFO, 7 {sw.Elapsed}");
 
+                Debug.WriteLine($"INFO, 8 {sw.Elapsed}");
                 this.navigationControl.Visible = false;
+                Debug.WriteLine($"INFO, 9 {sw.Elapsed}");
                 this.windowStatusControl.Visible = true;
+                Debug.WriteLine($"INFO, 10 {sw.Elapsed}");
             }
+            Debug.WriteLine($"INFO, X {sw.Elapsed}");
 
             DoFrameForms(f => f.Attach(hWnd, hWndRectangle));
+            Debug.WriteLine($"TOTAL: {sw.Elapsed}");
+            Debug.WriteLine("");
         }
 
         public void Detach()
@@ -166,7 +181,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
         public bool IsSelfHandle(IntPtr hWnd)
         {
-            return Handle == hWnd;
+            return Handle == hWnd || FrameForms.Any(f => f.Handle == hWnd);
         }
 
         #endregion

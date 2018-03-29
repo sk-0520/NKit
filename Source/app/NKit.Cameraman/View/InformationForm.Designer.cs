@@ -28,21 +28,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InformationForm));
-            this.navigationControl = new ContentTypeTextNet.NKit.Cameraman.View.NavigationControl();
             this.windowStatusControl = new ContentTypeTextNet.NKit.Cameraman.View.WindowStatusControl();
+            this.navigationControl = new ContentTypeTextNet.NKit.Cameraman.View.NavigationControl();
             this.SuspendLayout();
-            // 
-            // navigationControl
-            // 
-            this.navigationControl.AutoSize = true;
-            this.navigationControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.navigationControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.navigationControl.Location = new System.Drawing.Point(0, 0);
-            this.navigationControl.Name = "navigationControl";
-            this.navigationControl.Size = new System.Drawing.Size(335, 143);
-            this.navigationControl.TabIndex = 0;
-            this.navigationControl.MouseEnter += new System.EventHandler(this.InformationForm_MouseEnter);
-            this.navigationControl.MouseLeave += new System.EventHandler(this.InformationForm_MouseLeave);
             // 
             // windowStatusControl
             // 
@@ -51,10 +39,22 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.windowStatusControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.windowStatusControl.Location = new System.Drawing.Point(0, 0);
             this.windowStatusControl.Name = "windowStatusControl";
-            this.windowStatusControl.Size = new System.Drawing.Size(335, 143);
+            this.windowStatusControl.Size = new System.Drawing.Size(300, 149);
             this.windowStatusControl.TabIndex = 1;
             this.windowStatusControl.WindowClassBufferLength = 256;
             this.windowStatusControl.WindowTextBufferLength = 256;
+            // 
+            // navigationControl
+            // 
+            this.navigationControl.AutoSize = true;
+            this.navigationControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.navigationControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.navigationControl.Location = new System.Drawing.Point(0, 0);
+            this.navigationControl.Name = "navigationControl";
+            this.navigationControl.Size = new System.Drawing.Size(300, 149);
+            this.navigationControl.TabIndex = 0;
+            this.navigationControl.MouseEnter += new System.EventHandler(this.InformationForm_MouseEnter);
+            this.navigationControl.MouseLeave += new System.EventHandler(this.InformationForm_MouseLeave);
             // 
             // InformationForm
             // 
@@ -63,7 +63,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Info;
-            this.ClientSize = new System.Drawing.Size(335, 143);
+            this.ClientSize = new System.Drawing.Size(300, 149);
             this.ControlBox = false;
             this.Controls.Add(this.windowStatusControl);
             this.Controls.Add(this.navigationControl);

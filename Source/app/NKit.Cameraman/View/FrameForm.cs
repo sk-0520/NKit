@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -98,18 +99,24 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
                 return;
             }
 
-            Opacity = 0;
+            //Opacity = 0;
 
             SuspendLayout();
+            var sw = Stopwatch.StartNew();
             using(new ActionDisposer(d => ResumeLayout())) {
-
+                Debug.WriteLine($"{Position}, 1 {sw.Elapsed}");
                 Location = newArea.Location;
+                Debug.WriteLine($"{Position}, 2 {sw.Elapsed}");
                 Size = newArea.Size;
+                Debug.WriteLine($"{Position}, 3 {sw.Elapsed}");
 
 
                 Visible = true;
+                Debug.WriteLine($"{Position}, 4 {sw.Elapsed}");
                 Opacity = 1;
+                Debug.WriteLine($"{Position}, 5 {sw.Elapsed}");
             }
+            Debug.WriteLine($"{Position}, X {sw.Elapsed}");
         }
 
         #endregion
