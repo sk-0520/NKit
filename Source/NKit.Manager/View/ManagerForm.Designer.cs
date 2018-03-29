@@ -71,6 +71,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.statusbarLabelBuildType = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusbarLabelVersion = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusbarLabelHash = new System.Windows.Forms.ToolStripStatusLabel();
+            this.viewLogColumnNumber = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -429,6 +430,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // viewLog
             // 
             this.viewLog.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.viewLogColumnNumber,
             this.viewLogColumnTimestamp,
             this.viewLogColumnKind,
             this.viewLogColumnSender,
@@ -445,6 +447,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.viewLog.TabIndex = 0;
             this.viewLog.UseCompatibleStateImageBehavior = false;
             this.viewLog.View = System.Windows.Forms.View.Details;
+            this.viewLog.VirtualMode = true;
+            this.viewLog.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.viewLog_RetrieveVirtualItem);
             // 
             // viewLogColumnTimestamp
             // 
@@ -537,13 +541,16 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.statusbarLabelHash.Size = new System.Drawing.Size(88, 17);
             this.statusbarLabelHash.Text = "<CODE:HASH>";
             // 
+            // viewLogColumnNumber
+            // 
+            this.viewLogColumnNumber.Text = "#";
+            // 
             // ManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(844, 261);
             this.Controls.Add(this.toolStripContainer1);
-            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ManagerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
@@ -622,6 +629,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.ColumnHeader viewLogColumnSender;
         private System.Windows.Forms.ColumnHeader viewLogColumnSubject;
         private System.Windows.Forms.ColumnHeader viewLogColumnMessage;
+        private System.Windows.Forms.ColumnHeader viewLogColumnNumber;
     }
 }
 

@@ -22,6 +22,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
 {
     public partial class ManagerForm : Form
     {
+        #region variable
+
+        uint _logCount;
+
+        #endregion
+
         public ManagerForm()
         {
             InitializeComponent();
@@ -46,6 +52,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
         MainWorker Worker { get; set; }
         ReleaseNoteForm ReleaseNoteForm { get; set; }
         AboutForm AboutForm { get; set; }
+
+        IList<ListViewItem> LogItems { get; } = new List<ListViewItem>();
 
         #endregion
 
@@ -241,6 +249,52 @@ namespace ContentTypeTextNet.NKit.Manager.View
             }
         }
 
+        void AddLogItem(LogEventArgs e)
+        {
+            if(!this.viewLog.IsDisposed) {
+                var addAction = new Action(() => {
+                    while(Constants.LogViewLimit <= LogItems.Count) {
+                        LogItems.RemoveAt(0);
+                    }
+
+                    // 桁数あがってたら再調整するのもありだと思うのです
+                    //var prevCount = this._logCount;
+                    this._logCount += 1;
+
+                    var listViewItem = new ListViewItem(this._logCount.ToString());
+                    SetViewStyle(listViewItem, e.SenderApplication, e.LogData);
+
+                    var timestampSubItem = listViewItem.SubItems.Add(CommonUtility.ReplaceNKitText("${YYYY}/${MM}/${DD} ${hh24}:${mm}:${ss}", e.UtcTimestamp));
+                    var kindSubItem = listViewItem.SubItems.Add(e.LogData.Kind.ToString());
+                    var senderSubItem = listViewItem.SubItems.Add(e.SenderApplication.ToString());
+                    var subjectSubItem = listViewItem.SubItems.Add(e.LogData.Subject);
+                    var messageSubItem = listViewItem.SubItems.Add(e.LogData.Message);
+
+                    LogItems.Add(listViewItem);
+                    this.viewLog.VirtualListSize = LogItems.Count;
+
+                    this.viewLog.EnsureVisible(LogItems.Count - 1);
+                    if(LogItems.Count == 1) {
+                        this.viewLogColumnNumber.Width = -1;
+                        this.viewLogColumnTimestamp.Width = -1;
+                        this.viewLogColumnKind.Width = -1;
+                        this.viewLogColumnSender.Width = -1;
+                        this.viewLogColumnSubject.Width = -1;
+                        this.viewLogColumnMessage.Width = -2;
+                    }
+                });
+
+                if(!this.viewLog.Created) {
+                    addAction();
+                } else {
+                    if(InvokeRequired) {
+                        this.viewLog.BeginInvoke(addAction);
+                    } else {
+                        addAction();
+                    }
+                }
+            }
+        }
 
 
         #endregion
@@ -262,11 +316,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
             //this.commandTestExecute.PerformClick();
             //Close();
 #endif
-            this.viewLogColumnTimestamp.Width = -1;
-            //this.viewLogColumnKind.Width = -1;
-            //this.viewLogColumnSender.Width = -1;
-            //this.viewLogColumnSubject.Width = -1;
-            this.viewLogColumnMessage.Width = -2;
         }
 
         private void commandWorkspaceSave_Click(object sender, EventArgs e)
@@ -359,38 +408,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         }
         private void Worker_OutputLog(object sender, LogEventArgs e)
         {
-            if(!this.viewLog.IsDisposed) {
-                var write = new Action(() => {
-                    this.viewLog.SuspendLayout();
-
-                    while(Constants.LogViewLimit <= this.viewLog.Items.Count) {
-                        this.viewLog.Items.RemoveAt(0);
-                    }
-
-                    var timestampItem = new ListViewItem(CommonUtility.ReplaceNKitText("${YYYY}/${MM}/${DD} ${hh24}:${mm}:${ss}", e.UtcTimestamp));
-                    SetViewStyle(timestampItem, e.SenderApplication, e.LogData);
-                    var kindSubItem = timestampItem.SubItems.Add(e.LogData.Kind.ToString());
-                    var senderSubItem = timestampItem.SubItems.Add(e.SenderApplication.ToString());
-                    var subjectSubItem = timestampItem.SubItems.Add(e.LogData.Subject);
-                    var messageSubItem = timestampItem.SubItems.Add(e.LogData.Message);
-
-                    this.viewLog.Items.Add(timestampItem);
-
-                    this.viewLog.Items[this.viewLog.Items.Count - 1].EnsureVisible();
-
-                    this.viewLog.ResumeLayout();
-                });
-
-                if(!this.viewLog.Created) {
-                    write();
-                } else {
-                    if(InvokeRequired) {
-                        this.viewLog.BeginInvoke(write);
-                    } else {
-                        write();
-                    }
-                }
-            }
+            AddLogItem(e);
         }
 
         private void commandWorkspaceClose_Click(object sender, EventArgs e)
@@ -584,6 +602,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 AboutForm.Activate();
             }
         }
+
+        private void viewLog_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        {
+            e.Item = LogItems[e.ItemIndex];
+        }
+
 
         #region DEBUG
 #if DEBUG || BETA
