@@ -106,11 +106,57 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
         {
             var logTimestamp = CommonUtility.ReplaceNKitText(Constants.LogTimestampFormat, utcTimestamp);
 
-            var writeValue = $"{logTimestamp} {logData.Kind} [{senderApplication}] {(string.IsNullOrEmpty(logData.Subject) ? string.Empty: logData.Subject + ": ")}{logData.Message}, {logData.ProcessId}:{logData.TheadId}, {logData.CallerMemberName}, {TrimFilePath(logData.CallerFilePath)}({logData.CallerLineNumber})";
-            if(!string.IsNullOrEmpty(logData.Detail)) {
-                writeValue += Environment.NewLine;
-                writeValue += string.Join(Environment.NewLine, TextUtility.ReadLines(logData.Detail).Select(s => ">\t" + s));
+            // YYYY-MM-DDThh:mm:ss XXXXXXXX YYYYYYYY ZZZZZZZZ mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm, PPPPPPP/TTTTTT MMMMMMMMMMMMM, SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS(NNNN)
+            // くらいは確保しといてあげようじゃないか
+            var writeBuffer = new StringBuilder(160);
+
+            // タイムスタンプ
+            writeBuffer.Append(logTimestamp);
+            writeBuffer.Append(' ');
+
+            // 種別
+            writeBuffer.Append(logData.Kind);
+
+            // 呼び出しプログラム
+            writeBuffer.Append(" [");
+            writeBuffer.Append(senderApplication);
+            writeBuffer.Append("] ");
+
+            // 件名
+            if(!string.IsNullOrEmpty(logData.Subject)) {
+                writeBuffer.Append(logData.Subject);
+                writeBuffer.Append(": ");
             }
+
+            // メッセージ
+            writeBuffer.Append(logData.Message);
+            writeBuffer.Append(", ");
+
+            // プロセス ID とスレッド ID
+            writeBuffer.Append(logData.ProcessId);
+            writeBuffer.Append(':');
+            writeBuffer.Append(logData.TheadId);
+            writeBuffer.Append(' ');
+
+            // 呼び出し元情報
+            writeBuffer.Append(logData.CallerMemberName);
+            writeBuffer.Append(", ");
+            writeBuffer.Append(TrimFilePath(logData.CallerFilePath));
+            writeBuffer.Append('(');
+            writeBuffer.Append(logData.CallerLineNumber);
+            writeBuffer.Append(')');
+
+            // 詳細情報
+            if(!string.IsNullOrEmpty(logData.Detail)) {
+                writeBuffer.AppendLine();
+                foreach(var s in TextUtility.ReadLines(logData.Detail)) {
+                    writeBuffer.Append(">\t");
+                    writeBuffer.Append(s);
+                    writeBuffer.AppendLine();
+                }
+            }
+
+            var writeValue = writeBuffer.ToString();
 
             foreach(var data in Writers) {
                 data.Writer.WriteLine(writeValue);
