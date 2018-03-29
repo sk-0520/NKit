@@ -22,6 +22,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         {
             Position = position;
             InitializeComponent();
+
+            Font = SystemFonts.MessageBoxFont;
+            Text = CommonUtility.ReplaceWindowTitle(Position.ToString());
         }
 
         #region property
@@ -90,6 +93,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         {
             var newArea = GetAreaFromBaseArea(hWndRectangle);
 
+            // 前と変わりないなら現状維持(サイズを 1 指定すると windows 側の制限なのか知らんけど 2 になるから不安定)
+            if(Location == newArea.Location && Size == newArea.Size) {
+                return;
+            }
 
             Opacity = 0;
 

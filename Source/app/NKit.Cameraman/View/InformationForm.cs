@@ -27,6 +27,19 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             for(var i = 0; i < FrameForms.Length; i++) {
                 FrameForms[i] = new FrameForm(positions[i]);
             }
+
+            if(!DesignMode) {
+                FrameForm prevForm = null;
+                foreach(var frameForm in FrameForms) {
+                    if(prevForm != null) {
+                        frameForm.Show(prevForm);
+                    } else {
+                        frameForm.Show();
+                    }
+                    prevForm = frameForm;
+                }
+                prevForm.AddOwnedForm(this);
+            }
         }
 
         #region property
@@ -160,7 +173,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
         private void InformationForm_Shown(object sender, EventArgs e)
         {
-            DoFrameForms(f => f.Show());
         }
 
         private void InformationForm_MouseEnter(object sender, EventArgs e)

@@ -45,6 +45,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "FrameForm";
+            this.TopMost = true;
             this.ResumeLayout(false);
 
         }
