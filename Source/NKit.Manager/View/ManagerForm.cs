@@ -620,6 +620,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
             e.Item = LogItems[e.ItemIndex];
         }
 
+        private void viewLog_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if(e.IsSelected) {
+                e.Item.Selected = false;
+            }
+        }
 
         #region DEBUG
 #if DEBUG || BETA

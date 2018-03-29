@@ -449,6 +449,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.viewLog.UseCompatibleStateImageBehavior = false;
             this.viewLog.View = System.Windows.Forms.View.Details;
             this.viewLog.VirtualMode = true;
+            this.viewLog.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.viewLog_ItemSelectionChanged);
             this.viewLog.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.viewLog_RetrieveVirtualItem);
             // 
             // viewLogColumnNumber
