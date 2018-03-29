@@ -300,15 +300,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         public DateTime UtcTimestamp { get; set; }
 
-        public NKitLogKind LogKind { get; set; }
-        public string Subject { get; set; }
-        public string Message { get; set; }
-        public string Detail { get; set; }
-        public int ProcessId { get; set; }
-        public int TheadId { get; set; }
-        public string CallerMemberName { get; set; }
-        public string CallerFilePath { get; set; }
-        public int CallerLineNumber { get; set; }
+        public NKitLogData LogData { get; set; }
 
         #endregion
     }
@@ -328,20 +320,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         #region function
 
-        private void OnWrite(DateTime utcTimestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int processId, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
+        private void OnWrite(DateTime utcTimestamp, NKitApplicationKind senderApplication, NKitLogData logData)
         {
             if(LoggingWrite != null) {
                 var e = new TalkLoggingWriteEventArgs(senderApplication) {
                     UtcTimestamp = utcTimestamp,
-                    LogKind = logKind,
-                    Subject = subject,
-                    Message = message,
-                    Detail = detail,
-                    ProcessId = processId,
-                    TheadId = threadId,
-                    CallerMemberName = callerMemberName,
-                    CallerFilePath = callerFilePath,
-                    CallerLineNumber = callerLineNumber,
+                    LogData = logData,
                 };
                 LoggingWrite(this, e);
             }
@@ -351,9 +335,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         #region INKitLoggingTalker
 
-        public void Write(DateTime timestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int processId, int threadId, string callerMemberName, string callerFilePath, int callerLineNumber)
+        public void Write(DateTime timestamp, NKitApplicationKind senderApplication, NKitLogData logData)
         {
-            OnWrite(timestamp, senderApplication, logKind, subject, message, detail, processId, threadId, callerMemberName, callerFilePath, callerLineNumber);
+            OnWrite(timestamp, senderApplication, logData);
         }
 
         #endregion

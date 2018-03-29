@@ -132,32 +132,13 @@ namespace ContentTypeTextNet.NKit.Main.Model
             return new StreamReader(stream, encoding, true, ReaderBufferSize, leaveOpen);
         }
 
-        public IEnumerable<string> ReadLines(string text)
-        {
-            using(var reader = new StringReader(text)) {
-                return ReadLines(reader);
-            }
-        }
-
-        public IEnumerable<string> ReadLines(TextReader reader)
-        {
-            if(reader == null) {
-                throw new ArgumentNullException(nameof(reader));
-            }
-
-            string line;
-            while((line = reader.ReadLine()) != null) {
-                yield return line;
-            }
-        }
-
         TextSearchResult SearchCore(TextReader reader, Regex regex, EncodingCheckResult encodingCheckResult)
         {
             var result = new TextSearchResult() {
                 EncodingCheck = encodingCheckResult,
             };
 
-            foreach(var line in ReadLines(reader).Select((s, i) => (value: s, number: i + 1))) {
+            foreach(var line in TextUtility.ReadLines(reader).Select((s, i) => (value: s, number: i + 1))) {
                 var macthes = regex.Matches(line.value).Cast<Match>();
                 foreach(var match in macthes) {
                     var searchMatch = CreateMatchObject(line.number, match.Index, match.Length, line.value);

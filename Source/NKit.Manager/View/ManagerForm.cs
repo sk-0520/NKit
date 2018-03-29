@@ -16,11 +16,22 @@ using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Manager.Define;
 using ContentTypeTextNet.NKit.Manager.Model;
 using ContentTypeTextNet.NKit.Manager.Model.Log;
+using static System.Windows.Forms.ListViewItem;
 
 namespace ContentTypeTextNet.NKit.Manager.View
 {
     public partial class ManagerForm : Form
     {
+        #region variable
+
+        /// <summary>
+        /// TODO: 桁あふれなんて知ったこっちゃねぇ。
+        /// </summary>
+        uint _logCount;
+        uint _nextWidth = 10;
+
+        #endregion
+
         public ManagerForm()
         {
             InitializeComponent();
@@ -45,6 +56,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
         MainWorker Worker { get; set; }
         ReleaseNoteForm ReleaseNoteForm { get; set; }
         AboutForm AboutForm { get; set; }
+
+        IList<ListViewItem> LogItems { get; } = new List<ListViewItem>();
 
         #endregion
 
@@ -202,6 +215,100 @@ namespace ContentTypeTextNet.NKit.Manager.View
             AboutForm.Show(this);
         }
 
+        private void SetViewStyle(ListViewItem listViewItem, NKitApplicationKind senderApplication, NKitLogData logData)
+        {
+            switch(logData.Kind) {
+                case NKitLogKind.Trace:
+                    listViewItem.ForeColor = Color.Gray;
+                    listViewItem.BackColor = Color.LightGray;
+                    break;
+
+                case NKitLogKind.Debug:
+                    listViewItem.ForeColor = Color.Gray;
+                    listViewItem.BackColor = this.viewLog.BackColor;
+                    break;
+
+                case NKitLogKind.Information:
+                    listViewItem.ForeColor = this.viewLog.ForeColor;
+                    listViewItem.BackColor = this.viewLog.BackColor;
+                    break;
+
+                case NKitLogKind.Warning:
+                    listViewItem.ForeColor = Color.Black;
+                    listViewItem.BackColor = Color.DarkKhaki;
+                    break;
+
+                case NKitLogKind.Error:
+                    listViewItem.ForeColor = Color.Black;
+                    listViewItem.BackColor = Color.Orange;
+                    break;
+
+                case NKitLogKind.Fatal:
+                    listViewItem.ForeColor = Color.Black;
+                    listViewItem.BackColor = Color.Red;
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        ListViewItem CreateLogItem(LogEventArgs e, uint count)
+        {
+            var listViewItem = new ListViewItem(count.ToString());
+
+            var timestampSubItem = listViewItem.SubItems.Add(CommonUtility.ReplaceNKitText("${YYYY}/${MM}/${DD} ${hh24}:${mm}:${ss}", e.UtcTimestamp));
+            var kindSubItem = listViewItem.SubItems.Add(e.LogData.Kind.ToString());
+            var senderSubItem = listViewItem.SubItems.Add(e.SenderApplication.ToString());
+            var subjectSubItem = listViewItem.SubItems.Add(e.LogData.Subject);
+            var messageSubItem = listViewItem.SubItems.Add(e.LogData.Message);
+
+            return listViewItem;
+        }
+
+        void AddLogItem(LogEventArgs e)
+        {
+            if(!this.viewLog.IsDisposed) {
+                var addAction = new Action(() => {
+                    while(Constants.LogViewLimit <= LogItems.Count) {
+                        LogItems.RemoveAt(0);
+                    }
+
+                    this._logCount += 1;
+
+                    var listViewItem = CreateLogItem(e, this._logCount);
+                    SetViewStyle(listViewItem, e.SenderApplication, e.LogData);
+                    
+                    LogItems.Add(listViewItem);
+                    this.viewLog.VirtualListSize = LogItems.Count;
+
+                    this.viewLog.EnsureVisible(LogItems.Count - 1);
+                    if(LogItems.Count == 1) {
+                        this.viewLogColumnNumber.Width = -1;
+                        this.viewLogColumnTimestamp.Width = -1;
+                        this.viewLogColumnKind.Width = -1;
+                        this.viewLogColumnSender.Width = -1;
+                        this.viewLogColumnSubject.Width = -1;
+                        this.viewLogColumnMessage.Width = -2;
+                    } else if(this._logCount == this._nextWidth) {
+                        this.viewLogColumnNumber.Width = -1;
+                        this._nextWidth *= 10;
+                    }
+                });
+
+                if(!this.viewLog.Created) {
+                    addAction();
+                } else {
+                    if(InvokeRequired) {
+                        this.viewLog.BeginInvoke(addAction);
+                    } else {
+                        addAction();
+                    }
+                }
+            }
+        }
+
+
         #endregion
 
         private void ManagerForm_Load(object sender, EventArgs e)
@@ -313,23 +420,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         }
         private void Worker_OutputLog(object sender, LogEventArgs e)
         {
-            if(!this.viewLog.IsDisposed) {
-                var write = new Action(() => {
-                    this.viewLog.Focus();
-                    this.viewLog.AppendText(e.WriteValue);
-                    this.viewLog.AppendText(Environment.NewLine);
-                });
-
-                if(!this.viewLog.Created) {
-                    write();
-                } else {
-                    if(InvokeRequired) {
-                        this.viewLog.BeginInvoke(write);
-                    } else {
-                        write();
-                    }
-                }
-            }
+            AddLogItem(e);
         }
 
         private void commandWorkspaceClose_Click(object sender, EventArgs e)
@@ -521,6 +612,18 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 ShowAbout();
             } else if(AboutForm.Visible) {
                 AboutForm.Activate();
+            }
+        }
+
+        private void viewLog_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        {
+            e.Item = LogItems[e.ItemIndex];
+        }
+
+        private void viewLog_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if(e.IsSelected) {
+                e.Item.Selected = false;
             }
         }
 

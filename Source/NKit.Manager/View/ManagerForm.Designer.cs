@@ -43,7 +43,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.commandWorkspaceDelete = new System.Windows.Forms.Button();
             this.selectLogging = new System.Windows.Forms.CheckBox();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.viewLog = new System.Windows.Forms.RichTextBox();
             this.commandCheckUpdate = new System.Windows.Forms.Button();
             this.commandExecuteUpdate = new System.Windows.Forms.Button();
             this.commandShowReleaseNote = new System.Windows.Forms.Button();
@@ -60,6 +59,13 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.viewLog = new ContentTypeTextNet.NKit.Manager.View.LogListView();
+            this.viewLogColumnNumber = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.viewLogColumnTimestamp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.viewLogColumnKind = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.viewLogColumnSender = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.viewLogColumnSubject = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.viewLogColumnMessage = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.statusbar = new System.Windows.Forms.StatusStrip();
@@ -213,15 +219,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // errorProvider
             // 
             this.errorProvider.ContainerControl = this;
-            // 
-            // viewLog
-            // 
-            this.viewLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.viewLog.Location = new System.Drawing.Point(23, 3);
-            this.viewLog.Name = "viewLog";
-            this.viewLog.Size = new System.Drawing.Size(812, 92);
-            this.viewLog.TabIndex = 6;
-            this.viewLog.Text = "";
             // 
             // commandCheckUpdate
             // 
@@ -430,6 +427,57 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.tableLayoutPanel3.Size = new System.Drawing.Size(838, 98);
             this.tableLayoutPanel3.TabIndex = 9;
             // 
+            // viewLog
+            // 
+            this.viewLog.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.viewLogColumnNumber,
+            this.viewLogColumnTimestamp,
+            this.viewLogColumnKind,
+            this.viewLogColumnSender,
+            this.viewLogColumnSubject,
+            this.viewLogColumnMessage});
+            this.viewLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.viewLog.GridLines = true;
+            this.viewLog.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.viewLog.Location = new System.Drawing.Point(23, 3);
+            this.viewLog.MultiSelect = false;
+            this.viewLog.Name = "viewLog";
+            this.viewLog.ShowGroups = false;
+            this.viewLog.ShowItemToolTips = true;
+            this.viewLog.Size = new System.Drawing.Size(812, 92);
+            this.viewLog.TabIndex = 0;
+            this.viewLog.UseCompatibleStateImageBehavior = false;
+            this.viewLog.View = System.Windows.Forms.View.Details;
+            this.viewLog.VirtualMode = true;
+            this.viewLog.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.viewLog_ItemSelectionChanged);
+            this.viewLog.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.viewLog_RetrieveVirtualItem);
+            // 
+            // viewLogColumnNumber
+            // 
+            this.viewLogColumnNumber.Text = "#";
+            // 
+            // viewLogColumnTimestamp
+            // 
+            this.viewLogColumnTimestamp.Text = "タイムスタンプ";
+            this.viewLogColumnTimestamp.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // viewLogColumnKind
+            // 
+            this.viewLogColumnKind.Text = "種別";
+            this.viewLogColumnKind.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // viewLogColumnSender
+            // 
+            this.viewLogColumnSender.Text = "送信元";
+            // 
+            // viewLogColumnSubject
+            // 
+            this.viewLogColumnSubject.Text = "グループ";
+            // 
+            // viewLogColumnMessage
+            // 
+            this.viewLogColumnMessage.Text = "メッセージ";
+            // 
             // tableLayoutPanel4
             // 
             this.tableLayoutPanel4.AutoSize = true;
@@ -556,7 +604,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.Button commandWorkspaceCopy;
         private System.Windows.Forms.Button commandWorkspaceDelete;
         private System.Windows.Forms.ErrorProvider errorProvider;
-        private System.Windows.Forms.RichTextBox viewLog;
         private System.Windows.Forms.CheckBox selectLogging;
         private System.Windows.Forms.Button commandExecuteUpdate;
         private System.Windows.Forms.Button commandCheckUpdate;
@@ -580,6 +627,13 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.ToolStripStatusLabel statusbarLabelBuildType;
         private System.Windows.Forms.ToolStripStatusLabel statusbarLabelVersion;
         private System.Windows.Forms.ToolStripStatusLabel statusbarLabelHash;
+        private LogListView viewLog;
+        private System.Windows.Forms.ColumnHeader viewLogColumnTimestamp;
+        private System.Windows.Forms.ColumnHeader viewLogColumnKind;
+        private System.Windows.Forms.ColumnHeader viewLogColumnSender;
+        private System.Windows.Forms.ColumnHeader viewLogColumnSubject;
+        private System.Windows.Forms.ColumnHeader viewLogColumnMessage;
+        private System.Windows.Forms.ColumnHeader viewLogColumnNumber;
     }
 }
 

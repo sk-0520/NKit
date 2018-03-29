@@ -81,13 +81,41 @@ namespace ContentTypeTextNet.NKit.Common
         Fatal,
     }
 
+    [Serializable, DataContract]
+    public class NKitLogData
+    {
+        #region property
+
+        [DataMember]
+        public NKitLogKind Kind { get; set; }
+        [DataMember]
+        public string Subject { get; set; }
+        [DataMember]
+        public string Message { get; set; }
+        [DataMember]
+        public string Detail { get; set; }
+        [DataMember]
+        public int ProcessId { get; set; }
+        [DataMember]
+        public int TheadId { get; set; }
+        [DataMember]
+        public string CallerMemberName { get; set; }
+        [DataMember]
+        public string CallerFilePath { get; set; }
+        [DataMember]
+        public int CallerLineNumber { get; set; }
+
+        #endregion
+    }
+
+
     [ServiceContract]
     public interface INKitLoggingTalker
     {
         #region function
 
         [OperationContract]
-        void Write(DateTime utcTimestamp, NKitApplicationKind senderApplication, NKitLogKind logKind, string subject, string message, string detail, int processId, int theadId, string callerMemberName, string callerFileName, int callerLineNumber);
+        void Write(DateTime utcTimestamp, NKitApplicationKind senderApplication, NKitLogData logData);
 
         #endregion
     }
