@@ -59,7 +59,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.viewLog = new System.Windows.Forms.ListView();
+            this.viewLog = new LogListView();
             this.viewLogColumnTimestamp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.viewLogColumnKind = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.viewLogColumnSender = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -623,7 +623,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.ToolStripStatusLabel statusbarLabelBuildType;
         private System.Windows.Forms.ToolStripStatusLabel statusbarLabelVersion;
         private System.Windows.Forms.ToolStripStatusLabel statusbarLabelHash;
-        private System.Windows.Forms.ListView viewLog;
+        private LogListView viewLog;
         private System.Windows.Forms.ColumnHeader viewLogColumnTimestamp;
         private System.Windows.Forms.ColumnHeader viewLogColumnKind;
         private System.Windows.Forms.ColumnHeader viewLogColumnSender;

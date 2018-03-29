@@ -121,6 +121,9 @@
     <Compile Include="View\AcceptForm.Designer.cs">
       <DependentUpon>AcceptForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\LogListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="View\ManagerForm.cs">
       <SubType>Form</SubType>
     </Compile>
