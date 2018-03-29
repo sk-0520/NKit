@@ -24,6 +24,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
     {
         #region variable
 
+        /// <summary>
+        /// TODO: 桁あふれなんて知ったこっちゃねぇ。
+        /// </summary>
         uint _logCount;
 
         #endregion
@@ -257,8 +260,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                         LogItems.RemoveAt(0);
                     }
 
-                    // 桁数あがってたら再調整するのもありだと思うのです
-                    //var prevCount = this._logCount;
+                    var prevCount = this._logCount;
                     this._logCount += 1;
 
                     var listViewItem = new ListViewItem(this._logCount.ToString());
@@ -281,6 +283,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
                         this.viewLogColumnSender.Width = -1;
                         this.viewLogColumnSubject.Width = -1;
                         this.viewLogColumnMessage.Width = -2;
+                    } else if((int)Math.Log10(prevCount) < (int)Math.Log10(this._logCount)) {
+                        this.viewLogColumnNumber.Width = -1;
                     }
                 });
 
