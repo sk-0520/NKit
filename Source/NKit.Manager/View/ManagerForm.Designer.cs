@@ -612,6 +612,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.selectLogTrace.TabIndex = 0;
             this.selectLogTrace.Text = "トレース";
             this.selectLogTrace.UseVisualStyleBackColor = true;
+            this.selectLogTrace.CheckedChanged += new System.EventHandler(this.selectLogTrace_CheckedChanged);
             // 
             // selectLogDebug
             // 
@@ -622,6 +623,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.selectLogDebug.TabIndex = 0;
             this.selectLogDebug.Text = "デバッグ";
             this.selectLogDebug.UseVisualStyleBackColor = true;
+            this.selectLogDebug.CheckedChanged += new System.EventHandler(this.selectLogDebug_CheckedChanged);
             // 
             // selectLogInformation
             // 
@@ -632,6 +634,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.selectLogInformation.TabIndex = 0;
             this.selectLogInformation.Text = "情報";
             this.selectLogInformation.UseVisualStyleBackColor = true;
+            this.selectLogInformation.CheckedChanged += new System.EventHandler(this.selectLogInformation_CheckedChanged);
             // 
             // selectLogWarning
             // 
@@ -642,6 +645,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.selectLogWarning.TabIndex = 0;
             this.selectLogWarning.Text = "警告";
             this.selectLogWarning.UseVisualStyleBackColor = true;
+            this.selectLogWarning.CheckedChanged += new System.EventHandler(this.selectLogWarning_CheckedChanged);
             // 
             // selectLogError
             // 
@@ -652,6 +656,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.selectLogError.TabIndex = 0;
             this.selectLogError.Text = "エラー";
             this.selectLogError.UseVisualStyleBackColor = true;
+            this.selectLogError.CheckedChanged += new System.EventHandler(this.selectLogError_CheckedChanged);
             // 
             // selectLogFatal
             // 
@@ -662,6 +667,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.selectLogFatal.TabIndex = 0;
             this.selectLogFatal.Text = "致命";
             this.selectLogFatal.UseVisualStyleBackColor = true;
+            this.selectLogFatal.CheckedChanged += new System.EventHandler(this.selectLogFatal_CheckedChanged);
             // 
             // ManagerForm
             // 

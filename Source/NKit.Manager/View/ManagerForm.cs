@@ -322,6 +322,13 @@ namespace ContentTypeTextNet.NKit.Manager.View
             Worker.ListupWorkspace(this.selectWorkspace, Guid.Empty);
             this.selectWorkspaceLoadToMinimize.Checked = Worker.WorkspaceLoadToMinimize;
 
+            this.selectLogTrace.Checked = Worker.IsReceiveTraceLog;
+            this.selectLogDebug.Checked = Worker.IsReceiveDebugLog;
+            this.selectLogInformation.Checked = Worker.IsReceiveInformationLog;
+            this.selectLogWarning.Checked = Worker.IsReceiveWarningLog;
+            this.selectLogError.Checked = Worker.IsReceiveErrorLog;
+            this.selectLogFatal.Checked = Worker.IsReceiveFatalLog;
+
             RefreshControls();
 
 #if DEBUG
@@ -627,6 +634,36 @@ namespace ContentTypeTextNet.NKit.Manager.View
             }
         }
 
+        private void selectLogTrace_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveTraceLog = this.selectLogTrace.Checked;
+        }
+
+        private void selectLogDebug_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveDebugLog = this.selectLogDebug.Checked;
+        }
+
+        private void selectLogInformation_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveInformationLog = this.selectLogInformation.Checked;
+        }
+
+        private void selectLogWarning_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveWarningLog= this.selectLogWarning.Checked;
+        }
+
+        private void selectLogError_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveErrorLog = this.selectLogError.Checked;
+        }
+
+        private void selectLogFatal_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveFatalLog = this.selectLogFatal.Checked;
+        }
+
         #region DEBUG
 #if DEBUG || BETA
         private void ReleaseNoteForm_DragEnterAndDragOver(object sender, DragEventArgs e)
@@ -661,6 +698,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         }
 #endif
         #endregion
+
 
     }
 }
