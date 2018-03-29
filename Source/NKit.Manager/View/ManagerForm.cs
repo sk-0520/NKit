@@ -253,6 +253,19 @@ namespace ContentTypeTextNet.NKit.Manager.View
             }
         }
 
+        ListViewItem CreateLogItem(LogEventArgs e, uint count)
+        {
+            var listViewItem = new ListViewItem(count.ToString());
+
+            var timestampSubItem = listViewItem.SubItems.Add(CommonUtility.ReplaceNKitText("${YYYY}/${MM}/${DD} ${hh24}:${mm}:${ss}", e.UtcTimestamp));
+            var kindSubItem = listViewItem.SubItems.Add(e.LogData.Kind.ToString());
+            var senderSubItem = listViewItem.SubItems.Add(e.SenderApplication.ToString());
+            var subjectSubItem = listViewItem.SubItems.Add(e.LogData.Subject);
+            var messageSubItem = listViewItem.SubItems.Add(e.LogData.Message);
+
+            return listViewItem;
+        }
+
         void AddLogItem(LogEventArgs e)
         {
             if(!this.viewLog.IsDisposed) {
@@ -263,15 +276,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
                     this._logCount += 1;
 
-                    var listViewItem = new ListViewItem(this._logCount.ToString());
+                    var listViewItem = CreateLogItem(e, this._logCount);
                     SetViewStyle(listViewItem, e.SenderApplication, e.LogData);
-
-                    var timestampSubItem = listViewItem.SubItems.Add(CommonUtility.ReplaceNKitText("${YYYY}/${MM}/${DD} ${hh24}:${mm}:${ss}", e.UtcTimestamp));
-                    var kindSubItem = listViewItem.SubItems.Add(e.LogData.Kind.ToString());
-                    var senderSubItem = listViewItem.SubItems.Add(e.SenderApplication.ToString());
-                    var subjectSubItem = listViewItem.SubItems.Add(e.LogData.Subject);
-                    var messageSubItem = listViewItem.SubItems.Add(e.LogData.Message);
-
+                    
                     LogItems.Add(listViewItem);
                     this.viewLog.VirtualListSize = LogItems.Count;
 

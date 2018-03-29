@@ -59,7 +59,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.viewLog = new LogListView();
+            this.viewLog = new ContentTypeTextNet.NKit.Manager.View.LogListView();
+            this.viewLogColumnNumber = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.viewLogColumnTimestamp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.viewLogColumnKind = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.viewLogColumnSender = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -71,7 +72,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.statusbarLabelBuildType = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusbarLabelVersion = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusbarLabelHash = new System.Windows.Forms.ToolStripStatusLabel();
-            this.viewLogColumnNumber = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -437,12 +437,13 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.viewLogColumnSubject,
             this.viewLogColumnMessage});
             this.viewLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.viewLog.FullRowSelect = true;
             this.viewLog.GridLines = true;
             this.viewLog.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.viewLog.Location = new System.Drawing.Point(23, 3);
             this.viewLog.MultiSelect = false;
             this.viewLog.Name = "viewLog";
+            this.viewLog.ShowGroups = false;
+            this.viewLog.ShowItemToolTips = true;
             this.viewLog.Size = new System.Drawing.Size(812, 92);
             this.viewLog.TabIndex = 0;
             this.viewLog.UseCompatibleStateImageBehavior = false;
@@ -450,17 +451,23 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.viewLog.VirtualMode = true;
             this.viewLog.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.viewLog_RetrieveVirtualItem);
             // 
+            // viewLogColumnNumber
+            // 
+            this.viewLogColumnNumber.Text = "#";
+            // 
             // viewLogColumnTimestamp
             // 
             this.viewLogColumnTimestamp.Text = "タイムスタンプ";
+            this.viewLogColumnTimestamp.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // viewLogColumnKind
             // 
             this.viewLogColumnKind.Text = "種別";
+            this.viewLogColumnKind.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // viewLogColumnSender
             // 
-            this.viewLogColumnSender.Text = "送り元";
+            this.viewLogColumnSender.Text = "送信元";
             // 
             // viewLogColumnSubject
             // 
@@ -540,10 +547,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.statusbarLabelHash.Name = "statusbarLabelHash";
             this.statusbarLabelHash.Size = new System.Drawing.Size(88, 17);
             this.statusbarLabelHash.Text = "<CODE:HASH>";
-            // 
-            // viewLogColumnNumber
-            // 
-            this.viewLogColumnNumber.Text = "#";
             // 
             // ManagerForm
             // 
