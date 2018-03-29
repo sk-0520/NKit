@@ -79,7 +79,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         {
             var sw = Stopwatch.StartNew();
             SuspendLayout();
-            using(new ActionDisposer(d => ResumeLayout())) {
+            using(new ActionDisposer(d => ResumeLayout(true))) {
                 Debug.WriteLine($"INFO, 1 {sw.Elapsed}");
                 Visible = true;
                 Debug.WriteLine($"INFO, 2 {sw.Elapsed}");
@@ -104,7 +104,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             }
             Debug.WriteLine($"INFO, X {sw.Elapsed}");
 
-            DoFrameForms(f => f.Attach(hWnd, hWndRectangle));
+            //DoFrameForms(f => f.Attach(hWnd, hWndRectangle));
             Debug.WriteLine($"TOTAL: {sw.Elapsed}");
             Debug.WriteLine("");
         }
