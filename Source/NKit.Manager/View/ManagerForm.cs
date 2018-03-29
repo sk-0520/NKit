@@ -215,6 +215,32 @@ namespace ContentTypeTextNet.NKit.Manager.View
             AboutForm.Show(this);
         }
 
+        bool IsReceiveLog(NKitLogKind kind)
+        {
+            switch(kind) {
+                case NKitLogKind.Trace:
+                    return Worker.IsReceiveTraceLog;
+
+                case NKitLogKind.Debug:
+                    return Worker.IsReceiveDebugLog;
+
+                case NKitLogKind.Information:
+                    return Worker.IsReceiveInformationLog;
+
+                case NKitLogKind.Warning:
+                    return Worker.IsReceiveWarningLog;
+
+                case NKitLogKind.Error:
+                    return Worker.IsReceiveErrorLog;
+
+                case NKitLogKind.Fatal:
+                    return Worker.IsReceiveFatalLog;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         private void SetViewStyle(ListViewItem listViewItem, NKitApplicationKind senderApplication, NKitLogData logData)
         {
             switch(logData.Kind) {
@@ -268,6 +294,10 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         void AddLogItem(LogEventArgs e)
         {
+            if(!IsReceiveLog(e.LogData.Kind)) {
+                return;
+            }
+
             if(!this.viewLog.IsDisposed) {
                 var addAction = new Action(() => {
                     while(Constants.LogViewLimit <= LogItems.Count) {
@@ -321,6 +351,13 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 設定値をどばーっと反映
             Worker.ListupWorkspace(this.selectWorkspace, Guid.Empty);
             this.selectWorkspaceLoadToMinimize.Checked = Worker.WorkspaceLoadToMinimize;
+
+            this.selectLogTrace.Checked = Worker.IsReceiveTraceLog;
+            this.selectLogDebug.Checked = Worker.IsReceiveDebugLog;
+            this.selectLogInformation.Checked = Worker.IsReceiveInformationLog;
+            this.selectLogWarning.Checked = Worker.IsReceiveWarningLog;
+            this.selectLogError.Checked = Worker.IsReceiveErrorLog;
+            this.selectLogFatal.Checked = Worker.IsReceiveFatalLog;
 
             RefreshControls();
 
@@ -627,6 +664,36 @@ namespace ContentTypeTextNet.NKit.Manager.View
             }
         }
 
+        private void selectLogTrace_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveTraceLog = this.selectLogTrace.Checked;
+        }
+
+        private void selectLogDebug_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveDebugLog = this.selectLogDebug.Checked;
+        }
+
+        private void selectLogInformation_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveInformationLog = this.selectLogInformation.Checked;
+        }
+
+        private void selectLogWarning_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveWarningLog= this.selectLogWarning.Checked;
+        }
+
+        private void selectLogError_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveErrorLog = this.selectLogError.Checked;
+        }
+
+        private void selectLogFatal_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveFatalLog = this.selectLogFatal.Checked;
+        }
+
         #region DEBUG
 #if DEBUG || BETA
         private void ReleaseNoteForm_DragEnterAndDragOver(object sender, DragEventArgs e)
@@ -661,6 +728,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         }
 #endif
         #endregion
+
 
     }
 }

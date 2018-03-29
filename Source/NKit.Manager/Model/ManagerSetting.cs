@@ -54,7 +54,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
     }
 
     [Serializable, DataContract]
-    public class ManagerSetting: SettingBase, IReadOnlyManagerSetting
+    public class ManagerSetting : SettingBase, IReadOnlyManagerSetting
     {
         #region IReadOnlyManagerSetting
 
@@ -84,6 +84,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
 
         [DataMember]
         public Rectangle WindowArea { get; set; }
+
 
         #endregion
     }

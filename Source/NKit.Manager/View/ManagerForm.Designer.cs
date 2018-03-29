@@ -72,6 +72,15 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.statusbarLabelBuildType = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusbarLabelVersion = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusbarLabelHash = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.selectLogTrace = new System.Windows.Forms.CheckBox();
+            this.selectLogDebug = new System.Windows.Forms.CheckBox();
+            this.selectLogInformation = new System.Windows.Forms.CheckBox();
+            this.selectLogWarning = new System.Windows.Forms.CheckBox();
+            this.selectLogError = new System.Windows.Forms.CheckBox();
+            this.selectLogFatal = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -85,6 +94,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
             this.statusbar.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.flowLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // selectWorkspace
@@ -412,13 +424,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             // tableLayoutPanel3
             // 
-            this.tableLayoutPanel3.AutoSize = true;
-            this.tableLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel3.ColumnCount = 2;
             this.tableLayoutPanel4.SetColumnSpan(this.tableLayoutPanel3, 2);
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Controls.Add(this.viewLog, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel5, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 138);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -439,12 +450,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.viewLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.viewLog.GridLines = true;
             this.viewLog.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.viewLog.Location = new System.Drawing.Point(23, 3);
+            this.viewLog.Location = new System.Drawing.Point(87, 3);
             this.viewLog.MultiSelect = false;
             this.viewLog.Name = "viewLog";
             this.viewLog.ShowGroups = false;
             this.viewLog.ShowItemToolTips = true;
-            this.viewLog.Size = new System.Drawing.Size(812, 92);
+            this.viewLog.Size = new System.Drawing.Size(748, 92);
             this.viewLog.TabIndex = 0;
             this.viewLog.UseCompatibleStateImageBehavior = false;
             this.viewLog.View = System.Windows.Forms.View.Details;
@@ -549,6 +560,115 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.statusbarLabelHash.Size = new System.Drawing.Size(88, 17);
             this.statusbarLabelHash.Text = "<CODE:HASH>";
             // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.AutoSize = true;
+            this.tableLayoutPanel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanel5.ColumnCount = 1;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.Controls.Add(this.groupBox2, 0, 0);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(78, 92);
+            this.tableLayoutPanel5.TabIndex = 1;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.AutoSize = true;
+            this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox2.Controls.Add(this.flowLayoutPanel4);
+            this.groupBox2.Location = new System.Drawing.Point(3, 3);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(72, 86);
+            this.groupBox2.TabIndex = 0;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "表示ログ";
+            // 
+            // flowLayoutPanel4
+            // 
+            this.flowLayoutPanel4.AutoSize = true;
+            this.flowLayoutPanel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel4.Controls.Add(this.selectLogTrace);
+            this.flowLayoutPanel4.Controls.Add(this.selectLogDebug);
+            this.flowLayoutPanel4.Controls.Add(this.selectLogInformation);
+            this.flowLayoutPanel4.Controls.Add(this.selectLogWarning);
+            this.flowLayoutPanel4.Controls.Add(this.selectLogError);
+            this.flowLayoutPanel4.Controls.Add(this.selectLogFatal);
+            this.flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel4.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 15);
+            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(66, 68);
+            this.flowLayoutPanel4.TabIndex = 0;
+            // 
+            // selectLogTrace
+            // 
+            this.selectLogTrace.AutoSize = true;
+            this.selectLogTrace.Location = new System.Drawing.Point(3, 3);
+            this.selectLogTrace.Name = "selectLogTrace";
+            this.selectLogTrace.Size = new System.Drawing.Size(60, 16);
+            this.selectLogTrace.TabIndex = 0;
+            this.selectLogTrace.Text = "トレース";
+            this.selectLogTrace.UseVisualStyleBackColor = true;
+            this.selectLogTrace.CheckedChanged += new System.EventHandler(this.selectLogTrace_CheckedChanged);
+            // 
+            // selectLogDebug
+            // 
+            this.selectLogDebug.AutoSize = true;
+            this.selectLogDebug.Location = new System.Drawing.Point(3, 25);
+            this.selectLogDebug.Name = "selectLogDebug";
+            this.selectLogDebug.Size = new System.Drawing.Size(60, 16);
+            this.selectLogDebug.TabIndex = 0;
+            this.selectLogDebug.Text = "デバッグ";
+            this.selectLogDebug.UseVisualStyleBackColor = true;
+            this.selectLogDebug.CheckedChanged += new System.EventHandler(this.selectLogDebug_CheckedChanged);
+            // 
+            // selectLogInformation
+            // 
+            this.selectLogInformation.AutoSize = true;
+            this.selectLogInformation.Location = new System.Drawing.Point(3, 47);
+            this.selectLogInformation.Name = "selectLogInformation";
+            this.selectLogInformation.Size = new System.Drawing.Size(48, 16);
+            this.selectLogInformation.TabIndex = 0;
+            this.selectLogInformation.Text = "情報";
+            this.selectLogInformation.UseVisualStyleBackColor = true;
+            this.selectLogInformation.CheckedChanged += new System.EventHandler(this.selectLogInformation_CheckedChanged);
+            // 
+            // selectLogWarning
+            // 
+            this.selectLogWarning.AutoSize = true;
+            this.selectLogWarning.Location = new System.Drawing.Point(69, 3);
+            this.selectLogWarning.Name = "selectLogWarning";
+            this.selectLogWarning.Size = new System.Drawing.Size(48, 16);
+            this.selectLogWarning.TabIndex = 0;
+            this.selectLogWarning.Text = "警告";
+            this.selectLogWarning.UseVisualStyleBackColor = true;
+            this.selectLogWarning.CheckedChanged += new System.EventHandler(this.selectLogWarning_CheckedChanged);
+            // 
+            // selectLogError
+            // 
+            this.selectLogError.AutoSize = true;
+            this.selectLogError.Location = new System.Drawing.Point(69, 25);
+            this.selectLogError.Name = "selectLogError";
+            this.selectLogError.Size = new System.Drawing.Size(51, 16);
+            this.selectLogError.TabIndex = 0;
+            this.selectLogError.Text = "エラー";
+            this.selectLogError.UseVisualStyleBackColor = true;
+            this.selectLogError.CheckedChanged += new System.EventHandler(this.selectLogError_CheckedChanged);
+            // 
+            // selectLogFatal
+            // 
+            this.selectLogFatal.AutoSize = true;
+            this.selectLogFatal.Location = new System.Drawing.Point(69, 47);
+            this.selectLogFatal.Name = "selectLogFatal";
+            this.selectLogFatal.Size = new System.Drawing.Size(48, 16);
+            this.selectLogFatal.TabIndex = 0;
+            this.selectLogFatal.Text = "致命";
+            this.selectLogFatal.UseVisualStyleBackColor = true;
+            this.selectLogFatal.CheckedChanged += new System.EventHandler(this.selectLogFatal_CheckedChanged);
+            // 
             // ManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -575,6 +695,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.flowLayoutPanel2.PerformLayout();
             this.flowLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
             this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
@@ -585,6 +706,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.toolStripContainer1.PerformLayout();
             this.statusbar.ResumeLayout(false);
             this.statusbar.PerformLayout();
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel5.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.flowLayoutPanel4.ResumeLayout(false);
+            this.flowLayoutPanel4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -634,6 +761,15 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.ColumnHeader viewLogColumnSubject;
         private System.Windows.Forms.ColumnHeader viewLogColumnMessage;
         private System.Windows.Forms.ColumnHeader viewLogColumnNumber;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
+        private System.Windows.Forms.CheckBox selectLogTrace;
+        private System.Windows.Forms.CheckBox selectLogDebug;
+        private System.Windows.Forms.CheckBox selectLogInformation;
+        private System.Windows.Forms.CheckBox selectLogWarning;
+        private System.Windows.Forms.CheckBox selectLogError;
+        private System.Windows.Forms.CheckBox selectLogFatal;
     }
 }
 
