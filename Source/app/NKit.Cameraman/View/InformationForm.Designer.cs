@@ -79,7 +79,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "InformationForm";
             this.TopMost = true;
-            this.Shown += new System.EventHandler(this.InformationForm_Shown);
             this.MouseEnter += new System.EventHandler(this.InformationForm_MouseEnter);
             this.MouseLeave += new System.EventHandler(this.InformationForm_MouseLeave);
             this.ResumeLayout(false);
