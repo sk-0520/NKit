@@ -584,7 +584,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.groupBox2.Size = new System.Drawing.Size(72, 86);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "対象ログ";
+            this.groupBox2.Text = "表示ログ";
             // 
             // flowLayoutPanel4
             // 
