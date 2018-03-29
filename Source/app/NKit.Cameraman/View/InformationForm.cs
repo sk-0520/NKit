@@ -21,6 +21,11 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
             Font = SystemFonts.MessageBoxFont;
             Text = CommonUtility.ReplaceWindowTitle(Text);
+
+            if(!DesignMode) {
+                CameramanForm.Show();
+                CameramanForm.AddOwnedForm(this);
+            }
         }
 
         #region property
@@ -143,11 +148,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         }
 
         #endregion
-
-        private void InformationForm_Shown(object sender, EventArgs e)
-        {
-            CameramanForm.Show();
-        }
 
         private void InformationForm_MouseEnter(object sender, EventArgs e)
         {

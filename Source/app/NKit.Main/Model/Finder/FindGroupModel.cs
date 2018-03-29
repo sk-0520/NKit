@@ -95,7 +95,8 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             var disabledMaxSize = Cache.Setting.FileSizeLimit.Tail == 0;
 
             if(Cache.Setting.FileSizeLimit.Head == 0 && disabledMaxSize) {
-                return true;
+                // ファイルサイズは無制限だけど検索マークとしては制限以内とはしないようにした
+                return false;
             }
 
             var sizeRange = Range.Create(
@@ -338,7 +339,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
                     var fileContentSearchResult = FileContentSearchResult.NotFound;
                     if(Cache.Setting.FindFileContent && !string.IsNullOrEmpty(Cache.Setting.FileContentSearchPattern)) {
-                        if(Cache.Setting.IsEnabledFileContentSizeLimit && matchedFileSize) {
+                        if(Cache.Setting.IsEnabledFileContentSizeLimit && (matchedFileSize || (!matchedFileSize && Cache.Setting.FileSizeLimit.Head == 0 && Cache.Setting.FileSizeLimit.Tail == 0))) {
                             // ファイルサイズ制限による読み込み抑制が有効であればサイズもチェックしたうえで検索
                             fileContentSearchResult = SearchFlieContentPattern(fileInfo);
                         } else if(!Cache.Setting.IsEnabledFileContentSizeLimit) {

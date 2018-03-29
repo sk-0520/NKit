@@ -37,12 +37,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
             sb.Append(component.Name);
             sb.AppendLine();
             if(!string.IsNullOrEmpty(component.ProjectUri)) {
-                AppendPairLine("project", component.ProjectUri);
+                AppendPairLine(Properties.Resources.String_ThirdPartyComponent_ProjectUri, component.ProjectUri);
             }
 
-            AppendPairLine("license", component.LicenseName);
+            AppendPairLine(Properties.Resources.String_ThirdPartyComponent_License, component.LicenseName);
             if(!string.IsNullOrEmpty(component.LicenseUri)) {
-                AppendPairLine("license page", component.LicenseUri);
+                AppendPairLine(Properties.Resources.String_ThirdPartyComponent_LicenseUri, component.LicenseUri);
             }
 
             return sb.ToString();

@@ -16,17 +16,28 @@ using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Manager.Define;
 using ContentTypeTextNet.NKit.Manager.Model;
 using ContentTypeTextNet.NKit.Manager.Model.Log;
+using static System.Windows.Forms.ListViewItem;
 
 namespace ContentTypeTextNet.NKit.Manager.View
 {
     public partial class ManagerForm : Form
     {
+        #region variable
+
+        /// <summary>
+        /// TODO: 桁あふれなんて知ったこっちゃねぇ。
+        /// </summary>
+        uint _logCount;
+        uint _nextWidth = 10;
+
+        #endregion
+
         public ManagerForm()
         {
             InitializeComponent();
 
             Font = SystemFonts.MessageBoxFont;
-            Text = CommonUtility.ReplaceWindowTitle(Text);
+            Text = CommonUtility.ReplaceWindowTitle(CommonUtility.ProjectName);
 
             this.notifyIcon.Icon = Icon;
 
@@ -46,6 +57,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
         ReleaseNoteForm ReleaseNoteForm { get; set; }
         AboutForm AboutForm { get; set; }
 
+        IList<ListViewItem> LogItems { get; } = new List<ListViewItem>();
+
         #endregion
 
         #region function
@@ -55,6 +68,19 @@ namespace ContentTypeTextNet.NKit.Manager.View
             Worker = worker;
             Worker.WorkspaceExited += Worker_WorkspaceExited;
             Worker.OutputLog += Worker_OutputLog;
+
+            var windowLocation = Worker.WindowArea.Location;
+            var windowSize = Worker.WindowArea.Size;
+
+            var locationError = !Screen.AllScreens.Any(s => s.Bounds.Contains(windowLocation));
+            var sizeError = windowSize.Width <= 0 || windowSize.Height <= 0;
+
+            if(Worker.IsFirstExecute || sizeError || locationError) {
+                StartPosition = FormStartPosition.CenterScreen;
+            } else {
+                Location = windowLocation;
+                Size = windowSize;
+            }
         }
 
         void SetInputControl(string name, string directoryPath, bool logging)
@@ -189,20 +215,161 @@ namespace ContentTypeTextNet.NKit.Manager.View
             AboutForm.Show(this);
         }
 
+        bool IsReceiveLog(NKitLogKind kind)
+        {
+            switch(kind) {
+                case NKitLogKind.Trace:
+                    return Worker.IsReceiveTraceLog;
+
+                case NKitLogKind.Debug:
+                    return Worker.IsReceiveDebugLog;
+
+                case NKitLogKind.Information:
+                    return Worker.IsReceiveInformationLog;
+
+                case NKitLogKind.Warning:
+                    return Worker.IsReceiveWarningLog;
+
+                case NKitLogKind.Error:
+                    return Worker.IsReceiveErrorLog;
+
+                case NKitLogKind.Fatal:
+                    return Worker.IsReceiveFatalLog;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        private void SetViewStyle(ListViewItem listViewItem, NKitApplicationKind senderApplication, NKitLogData logData)
+        {
+            switch(logData.Kind) {
+                case NKitLogKind.Trace:
+                    listViewItem.ForeColor = Color.Gray;
+                    listViewItem.BackColor = Color.LightGray;
+                    break;
+
+                case NKitLogKind.Debug:
+                    listViewItem.ForeColor = Color.Gray;
+                    listViewItem.BackColor = this.viewLog.BackColor;
+                    break;
+
+                case NKitLogKind.Information:
+                    listViewItem.ForeColor = this.viewLog.ForeColor;
+                    listViewItem.BackColor = this.viewLog.BackColor;
+                    break;
+
+                case NKitLogKind.Warning:
+                    listViewItem.ForeColor = Color.Black;
+                    listViewItem.BackColor = Color.DarkKhaki;
+                    break;
+
+                case NKitLogKind.Error:
+                    listViewItem.ForeColor = Color.Black;
+                    listViewItem.BackColor = Color.Orange;
+                    break;
+
+                case NKitLogKind.Fatal:
+                    listViewItem.ForeColor = Color.Black;
+                    listViewItem.BackColor = Color.Red;
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        ListViewItem CreateLogItem(LogEventArgs e, uint count)
+        {
+            var listViewItem = new ListViewItem(count.ToString());
+
+            var timestampSubItem = listViewItem.SubItems.Add(CommonUtility.ReplaceNKitText("${YYYY}/${MM}/${DD} ${hh24}:${mm}:${ss}", e.UtcTimestamp));
+            var kindSubItem = listViewItem.SubItems.Add(e.LogData.Kind.ToString());
+            var senderSubItem = listViewItem.SubItems.Add(e.SenderApplication.ToString());
+            var subjectSubItem = listViewItem.SubItems.Add(e.LogData.Subject);
+            var messageSubItem = listViewItem.SubItems.Add(e.LogData.Message);
+
+            return listViewItem;
+        }
+
+        void AddLogItem(LogEventArgs e)
+        {
+            if(!IsReceiveLog(e.LogData.Kind)) {
+                return;
+            }
+
+            if(!this.viewLog.IsDisposed) {
+                var addAction = new Action(() => {
+                    while(Constants.LogViewLimit <= LogItems.Count) {
+                        LogItems.RemoveAt(0);
+                    }
+
+                    this._logCount += 1;
+
+                    var listViewItem = CreateLogItem(e, this._logCount);
+                    SetViewStyle(listViewItem, e.SenderApplication, e.LogData);
+                    
+                    LogItems.Add(listViewItem);
+                    this.viewLog.VirtualListSize = LogItems.Count;
+
+                    this.viewLog.EnsureVisible(LogItems.Count - 1);
+                    if(LogItems.Count == 1) {
+                        this.viewLogColumnNumber.Width = -1;
+                        this.viewLogColumnTimestamp.Width = -1;
+                        this.viewLogColumnKind.Width = -1;
+                        this.viewLogColumnSender.Width = -1;
+                        this.viewLogColumnSubject.Width = -1;
+                        this.viewLogColumnMessage.Width = -2;
+                    } else if(this._logCount == this._nextWidth) {
+                        this.viewLogColumnNumber.Width = -1;
+                        this._nextWidth *= 10;
+                    }
+                });
+
+                if(!this.viewLog.Created) {
+                    addAction();
+                } else {
+                    if(InvokeRequired) {
+                        this.viewLog.BeginInvoke(addAction);
+                    } else {
+                        addAction();
+                    }
+                }
+            }
+        }
+
+        void ClearLogItems()
+        {
+            LogItems.Clear();
+            this.viewLog.VirtualListSize = LogItems.Count;
+        }
+
         #endregion
 
         private void ManagerForm_Load(object sender, EventArgs e)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            this.labelBuildType.Text = CommonUtility.BuildType;
-            this.labelVersionNumber.Text = assembly.GetName().Version.ToString();
-            this.labelVersionHash.Text = FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;
-
+            this.statusbarLabelBuildType.Text = CommonUtility.BuildType;
+            this.statusbarLabelVersion.Text = assembly.GetName().Version.ToString();
+            this.statusbarLabelHash.Text = FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;
+            this.commandShowAbout.Text = string.Format(Properties.Resources.String_Manager_About_Format, CommonUtility.ProjectName);
             // 設定値をどばーっと反映
             Worker.ListupWorkspace(this.selectWorkspace, Guid.Empty);
             this.selectWorkspaceLoadToMinimize.Checked = Worker.WorkspaceLoadToMinimize;
 
+            this.selectLogTrace.Checked = Worker.IsReceiveTraceLog;
+            this.selectLogDebug.Checked = Worker.IsReceiveDebugLog;
+            this.selectLogInformation.Checked = Worker.IsReceiveInformationLog;
+            this.selectLogWarning.Checked = Worker.IsReceiveWarningLog;
+            this.selectLogError.Checked = Worker.IsReceiveErrorLog;
+            this.selectLogFatal.Checked = Worker.IsReceiveFatalLog;
+
             RefreshControls();
+
+#if DEBUG
+            //this.commandTestExecute.PerformClick();
+            //Close();
+#endif
         }
 
         private void commandWorkspaceSave_Click(object sender, EventArgs e)
@@ -259,7 +426,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             if(Worker.IsLockedSelectedWorkspace()) {
                 if((ModifierKeys & Keys.Shift) == Keys.Shift) {
-                    var result = MessageBox.Show("workspace is locked, unlock?", "force", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                    var result = MessageBox.Show(Properties.Resources.String_Manager_Load_LockedUnlock_Message, Properties.Resources.String_Manager_Load_LockedUnlock_Title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
                     if(result != DialogResult.Yes) {
                         return;
                     }
@@ -267,7 +434,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                         return;
                     }
                 } else {
-                    MessageBox.Show("workspace is locked");
+                    MessageBox.Show(Properties.Resources.String_Manager_Load_LockedNormal_Message, Properties.Resources.String_Manager_Load_LockedNormal_Title, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
             }
@@ -295,23 +462,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         }
         private void Worker_OutputLog(object sender, LogEventArgs e)
         {
-            if(!this.viewLog.IsDisposed) {
-                var write = new Action(() => {
-                    this.viewLog.Focus();
-                    this.viewLog.AppendText(e.WriteValue);
-                    this.viewLog.AppendText(Environment.NewLine);
-                });
-
-                if(!this.viewLog.Created) {
-                    write();
-                } else {
-                    if(InvokeRequired) {
-                        this.viewLog.BeginInvoke(write);
-                    } else {
-                        write();
-                    }
-                }
-            }
+            AddLogItem(e);
         }
 
         private void commandWorkspaceClose_Click(object sender, EventArgs e)
@@ -322,6 +473,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private void ManagerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = !Worker.CheckCanExit();
+
+            if(!e.Cancel) {
+                if(WindowState == FormWindowState.Normal) {
+                    Worker.WindowArea = new Rectangle(Location, Size);
+                }
+            }
         }
 
         private async void commandCheckUpdate_Click(object sender, EventArgs e)
@@ -500,6 +657,53 @@ namespace ContentTypeTextNet.NKit.Manager.View
             }
         }
 
+        private void viewLog_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        {
+            e.Item = LogItems[e.ItemIndex];
+        }
+
+        private void viewLog_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if(e.IsSelected) {
+                e.Item.Selected = false;
+            }
+        }
+
+        private void selectLogTrace_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveTraceLog = this.selectLogTrace.Checked;
+        }
+
+        private void selectLogDebug_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveDebugLog = this.selectLogDebug.Checked;
+        }
+
+        private void selectLogInformation_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveInformationLog = this.selectLogInformation.Checked;
+        }
+
+        private void selectLogWarning_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveWarningLog= this.selectLogWarning.Checked;
+        }
+
+        private void selectLogError_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveErrorLog = this.selectLogError.Checked;
+        }
+
+        private void selectLogFatal_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.IsReceiveFatalLog = this.selectLogFatal.Checked;
+        }
+
+        private void commandLogClear_Click(object sender, EventArgs e)
+        {
+            ClearLogItems();
+        }
+
         #region DEBUG
 #if DEBUG || BETA
         private void ReleaseNoteForm_DragEnterAndDragOver(object sender, DragEventArgs e)
@@ -532,6 +736,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 }
             }
         }
+
 #endif
         #endregion
 

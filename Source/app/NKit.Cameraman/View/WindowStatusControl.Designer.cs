@@ -28,7 +28,6 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label5 = new System.Windows.Forms.Label();
             this.labelHandle = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -38,6 +37,7 @@
             this.labelLocation = new System.Windows.Forms.Label();
             this.labelCaption = new System.Windows.Forms.Label();
             this.labelClass = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -68,105 +68,106 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(150, 150);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(209, 150);
             this.tableLayoutPanel1.TabIndex = 6;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 48);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(38, 12);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "handle";
             // 
             // labelHandle
             // 
             this.labelHandle.AutoSize = true;
-            this.labelHandle.Location = new System.Drawing.Point(54, 48);
+            this.labelHandle.Location = new System.Drawing.Point(95, 48);
             this.labelHandle.Name = "labelHandle";
-            this.labelHandle.Size = new System.Drawing.Size(38, 12);
+            this.labelHandle.Size = new System.Drawing.Size(95, 12);
             this.labelHandle.TabIndex = 4;
-            this.labelHandle.Text = "handle";
+            this.labelHandle.Text = "<CODE:HANDLE>";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(25, 12);
+            this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 0;
-            this.label1.Text = "text";
+            this.label1.Text = "テキスト";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(3, 24);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(25, 12);
+            this.label3.Size = new System.Drawing.Size(34, 12);
             this.label3.TabIndex = 2;
-            this.label3.Text = "size";
+            this.label3.Text = "サイズ";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(3, 12);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(45, 12);
+            this.label2.Size = new System.Drawing.Size(29, 12);
             this.label2.TabIndex = 1;
-            this.label2.Text = "location";
+            this.label2.Text = "位置";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(3, 36);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(32, 12);
+            this.label4.Size = new System.Drawing.Size(73, 12);
             this.label4.TabIndex = 3;
-            this.label4.Text = "class";
+            this.label4.Text = "ウィンドウクラス";
             // 
             // labelSize
             // 
             this.labelSize.AutoSize = true;
-            this.labelSize.Location = new System.Drawing.Point(54, 24);
+            this.labelSize.Location = new System.Drawing.Point(95, 24);
             this.labelSize.Name = "labelSize";
-            this.labelSize.Size = new System.Drawing.Size(35, 12);
+            this.labelSize.Size = new System.Drawing.Size(74, 12);
             this.labelSize.TabIndex = 2;
-            this.labelSize.Text = "label3";
+            this.labelSize.Text = "<CODE:SIZE>";
             // 
             // labelLocation
             // 
             this.labelLocation.AutoSize = true;
-            this.labelLocation.Location = new System.Drawing.Point(54, 12);
+            this.labelLocation.Location = new System.Drawing.Point(95, 12);
             this.labelLocation.Name = "labelLocation";
-            this.labelLocation.Size = new System.Drawing.Size(35, 12);
+            this.labelLocation.Size = new System.Drawing.Size(106, 12);
             this.labelLocation.TabIndex = 1;
-            this.labelLocation.Text = "label2";
+            this.labelLocation.Text = "<CODE:LOCATION>";
             // 
             // labelCaption
             // 
             this.labelCaption.AutoSize = true;
-            this.labelCaption.Location = new System.Drawing.Point(54, 0);
+            this.labelCaption.Location = new System.Drawing.Point(95, 0);
             this.labelCaption.Name = "labelCaption";
-            this.labelCaption.Size = new System.Drawing.Size(35, 12);
+            this.labelCaption.Size = new System.Drawing.Size(78, 12);
             this.labelCaption.TabIndex = 0;
-            this.labelCaption.Text = "label1";
+            this.labelCaption.Text = "<CODE:TEXT>";
             // 
             // labelClass
             // 
             this.labelClass.AutoSize = true;
-            this.labelClass.Location = new System.Drawing.Point(54, 36);
+            this.labelClass.Location = new System.Drawing.Point(95, 36);
             this.labelClass.Name = "labelClass";
-            this.labelClass.Size = new System.Drawing.Size(32, 12);
+            this.labelClass.Size = new System.Drawing.Size(86, 12);
             this.labelClass.TabIndex = 5;
-            this.labelClass.Text = "class";
+            this.labelClass.Text = "<CODE:CLASS>";
             // 
-            // WindowStateControl
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 48);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(86, 12);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "ウィンドウハンドル";
+            // 
+            // WindowStatusControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "WindowStateControl";
+            this.Name = "WindowStatusControl";
+            this.Size = new System.Drawing.Size(209, 150);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

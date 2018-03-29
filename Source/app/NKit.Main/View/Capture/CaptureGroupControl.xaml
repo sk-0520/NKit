@@ -6,6 +6,7 @@
   x:Class="ContentTypeTextNet.NKit.Main.View.Capture.CaptureGroupControl"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:sys="clr-namespace:System;assembly=mscorlib"
 
   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
   xmlns:prism="http://prismlibrary.com/"
@@ -14,6 +15,7 @@
   xmlns:app_utility_view_converter="clr-namespace:ContentTypeTextNet.NKit.Utility.View.Converter;assembly=NKit.Utility"
 
   xmlns:app="clr-namespace:ContentTypeTextNet.NKit.Main"
+  xmlns:app_main_properties="clr-namespace:ContentTypeTextNet.NKit.Main.Properties"
   xmlns:app_main_view_control="clr-namespace:ContentTypeTextNet.NKit.Main.View.Control"
   xmlns:app_main_view_capture="clr-namespace:ContentTypeTextNet.NKit.Main.View.Capture"
 
@@ -50,30 +52,48 @@
 
       <ScrollViewer Grid.Row="0">
         <StackPanel>
-          <Label>name:</Label>
-          <TextBox Text="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}" />
+          <Expander Header="グループ設定">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              
+              <Label Grid.Column="0">グループ名(_G):</Label>
+              <TextBox Grid.Column="1" Text="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+          </Expander>
 
-          <Label>capture mode:</Label>
-          <StackPanel>
-            <!--
-            これはまずい
-            <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Screen}}" Content="Screen" />
-            -->
-            <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Window}}" Content="Window" />
-            <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Client}}" Content="Client" />
-            <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Control}}" Content="Control" />
-            <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Scroll}}" Content="Scroll" />
-          </StackPanel>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-          <CheckBox IsChecked="{Binding IsImmediateSelect}">IsImmediateSelect</CheckBox>
+            <Label Grid.Column="0">対象:</Label>
+            <StackPanel Grid.Column="1">
+              <!--
+              これはまずい
+              <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Screen}}" Content="Screen" />
+              -->
+              <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Window}}" Content="ウィンドウ" />
+              <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Client}}" Content="クライアント領域" />
+              <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Control}}" Content="コントロール" />
+              <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Scroll}}" Content="スクロール領域" />
+            </StackPanel>
+
+          </Grid>
+
+          <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding IsImmediateSelect}">すぐに選択を始める</CheckBox>
 
           <GroupBox>
             <GroupBox.Header>
-              <CheckBox IsChecked="{Binding OverwriteScrollSetting}">OverwriteScrollSetting</CheckBox>
+              <CheckBox IsChecked="{Binding OverwriteScrollSetting}">スクロール設定を上書きする</CheckBox>
             </GroupBox.Header>
             <StackPanel>
-              <app_main_view_capture:InternetExplorerScrollHideCaptureControl HideTitle="hide header(default: *)" IsEnabledHide="{Binding IsEnabledHideHeader, Mode=TwoWay}" HideElement="{Binding HideHeaderElement, Mode=TwoWay}" />
-              <app_main_view_capture:InternetExplorerScrollHideCaptureControl HideTitle="hide footer(default: *)" IsEnabledHide="{Binding IsEnabledHideFooter, Mode=TwoWay}" HideElement="{Binding HideFooterElement, Mode=TwoWay}" />
+              <app_main_view_capture:InternetExplorerScrollHideCaptureControl HideTitle="{x:Static app_main_properties:Resources.String_Capture_InternetExplorerHeaderHideTitle}" IsEnabledHide="{Binding IsEnabledHideHeader, Mode=TwoWay}" HideElement="{Binding HideHeaderElement, Mode=TwoWay}" />
+              <Separator />
+              <app_main_view_capture:InternetExplorerScrollHideCaptureControl HideTitle="{x:Static app_main_properties:Resources.String_Capture_InternetExplorerFooterHideTitle}" IsEnabledHide="{Binding IsEnabledHideFooter, Mode=TwoWay}" HideElement="{Binding HideFooterElement, Mode=TwoWay}" />
             </StackPanel>
 
           </GroupBox>
@@ -94,11 +114,27 @@
         </Grid.RowDefinitions>
 
         <ToolBar Grid.Row="0">
-          <Label>filter</Label>
-          <ComboBox IsEditable="False" ItemsSource="{Binding FilterStartUtcTimestampItems}" SelectedItem="{Binding SelectedFilterStartUtcTimestamp}">
+          <Label>フィルタ:</Label>
+          <ComboBox VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Standard" IsEditable="False" ItemsSource="{Binding FilterStartUtcTimestampItems}" SelectedItem="{Binding SelectedFilterStartUtcTimestamp}">
+            <ComboBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <VirtualizingStackPanel />
+              </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
             <ComboBox.ItemTemplate>
               <DataTemplate>
-                <TextBlock Text="{Binding Converter={StaticResource UtcToLocalTimestampConverter}}" />
+                <TextBlock>
+                  <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding}" Value="{x:Static sys:DateTime.MinValue}">
+                          <Setter Property="Text" Value="全件表示" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                      <Setter Property="Text" Value="{Binding Converter={StaticResource UtcToLocalTimestampConverter}}" />
+                    </Style>
+                  </TextBlock.Style>
+                </TextBlock>
               </DataTemplate>
             </ComboBox.ItemTemplate>
           </ComboBox>
@@ -110,29 +146,60 @@
               <i:InvokeCommandAction Command="{Binding OpenSelectedImageItemCommand}" />
             </i:EventTrigger>
           </i:Interaction.Triggers>
+          <ListBox.ItemContainerStyle>
+            <Style TargetType="ListBoxItem">
+              <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            </Style>
+          </ListBox.ItemContainerStyle>
           <ListBox.ItemTemplate>
             <DataTemplate>
-              <StackPanel Orientation="Horizontal">
-                <Grid x:Name="imageContainer">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <Grid x:Name="imageContainer" Grid.Column="0">
                   <TextBlock>
                     <Hyperlink TextDecorations="{x:Null}" Command="{Binding CopyCommand}" >
                       <Image Source="{Binding ThumbnailImagePath, Converter={StaticResource FilePathToImageConverter}}" Width="{x:Static app:Constants.CaptureThumbnailSizeWidth}" Height="{x:Static app:Constants.CaptureThumbnailSizeHeight}" />
                     </Hyperlink>
                   </TextBlock>
-                  <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Right" Visibility="{Binding IsMouseOver, ElementName=imageContainer, Converter={StaticResource BooleanToVisibilityConverter}}">copy</TextBlock>
+                  <TextBlock IsHitTestVisible="False" VerticalAlignment="Bottom" HorizontalAlignment="Right" Visibility="{Binding IsMouseOver, ElementName=imageContainer, Converter={StaticResource BooleanToVisibilityConverter}}">copy</TextBlock>
                 </Grid>
-                <StackPanel>
-                  <TextBlock Text="{Binding FileName}" />
-                  <TextBlock>
+                <Grid Grid.Column="1">
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                  </Grid.RowDefinitions>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+
+                  <Label Grid.Row="0" Grid.Column="0">日時:</Label>
+                  <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CaptureUtcTimestamp, Converter={StaticResource UtcToLocalTimestampConverter}}" />
+
+                  <Label Grid.Row="1" Grid.Column="0">サイズ:</Label>
+                  <TextBlock Grid.Row="1" Grid.Column="1">
                     <Run Text="{Binding Width, Mode=OneTime}" />
                     <Run Text=" * " />
                     <Run Text="{Binding Height, Mode=OneTime}" />
                   </TextBlock>
-                  <TextBlock Text="{Binding CaptureUtcTimestamp, Converter={StaticResource UtcToLocalTimestampConverter}}" />
-                  <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" />
-                  <Button Command="{Binding DataContext.RemoveImageCommand ,ElementName=root}" CommandParameter="{Binding}">remove</Button>
-                </StackPanel>
-              </StackPanel>
+
+                  <Label Grid.Row="2" Grid.Column="0">コメント:</Label>
+                  <Grid Grid.Row="2" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Column="0" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" />
+                    <Button Grid.Column="1" Margin="{StaticResource LeftMargin}" Command="{Binding DataContext.RemoveImageCommand ,ElementName=root}" CommandParameter="{Binding}">削除</Button>
+                  </Grid>
+                </Grid>
+              </Grid>
             </DataTemplate>
           </ListBox.ItemTemplate>
         </ListBox>

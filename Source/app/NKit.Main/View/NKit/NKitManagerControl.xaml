@@ -14,41 +14,45 @@
   <Grid>
     <ScrollViewer>
       <StackPanel>
-        <Label>**finder**</Label>
-        <TextBlock>
-          <Run FontWeight="Bold">*</Run>: 0 文字以上の合致
-          <LineBreak />
-          <Run FontWeight="Bold">|</Run>: 区切り
-        </TextBlock>
-        <Grid>
-          <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-          </Grid.RowDefinitions>
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-          </Grid.ColumnDefinitions>
+        <GroupBox Header="ファインダー">
 
-          <Label Grid.Row="0" Grid.Column="0">text</Label>
-          <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding FinderTextFilePattern}" />
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition />
+              <RowDefinition />
+              <RowDefinition />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-          <Label Grid.Row="1" Grid.Column="0">ms office</Label>
-          <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FinderMicrosoftOfficeFileNamePattern}" />
+            <Label Grid.Row="0" Grid.Column="0">書式:</Label>
+            <TextBlock Grid.Row="0" Grid.Column="1">
+              <Run FontWeight="Bold">*</Run>: 0 文字以上の合致
+              <LineBreak />
+              <Run FontWeight="Bold">|</Run>: 区切り
+            </TextBlock>
 
-          <Label Grid.Row="2" Grid.Column="0">text</Label>
-          <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding FinderXmlHtmlFileNamePattern}" />
-        </Grid>
+            <Label Grid.Row="1" Grid.Column="0">テキスト形式:</Label>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FinderTextFilePattern}" />
 
-        <Separator />
+            <Label Grid.Row="2" Grid.Column="0">MS Office形式:</Label>
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding FinderMicrosoftOfficeFileNamePattern}" />
 
-        <Label>**file**</Label>
+            <Label Grid.Row="3" Grid.Column="0">XML/HTML形式:</Label>
+            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding FinderXmlHtmlFileNamePattern}" />
+          </Grid>
+        </GroupBox>
 
-        <Separator />
+        <GroupBox Header="file">[TODO]</GroupBox>
 
-        <Label>**capture**</Label>
+        <GroupBox Header="キャプチャ">[TODO]</GroupBox>
+        
+        <GroupBox Header="cli">[TODO]</GroupBox>
 
+        <GroupBox Header="system env">[TODO]</GroupBox>
       </StackPanel>
     </ScrollViewer>
   </Grid>

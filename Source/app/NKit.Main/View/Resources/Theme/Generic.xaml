@@ -7,6 +7,39 @@
   <!-- ============== 規定値 ============== -->
   <sys:Double x:Key="GridSplitterLength">4</sys:Double>
 
+  <Thickness x:Key="ItemMargin">1,1,2,1</Thickness>
+  <Thickness x:Key="IndependentMargin">2</Thickness>
+  <Thickness x:Key="IndependentHorizonMargin">2,0</Thickness>
+  <Thickness x:Key="IndependentVericalMargin">0,2</Thickness>
+  <Thickness x:Key="BigIndependentMargin">8</Thickness>
+  <Thickness x:Key="BigIndependentHorizonMargin">8,0</Thickness>
+  <Thickness x:Key="BigIndependentVericalMargin">0,8</Thickness>
+  <sys:Double x:Key="BitMarginWidth">1</sys:Double>
+  <sys:Double x:Key="HalfMarginWidth">4</sys:Double>
+  <sys:Double x:Key="BaseMarginWidth">8</sys:Double>
+  <sys:Double x:Key="SeparatorWidth">4</sys:Double>
+  <sys:Double x:Key="SeparatorHeight">4</sys:Double>
+  <sys:Double x:Key="MenuIndentWidth">8</sys:Double>
+  <sys:Double x:Key="SmallPaddingHeight">6</sys:Double>
+  <sys:Double x:Key="NormalPaddingHeight">12</sys:Double>
+  <sys:Double x:Key="BigPaddingHeight">20</sys:Double>
+  <sys:Double x:Key="SmallIndentWidth">10</sys:Double>
+  <sys:Double x:Key="NormalIndentWidth">20</sys:Double>
+  <sys:Double x:Key="BigIndentWidth">40</sys:Double>
+  <Thickness x:Key="BitMargin" Left="{StaticResource BitMarginWidth}" Top="{StaticResource BitMarginWidth}" Right="{StaticResource BitMarginWidth}" Bottom="{StaticResource BitMarginWidth}" />
+  <Thickness x:Key="LeftMargin" Left="{StaticResource BaseMarginWidth}" Top="0" Right="0" Bottom="0" />
+  <Thickness x:Key="TopMargin" Left="0" Top="{StaticResource BaseMarginWidth}" Right="0" Bottom="0" />
+  <Thickness x:Key="RightMargin" Left="0" Top="0" Right="{StaticResource BaseMarginWidth}" Bottom="0" />
+  <Thickness x:Key="BottomMargin" Left="0" Top="0" Right="0" Bottom="{StaticResource BaseMarginWidth}" />
+  <Thickness x:Key="AllMargin" Left="{StaticResource BaseMarginWidth}" Top="{StaticResource BaseMarginWidth}" Right="{StaticResource BaseMarginWidth}" Bottom="{StaticResource BaseMarginWidth}" />
+  <Thickness x:Key="VericalMargin" Left="0" Top="{StaticResource BaseMarginWidth}" Right="0" Bottom="{StaticResource BaseMarginWidth}" />
+  <Thickness x:Key="HorizonMargin" Left="{StaticResource BaseMarginWidth}" Top="0" Right="{StaticResource BaseMarginWidth}" Bottom="0" />
+  <Thickness x:Key="BasePadding" Left="4" Top="4" Right="4" Bottom="4" />
+
+  <Thickness x:Key="VerticalContrlMargin" Left="0" Top="{StaticResource HalfMarginWidth}" Right="0" Bottom="{StaticResource HalfMarginWidth}" />
+  <Thickness x:Key="HorizontalContrlMargin" Left="{StaticResource HalfMarginWidth}" Top="0" Right="{StaticResource HalfMarginWidth}" Bottom="0" />
+
+  <Thickness x:Key="TextBoxPadding">2</Thickness>
 
   <!-- GridSplitter -->
   <Style TargetType="GridSplitter">
@@ -32,6 +65,89 @@
     <Setter Property="VerticalAlignment" Value="Center" />
     <Setter Property="HorizontalAlignment" Value="Center" />
     <Setter Property="Stretch" Value="UniformToFill" />
+  </Style>
+
+  <Style x:Key="IconPanel" TargetType="StackPanel">
+    <Setter Property="Orientation" Value="Horizontal" />
+  </Style>
+
+
+  <!--TextBox -->
+  <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+    <Setter Property="Padding" Value="{StaticResource TextBoxPadding}" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+  </Style>
+
+  <Style x:Key="VerticalTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+    <Setter Property="Margin" Value="{StaticResource VerticalContrlMargin}" />
+  </Style>
+  <Style x:Key="HorizontalTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+    <Setter Property="Margin" Value="{StaticResource HorizontalContrlMargin}" />
+  </Style>
+
+
+  <!-- Slider -->
+  <Style TargetType="Slider">
+    <Style.Triggers>
+      <Trigger Property="Orientation" Value="Horizontal">
+        <Setter Property="VerticalAlignment" Value="Center" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+
+  <!--CheckBox-->
+  <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+    <Setter Property="VerticalAlignment" Value="Center" />
+  </Style>
+
+  <Style x:Key="VerticalCheckBox" TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+    <Setter Property="Margin" Value="{StaticResource BottomMargin}" />
+  </Style>
+  <Style x:Key="HorizontalCheckBox" TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+    <Setter Property="Margin" Value="{StaticResource RightMargin}" />
+  </Style>
+
+
+  <!-- RadioButton -->
+  <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}">
+    <Setter Property="VerticalAlignment" Value="Center" />
+  </Style>
+
+  <Style x:Key="VerticalRadioButton" TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}">
+    <Setter Property="Margin" Value="{StaticResource BottomMargin}" />
+  </Style>
+  <Style x:Key="HorizontalRadioButton" TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}">
+    <Setter Property="Margin" Value="{StaticResource RightMargin}" />
+  </Style>
+
+  <!-- Separator -->
+  <Style x:Key="Indent" TargetType="Separator">
+    <Setter Property="Background" Value="{x:Null}" />
+  </Style>
+
+  <Style x:Key="SmallIndent" TargetType="Separator" BasedOn="{StaticResource Indent}">
+    <Setter Property="Width" Value="{StaticResource SmallIndentWidth}" />
+  </Style>
+  <Style x:Key="NormalIndent" TargetType="Separator" BasedOn="{StaticResource Indent}">
+    <Setter Property="Width" Value="{StaticResource NormalIndentWidth}" />
+  </Style>
+  <Style x:Key="BigIndent" TargetType="Separator" BasedOn="{StaticResource Indent}">
+    <Setter Property="Width" Value="{StaticResource BigIndentWidth}" />
+  </Style>
+
+  <Style x:Key="VerticalPadding" TargetType="Separator">
+    <Setter Property="Background" Value="{x:Null}" />
+  </Style>
+
+  <Style x:Key="SmallPadding" TargetType="Separator" BasedOn="{StaticResource VerticalPadding}">
+    <Setter Property="Height" Value="{StaticResource SmallPaddingHeight}" />
+  </Style>
+  <Style x:Key="NormalPadding" TargetType="Separator" BasedOn="{StaticResource VerticalPadding}">
+    <Setter Property="Height" Value="{StaticResource NormalPaddingHeight}" />
+  </Style>
+  <Style x:Key="BigPadding" TargetType="Separator" BasedOn="{StaticResource VerticalPadding}">
+    <Setter Property="Height" Value="{StaticResource BigPaddingHeight}" />
   </Style>
 
 </ResourceDictionary>

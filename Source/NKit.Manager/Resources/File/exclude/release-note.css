@@ -1,0 +1,40 @@
+/* リリースノート専用スタイルシート */
+
+html {
+	font-family: 'Verdana','Meiryo UI','メイリオ', Meiryo,YuGothic,'Yu Gothic',monospace;
+	font-size: 14pt;
+}
+
+body {
+	color: #333333;
+	background: #efefef;
+}
+
+h1 {
+	text-align: center;
+	border-bottom: 3px double #cccccc;
+	font-size: 140%;
+}
+
+section {
+	padding: 0 inherit 1em inherit;
+}
+
+h2 {
+	font-size: 120%;
+}
+
+*.version {
+	font-weight: bold;
+}
+
+*.timestamp {
+	font-weight: normal;
+	font-size: 80%;
+	margin-left: 2em;
+}
+
+*.view-content {
+	margin-left: 1em;
+}
+

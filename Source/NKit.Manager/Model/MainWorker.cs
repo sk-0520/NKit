@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -77,6 +78,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             set { ManagerSetting.Accepted = value; }
         }
 
+        public Rectangle WindowArea {
+            get { return ManagerSetting.WindowArea; }
+            set { ManagerSetting.WindowArea = value; }
+        }
         public bool WorkspaceLoadToMinimize
         {
             get { return ManagerSetting.Workspace.WorkspaceLoadToMinimize; }
@@ -86,6 +91,37 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         {
             get { return ManagerSetting.Workspace.WorkspaceRunningMinimizeToNotifyArea; }
             set { ManagerSetting.Workspace.WorkspaceRunningMinimizeToNotifyArea = value; }
+        }
+
+        public bool IsReceiveTraceLog
+        {
+            get { return ManagerSetting.Log.IsReceiveTrace; }
+            set { ManagerSetting.Log.IsReceiveTrace = value; }
+        }
+        public bool IsReceiveDebugLog
+        {
+            get { return ManagerSetting.Log.IsReceiveDebug; }
+            set { ManagerSetting.Log.IsReceiveDebug = value; }
+        }
+        public bool IsReceiveInformationLog
+        {
+            get { return ManagerSetting.Log.IsReceiveInformation; }
+            set { ManagerSetting.Log.IsReceiveInformation = value; }
+        }
+        public bool IsReceiveWarningLog
+        {
+            get { return ManagerSetting.Log.IsReceiveWarning; }
+            set { ManagerSetting.Log.IsReceiveWarning = value; }
+        }
+        public bool IsReceiveErrorLog
+        {
+            get { return ManagerSetting.Log.IsReceiveError; }
+            set { ManagerSetting.Log.IsReceiveError = value; }
+        }
+        public bool IsReceiveFatalLog
+        {
+            get { return ManagerSetting.Log.IsReceiveFatal; }
+            set { ManagerSetting.Log.IsReceiveFatal = value; }
         }
 
         public bool CanUpdate => UpdateManager.HasUpdate;

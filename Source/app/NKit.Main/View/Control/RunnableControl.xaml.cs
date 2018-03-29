@@ -60,11 +60,33 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
              nameof(RunContent),
              typeof(object),
              typeof(RunnableControl),
-             new PropertyMetadata(Properties.Resources.String_View_Control_RunnableControl_RunContent_Text, new PropertyChangedCallback(RunContentChanged)));
+             new PropertyMetadata(default(object), new PropertyChangedCallback(RunContentChanged)));
 
         private static void RunContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             (d as RunnableControl).RunContent = e.NewValue;
+        }
+
+
+        #endregion
+
+        #region RunText
+
+        public string RunText
+        {
+            get { return (string)GetValue(RunTextProperty); }
+            set { SetValue(RunTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty RunTextProperty = DependencyProperty.Register(
+             nameof(RunText),
+             typeof(string),
+             typeof(RunnableControl),
+             new PropertyMetadata(Properties.Resources.String_View_Control_RunnableControl_RunText, new PropertyChangedCallback(RunTextChanged)));
+
+        private static void RunTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as RunnableControl).RunText = (string)e.NewValue;
         }
 
 
@@ -81,11 +103,33 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
              nameof(CancelContent),
              typeof(object),
              typeof(RunnableControl),
-             new PropertyMetadata(Properties.Resources.String_View_Control_RunnableControl_CancelContent_Text, new PropertyChangedCallback(CancelContentChanged)));
+             new PropertyMetadata(default(object), new PropertyChangedCallback(CancelContentChanged)));
 
         private static void CancelContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             (d as RunnableControl).CancelContent = e.NewValue;
+        }
+
+
+        #endregion
+
+        #region CancelText
+
+        public string CancelText
+        {
+            get { return (string)GetValue(CancelTextProperty); }
+            set { SetValue(CancelTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty CancelTextProperty = DependencyProperty.Register(
+             nameof(CancelText),
+             typeof(string),
+             typeof(RunnableControl),
+             new PropertyMetadata(Properties.Resources.String_View_Control_RunnableControl_CancelText, new PropertyChangedCallback(CancelTextChanged)));
+
+        private static void CancelTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as RunnableControl).CancelText = (string)e.NewValue;
         }
 
 

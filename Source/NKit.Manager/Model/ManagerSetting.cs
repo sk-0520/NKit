@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -44,11 +45,16 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         /// </summary>
         int ExecuteCount { get; }
 
+        /// <summary>
+        /// ウィンドウ位置・サイズ。
+        /// </summary>
+        Rectangle WindowArea { get; }
+
         #endregion
     }
 
     [Serializable, DataContract]
-    public class ManagerSetting: SettingBase, IReadOnlyManagerSetting
+    public class ManagerSetting : SettingBase, IReadOnlyManagerSetting
     {
         #region IReadOnlyManagerSetting
 
@@ -75,6 +81,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         [DataMember]
         public int ExecuteCount { get; set; }
 
+
+        [DataMember]
+        public Rectangle WindowArea { get; set; }
 
 
         #endregion

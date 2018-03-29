@@ -169,10 +169,21 @@ namespace ContentTypeTextNet.NKit.Utility.Model
         public void Write(NKitLogKind logKind, string subject, string message, string detail, string callerMemberName, string callerFilePath, int callerLineNumber)
         {
             var utcTimestamp = DateTime.UtcNow;
-            var threadid = Thread.CurrentThread.ManagedThreadId;
-            var processId = Process.GetCurrentProcess().Id;
 
-            Host.Write(utcTimestamp, SenderApplication, logKind, subject, message, detail, processId, threadid, callerMemberName, callerFilePath, callerLineNumber);
+            var logData = new NKitLogData() {
+                Kind = logKind,
+                Subject = subject,
+                Message = message,
+                Detail = detail,
+                CallerMemberName = callerMemberName,
+                CallerFilePath = callerFilePath,
+                CallerLineNumber = callerLineNumber,
+                ProcessId = Process.GetCurrentProcess().Id,
+                TheadId = Thread.CurrentThread.ManagedThreadId,
+            };
+                
+
+            Host.Write(utcTimestamp, SenderApplication, logData);
         }
 
 

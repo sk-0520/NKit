@@ -9,10 +9,8 @@
   d:DesignHeight="450"
   d:DesignWidth="800"
 >
-  <Grid>
-    <StackPanel>
-      <CheckBox IsChecked="{Binding IsEnabledHide, ElementName=root}" Content="{Binding HideTitle, ElementName=root}" />
-      <TextBox Text="{Binding HideElement, ElementName=root, UpdateSourceTrigger=PropertyChanged}" />
-    </StackPanel>
-  </Grid>
+  <StackPanel>
+    <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding IsEnabledHide, ElementName=root}" Content="{Binding HideTitle, ElementName=root}" />
+    <TextBox Text="{Binding HideElement, ElementName=root, UpdateSourceTrigger=PropertyChanged}" />
+  </StackPanel>
 </UserControl>

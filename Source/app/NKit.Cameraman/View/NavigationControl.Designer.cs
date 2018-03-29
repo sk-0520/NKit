@@ -34,10 +34,10 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.label4 = new System.Windows.Forms.Label();
             this.labelTakeShotKey = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.linkSelectKey = new System.Windows.Forms.LinkLabel();
             this.label5 = new System.Windows.Forms.Label();
             this.labelContinuation = new System.Windows.Forms.Label();
             this.linkExitKey = new System.Windows.Forms.LinkLabel();
-            this.linkSelectKey = new System.Windows.Forms.LinkLabel();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -47,9 +47,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(36, 12);
+            this.label1.Size = new System.Drawing.Size(73, 12);
             this.label1.TabIndex = 0;
-            this.label1.Text = "select";
+            this.label1.Text = "対象選択キー";
             // 
             // tableLayoutPanel1
             // 
@@ -83,36 +83,36 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(3, 24);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(43, 12);
+            this.label2.Size = new System.Drawing.Size(69, 12);
             this.label2.TabIndex = 0;
-            this.label2.Text = "capture";
+            this.label2.Text = "キャプチャキー";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(3, 36);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(24, 12);
+            this.label3.Size = new System.Drawing.Size(49, 12);
             this.label3.TabIndex = 0;
-            this.label3.Text = "exit";
+            this.label3.Text = "終了キー";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(3, 48);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(67, 12);
+            this.label4.Size = new System.Drawing.Size(73, 12);
             this.label4.TabIndex = 0;
-            this.label4.Text = "continuation";
+            this.label4.Text = "連続キャプチャ";
             // 
             // labelTakeShotKey
             // 
             this.labelTakeShotKey.AutoSize = true;
-            this.labelTakeShotKey.Location = new System.Drawing.Point(76, 24);
+            this.labelTakeShotKey.Location = new System.Drawing.Point(82, 24);
             this.labelTakeShotKey.Name = "labelTakeShotKey";
-            this.labelTakeShotKey.Size = new System.Drawing.Size(88, 12);
+            this.labelTakeShotKey.Size = new System.Drawing.Size(80, 12);
             this.labelTakeShotKey.TabIndex = 1;
-            this.labelTakeShotKey.Text = "labelCaptureKey";
+            this.labelTakeShotKey.Text = "<CODE:SHOT>";
             // 
             // flowLayoutPanel1
             // 
@@ -121,51 +121,51 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             this.flowLayoutPanel1.Controls.Add(this.linkSelectKey);
             this.flowLayoutPanel1.Controls.Add(this.label5);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(73, 0);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(79, 0);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(120, 24);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(113, 24);
             this.flowLayoutPanel1.TabIndex = 2;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 12);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(114, 12);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "double press: capture";
-            // 
-            // labelContinuation
-            // 
-            this.labelContinuation.AutoSize = true;
-            this.labelContinuation.Location = new System.Drawing.Point(76, 48);
-            this.labelContinuation.Name = "labelContinuation";
-            this.labelContinuation.Size = new System.Drawing.Size(93, 12);
-            this.labelContinuation.TabIndex = 1;
-            this.labelContinuation.Text = "labelContinuation";
-            // 
-            // linkExitKey
-            // 
-            this.linkExitKey.AutoSize = true;
-            this.linkExitKey.Location = new System.Drawing.Point(76, 36);
-            this.linkExitKey.Name = "linkExitKey";
-            this.linkExitKey.Size = new System.Drawing.Size(56, 12);
-            this.linkExitKey.TabIndex = 3;
-            this.linkExitKey.TabStop = true;
-            this.linkExitKey.Text = "linkLabel1";
-            this.linkExitKey.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkExitKey_LinkClicked);
             // 
             // linkSelectKey
             // 
             this.linkSelectKey.AutoSize = true;
             this.linkSelectKey.Location = new System.Drawing.Point(3, 0);
             this.linkSelectKey.Name = "linkSelectKey";
-            this.linkSelectKey.Size = new System.Drawing.Size(74, 12);
+            this.linkSelectKey.Size = new System.Drawing.Size(92, 12);
             this.linkSelectKey.TabIndex = 3;
             this.linkSelectKey.TabStop = true;
-            this.linkSelectKey.Text = "linkSelectKey";
+            this.linkSelectKey.Text = "<CODE:SELECT>";
             this.linkSelectKey.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkSelectKey_LinkClicked);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 12);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(107, 12);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "二回押下でキャプチャ";
+            // 
+            // labelContinuation
+            // 
+            this.labelContinuation.AutoSize = true;
+            this.labelContinuation.Location = new System.Drawing.Point(82, 48);
+            this.labelContinuation.Name = "labelContinuation";
+            this.labelContinuation.Size = new System.Drawing.Size(134, 12);
+            this.labelContinuation.TabIndex = 1;
+            this.labelContinuation.Text = "<CODE:CONTINUATION>";
+            // 
+            // linkExitKey
+            // 
+            this.linkExitKey.AutoSize = true;
+            this.linkExitKey.Location = new System.Drawing.Point(82, 36);
+            this.linkExitKey.Name = "linkExitKey";
+            this.linkExitKey.Size = new System.Drawing.Size(74, 12);
+            this.linkExitKey.TabIndex = 3;
+            this.linkExitKey.TabStop = true;
+            this.linkExitKey.Text = "<CODE:EXIT>";
+            this.linkExitKey.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkExitKey_LinkClicked);
             // 
             // NavigationControl
             // 

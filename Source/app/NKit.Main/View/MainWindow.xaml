@@ -19,7 +19,7 @@
   Width="640"
   Height="480"
   ResizeMode="CanResizeWithGrip"
-  
+
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d"
 >
@@ -37,7 +37,14 @@
         <ScaleTransform ScaleX="{Binding Value, ElementName=tuneScale}" ScaleY="{Binding Value, ElementName=tuneScale}" />
       </TabControl.LayoutTransform>
 
-      <TabItem Header="finder" DataContext="{Binding FinderManager}">
+      <TabItem DataContext="{Binding FinderManager}">
+        <TabItem.Header>
+          <StackPanel Style="{StaticResource IconPanel}">
+            <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_Finder}" />
+            <TextBlock>ファインダー</TextBlock>
+          </StackPanel>
+        </TabItem.Header>
+
         <app_main_view_finder:FinderManagerControl />
       </TabItem>
 
@@ -45,7 +52,13 @@
         <app_main_view_file:FileManagerControl />
       </TabItem>
 
-      <TabItem Header="capture" DataContext="{Binding CaptureManager}">
+      <TabItem DataContext="{Binding CaptureManager}">
+        <TabItem.Header>
+          <StackPanel Style="{StaticResource IconPanel}">
+            <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_Capture}" />
+            <TextBlock>キャプチャ</TextBlock>
+          </StackPanel>
+        </TabItem.Header>
         <app_main_view_capture:CaptureManagerControl />
       </TabItem>
 
@@ -57,7 +70,14 @@
         <app_main_view_systemenv:SystemEnvironmentManagerControl />
       </TabItem>
 
-      <TabItem Header="nkit" DataContext="{Binding NKitManager}">
+      <TabItem DataContext="{Binding NKitManager}">
+        <TabItem.Header>
+          <StackPanel Style="{StaticResource IconPanel}">
+            <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_NKit}" />
+            <TextBlock>NKit</TextBlock>
+          </StackPanel>
+        </TabItem.Header>
+
         <app_main_view_nkit:NKitManagerControl />
       </TabItem>
 

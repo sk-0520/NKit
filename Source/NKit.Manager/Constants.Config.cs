@@ -15,6 +15,7 @@ namespace ContentTypeTextNet.NKit.Manager
         public static string ApplicationDevelopmentPage { get; } = ConfigurationManager.AppSettings["app-development"];
         public static string ApplicationForumPage { get; } = ConfigurationManager.AppSettings["app-forum"];
 
+        public static int LogViewLimit { get; } = int.Parse(ConfigurationManager.AppSettings["log-view-limit"]);
         public static string LogTimestampFormat { get; } = ConfigurationManager.AppSettings["log-timestamp-format"];
 
         public static bool UpdateCheckUriAppendRandom => bool.Parse(ConfigurationManager.AppSettings["update-check-uri-append-random"]);

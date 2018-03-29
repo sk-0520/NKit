@@ -8,6 +8,7 @@
 
   xmlns:app_utility_view_converter="clr-namespace:ContentTypeTextNet.NKit.Utility.View.Converter;assembly=NKit.Utility"
 
+  xmlns:app_main_properties="clr-namespace:ContentTypeTextNet.NKit.Main.Properties"
   xmlns:app_main_view_control="clr-namespace:ContentTypeTextNet.NKit.Main.View.Control"
   xmlns:app_main_view_capture="clr-namespace:ContentTypeTextNet.NKit.Main.View.Capture"
 
@@ -28,16 +29,18 @@
 
     <Grid  Grid.Row="0" >
       <Grid.ColumnDefinitions>
-        <ColumnDefinition />
-        <ColumnDefinition />
-        <ColumnDefinition />
-        <ColumnDefinition />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
 
       <Button Grid.Column="0" Command="{Binding AddNewGroupCommand}">add new group</Button>
-      <Button Grid.Column="1" Command="{Binding SimpleCaptureControlCommand}" IsEnabled="{Binding NowCapturing, Converter={StaticResource LogicalNotConverter}}" >clipboard:control</Button>
-      <Button Grid.Column="2" Command="{Binding SimpleCaptureWindowCommand}" IsEnabled="{Binding NowCapturing, Converter={StaticResource LogicalNotConverter}}" >clipboard:window</Button>
-      <Button Grid.Column="3" Command="{Binding SimpleCaptureScrollCommand}" IsEnabled="{Binding NowCapturing, Converter={StaticResource LogicalNotConverter}}" >clipboard:scroll</Button>
+      <Label Grid.Column="1">簡易キャプチャ:</Label>
+      <Button Grid.Column="2" Command="{Binding SimpleCaptureControlCommand}" IsEnabled="{Binding NowCapturing, Converter={StaticResource LogicalNotConverter}}" >コントロール</Button>
+      <Button Grid.Column="3" Command="{Binding SimpleCaptureWindowCommand}" IsEnabled="{Binding NowCapturing, Converter={StaticResource LogicalNotConverter}}" >ウィンドウ</Button>
+      <Button Grid.Column="4" Command="{Binding SimpleCaptureScrollCommand}" IsEnabled="{Binding NowCapturing, Converter={StaticResource LogicalNotConverter}}" >スクロール領域</Button>
     </Grid>
     <TabControl Grid.Row="1" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroupItem}">
       <TabControl.ItemTemplate>
@@ -59,17 +62,17 @@
     <Grid Grid.Row="2">
       <StackPanel Orientation="Horizontal">
         <StackPanel>
-          <Label>select:</Label>
+          <Label>選択キー:</Label>
           <app_main_view_control:KeySettingControl Key="{Binding SelectKey, Mode=TwoWay}" ModifierKeys="{Binding SelectModifierKeys, Mode=TwoWay}" />
         </StackPanel>
 
         <StackPanel>
-          <Label>shot:</Label>
+          <Label>キャプチャキー:</Label>
           <app_main_view_control:KeySettingControl Key="{Binding TakeShotKey, Mode=TwoWay}" ModifierKeys="{Binding TakeShotModifierKeys, Mode=TwoWay}" />
         </StackPanel>
 
-        <app_main_view_capture:InternetExplorerScrollHideCaptureControl HideTitle="hide header(default: *)" IsEnabledHide="{Binding IsEnabledHideHeader, Mode=TwoWay}" HideElement="{Binding HideHeaderElement, Mode=TwoWay}" />
-        <app_main_view_capture:InternetExplorerScrollHideCaptureControl HideTitle="hide footer(default: *)" IsEnabledHide="{Binding IsEnabledHideFooter, Mode=TwoWay}" HideElement="{Binding HideFooterElement, Mode=TwoWay}" />
+        <app_main_view_capture:InternetExplorerScrollHideCaptureControl HideTitle="{x:Static app_main_properties:Resources.String_Capture_InternetExplorerHeaderHideTitle}" IsEnabledHide="{Binding IsEnabledHideHeader, Mode=TwoWay}" HideElement="{Binding HideHeaderElement, Mode=TwoWay}" />
+        <app_main_view_capture:InternetExplorerScrollHideCaptureControl HideTitle="{x:Static app_main_properties:Resources.String_Capture_InternetExplorerFooterHideTitle}" IsEnabledHide="{Binding IsEnabledHideFooter, Mode=TwoWay}" HideElement="{Binding HideFooterElement, Mode=TwoWay}" />
 
       </StackPanel>
     </Grid>

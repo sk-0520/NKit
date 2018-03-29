@@ -59,5 +59,23 @@ namespace ContentTypeTextNet.NKit.Cameraman.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   無効 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_Continuation_Disabled {
+            get {
+                return ResourceManager.GetString("String_Continuation_Disabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   有効 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string String_Continuation_Enabled {
+            get {
+                return ResourceManager.GetString("String_Continuation_Enabled", resourceCulture);
+            }
+        }
     }
 }
