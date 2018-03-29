@@ -38,7 +38,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         public double NavigationMouseInOpacity { get; set; } = 0.9;
         public double NavigationMouseOutOpacity { get; set; } = 0.5;
 
-        CameramanForm CameramanForm { get; set; } = new CameramanForm();
 
         FrameForm[] FrameForms { get; }
 
@@ -50,7 +49,6 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         {
             Model = model;
 
-            CameramanForm.SetModel(Model);
             DoFrameForms(f => f.SetModel(Model));
 
             this.navigationControl.SetModel(Model);
@@ -80,14 +78,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
                 this.windowStatusControl.Visible = true;
             }
 
-            CameramanForm.Attach(hWnd, hWndRectangle);
             DoFrameForms(f => f.Attach(hWnd, hWndRectangle));
         }
 
         public void Detach()
         {
             DoFrameForms(f => f.Detach());
-            CameramanForm.Detach();
 
             this.windowStatusControl.Visible = false;
             this.navigationControl.Visible = false;
@@ -157,14 +153,13 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
         public bool IsSelfHandle(IntPtr hWnd)
         {
-            return Handle == hWnd || CameramanForm.Handle == hWnd;
+            return Handle == hWnd;
         }
 
         #endregion
 
         private void InformationForm_Shown(object sender, EventArgs e)
         {
-            CameramanForm.Show();
             DoFrameForms(f => f.Show());
         }
 
