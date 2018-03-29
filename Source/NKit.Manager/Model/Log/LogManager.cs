@@ -89,13 +89,24 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Log
             }
         }
 
-
+        string TrimFilePath(string filePath)
+        {
+#if DEBUG
+            var debug = true;
+            if(debug) {
+                return filePath;
+            }
+#endif
+            var head = @"\Source\";
+            var index = filePath.LastIndexOf(head, StringComparison.InvariantCultureIgnoreCase);
+            return filePath.Substring(index);
+        }
 
         void Write(DateTime utcTimestamp, NKitApplicationKind senderApplication, NKitLogData logData)
         {
             var logTimestamp = CommonUtility.ReplaceNKitText(Constants.LogTimestampFormat, utcTimestamp);
 
-            var writeValue = $"{logTimestamp} {logData.Kind} [{senderApplication}] {(string.IsNullOrEmpty(logData.Subject) ? string.Empty: logData.Subject + ": ")}{logData.Message}, {logData.ProcessId}:{logData.TheadId}, {logData.CallerMemberName}, {logData.CallerFilePath}({logData.CallerLineNumber})";
+            var writeValue = $"{logTimestamp} {logData.Kind} [{senderApplication}] {(string.IsNullOrEmpty(logData.Subject) ? string.Empty: logData.Subject + ": ")}{logData.Message}, {logData.ProcessId}:{logData.TheadId}, {logData.CallerMemberName}, {TrimFilePath(logData.CallerFilePath)}({logData.CallerLineNumber})";
             if(!string.IsNullOrEmpty(logData.Detail)) {
                 writeValue += Environment.NewLine;
                 writeValue += string.Join(Environment.NewLine, TextUtility.ReadLines(logData.Detail).Select(s => ">\t" + s));
