@@ -21,6 +21,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
             Font = SystemFonts.MessageBoxFont;
             Text = CommonUtility.ReplaceWindowTitle(Text);
+
+            var positions = new[] { AnchorStyles.Left, AnchorStyles.Top, AnchorStyles.Right, AnchorStyles.Bottom };
+            FrameForms = new FrameForm[positions.Length];
+            for(var i = 0; i < FrameForms.Length; i++) {
+                FrameForms[i] = new FrameForm(positions[i]);
+            }
         }
 
         #region property
@@ -34,6 +40,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
 
         CameramanForm CameramanForm { get; set; } = new CameramanForm();
 
+        FrameForm[] FrameForms { get; }
+
         #endregion
 
         #region function
@@ -43,9 +51,17 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             Model = model;
 
             CameramanForm.SetModel(Model);
+            DoFrameForms(f => f.SetModel(Model));
+
             this.navigationControl.SetModel(Model);
         }
 
+        void DoFrameForms(Action<FrameForm> action)
+        {
+            foreach(var frameForm in FrameForms) {
+                action(frameForm);
+            }
+        }
 
         public void Attach(IntPtr hWnd, Rectangle hWndRectangle)
         {
@@ -65,10 +81,12 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
             }
 
             CameramanForm.Attach(hWnd, hWndRectangle);
+            DoFrameForms(f => f.Attach(hWnd, hWndRectangle));
         }
 
         public void Detach()
         {
+            DoFrameForms(f => f.Detach());
             CameramanForm.Detach();
 
             this.windowStatusControl.Visible = false;
@@ -147,6 +165,7 @@ namespace ContentTypeTextNet.NKit.Cameraman.View
         private void InformationForm_Shown(object sender, EventArgs e)
         {
             CameramanForm.Show();
+            DoFrameForms(f => f.Show());
         }
 
         private void InformationForm_MouseEnter(object sender, EventArgs e)
