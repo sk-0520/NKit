@@ -215,6 +215,32 @@ namespace ContentTypeTextNet.NKit.Manager.View
             AboutForm.Show(this);
         }
 
+        bool IsReceiveLog(NKitLogKind kind)
+        {
+            switch(kind) {
+                case NKitLogKind.Trace:
+                    return Worker.IsReceiveTraceLog;
+
+                case NKitLogKind.Debug:
+                    return Worker.IsReceiveDebugLog;
+
+                case NKitLogKind.Information:
+                    return Worker.IsReceiveInformationLog;
+
+                case NKitLogKind.Warning:
+                    return Worker.IsReceiveWarningLog;
+
+                case NKitLogKind.Error:
+                    return Worker.IsReceiveErrorLog;
+
+                case NKitLogKind.Fatal:
+                    return Worker.IsReceiveFatalLog;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         private void SetViewStyle(ListViewItem listViewItem, NKitApplicationKind senderApplication, NKitLogData logData)
         {
             switch(logData.Kind) {
@@ -268,6 +294,10 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         void AddLogItem(LogEventArgs e)
         {
+            if(!IsReceiveLog(e.LogData.Kind)) {
+                return;
+            }
+
             if(!this.viewLog.IsDisposed) {
                 var addAction = new Action(() => {
                     while(Constants.LogViewLimit <= LogItems.Count) {
