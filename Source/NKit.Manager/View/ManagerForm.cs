@@ -338,6 +338,11 @@ namespace ContentTypeTextNet.NKit.Manager.View
             }
         }
 
+        void ClearLogItems()
+        {
+            LogItems.Clear();
+            this.viewLog.VirtualListSize = LogItems.Count;
+        }
 
         #endregion
 
@@ -694,6 +699,11 @@ namespace ContentTypeTextNet.NKit.Manager.View
             Worker.IsReceiveFatalLog = this.selectLogFatal.Checked;
         }
 
+        private void commandLogClear_Click(object sender, EventArgs e)
+        {
+            ClearLogItems();
+        }
+
         #region DEBUG
 #if DEBUG || BETA
         private void ReleaseNoteForm_DragEnterAndDragOver(object sender, DragEventArgs e)
@@ -726,9 +736,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 }
             }
         }
+
 #endif
         #endregion
-
 
     }
 }
