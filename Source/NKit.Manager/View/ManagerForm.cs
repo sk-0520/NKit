@@ -28,6 +28,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         /// TODO: 桁あふれなんて知ったこっちゃねぇ。
         /// </summary>
         uint _logCount;
+        uint _nextWidth = 10;
 
         #endregion
 
@@ -260,7 +261,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
                         LogItems.RemoveAt(0);
                     }
 
-                    var prevCount = this._logCount;
                     this._logCount += 1;
 
                     var listViewItem = new ListViewItem(this._logCount.ToString());
@@ -283,8 +283,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
                         this.viewLogColumnSender.Width = -1;
                         this.viewLogColumnSubject.Width = -1;
                         this.viewLogColumnMessage.Width = -2;
-                    } else if((int)Math.Log10(prevCount) < (int)Math.Log10(this._logCount)) {
+                    } else if(this._logCount == this._nextWidth) {
                         this.viewLogColumnNumber.Width = -1;
+                        this._nextWidth *= 10;
                     }
                 });
 
