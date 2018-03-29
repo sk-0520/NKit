@@ -17,6 +17,42 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
 {
     public class UpdateManager : ManagerBase
     {
+        #region define
+
+        struct UriResult
+        {
+            public UriResult(string value, Uri uri)
+            {
+                Value = value;
+                Uri= uri;
+            }
+
+            #region property
+
+            public string Value { get; }
+            public Uri Uri { get; }
+
+            #endregion
+        }
+
+        struct MatchValue
+        {
+            public MatchValue(bool isMatch, string value)
+            {
+                IsMatch = isMatch;
+                Value = value;
+            }
+
+            #region property
+
+            public bool IsMatch { get; }
+            public string Value { get; }
+
+            #endregion
+        }
+
+        #endregion
+
         public UpdateManager(ILogFactory logFactory)
         {
             LogFactory = logFactory;
@@ -50,7 +86,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
             return new Uri(originUri);
         }
 
-        Task<(string value, Uri uri)> GetStringAsync(HttpClient client, string baseUri, params string[] hierarchies)
+        Task<UriResult> GetStringAsync(HttpClient client, string baseUri, params string[] hierarchies)
         {
             var combinedUri = CombineUri(baseUri, hierarchies);
             var uri = Constants.UpdateCheckUriAppendRandom
@@ -68,31 +104,31 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
 
                 if(result.IsSuccessStatusCode) {
                     return result.Content.ReadAsStringAsync().ContinueWith(t2 => {
-                        return (t2.Result, uri);
+                        return new UriResult(t2.Result, uri);
                     });
                 }
 
                 Logger.Warning("http content is empty");
-                return Task.FromResult((string.Empty, uri));
+                return Task.FromResult(new UriResult(string.Empty, uri));
             }).Unwrap();
         }
 
-        (bool isMatch, string value) GetTagetValue(string input, string pattern, string rawRegexOptions, string matchKey)
+        MatchValue GetTagetValue(string input, string pattern, string rawRegexOptions, string matchKey)
         {
             var options = (RegexOptions)Enum.Parse(typeof(RegexOptions), rawRegexOptions);
             var regex = new Regex(pattern, options);
             var match = regex.Match(input);
 
             if(!match.Success) {
-                return (false, string.Empty);
+                return new MatchValue(false, string.Empty);
             }
 
             var result = match.Groups[matchKey].Value;
             if(string.IsNullOrEmpty(result)) {
-                return (false, string.Empty);
+                return new MatchValue(false, string.Empty);
             }
 
-            return (true, result);
+            return new MatchValue(true, result);
         }
 
         string GetFormattedArchiveFileName(Version version)
@@ -132,12 +168,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
                 var rawJson = await GetStringAsync(client, Constants.UpdateCheckBranchBaseUri, Constants.UpdateCheckBranchTargetName);
                 // Json をデシリアライズする余力無し(nugetっていうかライブラリ参照すると解放できないのよね)
                 // DataContractJsonSerializer? 格納クラスつくんのだりぃ
-                var hashResult = GetTagetValue(rawJson.value, Constants.UpdateCheckBranchHashPattern, Constants.UpdateCheckBranchHashPatternOptions, Constants.UpdateCheckBranchHashPatternKey);
-                if(!hashResult.isMatch) {
+                var hashResult = GetTagetValue(rawJson.Value, Constants.UpdateCheckBranchHashPattern, Constants.UpdateCheckBranchHashPatternOptions, Constants.UpdateCheckBranchHashPatternKey);
+                if(!hashResult.IsMatch) {
                     Logger.Warning("not found hash");
                     return false;
                 }
-                var hash = hashResult.value;
+                var hash = hashResult.Value;
                 Logger.Debug($"hash: {hash}");
 
                 if(string.Equals(hash, productVersion, StringComparison.InvariantCultureIgnoreCase)) {
@@ -147,24 +183,24 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
                 }
 
                 // リリース日を取得
-                var timestampResult = GetTagetValue(rawJson.value, Constants.UpdateCheckBranchTimestampPattern, Constants.UpdateCheckBranchTimestampPatternOptions, Constants.UpdateCheckBranchTimestampPatternKey);
+                var timestampResult = GetTagetValue(rawJson.Value, Constants.UpdateCheckBranchTimestampPattern, Constants.UpdateCheckBranchTimestampPatternOptions, Constants.UpdateCheckBranchTimestampPatternKey);
                 var timestamp = DateTime.MinValue;
-                if(timestampResult.isMatch) {
-                    Logger.Debug($"timestamp: {timestampResult.value}");
-                    timestamp = DateTime.Parse(timestampResult.value);
+                if(timestampResult.IsMatch) {
+                    Logger.Debug($"timestamp: {timestampResult.Value}");
+                    timestamp = DateTime.Parse(timestampResult.Value);
                 } else {
                     Logger.Debug($"timestamp not found");
                 }
 
                 // ハッシュが違うのでバージョンが変わってるかもしんない
                 var rawVersionFile = await GetStringAsync(client, Constants.UpdateCheckVersionBaseUri, hash, Constants.UpdateCheckVersionFilePath);
-                var versionResult = GetTagetValue(rawVersionFile.value, Constants.UpdateCheckVersionFilePattern, Constants.UpdateCheckVersionFilePatternOptions, Constants.UpdateCheckVersionFilePatternKey);
-                if(!versionResult.isMatch) {
+                var versionResult = GetTagetValue(rawVersionFile.Value, Constants.UpdateCheckVersionFilePattern, Constants.UpdateCheckVersionFilePatternOptions, Constants.UpdateCheckVersionFilePatternKey);
+                if(!versionResult.IsMatch) {
                     Logger.Warning("not found version");
                     return false;
                 }
 
-                var version = versionResult.value;
+                var version = versionResult.Value;
                 Logger.Debug($"version: {version}");
 
                 if(!Version.TryParse(version, out var parsedVersion)) {
@@ -182,13 +218,13 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
                 // 単純検索
                 var downloadFileName = GetFormattedArchiveFileName(parsedVersion);
                 var donwloadPattern = Constants.UpdateCheckDownloadUriPattern.Replace("${FILENAME}", Regex.Escape(downloadFileName));
-                var downloadResult = GetTagetValue(rawDownload.value, donwloadPattern, Constants.UpdateCheckDownloadUriPatternOptions, Constants.UpdateCheckDownloadUriPatternKey);
-                if(!downloadResult.isMatch) {
+                var downloadResult = GetTagetValue(rawDownload.Value, donwloadPattern, Constants.UpdateCheckDownloadUriPatternOptions, Constants.UpdateCheckDownloadUriPatternKey);
+                if(!downloadResult.IsMatch) {
                     Logger.Information("not found module");
                     return false;
                 }
 
-                var downloadUri = downloadResult.value;
+                var downloadUri = downloadResult.Value;
                 Logger.Debug($"download uri: {downloadUri}");
 
                 // リリースノート本文を取ってくる(ここまで来たら404だろうが何だろうが関係なく進める)
@@ -204,9 +240,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Update
                 ReleaseNote.Hash = hash;
                 ReleaseNote.Timestamp = timestamp;
                 ReleaseNote.Version = parsedVersion;
-                ReleaseNote.Content = rawReleaseNoteFile.value;
+                ReleaseNote.Content = rawReleaseNoteFile.Value;
                 DownloadUri = new Uri(downloadUri);
-                ReleaseNoteUri = rawReleaseNoteFile.uri;
+                ReleaseNoteUri = rawReleaseNoteFile.Uri;
             }
 
             return true;

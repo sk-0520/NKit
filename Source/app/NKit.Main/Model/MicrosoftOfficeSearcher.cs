@@ -508,6 +508,32 @@ namespace ContentTypeTextNet.NKit.Main.Model
     public class MicrosoftOfficeWordSearcher
     {
         #region define
+
+        struct IndexValue<T>
+        {
+            public IndexValue(T value, int index)
+            {
+                Value = value;
+                Index = index;
+            }
+
+
+            #region property
+
+            public T Value { get; }
+            public int Index { get; }
+
+            #endregion
+        }
+
+        static class IndexValue
+        {
+            public static IndexValue<T> Create<T>(T value, int index)
+            {
+                return new IndexValue<T>(value, index);
+            }
+        }
+
         #endregion
 
         #region function
@@ -544,23 +570,23 @@ namespace ContentTypeTextNet.NKit.Main.Model
         {
             var tableResult = new MicrosoftOfficeWordTableSearchResult();
 
-            foreach(var (row, rowIndex) in table.Rows.Select((r, i) => (r, i))) {
-                var cells = row.GetTableCells();
-                foreach(var (cell, cellIndex) in cells.Select((c, i) => (c, i))) {
-                    foreach(var p in cell.Paragraphs) {
+            foreach(var row in table.Rows.Select((r, i) => IndexValue.Create(r, i))) {
+                var cells = row.Value.GetTableCells();
+                foreach(var cell in cells.Select((c, i) => IndexValue.Create(c, i))) {
+                    foreach(var p in cell.Value.Paragraphs) {
                         var paragraphResult = SearchParagraph2007(elementIndex, p, regex, setting);
                         if(paragraphResult.IsMatched) {
                             var cellResult = new MicrosoftOfficeWordTableCellSearchResult() {
                                 IsMatched = paragraphResult.IsMatched,
                                 TextResult = paragraphResult.TextResult,
-                                RowIndex = rowIndex,
-                                ColumnIndex = cellIndex,
+                                RowIndex = row.Index,
+                                ColumnIndex = cell.Index,
                             };
 
                             foreach(var macth in cellResult.TextResult.Matches) {
                                 // TODO: 何かしらで外部に逃がしたい
                                 macth.Header = $"TABLE";
-                                macth.Footer = $"[{rowIndex + 1}:{cellIndex + 1}]";
+                                macth.Footer = $"[{row.Index + 1}:{cell.Index + 1}]";
                             }
                             tableResult.CellResults.Add(cellResult);
                         }
@@ -600,8 +626,8 @@ namespace ContentTypeTextNet.NKit.Main.Model
             };
 
 
-            foreach(var (element, index) in doc.BodyElements.Select((e, i) => (e, i))) {
-                var elementResult = SearchElement(index, element, regex, setting);
+            foreach(var element in doc.BodyElements.Select((e, i) => IndexValue.Create(e, i))) {
+                var elementResult = SearchElement(element.Index, element.Value, regex, setting);
                 if(elementResult.IsMatched) {
                     result.ElementResults.Add(elementResult);
                 }
