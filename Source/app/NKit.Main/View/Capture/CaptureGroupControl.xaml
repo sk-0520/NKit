@@ -162,11 +162,17 @@
 
                   <Grid x:Name="imageContainer" Grid.Column="0">
                     <TextBlock>
-                    <Hyperlink TextDecorations="{x:Null}" Command="{Binding CopyCommand}" >
-                      <Image Source="{Binding ThumbnailImagePath, Converter={StaticResource FilePathToImageConverter}}" Width="{x:Static app:Constants.CaptureThumbnailSizeWidth}" Height="{x:Static app:Constants.CaptureThumbnailSizeHeight}" />
-                    </Hyperlink>
+                      <Hyperlink TextDecorations="{x:Null}" Command="{Binding CopyCommand}" >
+                        <Image Source="{Binding ThumbnailImagePath, Converter={StaticResource FilePathToImageConverter}}" Width="{x:Static app:Constants.CaptureThumbnailSizeWidth}" Height="{x:Static app:Constants.CaptureThumbnailSizeHeight}" />
+                      </Hyperlink>
                     </TextBlock>
-                    <TextBlock IsHitTestVisible="False" VerticalAlignment="Bottom" HorizontalAlignment="Right" Visibility="{Binding IsMouseOver, ElementName=imageContainer, Converter={StaticResource BooleanToVisibilityConverter}}">copy</TextBlock>
+                    <ContentControl IsHitTestVisible="False" VerticalAlignment="Bottom" HorizontalAlignment="Right" Visibility="{Binding IsMouseOver, ElementName=imageContainer, Converter={StaticResource BooleanToVisibilityConverter}}">
+                      <StackPanel>
+                        <Control Template="{StaticResource Image_Clipboard-Copy}" Width="16" Height="16" />
+                        <Control Template="{StaticResource Image_Clipboard-Copy}" Width="32" Height="32" />
+                        <TextBlock>クリップボードにコピー</TextBlock>
+                      </StackPanel>
+                    </ContentControl>
                   </Grid>
                   <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
