@@ -526,6 +526,9 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
                 BuildmatchItemsAllMultiLine(matches, hasHeader, hasFooter, showLine);
             }
 
+            this.viewMatchItems.TextArea.PreviewKeyDown -= viewMatchItems_KeyDown;
+            this.viewMatchItems.TextArea.PreviewKeyDown += viewMatchItems_KeyDown;
+            this.viewMatchItems.TextArea.MouseWheel -= TextArea_MouseWheel;
             this.viewMatchItems.TextArea.MouseWheel += TextArea_MouseWheel;
             this.viewMatchItems.Visibility = Visibility.Visible;
         }
@@ -751,15 +754,15 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             return true;
         }
 
-        //TextSearchMatch GetCurrentMatchItem()
-        //{
-        //    var p = this.viewMatchItems.CaretPosition.Paragraph;
-        //    if(p.Tag is TextSearchMatch match) {
-        //        return match;
-        //    }
+        TextSearchMatch GetCurrentMatchItem()
+        {
+            var lineNumber = this.viewMatchItems.TextArea.Caret.Line;
+            if(lineNumber - 1 < ItemsSource.Count()) {
+                return ItemsSource.ElementAt(lineNumber - 1);
+            }
 
-        //    return TextSearchMatch.Unmatch;
-        //}
+            return TextSearchMatch.Unmatch;
+        }
 
         #endregion
 
@@ -778,24 +781,24 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
 
         private void viewMatchItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //var match = GetCurrentMatchItem();
-            //if(match.IsMatch) {
-            //    if(ExecuteUserSelectedCommand(match)) {
-            //        e.Handled = true;
-            //    }
-            //}
+            var match = GetCurrentMatchItem();
+            if(match.IsMatch) {
+                if(ExecuteUserSelectedCommand(match)) {
+                    e.Handled = true;
+                }
+            }
         }
 
         private void viewMatchItems_KeyDown(object sender, KeyEventArgs e)
         {
-            //if(e.Key == Key.Enter) {
-            //    var match = GetCurrentMatchItem();
-            //    if(match.IsMatch) {
-            //        if(ExecuteUserSelectedCommand(match)) {
-            //            e.Handled = true;
-            //        }
-            //    }
-            //}
+            if(e.Key == Key.Enter) {
+                var match = GetCurrentMatchItem();
+                if(match.IsMatch) {
+                    if(ExecuteUserSelectedCommand(match)) {
+                        e.Handled = true;
+                    }
+                }
+            }
         }
         private void TextArea_MouseWheel(object sender, MouseWheelEventArgs e)
         {
