@@ -12,22 +12,17 @@ namespace ContentTypeTextNet.NKit.Utility.Test.Model
     public class UnitConverterTest
     {
         [TestMethod]
-        public void GetNumberWidthTest()
+        [DataRow(1, 0)]
+        [DataRow(1, 1)]
+        [DataRow(2, 10)]
+        [DataRow(3, 100)]
+        [DataRow(1, -1)]
+        [DataRow(2, -10)]
+        [DataRow(3, -100)]
+        public void GetNumberWidthTest(int result, int value)
         {
-            var tests = new[] {
-                new { Value = 0, Result = 1 },
-                new { Value = 1, Result = 1 },
-                new { Value = 10, Result = 2 },
-                new { Value = 100, Result = 3 },
-                new { Value = -1, Result = 1 },
-                new { Value = -10, Result = 2 },
-                new { Value = -100, Result = 3 },
-            };
-
             var uc = new UnitConverter();
-            foreach(var test in tests) {
-                Assert.IsTrue(uc.GetNumberWidth(test.Value) == test.Result);
-            }
+            Assert.IsTrue(uc.GetNumberWidth(value) == result);
         }
     }
 }

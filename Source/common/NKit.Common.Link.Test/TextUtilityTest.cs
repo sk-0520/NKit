@@ -12,18 +12,25 @@ namespace NKit.Common.Link.Test
     public class TextUtilityTest
     {
         [TestMethod]
-        public void TextWidthTest()
+        [DataRow("a", "a", new[] { "" })]
+        [DataRow("a", "a", new[] { "b" })]
+        [DataRow("a(2)", "a", new[] { "a" })]
+        [DataRow("A", "A", new[] { "A(2)" })]
+        [DataRow("a(3)", "a", new[] { "a(5)", "a(2)", "a(4)", "a" })]
+        public void ToUniqueDefaultTest(string result, string src, params string[] list)
         {
-            var tests = new[] {
-                new { Text = "", Result = 0 },
-                new { Text = default(string), Result = 0 },
-                new { Text = "1", Result = 1 },
-                new { Text = "22", Result = 2 },
-                new { Text = "あ", Result = 1 },
-            };
-            foreach(var test in tests) {
-                Assert.IsTrue(TextUtility.TextWidth(test.Text) == test.Result);
-            }
+            Assert.IsTrue(TextUtility.ToUniqueDefault(src, list, StringComparison.Ordinal) == result);
+        }
+
+        [TestMethod]
+        [DataRow(0, "")]
+        [DataRow(0, default(string))]
+        [DataRow(1, "1")]
+        [DataRow(2, "22")]
+        [DataRow(1, "あ")]
+        public void TextWidthTest(int result, string text)
+        {
+            Assert.IsTrue(TextUtility.TextWidth(text) == result);
         }
     }
 }
