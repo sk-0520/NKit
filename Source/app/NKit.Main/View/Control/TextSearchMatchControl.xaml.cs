@@ -513,14 +513,38 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
 
             protected override void ColorizeLine(DocumentLine line)
             {
-                int lineStartOffset = line.Offset;
+                //var matchLines = matches
+                //    .Where(m => m.LineNumber == line.LineNumber)
+                //    .OrderByDescending(m => m.CharacterPostion)
+                //    .ToList()
+                //;
+                //if(matchLines.Count == 0) {
+                //    return;
+                //}
+                if(matches.Count <= line.LineNumber - 1) {
+                    return;
+                }
+
+                //var matchLines = matches.Where( m => m.LineNumber == matches[line.LineNumber - 1].LineNumber);
                 var match = matches[line.LineNumber - 1];
-                string text = CurrentContext.Document.GetText(line);
-                ChangeLinePart(lineStartOffset + match.CharacterPostion, lineStartOffset + match.CharacterPostion + match.Length, elm => {
-                    elm.BackgroundBrush = Brushes.Red;
-                });
+
+                //if(1 < line.LineNumber) {
+                //    var pos = line.Offset - line.PreviousLine.EndOffset;
+                //    if(pos < match.CharacterPostion) {
+                //        return;
+                //    }
+                //}
+
+                //foreach(var match in matchLines) {
+                    var start = line.Offset + match.CharacterPostion;
+                    var end = start + match.Length;
+                    if(line.Offset <= start && end <= line.EndOffset) {
+                        ChangeLinePart(start, end, elm => {
+                            elm.BackgroundBrush = Brushes.Red;
+                        });
+                    }
+                //}
             }
-            
         }
 
         void BuildMatchItemsMultiLineTest(IReadOnlyList<TextSearchMatch> matches)
@@ -531,7 +555,8 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             var showLine = !(HiddenTopLineOnly && matches.All(m => m.LineNumber == 1));
 
             this.viewMatchItems.Text = string.Join(Environment.NewLine, matches.Select(m => m.LineText));
-
+            //this.viewMatchItems.Text = string.Join(Environment.NewLine, matches.GroupBy(m => m.LineNumber).Select(g => g.First()).Select(m => m.LineText));
+            this.viewMatchItems.TextArea.TextView.LineTransformers.Clear();
             this.viewMatchItems.TextArea.TextView.LineTransformers.Add(new ColorizeAvalonEdit(matches));
             //var items = this.viewMatchItems.Document.Lines.Zip(matches, (l, m) => new { Line = l, Match = m });
             //foreach(var item in items) {
