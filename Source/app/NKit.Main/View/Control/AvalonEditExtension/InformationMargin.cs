@@ -1,0 +1,124 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using ICSharpCode.AvalonEdit.Editing;
+using ICSharpCode.AvalonEdit.Utils;
+using ICSharpCode.AvalonEdit.Rendering;
+using System.Globalization;
+using ContentTypeTextNet.NKit.Main.Model;
+
+namespace ContentTypeTextNet.NKit.Main.View.Control.AvalonEditExtension
+{
+    public class InformationMargin : LineNumberMargin
+    {
+
+        public InformationMargin(IReadOnlyList<TextSearchMatch> matches, Brush informationForeground, Brush informationBackground, FontFamily informationFontFamily)
+        {
+            Matches = matches;
+            InformationForeground = informationForeground;
+            InformationBackground = informationBackground;
+            InformationFontFamily = informationFontFamily;
+
+            HasHeader = Matches.Any(m => m.Header != null);
+            HasFooter = Matches.Any(m => m.Footer != null);
+
+            SetValue(System.Windows.Controls.Control.ForegroundProperty, InformationForeground);
+            SetValue(System.Windows.Controls.Control.BackgroundProperty, InformationBackground);
+            SetValue(TextBlock.FontFamilyProperty, InformationFontFamily);
+        }
+
+        #region property
+
+        IReadOnlyList<TextSearchMatch> Matches { get; }
+
+        Brush InformationForeground { get; }
+        Brush InformationBackground { get; }
+        FontFamily InformationFontFamily { get; }
+
+        bool HasHeader { get; }
+        bool HasFooter { get; }
+
+        #endregion
+
+        #region LineNumberMargin
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+
+            base.typeface = new Typeface(
+                (FontFamily)GetValue(TextBlock.FontFamilyProperty),
+                (FontStyle)GetValue(TextBlock.FontStyleProperty),
+                (FontWeight)GetValue(TextBlock.FontWeightProperty),
+                (FontStretch)GetValue(TextBlock.FontStretchProperty)
+            );
+            base.emSize = (double)GetValue(TextBlock.FontSizeProperty);
+
+            // どうせ全部出すし
+            var targetItems = Matches
+                .Select(m => new { Matche = m, HeaderLength = m.Header != null ? new StringInfo(m.Header.ToString()).LengthInTextElements: 0, FooterLength = m.Footer != null ? new StringInfo(m.Footer.ToString()).LengthInTextElements : 0 })
+                .ToList()
+            ;
+
+            var maxLineNumberWidth = (int)targetItems.Max(i => Math.Log10(i.Matche.DisplayLineNumber) + 1);
+            var maxCharacterPostionWidth = "()".Length + (int)targetItems.Max(i => Math.Log10(i.Matche.DisplayCharacterPostion) + 1);
+            var maxHeaderWidth = targetItems.Max(i => i.HeaderLength);
+            var maxFooterWidth = targetItems.Max(i => i.FooterLength);
+            if(HasHeader) {
+                maxHeaderWidth += "  ".Length;
+            }
+            if(HasFooter) {
+                maxFooterWidth += "  ".Length;
+            }
+
+            FormattedText text = new FormattedText(
+            new string('9', maxHeaderWidth + maxLineNumberWidth + maxCharacterPostionWidth + maxFooterWidth),
+            CultureInfo.CurrentCulture,
+            FlowDirection.LeftToRight,
+            base.typeface,
+            base.emSize,
+            (Brush)GetValue(System.Windows.Controls.Control.ForegroundProperty)
+        );
+            return new Size(text.Width, 0);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnRender(DrawingContext drawingContext)
+        {
+            TextView textView = TextView;
+            Size renderSize = RenderSize;
+            if(textView != null && textView.VisualLinesValid) {
+                drawingContext.DrawRectangle((Brush)GetValue(System.Windows.Controls.Control.BackgroundProperty), null,new Rect(0, 0, renderSize.Width, renderSize.Height));
+
+                var foreground = (Brush)GetValue(System.Windows.Controls.Control.ForegroundProperty);
+                foreach(VisualLine line in textView.VisualLines) {
+                    int lineNumber = line.FirstDocumentLine.LineNumber;
+                    var match = Matches[lineNumber - 1];
+                    var baseText = $"{match.DisplayLineNumber}({match.DisplayCharacterPostion})";
+                    if(match.Header != null) {
+                        baseText = $"{match.Header} {baseText}";
+                    }
+                    if(match.Footer != null) {
+                        baseText = $"{baseText} {match.Footer}";
+                    }
+                    FormattedText text = new FormattedText(
+                        baseText,
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        base.typeface,
+                        base.emSize,
+                        foreground
+                    );
+                    double y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop);
+                    drawingContext.DrawText(text, new Point(0, y - textView.VerticalOffset));
+                }
+            }
+        }
+
+        #endregion
+    }
+}

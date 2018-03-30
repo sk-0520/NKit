@@ -15,7 +15,19 @@
   <Grid>
     <sharpdevelop_avalonedit:TextEditor
       x:Name="viewMatchItems"
-    ></sharpdevelop_avalonedit:TextEditor>
+      IsReadOnly="True"
+      BorderThickness="0"
+      BorderBrush="{x:Null}"
+      
+      Background="{Binding Background, ElementName=root}"
+
+      Focusable="{Binding IsSelectable, ElementName=root}"
+      IsHitTestVisible="{Binding IsSelectable, ElementName=root}"
+      
+      HorizontalScrollBarVisibility="Hidden"
+      VerticalScrollBarVisibility="Hidden"
+    >
+    </sharpdevelop_avalonedit:TextEditor>
     <!--<RichTextBox
       x:Name="viewMatchItems"
       IsReadOnly="True"
@@ -38,7 +50,9 @@
           <Setter Property="LineHeight" Value="1" />
         </Style>
       </RichTextBox.Resources>
-        --><!-- PageWidth どうしようかね --><!--
+        -->
+    <!-- PageWidth どうしようかね -->
+    <!--
         <FlowDocument
           LineHeight="1"
           PageWidth="9999"

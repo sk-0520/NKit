@@ -18,6 +18,7 @@ using ContentTypeTextNet.NKit.Main.Model;
 using ContentTypeTextNet.NKit.Main.View.Control.AvalonEditExtension;
 using ContentTypeTextNet.NKit.Utility.Model;
 using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Rendering;
 
 namespace ContentTypeTextNet.NKit.Main.View.Control
@@ -376,7 +377,6 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
                 inlines.Add(new Run(ShowSingleUnmatchText));
             }
 
-
             // 覚書: 呼び出し時にクリア済み
             if(IsSelectable) {
                 p.Inlines.AddRange(inlines);
@@ -506,6 +506,8 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             this.viewMatchItems.Text = string.Join(Environment.NewLine, matches.Select(m => m.LineText));
             var highlighter = new TextSearchMatchallLinesHighlighter(matches, MatchForeground, MatchBackground, MatchFontWeight);
 
+            this.viewMatchItems.TextArea.LeftMargins.Clear();
+            this.viewMatchItems.TextArea.LeftMargins.Add(new InformationMargin(matches, InformationForeground, InformationBackground, InformationFontFamily));
             this.viewMatchItems.TextArea.TextView.LineTransformers.Add(highlighter);
         }
 
@@ -524,6 +526,7 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
                 BuildmatchItemsAllMultiLine(matches, hasHeader, hasFooter, showLine);
             }
 
+            this.viewMatchItems.TextArea.MouseWheel += TextArea_MouseWheel;
             this.viewMatchItems.Visibility = Visibility.Visible;
         }
 
@@ -794,5 +797,22 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             //    }
             //}
         }
+        private void TextArea_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if(!e.Handled) {
+                e.Handled = true;
+
+                var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+                eventArg.RoutedEvent = UIElement.MouseWheelEvent;
+                eventArg.Source = sender;
+
+                var scrollViewer = UIUtility.GetVisualClosest<ScrollViewer>(this);
+                if(scrollViewer is UIElement element) {
+                    element.RaiseEvent(eventArg);
+                }
+
+            }
+        }
+
     }
 }
