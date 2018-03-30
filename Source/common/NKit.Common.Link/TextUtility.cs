@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -126,6 +127,16 @@ namespace ContentTypeTextNet.NKit.Common
             while((line = reader.ReadLine()) != null) {
                 yield return line;
             }
+        }
+
+        public static int TextWidth(string s)
+        {
+            if(s == null) {
+                return 0;
+            }
+
+            var si = new StringInfo(s);
+            return si.LengthInTextElements;
         }
 
         #endregion
