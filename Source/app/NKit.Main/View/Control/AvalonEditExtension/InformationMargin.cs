@@ -52,7 +52,7 @@ namespace ContentTypeTextNet.NKit.Main.View.Control.AvalonEditExtension
         {
 
             base.typeface = new Typeface(
-                (FontFamily)GetValue(TextBlock.FontFamilyProperty),
+                InformationFontFamily,
                 (FontStyle)GetValue(TextBlock.FontStyleProperty),
                 (FontWeight)GetValue(TextBlock.FontWeightProperty),
                 (FontStretch)GetValue(TextBlock.FontStretchProperty)
@@ -67,8 +67,8 @@ namespace ContentTypeTextNet.NKit.Main.View.Control.AvalonEditExtension
 
             var uc = new UnitConverter();
 
-            var maxLineNumberWidth = (int)targetItems.Max(i => uc.GetNumberWidth(i.Matche.DisplayLineNumber));
-            var maxCharacterPostionWidth = "()".Length + (int)targetItems.Max(i => uc.GetNumberWidth(i.Matche.DisplayCharacterPostion));
+            var maxLineNumberWidth = targetItems.Max(i => uc.GetNumberWidth(i.Matche.DisplayLineNumber));
+            var maxCharacterPostionWidth = "()".Length + targetItems.Max(i => uc.GetNumberWidth(i.Matche.DisplayCharacterPostion));
             var maxHeaderWidth = targetItems.Max(i => i.HeaderLength);
             var maxFooterWidth = targetItems.Max(i => i.FooterLength);
             if(HasHeader) {
@@ -78,29 +78,29 @@ namespace ContentTypeTextNet.NKit.Main.View.Control.AvalonEditExtension
                 maxFooterWidth += "  ".Length;
             }
 
-            FormattedText text = new FormattedText(
-            new string('9', maxHeaderWidth + maxLineNumberWidth + maxCharacterPostionWidth + maxFooterWidth),
-            CultureInfo.CurrentCulture,
-            FlowDirection.LeftToRight,
-            base.typeface,
-            base.emSize,
-            (Brush)GetValue(System.Windows.Controls.Control.ForegroundProperty)
-        );
+            var text = new FormattedText(
+                new string('9', maxHeaderWidth + maxLineNumberWidth + maxCharacterPostionWidth + maxFooterWidth),
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                base.typeface,
+                base.emSize,
+                InformationForeground
+            );
             return new Size(text.Width, 0);
         }
 
         /// <inheritdoc/>
         protected override void OnRender(DrawingContext drawingContext)
         {
-            TextView textView = TextView;
-            Size renderSize = RenderSize;
+            var textView = TextView;
             if(textView != null && textView.VisualLinesValid) {
-                drawingContext.DrawRectangle((Brush)GetValue(System.Windows.Controls.Control.BackgroundProperty), null,new Rect(0, 0, renderSize.Width, renderSize.Height));
+                var renderSize = RenderSize;
+                drawingContext.DrawRectangle(InformationBackground, null,new Rect(0, 0, renderSize.Width, renderSize.Height));
 
-                var foreground = (Brush)GetValue(System.Windows.Controls.Control.ForegroundProperty);
                 foreach(VisualLine line in textView.VisualLines) {
                     int lineNumber = line.FirstDocumentLine.LineNumber;
                     var match = Matches[lineNumber - 1];
+                    // キッツいなぁ
                     var baseText = $"{match.DisplayLineNumber}({match.DisplayCharacterPostion})";
                     if(match.Header != null) {
                         baseText = $"{match.Header} {baseText}";
@@ -108,15 +108,16 @@ namespace ContentTypeTextNet.NKit.Main.View.Control.AvalonEditExtension
                     if(match.Footer != null) {
                         baseText = $"{baseText} {match.Footer}";
                     }
-                    FormattedText text = new FormattedText(
+
+                    var text = new FormattedText(
                         baseText,
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         base.typeface,
                         base.emSize,
-                        foreground
+                        InformationForeground
                     );
-                    double y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop);
+                    var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop);
                     drawingContext.DrawText(text, new Point(0, y - textView.VerticalOffset));
                 }
             }
