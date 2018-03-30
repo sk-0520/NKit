@@ -43,7 +43,7 @@
       <TabItem DataContext="{Binding FinderManager}">
         <TabItem.Header>
           <StackPanel Style="{StaticResource IconPanel}">
-            <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_Finder}" />
+            <Control Style="{StaticResource Image-Small}" Template="{StaticResource Image_Finder}" />
             <TextBlock>ファインダー</TextBlock>
           </StackPanel>
         </TabItem.Header>
@@ -58,7 +58,7 @@
       <TabItem DataContext="{Binding CaptureManager}">
         <TabItem.Header>
           <StackPanel Style="{StaticResource IconPanel}">
-            <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_Capture}" />
+            <Control Style="{StaticResource Image-Small}" Template="{StaticResource Image_Capture}" />
             <TextBlock>キャプチャ</TextBlock>
           </StackPanel>
         </TabItem.Header>
@@ -76,7 +76,7 @@
       <TabItem DataContext="{Binding NKitManager}">
         <TabItem.Header>
           <StackPanel Style="{StaticResource IconPanel}">
-            <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_NKit}" />
+            <Control Style="{StaticResource Image-Small}" Template="{StaticResource Image_NKit}" />
             <TextBlock>NKit</TextBlock>
           </StackPanel>
         </TabItem.Header>
