@@ -39,7 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CommonServiceLocator.2.0.3\lib\net47\CommonServiceLocator.dll</HintPath>
+      <HintPath>..\..\packages\CommonServiceLocator.2.0.3\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
     <Reference Include="ContentTypeTextNet.PInvoke, Version=1.0.6654.7809, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ContentTypeTextNet.PInvoke.1.0.0.33\lib\net46\ContentTypeTextNet.PInvoke.dll</HintPath>
@@ -101,7 +101,6 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="Prism, Version=7.0.0.396, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Prism.Core.7.0.0.396\lib\net45\Prism.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Prism.Wpf, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Prism.Wpf.6.3.0\lib\net45\Prism.Wpf.dll</HintPath>
