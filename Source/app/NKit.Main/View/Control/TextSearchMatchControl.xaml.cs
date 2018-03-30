@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ContentTypeTextNet.NKit.Main.Model;
+using ContentTypeTextNet.NKit.Main.View.Control.AvalonEditExtension;
 using ContentTypeTextNet.NKit.Utility.Model;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Rendering;
@@ -388,95 +389,95 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             }
         }
 
-        IEnumerable<Block> BuildmatchItemsAllMultiLine(IReadOnlyList<TextSearchMatch> matches, bool hasHeader, bool hasFooter, bool showLine)
-        {
-            var uc = new UnitConverter();
+        //IEnumerable<Block> BuildmatchItemsAllMultiLine(IReadOnlyList<TextSearchMatch> matches, bool hasHeader, bool hasFooter, bool showLine)
+        //{
+        //    var uc = new UnitConverter();
 
-            var formatLength = new {
-                InfoHeader = hasHeader ? matches.Where(m => m.Header != null).Select(m => new StringInfo(m.Header.ToString()).LengthInTextElements).Max() : 0,
-                //TODO: InfoHeader のコピペ
-                InfoFooter = hasFooter ? matches.Where(m => m.Footer != null).Select(m => new StringInfo(m.Footer.ToString()).LengthInTextElements).Max() : 0,
-                LineNumber = showLine ? uc.GetNumberWidth(matches.Max(m => m.DisplayLineNumber)) : 0,
-                CharacterPostion = uc.GetNumberWidth(matches.Max(m => m.DisplayCharacterPostion)),
-            };
+        //    var formatLength = new {
+        //        InfoHeader = hasHeader ? matches.Where(m => m.Header != null).Select(m => new StringInfo(m.Header.ToString()).LengthInTextElements).Max() : 0,
+        //        //TODO: InfoHeader のコピペ
+        //        InfoFooter = hasFooter ? matches.Where(m => m.Footer != null).Select(m => new StringInfo(m.Footer.ToString()).LengthInTextElements).Max() : 0,
+        //        LineNumber = showLine ? uc.GetNumberWidth(matches.Max(m => m.DisplayLineNumber)) : 0,
+        //        CharacterPostion = uc.GetNumberWidth(matches.Max(m => m.DisplayCharacterPostion)),
+        //    };
 
-            var blocks = new List<Block>(matches.Count);
+        //    var blocks = new List<Block>(matches.Count);
 
-            foreach(var match in matches) {
-                var p = new Paragraph() {
-                    Tag = match,
-                };
+        //    foreach(var match in matches) {
+        //        var p = new Paragraph() {
+        //            Tag = match,
+        //        };
 
-                var infoElement = new Span() {
-                    Foreground = InformationForeground,
-                    Background = InformationBackground,
-                    FontFamily = InformationFontFamily,
-                };
+        //        var infoElement = new Span() {
+        //            Foreground = InformationForeground,
+        //            Background = InformationBackground,
+        //            FontFamily = InformationFontFamily,
+        //        };
 
-                // ヘッダ情報
-                if(hasHeader) {
-                    var headerElement = new Run();
-                    if(match.Header != null) {
-                        headerElement.Text = match.Header.ToString().PadRight(formatLength.InfoHeader);
-                    } else {
-                        headerElement.Text = new string(' ', formatLength.InfoHeader);
-                    }
+        //        // ヘッダ情報
+        //        if(hasHeader) {
+        //            var headerElement = new Run();
+        //            if(match.Header != null) {
+        //                headerElement.Text = match.Header.ToString().PadRight(formatLength.InfoHeader);
+        //            } else {
+        //                headerElement.Text = new string(' ', formatLength.InfoHeader);
+        //            }
 
-                    infoElement.Inlines.Add(headerElement);
-                }
+        //            infoElement.Inlines.Add(headerElement);
+        //        }
 
-                // 行数
-                if(showLine) {
-                    var lineNumerElement = new Run(FormatNumer(match.DisplayLineNumber, formatLength.LineNumber)) {
-                        FontWeight = FontWeights.Bold,
-                    };
-                    infoElement.Inlines.Add(lineNumerElement);
-                }
+        //        // 行数
+        //        if(showLine) {
+        //            var lineNumerElement = new Run(FormatNumer(match.DisplayLineNumber, formatLength.LineNumber)) {
+        //                FontWeight = FontWeights.Bold,
+        //            };
+        //            infoElement.Inlines.Add(lineNumerElement);
+        //        }
 
-                // 横位置
-                var positionBaseText = FormatNumer(match.DisplayCharacterPostion, formatLength.CharacterPostion);
-                var positionElement = new Run($"({positionBaseText})") {
-                    TextDecorations = TextDecorations.Underline,
-                };
-                infoElement.Inlines.Add(positionElement);
+        //        // 横位置
+        //        var positionBaseText = FormatNumer(match.DisplayCharacterPostion, formatLength.CharacterPostion);
+        //        var positionElement = new Run($"({positionBaseText})") {
+        //            TextDecorations = TextDecorations.Underline,
+        //        };
+        //        infoElement.Inlines.Add(positionElement);
 
-                //TODO: hasHeader のコピペ
-                if(hasFooter) {
-                    var footerElement = new Run();
-                    if(match.Footer != null) {
-                        footerElement.Text = match.Footer.ToString().PadRight(formatLength.InfoFooter);
-                    } else {
-                        footerElement.Text = new string(' ', formatLength.InfoFooter);
-                    }
+        //        //TODO: hasHeader のコピペ
+        //        if(hasFooter) {
+        //            var footerElement = new Run();
+        //            if(match.Footer != null) {
+        //                footerElement.Text = match.Footer.ToString().PadRight(formatLength.InfoFooter);
+        //            } else {
+        //                footerElement.Text = new string(' ', formatLength.InfoFooter);
+        //            }
 
-                    infoElement.Inlines.Add(footerElement);
-                }
+        //            infoElement.Inlines.Add(footerElement);
+        //        }
 
-                // 分割
-                var splitElement = new Run(": ");
-                infoElement.Inlines.Add(splitElement);
+        //        // 分割
+        //        var splitElement = new Run(": ");
+        //        infoElement.Inlines.Add(splitElement);
 
-                p.Inlines.Add(infoElement);
+        //        p.Inlines.Add(infoElement);
 
-                // ハイライト
-                var highlightElements = new {
-                    Head = new Run(match.LineUnMatcheHead),
-                    Tail = new Run(match.LineUnMatcheTail),
-                    Body = new Run(match.LineHighlight) {
-                        Foreground = MatchForeground,
-                        Background = MatchBackground,
-                        FontWeight = MatchFontWeight,
-                    },
-                };
-                p.Inlines.Add(highlightElements.Head);
-                p.Inlines.Add(highlightElements.Body);
-                p.Inlines.Add(highlightElements.Tail);
+        //        // ハイライト
+        //        var highlightElements = new {
+        //            Head = new Run(match.LineUnMatcheHead),
+        //            Tail = new Run(match.LineUnMatcheTail),
+        //            Body = new Run(match.LineHighlight) {
+        //                Foreground = MatchForeground,
+        //                Background = MatchBackground,
+        //                FontWeight = MatchFontWeight,
+        //            },
+        //        };
+        //        p.Inlines.Add(highlightElements.Head);
+        //        p.Inlines.Add(highlightElements.Body);
+        //        p.Inlines.Add(highlightElements.Tail);
 
-                blocks.Add(p);
-            }
+        //        blocks.Add(p);
+        //    }
 
-            return blocks;
-        }
+        //    return blocks;
+        //}
 
         IEnumerable<Block> BuildmatchItemsGroupingMultiLine(IReadOnlyList<TextSearchMatch> matches, bool hasHeader, bool hasFooter, bool showLine)
         {
@@ -500,69 +501,28 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
         //    this.viewMatchItems.Visibility = Visibility.Visible;
         //}
 
-
-        public class ColorizeAvalonEdit : DocumentColorizingTransformer
+        void BuildmatchItemsAllMultiLine(IReadOnlyList<TextSearchMatch> matches, bool hasHeader, bool hasFooter, bool showLine)
         {
-            private IReadOnlyList<TextSearchMatch> matches;
+            this.viewMatchItems.Text = string.Join(Environment.NewLine, matches.Select(m => m.LineText));
+            var highlighter = new TextSearchMatchallLinesHighlighter(matches, MatchForeground, MatchBackground, MatchFontWeight);
 
-
-            public ColorizeAvalonEdit(IReadOnlyList<TextSearchMatch> matches)
-            {
-                this.matches = matches;
-            }
-
-            protected override void ColorizeLine(DocumentLine line)
-            {
-                //var matchLines = matches
-                //    .Where(m => m.LineNumber == line.LineNumber)
-                //    .OrderByDescending(m => m.CharacterPostion)
-                //    .ToList()
-                //;
-                //if(matchLines.Count == 0) {
-                //    return;
-                //}
-                if(matches.Count <= line.LineNumber - 1) {
-                    return;
-                }
-
-                //var matchLines = matches.Where( m => m.LineNumber == matches[line.LineNumber - 1].LineNumber);
-                var match = matches[line.LineNumber - 1];
-
-                //if(1 < line.LineNumber) {
-                //    var pos = line.Offset - line.PreviousLine.EndOffset;
-                //    if(pos < match.CharacterPostion) {
-                //        return;
-                //    }
-                //}
-
-                //foreach(var match in matchLines) {
-                    var start = line.Offset + match.CharacterPostion;
-                    var end = start + match.Length;
-                    if(line.Offset <= start && end <= line.EndOffset) {
-                        ChangeLinePart(start, end, elm => {
-                            elm.BackgroundBrush = Brushes.Red;
-                        });
-                    }
-                //}
-            }
+            this.viewMatchItems.TextArea.TextView.LineTransformers.Add(highlighter);
         }
 
-        void BuildMatchItemsMultiLineTest(IReadOnlyList<TextSearchMatch> matches)
+        void BuildMatchItemsMultiLine(IReadOnlyList<TextSearchMatch> matches)
         {
             var hasHeader = matches.Any(m => m.Header != null);
             var hasFooter = matches.Any(m => m.Footer != null);
 
             var showLine = !(HiddenTopLineOnly && matches.All(m => m.LineNumber == 1));
 
-            this.viewMatchItems.Text = string.Join(Environment.NewLine, matches.Select(m => m.LineText));
-            //this.viewMatchItems.Text = string.Join(Environment.NewLine, matches.GroupBy(m => m.LineNumber).Select(g => g.First()).Select(m => m.LineText));
             this.viewMatchItems.TextArea.TextView.LineTransformers.Clear();
-            this.viewMatchItems.TextArea.TextView.LineTransformers.Add(new ColorizeAvalonEdit(matches));
-            //var items = this.viewMatchItems.Document.Lines.Zip(matches, (l, m) => new { Line = l, Match = m });
-            //foreach(var item in items) {
-            //    this.viewMatchItems.TextArea.TextView.LineTransformers.Add(new ColorizeAvalonEdit(item.Match));
-            //}
 
+            if(GroupingOneLineCharacters) {
+                BuildmatchItemsGroupingMultiLine(matches, hasHeader, hasFooter, showLine);
+            } else {
+                BuildmatchItemsAllMultiLine(matches, hasHeader, hasFooter, showLine);
+            }
 
             this.viewMatchItems.Visibility = Visibility.Visible;
         }
@@ -589,7 +549,7 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
                 BuildMatchItemsSingleLine(matches);
             } else if(matches.Any()) {
                 //BuildMatchItemsMultiLine(matches);
-                BuildMatchItemsMultiLineTest(matches);
+                BuildMatchItemsMultiLine(matches);
             }
         }
 

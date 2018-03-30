@@ -197,6 +197,7 @@
     <Compile Include="View\Cli\CliManagerControl.xaml.cs">
       <DependentUpon>CliManagerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Control\AvalonEditExtension\TextSearchMatchHighlighter.cs" />
     <Compile Include="View\Control\FlagMatchSelectControl.xaml.cs">
       <DependentUpon>FlagMatchSelectControl.xaml</DependentUpon>
     </Compile>
