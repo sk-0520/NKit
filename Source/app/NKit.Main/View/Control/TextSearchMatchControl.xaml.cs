@@ -386,10 +386,9 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             throw new NotImplementedException("だりぃ");
         }
 
-        void BuildmatchItemsAllMultiLine(IReadOnlyList<TextSearchMatch> matches, bool hasHeader, bool hasFooter, bool showLine)
+        void BuildmatchItemsAllMultiLine(IReadOnlyList<TextSearchMatch> matches)
         {
             this.viewMatchItems.Text = string.Join(Environment.NewLine, matches.Select(m => m.LineText));
-            //this.viewMatchItems.Height = matches.Count * this.viewMatchItems.TextArea.TextView.DefaultLineHeight;
             var highlighter = new TextSearchMatchallLinesHighlighter(matches, MatchForeground, MatchBackground, MatchFontWeight);
 
             this.viewMatchItems.TextArea.LeftMargins.Clear();
@@ -409,7 +408,7 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             if(GroupingOneLineCharacters) {
                 BuildmatchItemsGroupingMultiLine(matches, hasHeader, hasFooter, showLine);
             } else {
-                BuildmatchItemsAllMultiLine(matches, hasHeader, hasFooter, showLine);
+                BuildmatchItemsAllMultiLine(matches);
             }
 
             //this.viewMatchItems.TextArea.Caret.PositionChanged -= Caret_PositionChanged;
