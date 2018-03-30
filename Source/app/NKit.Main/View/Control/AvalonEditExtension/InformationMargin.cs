@@ -11,6 +11,7 @@ using ICSharpCode.AvalonEdit.Utils;
 using ICSharpCode.AvalonEdit.Rendering;
 using System.Globalization;
 using ContentTypeTextNet.NKit.Main.Model;
+using ContentTypeTextNet.NKit.Utility.Model;
 
 namespace ContentTypeTextNet.NKit.Main.View.Control.AvalonEditExtension
 {
@@ -64,8 +65,10 @@ namespace ContentTypeTextNet.NKit.Main.View.Control.AvalonEditExtension
                 .ToList()
             ;
 
-            var maxLineNumberWidth = (int)targetItems.Max(i => Math.Log10(i.Matche.DisplayLineNumber) + 1);
-            var maxCharacterPostionWidth = "()".Length + (int)targetItems.Max(i => Math.Log10(i.Matche.DisplayCharacterPostion) + 1);
+            var uc = new UnitConverter();
+
+            var maxLineNumberWidth = (int)targetItems.Max(i => uc.GetNumberWidth(i.Matche.DisplayLineNumber));
+            var maxCharacterPostionWidth = "()".Length + (int)targetItems.Max(i => uc.GetNumberWidth(i.Matche.DisplayCharacterPostion));
             var maxHeaderWidth = targetItems.Max(i => i.HeaderLength);
             var maxFooterWidth = targetItems.Max(i => i.FooterLength);
             if(HasHeader) {
