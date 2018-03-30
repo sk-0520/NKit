@@ -37,7 +37,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         {
             try {
                 Process.Start(target);
-            }catch(Exception ex) {
+            } catch(Exception ex) {
                 Trace.TraceError(ex.ToString());
             }
         }
@@ -93,7 +93,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
         private void commandApp_Click(object sender, EventArgs e)
         {
-            Execute(Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location));
+            Execute(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
         }
 
         private void commandData_Click(object sender, EventArgs e)
