@@ -58,7 +58,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
               </Grid.ColumnDefinitions>
-              
+
               <Label Grid.Column="0">グループ名(_G):</Label>
               <TextBox Grid.Column="1" Text="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
@@ -141,11 +141,6 @@
         </ToolBar>
 
         <ListBox x:Name="captureItemsContainer" Grid.Row="1" VirtualizingPanel.ScrollUnit="Pixel" ScrollViewer.CanContentScroll="True" ItemsSource="{Binding ImageItems}" SelectedItem="{Binding SelectedImageItem}">
-          <i:Interaction.Triggers>
-            <i:EventTrigger EventName="MouseDoubleClick">
-              <i:InvokeCommandAction Command="{Binding OpenSelectedImageItemCommand}" />
-            </i:EventTrigger>
-          </i:Interaction.Triggers>
           <ListBox.ItemContainerStyle>
             <Style TargetType="ListBoxItem">
               <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -153,53 +148,60 @@
           </ListBox.ItemContainerStyle>
           <ListBox.ItemTemplate>
             <DataTemplate>
-              <Grid>
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="Auto" />
-                  <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                
-                <Grid x:Name="imageContainer" Grid.Column="0">
-                  <TextBlock>
-                    <Hyperlink TextDecorations="{x:Null}" Command="{Binding CopyCommand}" >
-                      <Image Source="{Binding ThumbnailImagePath, Converter={StaticResource FilePathToImageConverter}}" Width="{x:Static app:Constants.CaptureThumbnailSizeWidth}" Height="{x:Static app:Constants.CaptureThumbnailSizeHeight}" />
-                    </Hyperlink>
-                  </TextBlock>
-                  <TextBlock IsHitTestVisible="False" VerticalAlignment="Bottom" HorizontalAlignment="Right" Visibility="{Binding IsMouseOver, ElementName=imageContainer, Converter={StaticResource BooleanToVisibilityConverter}}">copy</TextBlock>
-                </Grid>
-                <Grid Grid.Column="1">
-                  <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                  </Grid.RowDefinitions>
+              <ContentControl>
+                <i:Interaction.Triggers>
+                  <i:EventTrigger EventName="MouseDoubleClick">
+                    <prism:InvokeCommandAction Command="{Binding OpenCommand}" />
+                  </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <Grid>
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                   </Grid.ColumnDefinitions>
 
-                  <Label Grid.Row="0" Grid.Column="0">日時:</Label>
-                  <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CaptureUtcTimestamp, Converter={StaticResource UtcToLocalTimestampConverter}}" />
+                  <Grid x:Name="imageContainer" Grid.Column="0">
+                    <TextBlock>
+                    <Hyperlink TextDecorations="{x:Null}" Command="{Binding CopyCommand}" >
+                      <Image Source="{Binding ThumbnailImagePath, Converter={StaticResource FilePathToImageConverter}}" Width="{x:Static app:Constants.CaptureThumbnailSizeWidth}" Height="{x:Static app:Constants.CaptureThumbnailSizeHeight}" />
+                    </Hyperlink>
+                    </TextBlock>
+                    <TextBlock IsHitTestVisible="False" VerticalAlignment="Bottom" HorizontalAlignment="Right" Visibility="{Binding IsMouseOver, ElementName=imageContainer, Converter={StaticResource BooleanToVisibilityConverter}}">copy</TextBlock>
+                  </Grid>
+                  <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto" />
+                      <RowDefinition Height="Auto" />
+                      <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                  <Label Grid.Row="1" Grid.Column="0">サイズ:</Label>
-                  <TextBlock Grid.Row="1" Grid.Column="1">
+                    <Label Grid.Row="0" Grid.Column="0">日時:</Label>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CaptureUtcTimestamp, Converter={StaticResource UtcToLocalTimestampConverter}}" />
+
+                    <Label Grid.Row="1" Grid.Column="0">サイズ:</Label>
+                    <TextBlock Grid.Row="1" Grid.Column="1">
                     <Run Text="{Binding Width, Mode=OneTime}" />
                     <Run Text=" * " />
                     <Run Text="{Binding Height, Mode=OneTime}" />
-                  </TextBlock>
+                    </TextBlock>
 
-                  <Label Grid.Row="2" Grid.Column="0">コメント:</Label>
-                  <Grid Grid.Row="2" Grid.Column="1">
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="*" />
-                      <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="2" Grid.Column="0">コメント:</Label>
+                    <Grid Grid.Row="2" Grid.Column="1">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                      </Grid.ColumnDefinitions>
 
-                    <TextBox Grid.Column="0" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" />
-                    <Button Grid.Column="1" Margin="{StaticResource LeftMargin}" Command="{Binding DataContext.RemoveImageCommand ,ElementName=root}" CommandParameter="{Binding}">削除</Button>
+                      <TextBox Grid.Column="0" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" />
+                      <Button Grid.Column="1" Margin="{StaticResource LeftMargin}" Command="{Binding DataContext.RemoveImageCommand ,ElementName=root}" CommandParameter="{Binding}">削除</Button>
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
+              </ContentControl>
             </DataTemplate>
           </ListBox.ItemTemplate>
         </ListBox>

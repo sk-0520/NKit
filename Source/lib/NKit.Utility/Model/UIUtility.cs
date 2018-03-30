@@ -248,12 +248,15 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             }
         }
 
-        public static bool IsEnabledEventArea(DependencyObject dependencyObject, Type[] enableElementTypes)
+        public static bool IsEnabledEventArea(DependencyObject dependencyObject, Type[] enableElementTypes, Type[] disableElementTypes)
         {
             if(enableElementTypes == null) {
                 throw new ArgumentNullException(nameof(enableElementTypes));
             }
-
+            if(disableElementTypes == null) {
+                throw new ArgumentNullException(nameof(disableElementTypes));
+            }
+            
             // かなり TextSearchMatchControl に依存してる
             if(dependencyObject is System.Windows.Documents.Run) {
                 return true;
@@ -261,6 +264,9 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
             while(dependencyObject != null) {
                 var type = dependencyObject.GetType();
+                if(disableElementTypes.Any(t => t == type)) {
+                    return false;
+                }
                 if(enableElementTypes.Any(t => t == type)) {
                     return true;
                 }
@@ -268,6 +274,10 @@ namespace ContentTypeTextNet.NKit.Utility.Model
             }
 
             return false;
+        }
+        public static bool IsEnabledEventArea(DependencyObject dependencyObject, Type[] enableElementTypes)
+        {
+            return IsEnabledEventArea(dependencyObject, enableElementTypes, new Type[0]);
         }
     }
 }
