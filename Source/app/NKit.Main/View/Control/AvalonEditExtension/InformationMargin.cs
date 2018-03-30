@@ -68,7 +68,7 @@ namespace ContentTypeTextNet.NKit.Main.View.Control.AvalonEditExtension
             var uc = new UnitConverter();
 
             var maxLineNumberWidth = targetItems.Max(i => uc.GetNumberWidth(i.Matche.DisplayLineNumber));
-            var maxCharacterPostionWidth = "()".Length + targetItems.Max(i => uc.GetNumberWidth(i.Matche.DisplayCharacterPostion));
+            var maxCharacterPostionWidth = "()".Length + targetItems.Max(i => uc.GetNumberWidth(i.Matche.DisplayCharacterPosition));
             var maxHeaderWidth = targetItems.Max(i => i.HeaderLength);
             var maxFooterWidth = targetItems.Max(i => i.FooterLength);
             if(HasHeader) {
@@ -101,7 +101,7 @@ namespace ContentTypeTextNet.NKit.Main.View.Control.AvalonEditExtension
                     int lineNumber = line.FirstDocumentLine.LineNumber;
                     var match = Matches[lineNumber - 1];
                     // キッツいなぁ
-                    var baseText = $"{match.DisplayLineNumber}({match.DisplayCharacterPostion})";
+                    var baseText = $"{match.DisplayLineNumber}({match.DisplayCharacterPosition})";
                     if(match.Header != null) {
                         baseText = $"{match.Header} {baseText}";
                     }

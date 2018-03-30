@@ -339,9 +339,9 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             var nextStartIndex = 0;
 
             foreach(var match in matches) {
-                var headText = line.Substring(nextStartIndex, match.CharacterPostion - nextStartIndex);
-                var bodyText = line.Substring(match.CharacterPostion, match.Length);
-                nextStartIndex = match.CharacterPostion + match.Length;
+                var headText = line.Substring(nextStartIndex, match.CharacterPosition - nextStartIndex);
+                var bodyText = line.Substring(match.CharacterPosition, match.Length);
+                nextStartIndex = match.CharacterPosition + match.Length;
 
                 var headElement = new Run(headText);
                 var bodyElement = new Run(bodyText) {

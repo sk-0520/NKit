@@ -39,8 +39,7 @@ namespace ContentTypeTextNet.NKit.Main.View.Control.AvalonEditExtension
 
             var match = Matches[line.LineNumber - 1];
 
-
-            var start = line.Offset + match.CharacterPostion;
+            var start = line.Offset + match.CharacterPosition;
             var end = start + match.Length;
             if(line.Offset <= start && end <= line.EndOffset) {
                 
