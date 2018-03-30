@@ -411,6 +411,8 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
                 BuildmatchItemsAllMultiLine(matches, hasHeader, hasFooter, showLine);
             }
 
+            this.viewMatchItems.TextArea.Caret.PositionChanged -= Caret_PositionChanged;
+            this.viewMatchItems.TextArea.Caret.PositionChanged += Caret_PositionChanged;
             this.viewMatchItems.TextArea.PreviewKeyDown -= viewMatchItems_KeyDown;
             this.viewMatchItems.TextArea.PreviewKeyDown += viewMatchItems_KeyDown;
             this.viewMatchItems.TextArea.MouseWheel -= TextArea_MouseWheel;
@@ -523,6 +525,29 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
 
             }
         }
+
+        private void Caret_PositionChanged(object sender, EventArgs e)
+        {
+            var scrollViewer = UIUtility.GetVisualClosest<ScrollViewer>(this) as ScrollViewer;
+            if(scrollViewer != null) {
+                var y = this.viewMatchItems.TextArea.TextView.DefaultLineHeight * this.viewMatchItems.TextArea.Caret.Line;
+                Debug.WriteLine(y);
+                Debug.WriteLine(scrollViewer.ContentVerticalOffset);
+                Debug.WriteLine(scrollViewer.VerticalOffset);
+
+                // キャレットが表示外に行ったら表示してあげる
+                if(y < scrollViewer.VerticalOffset) {
+                    // 上へのスクロールは素直な動作
+                    scrollViewer.ScrollToVerticalOffset(y);
+                } else if(scrollViewer.ActualHeight + scrollViewer.VerticalOffset < y + this.viewMatchItems.TextArea.TextView.DefaultLineHeight * 2) {
+                    // 下へのスクロールは補正しないと見た目が悪い(ガックガックなる)
+                    // * 2 は体感
+                    scrollViewer.ScrollToVerticalOffset(y - scrollViewer.ActualHeight + this.viewMatchItems.TextArea.TextView.DefaultLineHeight * 2);
+                }
+            }
+
+        }
+
 
     }
 }
