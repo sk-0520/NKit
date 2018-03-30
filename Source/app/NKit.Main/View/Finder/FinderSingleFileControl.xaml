@@ -194,14 +194,16 @@
                   </ItemsControl>
                 </StackPanel>
                 <StackPanel x:Key="Word">
-                  <Grid>
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="Auto" />
-                      <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0">要素:</Label>
-                    <app_main_view_control:TextSearchMatchControl Grid.Column="1" ItemsSource="{Binding SingleItem.ContentMsOfficeWordElements, Mode=TwoWay, ElementName=root}" UserSelectedCommand="{Binding SingleItem.OpenMsOfficeWordFileCommand, Mode=TwoWay, ElementName=root}"  />
-                  </Grid>
+                  <ScrollViewer>
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                      </Grid.ColumnDefinitions>
+                      <Label Grid.Column="0">要素:</Label>
+                      <app_main_view_control:TextSearchMatchControl Grid.Column="1" ItemsSource="{Binding SingleItem.ContentMsOfficeWordElements, Mode=TwoWay, ElementName=root}" UserSelectedCommand="{Binding SingleItem.OpenMsOfficeWordFileCommand, Mode=TwoWay, ElementName=root}" MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" />
+                    </Grid>
+                  </ScrollViewer>
                 </StackPanel>
               </ContentControl.Resources>
               <ContentControl.Style>
@@ -234,7 +236,7 @@
       <TabItem Header="xml/html" IsSelected="{Binding SingleItem.IsSelectedContentXmlHtml, ElementName=root}" Visibility="{Binding SingleItem.ContentIsXmlHtml, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
         <ScrollViewer>
           <StackPanel DataContext="{Binding SingleItem.ContentXmlHtml, ElementName=root}">
-            <app_main_view_control:TextSearchMatchControl HiddenTopLineOnly="False"  ItemsSource="{Binding SingleItem.ContentXmlHtmlMatches, Mode=TwoWay, ElementName=root}" UserSelectedCommand="{Binding SingleItem.OpenXmlHtmlFileCommand, Mode=TwoWay, ElementName=root}"  />
+            <app_main_view_control:TextSearchMatchControl HiddenTopLineOnly="False"  ItemsSource="{Binding SingleItem.ContentXmlHtmlMatches, Mode=TwoWay, ElementName=root}" UserSelectedCommand="{Binding SingleItem.OpenXmlHtmlFileCommand, Mode=TwoWay, ElementName=root}" MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" />
           </StackPanel>
         </ScrollViewer>
       </TabItem>

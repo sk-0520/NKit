@@ -416,8 +416,8 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             //this.viewMatchItems.TextArea.Caret.PositionChanged += Caret_PositionChanged;
             this.viewMatchItems.TextArea.PreviewKeyDown -= viewMatchItems_KeyDown;
             this.viewMatchItems.TextArea.PreviewKeyDown += viewMatchItems_KeyDown;
-            //this.viewMatchItems.TextArea.MouseWheel -= TextArea_MouseWheel;
-            //this.viewMatchItems.TextArea.MouseWheel += TextArea_MouseWheel;
+            this.viewMatchItems.TextArea.MouseWheel -= TextArea_MouseWheel;
+            this.viewMatchItems.TextArea.MouseWheel += TextArea_MouseWheel;
             this.viewMatchItems.Visibility = Visibility.Visible;
         }
 
@@ -523,39 +523,39 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             //    }
             //}
         }
-        //private void TextArea_MouseWheel(object sender, MouseWheelEventArgs e)
-        //{
-        //    if(!e.Handled) {
-        //        var scrollViewer = UIUtility.GetVisualClosest<ScrollViewer>(this) as ScrollViewer;
-        //        if(scrollViewer != null) {
-        //            var location = this.viewMatchItems.TextArea.Caret.Location;
-        //            var viewLinesCount = scrollViewer.ActualHeight / this.viewMatchItems.TextArea.TextView.DefaultLineHeight;
-        //            var sendScrollViewer = false;
+        private void TextArea_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if(!e.Handled) {
+                var scrollViewer = UIUtility.GetVisualClosest<ScrollViewer>(this) as ScrollViewer;
+                if(scrollViewer != null && this.viewMatchItems.TextArea.TextView != null && this.viewMatchItems.TextArea.TextView.VisualLinesValid) {
+                    var visualLines = this.viewMatchItems.TextArea.TextView.VisualLines;
+                    var firstLineNumber = visualLines.First().FirstDocumentLine.LineNumber;
+                    var lastLineNumber = visualLines.Last().FirstDocumentLine.LineNumber;
 
-        //            if(0 < e.Delta) {
-        //                // 上へ
-        //                sendScrollViewer = location.Line < viewLinesCount;
-        //            } else if(e.Delta < 0) {
-        //                // 下へ
-        //                sendScrollViewer = this.viewMatchItems.LineCount - viewLinesCount < location.Line;
-        //            }
-        //            var a = true;
-        //            if(a) {
-        //                return;
-        //            }
-        //            if(sendScrollViewer) {
-        //                e.Handled = true;
+                    var viewLinesCount = scrollViewer.ActualHeight / this.viewMatchItems.TextArea.TextView.DefaultLineHeight;
+                    var sendScrollViewer = false;
+
+                    if(0 < e.Delta) {
+                        // 上へ
+                        sendScrollViewer = firstLineNumber < viewLinesCount;
+                    } else if(e.Delta < 0) {
+                        // 下へ
+                        sendScrollViewer = this.viewMatchItems.LineCount <= lastLineNumber;
+                    }
+
+                    if(sendScrollViewer) {
+                        e.Handled = true;
 
 
-        //                var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
-        //                eventArg.RoutedEvent = UIElement.MouseWheelEvent;
-        //                eventArg.Source = sender;
+                        var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+                        eventArg.RoutedEvent = UIElement.MouseWheelEvent;
+                        eventArg.Source = sender;
 
-        //                scrollViewer.RaiseEvent(eventArg);
-        //            }
-        //        }
-        //    }
-        //}
+                        scrollViewer.RaiseEvent(eventArg);
+                    }
+                }
+            }
+        }
 
         //private void Caret_PositionChanged(object sender, EventArgs e)
         //{
