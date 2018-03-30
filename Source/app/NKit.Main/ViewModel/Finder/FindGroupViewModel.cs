@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -485,6 +486,17 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         //    },
         //    () => SelectedItem != null || MultiSelectedItem.IsEnabled
         //);
+
+        public ICommand FindItemsSelectionChangedCommand => new DelegateCommand<SelectionChangedEventArgs>(
+            e => {
+                foreach(var item in e.RemovedItems.Cast<ISelectable>()) {
+                    item.IsSelected = false;
+                }
+                foreach(var item in e.AddedItems.Cast<ISelectable>()) {
+                    item.IsSelected = true;
+                }
+            }
+        );
 
         #endregion
 
