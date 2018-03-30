@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\CounterTest.cs" />
+    <Compile Include="Model\PathUtilityTest.cs" />
     <Compile Include="Model\RangeTest.cs" />
     <Compile Include="Model\UnitConverterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
