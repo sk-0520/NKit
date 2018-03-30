@@ -134,7 +134,7 @@
               <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding EncodingCheck.Encoding, Mode=OneTime}" />
 
               <Label Grid.Row="1" Grid.Column="0">一致:</Label>
-              <app_main_view_control:TextSearchMatchControl  Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SingleItem.ContentMatches, Mode=TwoWay, ElementName=root}" UserSelectedCommand="{Binding SingleItem.OpenTextFileCommand, Mode=TwoWay, ElementName=root}" />
+              <app_main_view_control:TextSearchMatchControl  Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SingleItem.ContentMatches, Mode=TwoWay, ElementName=root}" UserSelectedCommand="{Binding SingleItem.OpenTextFileCommand, Mode=TwoWay, ElementName=root}" MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"/>
             </Grid>
           </StackPanel>
 
@@ -170,7 +170,7 @@
                           </Grid.ColumnDefinitions>
 
                           <Label Grid.Row="0" Grid.Column="0">
-                            <app_main_view_control:TextSearchMatchControl Grid.Row="0" Grid.Column="1" IsSelectable="False" ShowSingleLine="True" ShowSingleUnmatchText="{Binding SheetName}" ItemsSource="{Binding SheetNameResult.Matches}" />
+                            <app_main_view_control:TextSearchMatchControl Grid.Row="0" Grid.Column="1" IsSelectable="False" ShowSingleLine="True" ShowSingleUnmatchText="{Binding SheetName}" ItemsSource="{Binding SheetNameResult.Matches}" MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" />
                           </Label>
 
                           <Grid Grid.Row="0" Grid.Column="1">
@@ -183,10 +183,10 @@
                               <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Label Grid.Row="0" Grid.Column="0">セル:</Label>
-                            <app_main_view_control:TextSearchMatchControl Grid.Row="0" Grid.Column="1" ItemsSource="{Binding CellResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}" UserSelectedCommand="{Binding SingleItem.OpenMsOfficeExcelFileCommand, ElementName=root}" />
+                            <app_main_view_control:TextSearchMatchControl Grid.Row="0" Grid.Column="1" ItemsSource="{Binding CellResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}" UserSelectedCommand="{Binding SingleItem.OpenMsOfficeExcelFileCommand, ElementName=root}" MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" />
 
                             <Label Grid.Row="1" Grid.Column="0">オートシェイプ:</Label>
-                            <app_main_view_control:TextSearchMatchControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding ShapeResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}" UserSelectedCommand="{Binding SingleItem.OpenMsOfficeExcelFileCommand, ElementName=root}" />
+                            <app_main_view_control:TextSearchMatchControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding ShapeResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}" UserSelectedCommand="{Binding SingleItem.OpenMsOfficeExcelFileCommand, ElementName=root}" MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" />
                           </Grid>
                         </Grid>
                       </DataTemplate>

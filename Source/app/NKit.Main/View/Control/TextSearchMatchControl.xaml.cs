@@ -389,6 +389,7 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
         void BuildmatchItemsAllMultiLine(IReadOnlyList<TextSearchMatch> matches, bool hasHeader, bool hasFooter, bool showLine)
         {
             this.viewMatchItems.Text = string.Join(Environment.NewLine, matches.Select(m => m.LineText));
+            //this.viewMatchItems.Height = matches.Count * this.viewMatchItems.TextArea.TextView.DefaultLineHeight;
             var highlighter = new TextSearchMatchallLinesHighlighter(matches, MatchForeground, MatchBackground, MatchFontWeight);
 
             this.viewMatchItems.TextArea.LeftMargins.Clear();
@@ -411,12 +412,12 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
                 BuildmatchItemsAllMultiLine(matches, hasHeader, hasFooter, showLine);
             }
 
-            this.viewMatchItems.TextArea.Caret.PositionChanged -= Caret_PositionChanged;
-            this.viewMatchItems.TextArea.Caret.PositionChanged += Caret_PositionChanged;
+            //this.viewMatchItems.TextArea.Caret.PositionChanged -= Caret_PositionChanged;
+            //this.viewMatchItems.TextArea.Caret.PositionChanged += Caret_PositionChanged;
             this.viewMatchItems.TextArea.PreviewKeyDown -= viewMatchItems_KeyDown;
             this.viewMatchItems.TextArea.PreviewKeyDown += viewMatchItems_KeyDown;
-            this.viewMatchItems.TextArea.MouseWheel -= TextArea_MouseWheel;
-            this.viewMatchItems.TextArea.MouseWheel += TextArea_MouseWheel;
+            //this.viewMatchItems.TextArea.MouseWheel -= TextArea_MouseWheel;
+            //this.viewMatchItems.TextArea.MouseWheel += TextArea_MouseWheel;
             this.viewMatchItems.Visibility = Visibility.Visible;
         }
 
@@ -508,46 +509,73 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
                     }
                 }
             }
+            //} else if(e.Key == Key.PageUp || e.Key == Key.PageDown) {
+            //    var scrollViewer = UIUtility.GetVisualClosest<ScrollViewer>(this) as ScrollViewer;
+            //    if(scrollViewer != null) {
+            //        var viewLinesCount = scrollViewer.ActualHeight / this.viewMatchItems.TextArea.TextView.DefaultLineHeight;
+            //        var pageCount = e.Key == Key.PageUp
+            //            ? -(int)viewLinesCount
+            //            : (int)viewLinesCount
+            //        ;
+
+            //        this.viewMatchItems.TextArea.Caret.Line += pageCount;
+            //            e.Handled = true;
+            //    }
+            //}
         }
-        private void TextArea_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            if(!e.Handled) {
-                e.Handled = true;
+        //private void TextArea_MouseWheel(object sender, MouseWheelEventArgs e)
+        //{
+        //    if(!e.Handled) {
+        //        var scrollViewer = UIUtility.GetVisualClosest<ScrollViewer>(this) as ScrollViewer;
+        //        if(scrollViewer != null) {
+        //            var location = this.viewMatchItems.TextArea.Caret.Location;
+        //            var viewLinesCount = scrollViewer.ActualHeight / this.viewMatchItems.TextArea.TextView.DefaultLineHeight;
+        //            var sendScrollViewer = false;
 
-                var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
-                eventArg.RoutedEvent = UIElement.MouseWheelEvent;
-                eventArg.Source = sender;
-
-                var scrollViewer = UIUtility.GetVisualClosest<ScrollViewer>(this);
-                if(scrollViewer is UIElement element) {
-                    element.RaiseEvent(eventArg);
-                }
-
-            }
-        }
-
-        private void Caret_PositionChanged(object sender, EventArgs e)
-        {
-            var scrollViewer = UIUtility.GetVisualClosest<ScrollViewer>(this) as ScrollViewer;
-            if(scrollViewer != null) {
-                var y = this.viewMatchItems.TextArea.TextView.DefaultLineHeight * this.viewMatchItems.TextArea.Caret.Line;
-                Debug.WriteLine(y);
-                Debug.WriteLine(scrollViewer.ContentVerticalOffset);
-                Debug.WriteLine(scrollViewer.VerticalOffset);
-
-                // キャレットが表示外に行ったら表示してあげる
-                if(y < scrollViewer.VerticalOffset) {
-                    // 上へのスクロールは素直な動作
-                    scrollViewer.ScrollToVerticalOffset(y);
-                } else if(scrollViewer.ActualHeight + scrollViewer.VerticalOffset < y + this.viewMatchItems.TextArea.TextView.DefaultLineHeight * 2) {
-                    // 下へのスクロールは補正しないと見た目が悪い(ガックガックなる)
-                    // * 2 は体感
-                    scrollViewer.ScrollToVerticalOffset(y - scrollViewer.ActualHeight + this.viewMatchItems.TextArea.TextView.DefaultLineHeight * 2);
-                }
-            }
-
-        }
+        //            if(0 < e.Delta) {
+        //                // 上へ
+        //                sendScrollViewer = location.Line < viewLinesCount;
+        //            } else if(e.Delta < 0) {
+        //                // 下へ
+        //                sendScrollViewer = this.viewMatchItems.LineCount - viewLinesCount < location.Line;
+        //            }
+        //            var a = true;
+        //            if(a) {
+        //                return;
+        //            }
+        //            if(sendScrollViewer) {
+        //                e.Handled = true;
 
 
+        //                var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+        //                eventArg.RoutedEvent = UIElement.MouseWheelEvent;
+        //                eventArg.Source = sender;
+
+        //                scrollViewer.RaiseEvent(eventArg);
+        //            }
+        //        }
+        //    }
+        //}
+
+        //private void Caret_PositionChanged(object sender, EventArgs e)
+        //{
+        //    var scrollViewer = UIUtility.GetVisualClosest<ScrollViewer>(this) as ScrollViewer;
+        //    if(scrollViewer != null) {
+        //        var y = this.viewMatchItems.TextArea.TextView.DefaultLineHeight * this.viewMatchItems.TextArea.Caret.Line;
+        //        Debug.WriteLine(y);
+        //        Debug.WriteLine(scrollViewer.ContentVerticalOffset);
+        //        Debug.WriteLine(scrollViewer.VerticalOffset);
+
+        //        // キャレットが表示外に行ったら表示してあげる
+        //        if(y < scrollViewer.VerticalOffset) {
+        //            // 上へのスクロールは素直な動作
+        //            scrollViewer.ScrollToVerticalOffset(y);
+        //        } else if(scrollViewer.ActualHeight + scrollViewer.VerticalOffset < y + this.viewMatchItems.TextArea.TextView.DefaultLineHeight * 2) {
+        //            // 下へのスクロールは補正しないと見た目が悪い(ガックガックなる)
+        //            // * 2 は体感
+        //            scrollViewer.ScrollToVerticalOffset(y - scrollViewer.ActualHeight + this.viewMatchItems.TextArea.TextView.DefaultLineHeight * 2);
+        //        }
+        //    }
+        //}
     }
 }

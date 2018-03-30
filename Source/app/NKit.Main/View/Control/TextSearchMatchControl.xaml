@@ -25,7 +25,7 @@
       IsHitTestVisible="{Binding IsSelectable, ElementName=root}"
       
       HorizontalScrollBarVisibility="Hidden"
-      VerticalScrollBarVisibility="Disabled"
+      VerticalScrollBarVisibility="Auto"
       MouseDoubleClick="viewMatchItems_MouseDoubleClick"
     >
       <sharpdevelop_avalonedit:TextEditor.Options>
