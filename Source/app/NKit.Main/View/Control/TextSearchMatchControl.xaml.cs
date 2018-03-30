@@ -536,10 +536,10 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
                     var sendScrollViewer = false;
 
                     if(0 < e.Delta) {
-                        // 上へ
-                        sendScrollViewer = firstLineNumber < viewLinesCount;
+                        // 上へスクロースした際に最初の行が表示されていれば親元のスクロールを呼び出す
+                        sendScrollViewer = firstLineNumber == 1;
                     } else if(e.Delta < 0) {
-                        // 下へ
+                        // 上へスクロースした際に最後の行が表示されていれば親元のスクロールを呼び出す
                         sendScrollViewer = this.viewMatchItems.LineCount <= lastLineNumber;
                     }
 
