@@ -16,6 +16,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ContentTypeTextNet.NKit.Main.Model;
 using ContentTypeTextNet.NKit.Utility.Model;
+using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.AvalonEdit.Rendering;
 
 namespace ContentTypeTextNet.NKit.Main.View.Control
 {
@@ -356,6 +358,11 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             yield return tailElement;
         }
 
+        void BuildMatchItemsSingleLineTest(IReadOnlyList<TextSearchMatch> matches)
+        {
+
+        }
+
         void BuildMatchItemsSingleLine(IReadOnlyList<TextSearchMatch> matches)
         {
             var p = new Paragraph();
@@ -373,6 +380,7 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             if(IsSelectable) {
                 p.Inlines.AddRange(inlines);
                 //this.viewMatchItems.Document.Blocks.Add(p);
+                BuildMatchItemsSingleLineTest(matches);
                 this.viewMatchItems.Visibility = Visibility.Visible;
             } else {
                 this.viewSingleLineMatchItems.Inlines.AddRange(inlines);
@@ -492,6 +500,48 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
         //    this.viewMatchItems.Visibility = Visibility.Visible;
         //}
 
+
+        public class ColorizeAvalonEdit : DocumentColorizingTransformer
+        {
+            private IReadOnlyList<TextSearchMatch> matches;
+
+
+            public ColorizeAvalonEdit(IReadOnlyList<TextSearchMatch> matches)
+            {
+                this.matches = matches;
+            }
+
+            protected override void ColorizeLine(DocumentLine line)
+            {
+                int lineStartOffset = line.Offset;
+                var match = matches[line.LineNumber - 1];
+                string text = CurrentContext.Document.GetText(line);
+                ChangeLinePart(lineStartOffset + match.CharacterPostion, lineStartOffset + match.CharacterPostion + match.Length, elm => {
+                    elm.BackgroundBrush = Brushes.Red;
+                });
+            }
+            
+        }
+
+        void BuildMatchItemsMultiLineTest(IReadOnlyList<TextSearchMatch> matches)
+        {
+            var hasHeader = matches.Any(m => m.Header != null);
+            var hasFooter = matches.Any(m => m.Footer != null);
+
+            var showLine = !(HiddenTopLineOnly && matches.All(m => m.LineNumber == 1));
+
+            this.viewMatchItems.Text = string.Join(Environment.NewLine, matches.Select(m => m.LineText));
+
+            this.viewMatchItems.TextArea.TextView.LineTransformers.Add(new ColorizeAvalonEdit(matches));
+            //var items = this.viewMatchItems.Document.Lines.Zip(matches, (l, m) => new { Line = l, Match = m });
+            //foreach(var item in items) {
+            //    this.viewMatchItems.TextArea.TextView.LineTransformers.Add(new ColorizeAvalonEdit(item.Match));
+            //}
+
+
+            this.viewMatchItems.Visibility = Visibility.Visible;
+        }
+
         void BuildMatchItems()
         {
             //this.viewMatchItems.Document.Blocks.Clear();
@@ -514,6 +564,7 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
                 BuildMatchItemsSingleLine(matches);
             } else if(matches.Any()) {
                 //BuildMatchItemsMultiLine(matches);
+                BuildMatchItemsMultiLineTest(matches);
             }
         }
 
