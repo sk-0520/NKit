@@ -360,7 +360,7 @@
               <prism:InvokeCommandAction Command="{Binding FindItemsSelectionChangedCommand}" />
             </i:EventTrigger>
             <i:EventTrigger EventName="MouseDoubleClick">
-              <i:InvokeCommandAction Command="{Binding OpenSelectedFileCommand}" />
+              <prism:InvokeCommandAction Command="{Binding OpenSelectedFileCommand}" />
             </i:EventTrigger>
             <!-- TODO: シェルメニュー表示
             <i:EventTrigger EventName="MouseRightButtonUp">

@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using ContentTypeTextNet.NKit.Main.Model.Capture;
+using ContentTypeTextNet.NKit.Utility.Model;
 using ContentTypeTextNet.NKit.Utility.ViewModel;
 using Prism.Commands;
 
@@ -58,8 +61,12 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             Model.CopyImage();
         });
 
-        public ICommand OpenCommand => new DelegateCommand(() => {
-            Model.OpenImage();
+        public ICommand OpenCommand => new DelegateCommand<MouseButtonEventArgs>(e => {
+            if(e.LeftButton == MouseButtonState.Pressed) {
+                if(UIUtility.IsEnabledEventArea((DependencyObject)e.OriginalSource, new[] { typeof(ListBoxItem) }, new Type[] { typeof(TextBox) })) {
+                    Model.OpenImage();
+                }
+            }
         });
 
         #endregion
