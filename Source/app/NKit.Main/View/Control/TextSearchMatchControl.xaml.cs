@@ -372,7 +372,7 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             // 覚書: 呼び出し時にクリア済み
             if(IsSelectable) {
                 p.Inlines.AddRange(inlines);
-                this.viewMatchItems.Document.Blocks.Add(p);
+                //this.viewMatchItems.Document.Blocks.Add(p);
                 this.viewMatchItems.Visibility = Visibility.Visible;
             } else {
                 this.viewSingleLineMatchItems.Inlines.AddRange(inlines);
@@ -475,26 +475,26 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             throw new NotImplementedException("だりぃ");
         }
 
-        void BuildMatchItemsMultiLine(IReadOnlyList<TextSearchMatch> matches)
-        {
-            var hasHeader = matches.Any(m => m.Header != null);
-            var hasFooter = matches.Any(m => m.Footer != null);
+        //void BuildMatchItemsMultiLine(IReadOnlyList<TextSearchMatch> matches)
+        //{
+        //    var hasHeader = matches.Any(m => m.Header != null);
+        //    var hasFooter = matches.Any(m => m.Footer != null);
 
-            var showLine = !(HiddenTopLineOnly && matches.All(m => m.LineNumber == 1));
+        //    var showLine = !(HiddenTopLineOnly && matches.All(m => m.LineNumber == 1));
 
-            var blocks = GroupingOneLineCharacters
-                ? BuildmatchItemsGroupingMultiLine(matches, hasHeader, hasFooter, showLine)
-                : BuildmatchItemsAllMultiLine(matches, hasHeader, hasFooter, showLine)
-            ;
+        //    var blocks = GroupingOneLineCharacters
+        //        ? BuildmatchItemsGroupingMultiLine(matches, hasHeader, hasFooter, showLine)
+        //        : BuildmatchItemsAllMultiLine(matches, hasHeader, hasFooter, showLine)
+        //    ;
 
-            // 覚書: 呼び出し時にクリア済み
-            this.viewMatchItems.Document.Blocks.AddRange(blocks);
-            this.viewMatchItems.Visibility = Visibility.Visible;
-        }
+        //    // 覚書: 呼び出し時にクリア済み
+        //    this.viewMatchItems.Document.Blocks.AddRange(blocks);
+        //    this.viewMatchItems.Visibility = Visibility.Visible;
+        //}
 
         void BuildMatchItems()
         {
-            this.viewMatchItems.Document.Blocks.Clear();
+            //this.viewMatchItems.Document.Blocks.Clear();
             this.viewSingleLineMatchItems.Inlines.Clear();
 
             this.viewMatchItems.Visibility = Visibility.Collapsed;
@@ -513,7 +513,7 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
                 }
                 BuildMatchItemsSingleLine(matches);
             } else if(matches.Any()) {
-                BuildMatchItemsMultiLine(matches);
+                //BuildMatchItemsMultiLine(matches);
             }
         }
 
@@ -712,15 +712,15 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             return true;
         }
 
-        TextSearchMatch GetCurrentMatchItem()
-        {
-            var p = this.viewMatchItems.CaretPosition.Paragraph;
-            if(p.Tag is TextSearchMatch match) {
-                return match;
-            }
+        //TextSearchMatch GetCurrentMatchItem()
+        //{
+        //    var p = this.viewMatchItems.CaretPosition.Paragraph;
+        //    if(p.Tag is TextSearchMatch match) {
+        //        return match;
+        //    }
 
-            return TextSearchMatch.Unmatch;
-        }
+        //    return TextSearchMatch.Unmatch;
+        //}
 
         #endregion
 
@@ -739,24 +739,24 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
 
         private void viewMatchItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var match = GetCurrentMatchItem();
-            if(match.IsMatch) {
-                if(ExecuteUserSelectedCommand(match)) {
-                    e.Handled = true;
-                }
-            }
+            //var match = GetCurrentMatchItem();
+            //if(match.IsMatch) {
+            //    if(ExecuteUserSelectedCommand(match)) {
+            //        e.Handled = true;
+            //    }
+            //}
         }
 
         private void viewMatchItems_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter) {
-                var match = GetCurrentMatchItem();
-                if(match.IsMatch) {
-                    if(ExecuteUserSelectedCommand(match)) {
-                        e.Handled = true;
-                    }
-                }
-            }
+            //if(e.Key == Key.Enter) {
+            //    var match = GetCurrentMatchItem();
+            //    if(match.IsMatch) {
+            //        if(ExecuteUserSelectedCommand(match)) {
+            //            e.Handled = true;
+            //        }
+            //    }
+            //}
         }
     }
 }
