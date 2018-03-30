@@ -12,14 +12,15 @@ namespace ContentTypeTextNet.NKit.Utility.Test.Model
     public class RangeTest
     {
         [TestMethod]
-        public void CompareTest()
+        [DataRow(false, 4, 5, 10)]
+        [DataRow(true, 5, 5, 10)]
+        [DataRow(true, 8, 5, 10)]
+        [DataRow(true, 10, 5, 10)]
+        [DataRow(false, 11, 5, 10)]
+        public void CompareTest(bool result, int value, int head, int tail)
         {
-            var range = new Range<int>(5, 10);
-            Assert.IsFalse(range.IsIn(4));
-            Assert.IsTrue(range.IsIn(5));
-            Assert.IsTrue(range.IsIn(8));
-            Assert.IsTrue(range.IsIn(10));
-            Assert.IsFalse(range.IsIn(11));
+            var range = Range.Create(head, tail);
+            Assert.IsTrue(range.IsIn(value) == result);
         }
     }
 }

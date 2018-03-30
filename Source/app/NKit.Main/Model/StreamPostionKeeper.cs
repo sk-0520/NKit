@@ -47,7 +47,9 @@ namespace ContentTypeTextNet.NKit.Main.Model
         protected override void Dispose(bool disposing)
         {
             if(!IsDisposed) {
-                Reset();
+                if(disposing) {
+                    Reset();
+                }
             }
 
             base.Dispose(disposing);

@@ -171,7 +171,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
                         Header = $"{node.ParentNode.OriginalName}",
                         Footer = "COMMENT",
                         DisplayLineNumber = node.Line,
-                        DisplayCharacterPostion = node.LinePosition,
+                        DisplayCharacterPosition = node.LinePosition,
                     };
                 },
             };
@@ -196,7 +196,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
                         Header = $"{node.ParentNode.OriginalName}",
                         Footer = "TEXT",
                         DisplayLineNumber = node.Line,
-                        DisplayCharacterPostion = node.LinePosition,
+                        DisplayCharacterPosition = node.LinePosition,
                     };
                 },
             };
@@ -226,7 +226,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
                             Header = $"{attribute.OwnerNode.OriginalName}",
                             Footer = "ATTR-KEY",
                             DisplayLineNumber = attribute.Line,
-                            DisplayCharacterPostion = attribute.LinePosition,
+                            DisplayCharacterPosition = attribute.LinePosition,
                         };
                     },
                 };
@@ -240,7 +240,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
                             Header = $"{attribute.OwnerNode.OriginalName}",
                             Footer = "ATTR-KEY",
                             DisplayLineNumber = attribute.Line,
-                            DisplayCharacterPostion = attribute.LinePosition,
+                            DisplayCharacterPosition = attribute.LinePosition,
                         };
                     },
                 };
@@ -271,7 +271,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
                             Header = $"{node.ParentNode.OriginalName}",
                             Footer = "ELEMENT",
                             DisplayLineNumber = node.Line,
-                            DisplayCharacterPostion = node.LinePosition,
+                            DisplayCharacterPosition = node.LinePosition,
                         };
                     },
                 };

@@ -15,7 +15,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ContentTypeTextNet.NKit.Main.Model;
+using ContentTypeTextNet.NKit.Main.View.Control.AvalonEditExtension;
 using ContentTypeTextNet.NKit.Utility.Model;
+using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.AvalonEdit.Editing;
+using ICSharpCode.AvalonEdit.Rendering;
 
 namespace ContentTypeTextNet.NKit.Main.View.Control
 {
@@ -335,9 +339,9 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             var nextStartIndex = 0;
 
             foreach(var match in matches) {
-                var headText = line.Substring(nextStartIndex, match.CharacterPostion - nextStartIndex);
-                var bodyText = line.Substring(match.CharacterPostion, match.Length);
-                nextStartIndex = match.CharacterPostion + match.Length;
+                var headText = line.Substring(nextStartIndex, match.CharacterPosition - nextStartIndex);
+                var bodyText = line.Substring(match.CharacterPosition, match.Length);
+                nextStartIndex = match.CharacterPosition + match.Length;
 
                 var headElement = new Run(headText);
                 var bodyElement = new Run(bodyText) {
@@ -368,111 +372,28 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
                 inlines.Add(new Run(ShowSingleUnmatchText));
             }
 
-
             // 覚書: 呼び出し時にクリア済み
             if(IsSelectable) {
-                p.Inlines.AddRange(inlines);
-                this.viewMatchItems.Document.Blocks.Add(p);
-                this.viewMatchItems.Visibility = Visibility.Visible;
+                throw new NotImplementedException();
             } else {
                 this.viewSingleLineMatchItems.Inlines.AddRange(inlines);
                 this.viewSingleLineMatchItems.Visibility = Visibility.Visible;
             }
         }
 
-        IEnumerable<Block> BuildmatchItemsAllMultiLine(IReadOnlyList<TextSearchMatch> matches, bool hasHeader, bool hasFooter, bool showLine)
-        {
-            var uc = new UnitConverter();
-
-            var formatLength = new {
-                InfoHeader = hasHeader ? matches.Where(m => m.Header != null).Select(m => new StringInfo(m.Header.ToString()).LengthInTextElements).Max() : 0,
-                //TODO: InfoHeader のコピペ
-                InfoFooter = hasFooter ? matches.Where(m => m.Footer != null).Select(m => new StringInfo(m.Footer.ToString()).LengthInTextElements).Max() : 0,
-                LineNumber = showLine ? uc.GetNumberWidth(matches.Max(m => m.DisplayLineNumber)) : 0,
-                CharacterPostion = uc.GetNumberWidth(matches.Max(m => m.DisplayCharacterPostion)),
-            };
-
-            var blocks = new List<Block>(matches.Count);
-
-            foreach(var match in matches) {
-                var p = new Paragraph() {
-                    Tag = match,
-                };
-
-                var infoElement = new Span() {
-                    Foreground = InformationForeground,
-                    Background = InformationBackground,
-                    FontFamily = InformationFontFamily,
-                };
-
-                // ヘッダ情報
-                if(hasHeader) {
-                    var headerElement = new Run();
-                    if(match.Header != null) {
-                        headerElement.Text = match.Header.ToString().PadRight(formatLength.InfoHeader);
-                    } else {
-                        headerElement.Text = new string(' ', formatLength.InfoHeader);
-                    }
-
-                    infoElement.Inlines.Add(headerElement);
-                }
-
-                // 行数
-                if(showLine) {
-                    var lineNumerElement = new Run(FormatNumer(match.DisplayLineNumber, formatLength.LineNumber)) {
-                        FontWeight = FontWeights.Bold,
-                    };
-                    infoElement.Inlines.Add(lineNumerElement);
-                }
-
-                // 横位置
-                var positionBaseText = FormatNumer(match.DisplayCharacterPostion, formatLength.CharacterPostion);
-                var positionElement = new Run($"({positionBaseText})") {
-                    TextDecorations = TextDecorations.Underline,
-                };
-                infoElement.Inlines.Add(positionElement);
-
-                //TODO: hasHeader のコピペ
-                if(hasFooter) {
-                    var footerElement = new Run();
-                    if(match.Footer != null) {
-                        footerElement.Text = match.Footer.ToString().PadRight(formatLength.InfoFooter);
-                    } else {
-                        footerElement.Text = new string(' ', formatLength.InfoFooter);
-                    }
-
-                    infoElement.Inlines.Add(footerElement);
-                }
-
-                // 分割
-                var splitElement = new Run(": ");
-                infoElement.Inlines.Add(splitElement);
-
-                p.Inlines.Add(infoElement);
-
-                // ハイライト
-                var highlightElements = new {
-                    Head = new Run(match.LineUnMatcheHead),
-                    Tail = new Run(match.LineUnMatcheTail),
-                    Body = new Run(match.LineHighlight) {
-                        Foreground = MatchForeground,
-                        Background = MatchBackground,
-                        FontWeight = MatchFontWeight,
-                    },
-                };
-                p.Inlines.Add(highlightElements.Head);
-                p.Inlines.Add(highlightElements.Body);
-                p.Inlines.Add(highlightElements.Tail);
-
-                blocks.Add(p);
-            }
-
-            return blocks;
-        }
-
         IEnumerable<Block> BuildmatchItemsGroupingMultiLine(IReadOnlyList<TextSearchMatch> matches, bool hasHeader, bool hasFooter, bool showLine)
         {
             throw new NotImplementedException("だりぃ");
+        }
+
+        void BuildmatchItemsAllMultiLine(IReadOnlyList<TextSearchMatch> matches)
+        {
+            this.viewMatchItems.Text = string.Join(Environment.NewLine, matches.Select(m => m.LineText));
+            var highlighter = new TextSearchMatchallLinesHighlighter(matches, MatchForeground, MatchBackground, MatchFontWeight);
+
+            this.viewMatchItems.TextArea.LeftMargins.Clear();
+            this.viewMatchItems.TextArea.LeftMargins.Add(new InformationMargin(matches, InformationForeground, InformationBackground, InformationFontFamily));
+            this.viewMatchItems.TextArea.TextView.LineTransformers.Add(highlighter);
         }
 
         void BuildMatchItemsMultiLine(IReadOnlyList<TextSearchMatch> matches)
@@ -482,19 +403,25 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
 
             var showLine = !(HiddenTopLineOnly && matches.All(m => m.LineNumber == 1));
 
-            var blocks = GroupingOneLineCharacters
-                ? BuildmatchItemsGroupingMultiLine(matches, hasHeader, hasFooter, showLine)
-                : BuildmatchItemsAllMultiLine(matches, hasHeader, hasFooter, showLine)
-            ;
+            this.viewMatchItems.TextArea.TextView.LineTransformers.Clear();
 
-            // 覚書: 呼び出し時にクリア済み
-            this.viewMatchItems.Document.Blocks.AddRange(blocks);
+            if(GroupingOneLineCharacters) {
+                BuildmatchItemsGroupingMultiLine(matches, hasHeader, hasFooter, showLine);
+            } else {
+                BuildmatchItemsAllMultiLine(matches);
+            }
+
+            //this.viewMatchItems.TextArea.Caret.PositionChanged -= Caret_PositionChanged;
+            //this.viewMatchItems.TextArea.Caret.PositionChanged += Caret_PositionChanged;
+            this.viewMatchItems.TextArea.PreviewKeyDown -= viewMatchItems_KeyDown;
+            this.viewMatchItems.TextArea.PreviewKeyDown += viewMatchItems_KeyDown;
+            this.viewMatchItems.TextArea.MouseWheel -= TextArea_MouseWheel;
+            this.viewMatchItems.TextArea.MouseWheel += TextArea_MouseWheel;
             this.viewMatchItems.Visibility = Visibility.Visible;
         }
 
         void BuildMatchItems()
         {
-            this.viewMatchItems.Document.Blocks.Clear();
             this.viewSingleLineMatchItems.Inlines.Clear();
 
             this.viewMatchItems.Visibility = Visibility.Collapsed;
@@ -517,182 +444,6 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
             }
         }
 
-        /*
-        // table
-        void BuildMatch()
-        {
-            var doc = this.viewMatchItems.Document;
-
-            if (ItemsSource == null || !ItemsSource.Any())
-            {
-                this.viewMatchItems.Document.Blocks.Clear();
-                return;
-            }
-
-            var group = new TableRowGroup();
-
-            var matches = ItemsSource.Cast<TextSearchMatch>();
-            foreach (var matche in matches)
-            {
-                var row = new TableRow();
-                group.Rows.Add(row);
-
-                // 行数と文字位置
-                var numberCell = new TableCell();
-
-                var lineNumer = new Run($"{matche.LineNumber}");
-                var lineSplit = new Run($", ");
-                var position = new Run($"{matche.CharacterPostion}");
-
-                var numberInfo = new Paragraph();
-                numberInfo.Inlines.Add(lineNumer);
-                numberInfo.Inlines.Add(lineSplit);
-                numberInfo.Inlines.Add(position);
-
-                numberCell.Blocks.Add(numberInfo);
-
-                row.Cells.Add(numberCell);
-
-                // 分割
-                var splitCell = new TableCell();
-                var spliter = new Paragraph();
-                var split = new Run(": ");
-                spliter.Inlines.Add(split);
-                splitCell.Blocks.Add(spliter);
-
-                row.Cells.Add(splitCell);
-
-                // ハイライト
-                var highlightText = new
-                {
-                    Head = matche.LineText.Substring(0, matche.CharacterPostion),
-                    Tail = matche.LineText.Substring(matche.CharacterPostion + matche.Length),
-                    Body = matche.LineText.Substring(matche.CharacterPostion, matche.Length),
-                };
-                Debug.Assert(highlightText.Body == matche.MatchValue);
-
-                var highlightInline = new
-                {
-                    Head = new Run(highlightText.Head),
-                    Tail = new Run(highlightText.Tail),
-                    Body = new Run(highlightText.Body)
-                    {
-                        Background = Brushes.Pink,
-                        FontWeight = FontWeights.Bold,
-                    },
-                };
-                var highlightCell = new TableCell();
-                var highlighter = new Paragraph();
-                highlighter.Inlines.Add(highlightInline.Head);
-                highlighter.Inlines.Add(highlightInline.Body);
-                highlighter.Inlines.Add(highlightInline.Tail);
-                highlightCell.Blocks.Add(highlighter);
-
-                row.Cells.Add(highlightCell);
-            }
-
-            var table = new Table();
-            var cols = new[] {
-                new { Width = new GridLength(1, GridUnitType.Star) },
-                new { Width = GridLength.Auto },
-                new { Width = GridLength.Auto },
-            };
-            foreach(var col in cols)
-            {
-                var column = new TableColumn()
-                {
-                    Width = col.Width,
-                };
-                table.Columns.Add(column);
-            }
-
-            table.RowGroups.Add(group);
-            doc.Blocks.Add(table);
-
-            this.viewMatchItems.Document = doc;
-        }
-
-
-        // grid
-        void BuildMatch()
-        {
-            var doc = this.viewMatchItems.Document;
-
-            if (ItemsSource == null || !ItemsSource.Any())
-            {
-                this.viewMatchItems.Document.Blocks.Clear();
-                return;
-            }
-
-
-            var matches = ItemsSource.Cast<TextSearchMatch>().ToList();
-
-            var grid = new Grid();
-            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto, });
-            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto, });
-            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star), });
-
-            foreach (var matche in matches)
-            {
-                grid.RowDefinitions.Add(new RowDefinition());
-            }
-
-            foreach (var (matche, index) in matches.Select((m, i) => (m, i)))
-            {
-                var numberInfo = new TextBlock()
-                {
-                    Text = $"{matche.LineNumber}, {matche.CharacterPostion}",
-                };
-                numberInfo.SetValue(Grid.RowProperty, index);
-                numberInfo.SetValue(Grid.ColumnProperty, 0);
-                grid.Children.Add(numberInfo);
-
-                // 分割
-                var split = new TextBlock()
-                {
-                    Text = ": "
-                };
-                split.SetValue(Grid.RowProperty, index);
-                split.SetValue(Grid.ColumnProperty, 1);
-                grid.Children.Add(split);
-
-                // ハイライト
-                var highlightText = new
-                {
-                    Head = matche.LineText.Substring(0, matche.CharacterPostion),
-                    Tail = matche.LineText.Substring(matche.CharacterPostion + matche.Length),
-                    Body = matche.LineText.Substring(matche.CharacterPostion, matche.Length),
-                };
-                Debug.Assert(highlightText.Body == matche.MatchValue);
-
-                var highlightInline = new
-                {
-                    Head = new Run(highlightText.Head),
-                    Tail = new Run(highlightText.Tail),
-                    Body = new Run(highlightText.Body)
-                    {
-                        Background = Brushes.Pink,
-                        FontWeight = FontWeights.Bold,
-                    },
-                };
-                var highlighter = new TextBlock();
-                highlighter.Inlines.Add(highlightInline.Head);
-                highlighter.Inlines.Add(highlightInline.Body);
-                highlighter.Inlines.Add(highlightInline.Tail);
-
-                highlighter.SetValue(Grid.RowProperty, index);
-                highlighter.SetValue(Grid.ColumnProperty, 2);
-                grid.Children.Add(highlighter);
-
-            }
-
-            var gridBlock = new BlockUIContainer(grid);
-            doc.Blocks.Add(gridBlock);
-
-            this.viewMatchItems.Document = doc;
-        }
-         */
-
         bool ExecuteUserSelectedCommand(TextSearchMatch match)
         {
             if(!IsSelectable) {
@@ -714,9 +465,9 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
 
         TextSearchMatch GetCurrentMatchItem()
         {
-            var p = this.viewMatchItems.CaretPosition.Paragraph;
-            if(p.Tag is TextSearchMatch match) {
-                return match;
+            var lineNumber = this.viewMatchItems.TextArea.Caret.Line;
+            if(lineNumber - 1 < ItemsSource.Count()) {
+                return ItemsSource.ElementAt(lineNumber - 1);
             }
 
             return TextSearchMatch.Unmatch;
@@ -757,6 +508,73 @@ namespace ContentTypeTextNet.NKit.Main.View.Control
                     }
                 }
             }
+            //} else if(e.Key == Key.PageUp || e.Key == Key.PageDown) {
+            //    var scrollViewer = UIUtility.GetVisualClosest<ScrollViewer>(this) as ScrollViewer;
+            //    if(scrollViewer != null) {
+            //        var viewLinesCount = scrollViewer.ActualHeight / this.viewMatchItems.TextArea.TextView.DefaultLineHeight;
+            //        var pageCount = e.Key == Key.PageUp
+            //            ? -(int)viewLinesCount
+            //            : (int)viewLinesCount
+            //        ;
+
+            //        this.viewMatchItems.TextArea.Caret.Line += pageCount;
+            //            e.Handled = true;
+            //    }
+            //}
         }
+        private void TextArea_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if(!e.Handled) {
+                var scrollViewer = UIUtility.GetVisualClosest<ScrollViewer>(this) as ScrollViewer;
+                if(scrollViewer != null && this.viewMatchItems.TextArea.TextView != null && this.viewMatchItems.TextArea.TextView.VisualLinesValid) {
+                    var visualLines = this.viewMatchItems.TextArea.TextView.VisualLines;
+                    var firstLineNumber = visualLines.First().FirstDocumentLine.LineNumber;
+                    var lastLineNumber = visualLines.Last().FirstDocumentLine.LineNumber;
+
+                    var viewLinesCount = scrollViewer.ActualHeight / this.viewMatchItems.TextArea.TextView.DefaultLineHeight;
+                    var sendScrollViewer = false;
+
+                    if(0 < e.Delta) {
+                        // 上へスクロースした際に最初の行が表示されていれば親元のスクロールを呼び出す
+                        sendScrollViewer = firstLineNumber == 1;
+                    } else if(e.Delta < 0) {
+                        // 上へスクロースした際に最後の行が表示されていれば親元のスクロールを呼び出す
+                        sendScrollViewer = this.viewMatchItems.LineCount <= lastLineNumber;
+                    }
+
+                    if(sendScrollViewer) {
+                        e.Handled = true;
+
+
+                        var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+                        eventArg.RoutedEvent = UIElement.MouseWheelEvent;
+                        eventArg.Source = sender;
+
+                        scrollViewer.RaiseEvent(eventArg);
+                    }
+                }
+            }
+        }
+
+        //private void Caret_PositionChanged(object sender, EventArgs e)
+        //{
+        //    var scrollViewer = UIUtility.GetVisualClosest<ScrollViewer>(this) as ScrollViewer;
+        //    if(scrollViewer != null) {
+        //        var y = this.viewMatchItems.TextArea.TextView.DefaultLineHeight * this.viewMatchItems.TextArea.Caret.Line;
+        //        Debug.WriteLine(y);
+        //        Debug.WriteLine(scrollViewer.ContentVerticalOffset);
+        //        Debug.WriteLine(scrollViewer.VerticalOffset);
+
+        //        // キャレットが表示外に行ったら表示してあげる
+        //        if(y < scrollViewer.VerticalOffset) {
+        //            // 上へのスクロールは素直な動作
+        //            scrollViewer.ScrollToVerticalOffset(y);
+        //        } else if(scrollViewer.ActualHeight + scrollViewer.VerticalOffset < y + this.viewMatchItems.TextArea.TextView.DefaultLineHeight * 2) {
+        //            // 下へのスクロールは補正しないと見た目が悪い(ガックガックなる)
+        //            // * 2 は体感
+        //            scrollViewer.ScrollToVerticalOffset(y - scrollViewer.ActualHeight + this.viewMatchItems.TextArea.TextView.DefaultLineHeight * 2);
+        //        }
+        //    }
+        //}
     }
 }
