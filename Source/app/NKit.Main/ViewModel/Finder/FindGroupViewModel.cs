@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model;
@@ -470,11 +471,19 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             Model.SetDefaultSetting();
         });
 
-        public ICommand OpenSelectedFileCommand => new DelegateCommand(
-            () => {
-                SelectedItem.OpenFileCommand.Execute(null);
+        public ICommand OpenSelectedFileCommand => new DelegateCommand<MouseButtonEventArgs>(
+            e => {
+                var originalSource = (DependencyObject)e.OriginalSource;
+                if(!(originalSource is System.Windows.Documents.Run)) {
+                    while((originalSource != null) && !(originalSource is ListViewItem)) {
+                        originalSource = VisualTreeHelper.GetParent(originalSource);
+                    }
+                }
+                if(originalSource != null) {
+                    SelectedItem.OpenFileCommand.Execute(null);
+                }
             },
-            () => SelectedItem != null
+            e => true//SelectedItem != null
         );
 
         //TODO: シェルメニュー表示
