@@ -1,4 +1,4 @@
-﻿namespace ContentTypeTextNet.NKit.Manager.View
+namespace ContentTypeTextNet.NKit.Manager.View
 {
     partial class AboutForm
     {
@@ -322,6 +322,7 @@
             this.AcceptButton = this.commandClose;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.commandClose;
             this.ClientSize = new System.Drawing.Size(664, 301);
             this.Controls.Add(this.commandClose);
             this.Controls.Add(this.tableLayoutPanel3);

@@ -7,6 +7,7 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 
   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+  xmlns:prism="http://prismlibrary.com/"
 
   xmlns:app_utility_view_converter="clr-namespace:ContentTypeTextNet.NKit.Utility.View.Converter;assembly=NKit.Utility"
 
@@ -104,11 +105,11 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0" Command="{Binding UpRootDirectoryPathCommand}">
-                  <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_Arrow-Up}" />
+                  <Control Style="{StaticResource Image-Small}" Template="{StaticResource Image_Arrow-Up}" />
                 </Button>
                 <TextBox Grid.Column="1" Text="{Binding RootDirectoryPath, UpdateSourceTrigger=PropertyChanged}" />
                 <Button Grid.Column="2" Command="{Binding SelectRootDirectoryPathCommand}">
-                  <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_FolderOpen}" />
+                  <Control Style="{StaticResource Image-Small}" Template="{StaticResource Image_FolderOpen}" />
                 </Button>
               </Grid>
 
@@ -355,8 +356,11 @@
           SelectedItem="{Binding SelectedItem}"
         >
           <i:Interaction.Triggers>
+            <i:EventTrigger EventName="SelectionChanged">
+              <prism:InvokeCommandAction Command="{Binding FindItemsSelectionChangedCommand}" />
+            </i:EventTrigger>
             <i:EventTrigger EventName="MouseDoubleClick">
-              <i:InvokeCommandAction Command="{Binding OpenSelectedFileCommand}" />
+              <prism:InvokeCommandAction Command="{Binding OpenSelectedFileCommand}" />
             </i:EventTrigger>
             <!-- TODO: シェルメニュー表示
             <i:EventTrigger EventName="MouseRightButtonUp">
@@ -381,7 +385,7 @@
           </ListView.ItemsPanel>
           <ListView.ItemContainerStyle>
             <Style TargetType="ListViewItem">
-              <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+              <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=OneWay}" />
               <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             </Style>
           </ListView.ItemContainerStyle>

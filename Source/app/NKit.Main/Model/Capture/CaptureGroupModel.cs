@@ -149,6 +149,12 @@ namespace ContentTypeTextNet.NKit.Main.Model.Capture
             using(image) {
                 try {
                     image.ImageFile.Delete();
+                    var thumbnailImagePath = image.GetEnabledThumbnailImagePath();
+                    if(!string.Equals(image.ImageFile.FullName, thumbnailImagePath, StringComparison.InvariantCultureIgnoreCase)) {
+                        if(System.IO.File.Exists(thumbnailImagePath)) {
+                            System.IO.File.Delete(thumbnailImagePath);
+                        }
+                    }
                     return true;
                 } catch(IOException ex) {
                     Logger.Error(ex);

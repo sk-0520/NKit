@@ -50,6 +50,22 @@ namespace ContentTypeTextNet.NKit.Manager.View
             #endregion
         }
 
+        struct ListViewItems
+        {
+            public ListViewItems(ListViewItem item, ListViewSubItem subItem)
+            {
+                Item = item;
+                SubItem = subItem;
+            }
+
+            #region property
+
+            public ListViewItem Item { get; }
+            public ListViewSubItem SubItem { get; }
+
+            #endregion
+        }
+
         #endregion
 
         public TestExecuteForm()
@@ -136,7 +152,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             }
         }
 
-        (ListViewItem item, ListViewSubItem stateItem) GetListViewItems(string key)
+        ListViewItems GetListViewItems(string key)
         {
             ListViewItem item = null;
             ListViewSubItem stateItem = null;
@@ -150,7 +166,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 action();
             }
 
-            return (item, stateItem);
+            return new ListViewItems(item, stateItem);
         }
 
         void SetState(ListViewSubItem stateItem, ApplicationInfo info, TestState testState)
@@ -192,9 +208,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 var workDirPath = Path.GetTempPath();
                 foreach(var info in ApplicationInfos) {
                     var listVuewItems = GetListViewItems(info.Name);
-                    Debug.Assert(listVuewItems.item.Tag == info);
+                    Debug.Assert(listVuewItems.Item.Tag == info);
 
-                    SetState(listVuewItems.stateItem, info, TestState.Testing);
+                    SetState(listVuewItems.SubItem, info, TestState.Testing);
 
                     uint manageId = 0;
                     if(info.Kind == NKitApplicationKind.Others) {
@@ -206,10 +222,10 @@ namespace ContentTypeTextNet.NKit.Manager.View
 
                     if(ExitEvent.WaitOne(Constants.TestExecuteWait)) {
                         // 無事に死んだ
-                        SetState(listVuewItems.stateItem, info, TestState.Ok);
+                        SetState(listVuewItems.SubItem, info, TestState.Ok);
                     } else {
                         // なんか知らんけどあかんかった
-                        SetState(listVuewItems.stateItem, info, TestState.Fail);
+                        SetState(listVuewItems.SubItem, info, TestState.Fail);
                     }
                 }
 

@@ -137,16 +137,6 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             }
         );
 
-        public ICommand OpenSelectedImageItemCommand => new DelegateCommand(
-            () => {
-                var param = default(object);
-                if(SelectedImageItem.OpenCommand.CanExecute(param)) {
-                    SelectedImageItem.OpenCommand.Execute(param);
-                }
-            },
-            () => SelectedImageItem != null
-        );
-
         #endregion
 
         #region function

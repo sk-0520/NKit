@@ -292,7 +292,7 @@ namespace ContentTypeTextNet.NKit.Common
                 //new { NKit = "h24", Clr = "H" },
                 new { NKit = "hh24", Clr = "HH" },
 
-                new { NKit = "m", Clr = "m" },
+                //new { NKit = "m", Clr = "m" },
                 new { NKit = "mm", Clr = "mm" },
 
                 //new { NKit = "s", Clr = "s" },

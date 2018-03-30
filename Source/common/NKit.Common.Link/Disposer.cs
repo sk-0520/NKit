@@ -108,4 +108,46 @@ namespace ContentTypeTextNet.NKit.Common
         #endregion
     }
 
+    public class GroupDisposer: DisposerBase
+    {
+        #region property
+
+        IList<IDisposable> StockItems { get; } = new List<IDisposable>();
+
+        #endregion
+
+        #region function
+
+        public TDisposable Add<TDisposable>(TDisposable disposable)
+            where TDisposable : IDisposable
+        {
+            ThrowIfDisposed();
+
+            if(disposable != null) {
+                StockItems.Add(disposable);
+            }
+
+            return disposable;
+        }
+
+        #endregion
+
+        #region DisposerBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if(!IsDisposed) {
+                if(disposing) {
+                    for(var i = StockItems.Count - 1; 0 < i; i--) {
+                        StockItems[i].Dispose();
+                    }
+                    StockItems.Clear();
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #endregion
+    }
 }

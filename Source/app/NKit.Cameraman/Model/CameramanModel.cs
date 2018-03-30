@@ -23,6 +23,27 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 {
     public class CameramanModel : ModelBase
     {
+        #region define
+
+
+        struct FormatInformation
+        {
+            public FormatInformation(string extension, ImageFormat format)
+            {
+                Extension = extension;
+                Format = format;
+            }
+
+            #region property
+
+            public string Extension { get; }
+            public ImageFormat Format { get; }
+
+            #endregion
+        }
+
+        #endregion
+
         public CameramanModel(string[] arguments)
         {
             Bag = new CameramanBag(arguments);
@@ -79,17 +100,17 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             }
         }
 
-        static (string ext, ImageFormat format) GetSaveFormatInfo(ImageKind kind)
+        static FormatInformation GetSaveFormatInfo(ImageKind kind)
         {
             switch(kind) {
                 case ImageKind.Png:
-                    return ("png", ImageFormat.Png);
+                    return new FormatInformation("png", ImageFormat.Png);
 
                 case ImageKind.Jpeg:
-                    return ("jpeg", ImageFormat.Jpeg);
+                    return new FormatInformation("jpeg", ImageFormat.Jpeg);
 
                 case ImageKind.Bmp:
-                    return ("bmp", ImageFormat.Bmp);
+                    return new FormatInformation("bmp", ImageFormat.Bmp);
 
                 default:
                     throw new NotImplementedException();
@@ -104,20 +125,20 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
             var info = GetSaveFormatInfo(parameter.ImageKind);
 
             var map = new Dictionary<string, string>() {
-                ["EXT"] = info.ext,
+                ["EXT"] = info.Extension,
             };
 
             var fileName = CommonUtility.ReplaceNKitText(parameter.FileNameFormat, utcTimestamp, map);
             var filePath = Path.Combine(saveDirectory.FullName, fileName);
             if(parameter.Size.Width == 0 || parameter.Size.Height == 0) {
-                image.Save(filePath, info.format);
+                image.Save(filePath, info.Format);
             } else {
                 using(var bitmap = new Bitmap(parameter.Size.Width, parameter.Size.Height)) {
                     using(var g = Graphics.FromImage(bitmap)) {
                         g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
                         g.DrawImage(image, 0, 0, parameter.Size.Width, parameter.Size.Height);
                     }
-                    bitmap.Save(filePath, info.format);
+                    bitmap.Save(filePath, info.Format);
                 }
             }
         }

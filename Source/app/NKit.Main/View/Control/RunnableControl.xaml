@@ -29,7 +29,7 @@
               <Setter Property="Content">
                 <Setter.Value>
                   <StackPanel Style="{StaticResource IconPanel}">
-                    <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_Run}" />
+                    <Control Style="{StaticResource Image-Small}" Template="{StaticResource Image_Run}" />
                     <TextBlock Text="{Binding RunText, ElementName=root}" />
                   </StackPanel>
                 </Setter.Value>
@@ -55,7 +55,7 @@
               <Setter Property="Content">
                 <Setter.Value>
                   <StackPanel Style="{StaticResource IconPanel}">
-                    <Viewbox Style="{StaticResource Image-Small}" Child="{StaticResource Image_Cancel}" />
+                    <Control Style="{StaticResource Image-Small}" Template="{StaticResource Image_Cancel}" />
                     <TextBlock Text="{Binding CancelText, ElementName=root}" />
                   </StackPanel>
                 </Setter.Value>

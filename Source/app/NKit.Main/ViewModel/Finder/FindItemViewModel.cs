@@ -15,7 +15,7 @@ using Prism.Commands;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 {
-    public class FindItemViewModel : SingleModelViewModelBase<FindItemModel>
+    public class FindItemViewModel : SingleModelViewModelBase<FindItemModel>, ISelectable
     {
         #region variable
 
@@ -160,11 +160,15 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         public FileHashViewModel FileHash => new FileHashViewModel(Model.FileHash);
 
+        #region ISelectable
+
         public bool IsSelected
         {
             get { return this._isSelected; }
             set { SetProperty(ref this._isSelected, value); }
         }
+
+        #endregion
 
         public bool IsSelectedContentGeneral
         {
@@ -196,7 +200,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         {
             var parameter = new AssociationOpenParameter() {
                 LineNumber = match.DisplayLineNumber,
-                CharacterPostion = match.DisplayCharacterPostion,
+                CharacterPostion = match.DisplayCharacterPosition,
                 CharacterLength = match.Length,
             };
 

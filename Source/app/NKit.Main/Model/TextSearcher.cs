@@ -20,10 +20,10 @@ namespace ContentTypeTextNet.NKit.Main.Model
 
         #endregion
 
-        public TextSearchMatch(int lineNumber, int characterPostion, int length, string lineText)
+        public TextSearchMatch(int lineNumber, int characterPosition, int length, string lineText)
         {
-            if(characterPostion < 0) {
-                throw new ArgumentException($"{nameof(characterPostion)}: {characterPostion} < 0");
+            if(characterPosition < 0) {
+                throw new ArgumentException($"{nameof(characterPosition)}: {characterPosition} < 0");
             }
             if(length < 0) {
                 throw new ArgumentException($"{nameof(length)}: {length} < 0");
@@ -33,30 +33,30 @@ namespace ContentTypeTextNet.NKit.Main.Model
             }
 
             LineNumber = lineNumber;
-            CharacterPostion = characterPostion;
+            CharacterPosition = characterPosition;
             Length = length;
             LineText = lineText;
 
             DisplayLineNumber = LineNumber;
-            DisplayCharacterPostion = CharacterPostion;
+            DisplayCharacterPosition = CharacterPosition;
         }
 
         #region property
 
         public int LineNumber { get; }
-        public int CharacterPostion { get; }
+        public int CharacterPosition { get; }
         public int Length { get; }
         public string LineText { get; }
 
         public object Header { get; set; }
         public object Footer { get; set; }
 
-        public string LineUnMatcheHead => LineText.Substring(0, CharacterPostion);
-        public string LineUnMatcheTail => LineText.Substring(CharacterPostion + Length);
-        public string LineHighlight => LineText.Substring(CharacterPostion, Length);
+        public string LineUnMatcheHead => LineText.Substring(0, CharacterPosition);
+        public string LineUnMatcheTail => LineText.Substring(CharacterPosition + Length);
+        public string LineHighlight => LineText.Substring(CharacterPosition, Length);
 
         public virtual int DisplayLineNumber { get; set; }
-        public virtual int DisplayCharacterPostion { get; set; }
+        public virtual int DisplayCharacterPosition { get; set; }
 
         public bool IsMatch => this != Unmatch;
 
@@ -138,10 +138,10 @@ namespace ContentTypeTextNet.NKit.Main.Model
                 EncodingCheck = encodingCheckResult,
             };
 
-            foreach(var line in TextUtility.ReadLines(reader).Select((s, i) => (value: s, number: i + 1))) {
-                var macthes = regex.Matches(line.value).Cast<Match>();
+            foreach(var line in TextUtility.ReadLines(reader).Select((s, i) => new { Value = s, Number = i + 1 })) {
+                var macthes = regex.Matches(line.Value).Cast<Match>();
                 foreach(var match in macthes) {
-                    var searchMatch = CreateMatchObject(line.number, match.Index, match.Length, line.value);
+                    var searchMatch = CreateMatchObject(line.Number, match.Index, match.Length, line.Value);
                     Debug.Assert(match.Value == searchMatch.LineHighlight, $"{match.Value} != {searchMatch.LineHighlight}");
                     result.Matches.Add(searchMatch);
                 }
