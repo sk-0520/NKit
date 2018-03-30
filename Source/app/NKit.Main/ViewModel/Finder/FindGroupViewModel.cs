@@ -473,14 +473,10 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         public ICommand OpenSelectedFileCommand => new DelegateCommand<MouseButtonEventArgs>(
             e => {
-                var originalSource = (DependencyObject)e.OriginalSource;
-                if(!(originalSource is System.Windows.Documents.Run)) {
-                    while((originalSource != null) && !(originalSource is ListViewItem)) {
-                        originalSource = VisualTreeHelper.GetParent(originalSource);
+                if(e.LeftButton == MouseButtonState.Pressed) {
+                    if(UIUtility.IsEnabledEventArea((DependencyObject)e.OriginalSource, new[] { typeof(ListViewItem) })) {
+                        SelectedItem.OpenFileCommand.Execute(null);
                     }
-                }
-                if(originalSource != null) {
-                    SelectedItem.OpenFileCommand.Execute(null);
                 }
             },
             e => true//SelectedItem != null

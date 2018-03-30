@@ -247,5 +247,28 @@ namespace ContentTypeTextNet.NKit.Utility.Model
                 WindowsUtility.SetWindowLong(hWnd, (int)GWL.GWL_STYLE, (IntPtr)style);
             }
         }
+
+        public static bool IsEnabledEventArea(DependencyObject dependencyObject, Type[] enableElementTypes)
+        {
+            if(enableElementTypes == null) {
+                throw new ArgumentNullException(nameof(enableElementTypes));
+            }
+
+            // かなり TextSearchMatchControl に依存してる
+            if(dependencyObject is System.Windows.Documents.Run) {
+                return true;
+            }
+
+            while(dependencyObject != null) {
+                var type = dependencyObject.GetType();
+                if(enableElementTypes.Any(t => t == type)) {
+                    return true;
+                }
+                dependencyObject = VisualTreeHelper.GetParent(dependencyObject);
+            }
+
+            return false;
+        }
     }
 }
+
