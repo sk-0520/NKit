@@ -361,6 +361,11 @@ namespace ContentTypeTextNet.NKit.Main.Model
                                 var cellReference = new CellReference(result.RowIndex, result.ColumnIndex);
                                 match.Footer = " SHAPE";
                                 match.Header = $"[{cellReference.FormatAsString()}] ";
+                                match.Tag = new AssociationSpreadSeetParameter() {
+                                    SheetName = sheet.Raw.SheetName,
+                                    RowIndex = result.RowIndex,
+                                    ColumnIndex = result.ColumnIndex,
+                                };
                             }
                         }
 
