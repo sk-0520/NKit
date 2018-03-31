@@ -592,6 +592,9 @@ namespace ContentTypeTextNet.NKit.Main.Model
                                 // TODO: 何かしらで外部に逃がしたい
                                 macth.Header = $"TABLE";
                                 macth.Footer = $"[{row.Index + 1}:{cell.Index + 1}]";
+                                macth.Tag = new AssociationDocumentParameter() {
+                                    Page = -1,//TODO: ページ番号の取り方が分かるんなら最初から対応してる
+                                };
                             }
                             tableResult.CellResults.Add(cellResult);
                         }
