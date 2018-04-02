@@ -19,7 +19,25 @@ namespace ContentTypeTextNet.NKit.Utility.Test.Model
         public void ToHexStringTest(string result, byte[] binary)
         {
             var dc = new DisplayConverter();
-            Assert.IsTrue(dc.ToHexString(binary) == result);
+            var testResult = dc.ToHexString(binary);
+            Assert.IsTrue(testResult == result, $"{testResult} != {result} <{nameof(result)}>");
+        }
+
+        [TestMethod]
+        [DataRow("0.00 byte", 0)]
+        [DataRow("1.00 byte", 1)]
+        [DataRow("100.00 byte", 100)]
+        [DataRow("1023.00 byte", 1023)]
+        [DataRow("1.00 KB", 1024)]
+        [DataRow("2.00 KB", 2048)]
+        [DataRow("10.00 KB", 10240)]
+        [DataRow("20.00 KB", 20480)]
+        [DataRow("1.00 MB", 1048576)]
+        public void ToHumanLikeByteTest(string result, long size)
+        {
+            var dc = new DisplayConverter();
+            var testResult = dc.ToHumanLikeByte(size);
+            Assert.IsTrue(testResult == result, $"{testResult} != {result} <{nameof(result)}>");
         }
     }
 }
