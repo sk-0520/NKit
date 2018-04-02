@@ -180,6 +180,16 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                         Logger.Warning(ex);
                     }
                 }
+
+                if(Cache.Setting.PdfContent.IsEnabled && Cache.FileNameKinds[FileNameKind.MicrosoftOffice].IsMatch(fileInfo.Name)) {
+                    try {
+                        result.Pdf = searcher.SearchPdf(Cache.FileContent);
+                    } catch(Exception ex) {
+                        Logger.Warning(ex);
+                    }
+                }
+
+
                 if(Cache.Setting.XmlHtmlContent.IsEnabled && Cache.FileNameKinds[FileNameKind.XmlHtml].IsMatch(fileInfo.Name)) {
                     try {
                         // XMLとか検索した記憶あんまねぇなぁ
@@ -193,6 +203,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             var isMatches = new SearchResultBase[] {
                 result.Text,
                 result.MicrosoftOffice,
+                result.Pdf,
                 result.XmlHtml
             };
 

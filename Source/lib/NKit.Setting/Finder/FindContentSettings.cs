@@ -34,6 +34,8 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         #endregion
     }
 
+    #region ms office
+
     public interface IReadOnlyFindMicrosoftOfficeCommonContentSetting: IReadOnlyFindContentSetting
     {
         #region proeprty
@@ -100,6 +102,23 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         #endregion
     }
 
+    #endregion
+
+    public interface IReadOnlyFindPdfContentSetting: IReadOnlyFindContentSetting
+    {
+        #region property
+        #endregion
+    }
+
+    [Serializable, DataContract]
+    public class FindPdfContentSetting: FindContentSettingBase, IReadOnlyFindPdfContentSetting
+    {
+        #region IReadOnlyFindPdfContentSetting
+        #endregion
+    }
+
+    #region xml/html
+
     public interface IReadOnlyFindXmlHtmlContentSetting: IReadOnlyFindContentSetting
     {
         #region property
@@ -157,4 +176,6 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
 
         #endregion
     }
+
+    #endregion
 }

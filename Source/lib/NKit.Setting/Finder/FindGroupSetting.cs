@@ -105,6 +105,9 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         bool IsEnabledFileContentSizeLimit { get; }
 
         IReadOnlyFindMicrosoftOfficeContentSetting MicrosoftOfficeContent { get; }
+
+        IReadOnlyFindPdfContentSetting PdfContent { get; }
+
         IReadOnlyFindXmlHtmlContentSetting XmlHtmlContent { get; }
 
         #endregion
@@ -170,6 +173,10 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         [DataMember]
         public FindMicrosoftOfficeContentSetting MicrosoftOfficeContent { get; set; } = new FindMicrosoftOfficeContentSetting();
         IReadOnlyFindMicrosoftOfficeContentSetting IReadOnlyFindGroupSetting.MicrosoftOfficeContent => MicrosoftOfficeContent;
+
+        [DataMember]
+        public FindPdfContentSetting PdfContent { get; set; } = new FindPdfContentSetting();
+        IReadOnlyFindPdfContentSetting IReadOnlyFindGroupSetting.PdfContent => PdfContent;
 
         [DataMember]
         public FindXmlHtmlContentSetting XmlHtmlContent { get; set; } = new FindXmlHtmlContentSetting();

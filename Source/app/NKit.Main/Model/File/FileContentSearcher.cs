@@ -30,6 +30,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         public TextSearchResult Text { get; set; }
         public MicrosoftOfficeSearchResultBase MicrosoftOffice { get; set; }
+        public PdfSearchResult Pdf { get; set; }
         public XmlHtmlSearchResult XmlHtml { get; set; }
 
         #endregion
@@ -55,6 +56,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         TextSearchResult TextSearchResult { get;set;}
         MicrosoftOfficeSearchResultBase MicrosoftOfficeSearchResult { get;set;}
+        PdfSearchResult PdfSearchResult { get; set; }
         XmlHtmlSearchResult XmlHtmlSearchResult { get;set;}
 
         #endregion
@@ -129,6 +131,18 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
                     return MicrosoftOfficeSearchResultBase.NotFound;
             }
 
+        }
+
+        public PdfSearchResult SearchPdf(Regex regex)
+        {
+            if(File.Length == 0) {
+                return PdfSearchResult.NotFound;
+            }
+
+            FileStream.Position = 0;
+
+            var ps = new PdfSearcher();
+            return PdfSearchResult = ps.Search(FileStream, regex);
         }
 
         public XmlHtmlSearchResult SearchXmlHtml(Regex regex, IReadOnlyFindXmlHtmlContentSetting setting)

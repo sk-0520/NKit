@@ -274,6 +274,15 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         #endregion
 
+        #region pdf
+        public bool PdfContentIsEnabled
+        {
+            get { return Model.FindGroupSetting.PdfContent.IsEnabled; }
+            set { SetPropertyValue(Model.FindGroupSetting.PdfContent, value, nameof(Model.FindGroupSetting.PdfContent.IsEnabled)); }
+        }
+
+        #endregion
+
         #region xml/html
 
         public bool XmlHtmlContentIsEnabled
