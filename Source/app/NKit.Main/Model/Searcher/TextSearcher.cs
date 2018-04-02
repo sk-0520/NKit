@@ -111,9 +111,9 @@ namespace ContentTypeTextNet.NKit.Main.Model.Searcher
 
         #region function
 
-        protected virtual TextSearchMatch CreateMatchObject(int lineNumber, int characterPostion, int length, string lineText)
+        protected virtual TextSearchMatch CreateMatchObject(int lineNumber, int characterPosition, int length, string lineText)
         {
-            return new TextSearchMatch(lineNumber, characterPostion, length, lineText);
+            return new TextSearchMatch(lineNumber, characterPosition, length, lineText);
         }
 
         EncodingCheckResult GetEncoding(Stream stream, int checkLength)
@@ -206,7 +206,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Searcher
     }
 
     // func<> で定義したら引数名がわかめ
-    public delegate TextSearchMatch CustomTextMatchCreatorDelagete(int lineNumber, int characterPostion, int length, string lineText);
+    public delegate TextSearchMatch CustomTextMatchCreatorDelagete(int lineNumber, int characterPosition, int length, string lineText);
 
 
     public sealed class CustomTextSearchMatchTextSeacher : TextSearcher
