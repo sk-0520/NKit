@@ -10,7 +10,7 @@ using Hnx8.ReadJEnc;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Utility.Model;
 
-namespace ContentTypeTextNet.NKit.Main.Model
+namespace ContentTypeTextNet.NKit.Main.Model.Searcher
 {
     public class TextSearchMatch
     {

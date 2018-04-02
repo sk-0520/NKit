@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
+using ContentTypeTextNet.NKit.Main.Model.Searcher;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Setting.Finder;
 using ContentTypeTextNet.NKit.Utility.Model;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Setting.Define;
 
-namespace ContentTypeTextNet.NKit.Main.Model
+namespace ContentTypeTextNet.NKit.Main.Model.Searcher
 {
     public class SearchPatternCreator
     {

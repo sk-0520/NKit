@@ -10,6 +10,7 @@ using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
 using ContentTypeTextNet.NKit.Main.Model.Microsoft.Office;
+using ContentTypeTextNet.NKit.Main.Model.Searcher;
 using ContentTypeTextNet.NKit.Setting.Finder;
 using ContentTypeTextNet.NKit.Utility.Model;
 

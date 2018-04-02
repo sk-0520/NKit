@@ -19,7 +19,7 @@ using NPOI.WP.UserModel;
 using NPOI.XSSF.UserModel;
 using NPOI.XWPF.UserModel;
 
-namespace ContentTypeTextNet.NKit.Main.Model
+namespace ContentTypeTextNet.NKit.Main.Model.Searcher
 {
     public abstract class MicrosoftOfficeSearchParameterBase : SearchParameterBase
     { }

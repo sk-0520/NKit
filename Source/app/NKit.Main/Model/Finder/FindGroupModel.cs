@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model.File;
+using ContentTypeTextNet.NKit.Main.Model.Searcher;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Setting.File;
 using ContentTypeTextNet.NKit.Setting.Finder;

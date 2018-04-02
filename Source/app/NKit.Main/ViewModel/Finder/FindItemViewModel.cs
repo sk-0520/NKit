@@ -8,6 +8,7 @@ using System.Windows.Input;
 using ContentTypeTextNet.NKit.Main.Model;
 using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
+using ContentTypeTextNet.NKit.Main.Model.Searcher;
 using ContentTypeTextNet.NKit.Main.ViewModel.File;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.ViewModel;
