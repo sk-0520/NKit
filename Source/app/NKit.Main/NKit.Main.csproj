@@ -185,6 +185,7 @@
     <Compile Include="Model\Finder\FindGroupCache.cs" />
     <Compile Include="Model\ISelectable.cs" />
     <Compile Include="Model\NKit\NKitApplicationExecutor.cs" />
+    <Compile Include="Model\Searcher\PdfSearcher.cs" />
     <Compile Include="Model\Searcher\XmlHtmlSearcher.cs" />
     <Compile Include="ViewModel\Capture\CaptureGroupViewModel.cs" />
     <Compile Include="ViewModel\Capture\CaptureImageViewModel.cs" />
