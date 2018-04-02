@@ -181,7 +181,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                     }
                 }
 
-                if(Cache.Setting.PdfContent.IsEnabled && Cache.FileNameKinds[FileNameKind.MicrosoftOffice].IsMatch(fileInfo.Name)) {
+                if(Cache.Setting.PdfContent.IsEnabled && Cache.FileNameKinds[FileNameKind.Pdf].IsMatch(fileInfo.Name)) {
                     try {
                         result.Pdf = searcher.SearchPdf(Cache.FileContent);
                     } catch(Exception ex) {
@@ -302,6 +302,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                     Cache.FileNameKinds = new[] {
                         new { Kind = FileNameKind.Text,  Pattern = FinderSetting.TextFileNamePattern, },
                         new { Kind = FileNameKind.MicrosoftOffice,  Pattern = FinderSetting.MicrosoftOfficeFileNamePattern, },
+                        new { Kind = FileNameKind.Pdf,  Pattern = FinderSetting.PdfFileNamePattern, },
                         new { Kind = FileNameKind.XmlHtml,  Pattern = FinderSetting.XmlHtmlFileNamePattern, },
                     }.Select(i => new {
                         Kind = i.Kind,
@@ -311,6 +312,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                         i => i.Regex
                     )
                     ;
+                    Debug.Assert(Cache.FileNameKinds.Count == EnumUtility.GetMembers<FileNameKind>().Count());
 
                 } catch(ArgumentException ex) {
                     Logger.Error(ex);
