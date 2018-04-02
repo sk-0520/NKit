@@ -45,6 +45,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
             FileStream = file.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
             Debug.Assert(FileStream.CanSeek);
+            FileStreamPostionKeeper = new StreamPostionKeeper(FileStream);
         }
 
         #region property
@@ -53,6 +54,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
         ILogFactory LogFactory { get; }
 
         Stream FileStream { get; }
+        StreamPostionKeeper FileStreamPostionKeeper { get; }
 
         TextSearchResult TextSearchResult { get;set;}
         MicrosoftOfficeSearchResultBase MicrosoftOfficeSearchResult { get;set;}
@@ -69,7 +71,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
                 return TextSearchResult.NotFound;
             }
 
-            FileStream.Position = 0;
+            FileStreamPostionKeeper.Reset();
 
             var ts = new TextSearcher();
             return TextSearchResult = ts.Search(FileStream, regex);
@@ -81,7 +83,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
                 return MicrosoftOfficeExcelSearchResult.NotFound;
             }
 
-            FileStream.Position = 0;
+            FileStreamPostionKeeper.Reset();
 
             var es = new MicrosoftOfficeExcelSearcher();
             var result = es.Search(excelType, FileStream, regex, setting);
@@ -95,7 +97,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
                 return MicrosoftOfficeWordSearchResult.NotFound;
             }
 
-            FileStream.Position = 0;
+            FileStreamPostionKeeper.Reset();
 
             var ws = new MicrosoftOfficeWordSearcher();
             var result = ws.Search(wordType, FileStream, regex, setting);
@@ -139,7 +141,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
                 return PdfSearchResult.NotFound;
             }
 
-            FileStream.Position = 0;
+            FileStreamPostionKeeper.Reset();
 
             var ps = new PdfSearcher();
             return PdfSearchResult = ps.Search(FileStream, regex);
@@ -150,7 +152,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             if(File.Length == 0) {
                 return XmlHtmlSearchResult.NotFound;
             }
-            FileStream.Position = 0;
+            FileStreamPostionKeeper.Reset();
 
             XmlHtmlSearchResult result;
             var xs = new XmlHtmlSearcher();
@@ -171,6 +173,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
         {
             if(!IsDisposed) {
                 if(disposing) {
+                    FileStreamPostionKeeper.Dispose();
                     FileStream.Dispose();
                 }
             }
