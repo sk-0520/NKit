@@ -10,6 +10,7 @@ namespace ContentTypeTextNet.NKit.Main.Define
     {
         Text,
         MicrosoftOffice,
+        Pdf,
         XmlHtml,
     }
 }

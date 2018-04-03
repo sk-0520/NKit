@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using ContentTypeTextNet.NKit.Main.Model;
+using ContentTypeTextNet.NKit.Main.Model.Searcher;
 
 namespace ContentTypeTextNet.NKit.Main.View.Converter
 {

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
+using ContentTypeTextNet.NKit.Utility.Model;
 using ContentTypeTextNet.NKit.Utility.Model.Unmanaged;
 
 namespace ContentTypeTextNet.NKit.Rocket.Model
 {
-    public abstract class OpenerBase: DisposerBase
+    public abstract class OpenerBase: ModelBase
     {
         public OpenerBase(string filePath)
         {

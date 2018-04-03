@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using ContentTypeTextNet.NKit.Main.Model;
+using ContentTypeTextNet.NKit.Main.Model.Searcher;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Rendering;
 

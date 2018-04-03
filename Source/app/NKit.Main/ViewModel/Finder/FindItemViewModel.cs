@@ -8,6 +8,7 @@ using System.Windows.Input;
 using ContentTypeTextNet.NKit.Main.Model;
 using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
+using ContentTypeTextNet.NKit.Main.Model.Searcher;
 using ContentTypeTextNet.NKit.Main.ViewModel.File;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.ViewModel;
@@ -24,6 +25,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         bool _isSelectedContentGeneral;
         bool _isSelectedContentText;
         bool _isSelectedContentMsOffice;
+        bool _isSelectedContentPdf;
         bool _isSelectedContentXmlHtml;
 
         #endregion
@@ -41,11 +43,14 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 if(ContentIsXmlHtml) {
                     IsSelectedContentXmlHtml = true;
                 }
+                if(ContentIsPdf) {
+                    IsSelectedContentPdf = true;
+                }
                 if(ContentIsMsOffice) {
                     IsSelectedContentMsOffice = true;
                 }
             }
-            if(!(ContentIsText || ContentIsXmlHtml | ContentIsMsOffice)) {
+            if(!(ContentIsText || ContentIsXmlHtml || IsSelectedContentPdf || ContentIsMsOffice)) {
                 IsSelectedContentGeneral = true;
             }
         }
@@ -123,6 +128,20 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { /* TwoWay ダミー */}
         }
 
+        public bool ContentIsPdf => Model.FileContentSearchResult.Pdf != null && Model.FileContentSearchResult.Pdf.IsMatched;
+
+        public IReadOnlyList<TextSearchMatch> ContentPdfMatches
+        {
+            get {
+                if(!ContentIsPdf) {
+                    return null;
+                }
+
+                return Model.FileContentSearchResult.Pdf.Matches;
+            }
+            set { /* TwoWay ダミー */}
+        }
+
         public bool ContentIsXmlHtml => Model.FileContentSearchResult.XmlHtml != null;
         public XmlHtmlSearchResult ContentXmlHtml => Model.FileContentSearchResult.XmlHtml;
         public IReadOnlyList<TextSearchMatch> ContentXmlHtmlMatches
@@ -185,6 +204,13 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             get { return this._isSelectedContentMsOffice; }
             set { SetProperty(ref this._isSelectedContentMsOffice, value); }
         }
+
+        public bool IsSelectedContentPdf
+        {
+            get { return this._isSelectedContentPdf; }
+            set { SetProperty(ref this._isSelectedContentPdf, value); }
+        }
+
         public bool IsSelectedContentXmlHtml
         {
             get { return this._isSelectedContentXmlHtml; }
@@ -253,6 +279,19 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                     var parameter = CreateCommonAssociationOpenParameter(match);
                     parameter.Document = (AssociationDocumentParameter)match.Tag;
                     Model.OpenAssociationFile(AssociationFileKind.MicrosoftOfficeWord, parameter);
+                });
+            }
+            set { /* TwoWay ダミー */}
+        }
+
+        public ICommand OpenPdfFileCommand
+        {
+            get
+            {
+                return new DelegateCommand<TextSearchMatch>(match => {
+                    var parameter = CreateCommonAssociationOpenParameter(match);
+                    parameter.Document = (AssociationDocumentParameter)match.Tag;
+                    Model.OpenAssociationFile(AssociationFileKind.Pdf, parameter);
                 });
             }
             set { /* TwoWay ダミー */}

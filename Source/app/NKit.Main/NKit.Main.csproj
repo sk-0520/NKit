@@ -75,6 +75,10 @@
       <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Microsoft.Extensions.CommandLineUtils, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Extensions.CommandLineUtils.1.1.1\lib\net451\Microsoft.Extensions.CommandLineUtils.dll</HintPath>
       <Private>False</Private>
@@ -181,7 +185,8 @@
     <Compile Include="Model\Finder\FindGroupCache.cs" />
     <Compile Include="Model\ISelectable.cs" />
     <Compile Include="Model\NKit\NKitApplicationExecutor.cs" />
-    <Compile Include="Model\XmlHtmlSearcher.cs" />
+    <Compile Include="Model\Searcher\PdfSearcher.cs" />
+    <Compile Include="Model\Searcher\XmlHtmlSearcher.cs" />
     <Compile Include="ViewModel\Capture\CaptureGroupViewModel.cs" />
     <Compile Include="ViewModel\Capture\CaptureImageViewModel.cs" />
     <Compile Include="ViewModel\Cli\CliManagerViewModel.cs" />
@@ -299,17 +304,17 @@
     <Compile Include="Model\Finder\FinderManagerModel.cs" />
     <Compile Include="Model\Finder\FindGroupModel.cs" />
     <Compile Include="Model\Finder\FindItemModel.cs" />
-    <Compile Include="Model\SearchPatternCreator.cs" />
+    <Compile Include="Model\Searcher\SearchPatternCreator.cs" />
     <Compile Include="Model\HashProvider.cs" />
     <Compile Include="Model\MainModel.cs" />
     <Compile Include="Model\ManagerModelBase.cs" />
     <Compile Include="Model\Microsoft\Office\MicrosoftOfficeExcel.cs" />
     <Compile Include="Model\Microsoft\Office\MicrosoftOfficeOperator.cs" />
-    <Compile Include="Model\MicrosoftOfficeSearcher.cs" />
-    <Compile Include="Model\SearchBase.cs" />
+    <Compile Include="Model\Searcher\MicrosoftOfficeSearcher.cs" />
+    <Compile Include="Model\Searcher\SearchBase.cs" />
     <Compile Include="Model\StreamPostionKeeper.cs" />
     <Compile Include="Model\SystemEnvironment\SystemEnvironmentManagerModel.cs" />
-    <Compile Include="Model\TextSearcher.cs" />
+    <Compile Include="Model\Searcher\TextSearcher.cs" />
     <Compile Include="Model\Wapper\BusyBoxExecutor.cs" />
     <Compile Include="ViewModel\NKit\NKitManagerViewModel.cs" />
     <Compile Include="ViewModel\Capture\CaptureManagerViewModel.cs" />
