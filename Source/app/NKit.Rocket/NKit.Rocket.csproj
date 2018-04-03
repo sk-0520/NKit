@@ -96,6 +96,7 @@
     <Compile Include="Model\MicrosoftExcelOpener.cs" />
     <Compile Include="Model\MicrosoftWordOpener.cs" />
     <Compile Include="Model\OpenerBase.cs" />
+    <Compile Include="Model\PdfOpener.cs" />
     <Compile Include="Model\RocketModel.cs" />
     <Compile Include="Program.cs">
       <AutoGen>True</AutoGen>

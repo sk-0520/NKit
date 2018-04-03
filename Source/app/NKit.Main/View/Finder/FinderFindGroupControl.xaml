@@ -269,7 +269,7 @@
                   <CheckBox IsChecked="{Binding PdfContentIsEnabled}">PDF</CheckBox>
                 </GroupBox.Header>
                 <StackPanel>
-                  <TextBlock>not impl</TextBlock>
+                  <TextBlock>なにもない</TextBlock>
                 </StackPanel>
               </GroupBox>
 
