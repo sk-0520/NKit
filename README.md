@@ -7,7 +7,7 @@
 
 # ダウンロード
 
- * 実行環境: [.NET Framework 4.7](https://www.microsoft.com/ja-JP/download/details.aspx?id=55170)
+ * 実行環境: [.NET Framework 4.6](https://www.microsoft.com/ja-jp/download/details.aspx?id=48130)
 
 
 # フォーラム
