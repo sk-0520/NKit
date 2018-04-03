@@ -22,6 +22,8 @@ namespace ContentTypeTextNet.NKit.Setting.Define
         [EnumMember]
         MicrosoftOfficeWord,
         [EnumMember]
+        Pdf,
+        [EnumMember]
         XmlHtml,
     }
 }
