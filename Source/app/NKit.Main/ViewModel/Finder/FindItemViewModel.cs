@@ -43,11 +43,14 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 if(ContentIsXmlHtml) {
                     IsSelectedContentXmlHtml = true;
                 }
+                if(ContentIsPdf) {
+                    IsSelectedContentPdf = true;
+                }
                 if(ContentIsMsOffice) {
                     IsSelectedContentMsOffice = true;
                 }
             }
-            if(!(ContentIsText || ContentIsXmlHtml | ContentIsMsOffice)) {
+            if(!(ContentIsText || ContentIsXmlHtml || IsSelectedContentPdf || ContentIsMsOffice)) {
                 IsSelectedContentGeneral = true;
             }
         }
