@@ -82,6 +82,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             get { return ManagerSetting.WindowArea; }
             set { ManagerSetting.WindowArea = value; }
         }
+
+        public bool AutoUpdateCheck
+        {
+            get { return ManagerSetting.AutoUpdateCheck; }
+            set { ManagerSetting.AutoUpdateCheck = value; }
+        }
         public bool WorkspaceLoadToMinimize
         {
             get { return ManagerSetting.Workspace.WorkspaceLoadToMinimize; }
