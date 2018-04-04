@@ -38,7 +38,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Searcher
         {
             var matches = new List<TextSearchMatch>();
 
-            using(var reader = new PdfReader(new KeepOpenStream(stream))) {
+            using(var reader = new PdfReader(stream)) {
                 var numberOfPages = reader.NumberOfPages;
                 for(var pageNumber = 1; pageNumber <= numberOfPages; pageNumber++) {
                     //var parser = new PdfReaderContentParser(reader);

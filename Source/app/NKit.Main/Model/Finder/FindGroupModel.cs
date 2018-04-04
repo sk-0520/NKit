@@ -143,7 +143,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             return result;
         }
 
-        FileContentSearchResult SearchFlieContentPattern(FileInfo fileInfo)
+        FileContentSearchResult SearchFileContentPattern(FileInfo fileInfo)
         {
             Debug.Assert(Cache.Setting.FindFileContent);
             Debug.Assert(Cache.FileNameKinds.Any());
@@ -355,10 +355,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                     if(Cache.Setting.FindFileContent && !string.IsNullOrEmpty(Cache.Setting.FileContentSearchPattern)) {
                         if(Cache.Setting.IsEnabledFileContentSizeLimit && (matchedFileSize || (!matchedFileSize && Cache.Setting.FileSizeLimit.Head == 0 && Cache.Setting.FileSizeLimit.Tail == 0))) {
                             // ファイルサイズ制限による読み込み抑制が有効であればサイズもチェックしたうえで検索
-                            fileContentSearchResult = SearchFlieContentPattern(fileInfo);
+                            fileContentSearchResult = SearchFileContentPattern(fileInfo);
                         } else if(!Cache.Setting.IsEnabledFileContentSizeLimit) {
                             // ファイルサイズ制限による読み込み抑制が無効なら問答無用で検索
-                            fileContentSearchResult = SearchFlieContentPattern(fileInfo);
+                            fileContentSearchResult = SearchFileContentPattern(fileInfo);
                         }
                     }
 

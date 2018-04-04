@@ -27,7 +27,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
 
         #region property
 
-        Stream Stream { get; }
+        Stream Stream { get; set; }
 
         public long KeepPostion { get; }
 
@@ -50,6 +50,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
                 if(disposing) {
                     Reset();
                 }
+                Stream = null;
             }
 
             base.Dispose(disposing);
