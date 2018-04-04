@@ -43,8 +43,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
         public void Initialize()
         {
 #if DEBUG
-            if (IsInitialized)
-            {
+            if(IsInitialized) {
                 throw new InvalidOperationException();
             }
 #endif
@@ -127,6 +126,8 @@ namespace ContentTypeTextNet.NKit.Main.Model
 
         void InitializeMainSetting()
         {
+            // 位置・サイズに全くこだわりなし
+            Setting.MainWindow.Clamp(100, 100, 640, 480);
         }
 
         #endregion

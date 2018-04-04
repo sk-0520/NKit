@@ -1,48 +1,76 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 
 namespace ContentTypeTextNet.NKit.Setting
 {
-    public class WindowSetting : SettingBase
+    public interface IReadOnlyWindowSetting
     {
         #region property
 
+        [DataMember]
+        double Left { get; }
+        double Top { get; }
+        double Width { get; }
+        double Height { get; }
+
+        #endregion
+    }
+
+    [Serializable, DataContract]
+    public class WindowSetting : SettingBase, IReadOnlyWindowSetting
+    {
+        #region IReadOnlyWindowSetting
+
+        [DataMember]
         public double Left { get; set; }
+        [DataMember]
         public double Top { get; set; }
+        [DataMember]
         public double Width { get; set; }
+        [DataMember]
         public double Height { get; set; }
 
         #endregion
 
         #region function
 
-        bool IsEnabledWindowValue(double value)
+        bool IsEnabledWindowLocationValue(double value)
         {
             return !(double.IsNaN(value) || double.IsInfinity(value));
+        }
+
+        bool IsEnabledWindowSizeValue(double value)
+        {
+            if(!(double.IsNaN(value) || double.IsInfinity(value))) {
+                return 0 < value;
+            }
+
+            return false;
         }
 
         public bool Clamp(double left, double top, double width, double height)
         {
             bool isUpdated = false;
 
-            if(!IsEnabledWindowValue(Left)) {
+            if(!IsEnabledWindowLocationValue(Left)) {
                 Left = left;
                 isUpdated = true;
             }
-            if(!IsEnabledWindowValue(Top)) {
+            if(!IsEnabledWindowLocationValue(Top)) {
                 Top = top;
                 isUpdated = true;
             }
 
-            if(!IsEnabledWindowValue(Width)) {
+            if(!IsEnabledWindowSizeValue(Width)) {
                 Width = width;
                 isUpdated = true;
             }
-            if(!IsEnabledWindowValue(Height)) {
+            if(!IsEnabledWindowSizeValue(Height)) {
                 Height = height;
                 isUpdated = true;
             }

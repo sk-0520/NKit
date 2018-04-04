@@ -41,8 +41,8 @@ namespace NKit.Setting.Test
 
 
         [TestMethod]
-        [DataRow(0, 0, 0)]
-        [DataRow(0, 0, 1)]
+        [DataRow(1, 0, 1)]
+        [DataRow(1, 1, 0)]
         [DataRow(1, double.NaN, 1)]
         [DataRow(1, 1, double.NaN)]
         public void Clamp_Width_Test(double result, double setting, double input)
@@ -55,8 +55,8 @@ namespace NKit.Setting.Test
         }
 
         [TestMethod]
-        [DataRow(0, 0, 0)]
-        [DataRow(0, 0, 1)]
+        [DataRow(1, 0, 1)]
+        [DataRow(1, 1, 0)]
         [DataRow(1, double.NaN, 1)]
         [DataRow(1, 1, double.NaN)]
         public void Clamp_Height_Test(double result, double setting, double input)

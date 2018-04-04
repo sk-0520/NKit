@@ -17,10 +17,10 @@
   Icon="/Resources/NKit.Main.ico"
 
   WindowState="{Binding WindowState}"
-  Left="{Binding Left}"
-  Top="{Binding Top}"
-  Width="{Binding Width}"
-  Height="{Binding Height}"
+  Left="{Binding Left, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+  Top="{Binding Top, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+  Width="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+  Height="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
   
   ResizeMode="CanResizeWithGrip"
 
