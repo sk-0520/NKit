@@ -39,14 +39,19 @@ namespace ContentTypeTextNet.NKit.Setting
 
         #region function
 
-        bool IsEnabledWindowLocationValue(double value)
+        bool IsEnabledWindowValue(double value)
         {
             return !(double.IsNaN(value) || double.IsInfinity(value));
         }
 
+        bool IsEnabledWindowLocationValue(double value)
+        {
+            return IsEnabledWindowValue(value);
+        }
+
         bool IsEnabledWindowSizeValue(double value)
         {
-            if(!(double.IsNaN(value) || double.IsInfinity(value))) {
+            if(IsEnabledWindowValue(value)) {
                 return 0 < value;
             }
 
