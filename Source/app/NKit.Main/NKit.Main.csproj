@@ -432,6 +432,7 @@
       <DependentUpon>%40NKit.Main.user.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="%40NKit.Main.user.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
