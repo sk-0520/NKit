@@ -94,6 +94,12 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             set { SetPropertyValue(Model.GroupSetting.Scroll.InternetExplorer.Footer, value, nameof(Model.GroupSetting.Scroll.InternetExplorer.Footer.HideElements)); }
         }
 
+        public bool IsEnabledClipboard
+        {
+            get { return Model.GroupSetting.IsEnabledClipboard; }
+            set { SetPropertyValue(Model.GroupSetting, value, nameof(Model.GroupSetting.IsEnabledClipboard)); }
+        }
+
         public CaptureImageViewModel SelectedImageItem
         {
             get { return this._selectedImageItem; }
