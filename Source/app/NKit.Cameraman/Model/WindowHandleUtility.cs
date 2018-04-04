@@ -19,6 +19,9 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
         #region Winuser
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         public static extern bool SetProcessDPIAware();
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetDC(IntPtr hWnd);
         #endregion
 
         #region Wingdi
