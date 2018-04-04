@@ -171,6 +171,8 @@ namespace ContentTypeTextNet.NKit.Cameraman.Model
 
         public void Execute(InformationForm form)
         {
+            WindowHandleUtility.SetProcessDPIAware();
+
             if(Bag.CaptureTarget == CaptureTarget.Screen && !Bag.IsContinuation) {
                 CaptureScreen();
                 Exit();
