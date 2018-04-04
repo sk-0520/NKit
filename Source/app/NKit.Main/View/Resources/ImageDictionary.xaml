@@ -5,6 +5,7 @@
   <!--#region 共通項目 -->
   <Style x:Key="ImageBase" TargetType="Control">
     <Setter Property="IsHitTestVisible" Value="False" />
+    <Setter Property="IsTabStop" Value="False" />
   </Style>
   <Style x:Key="Image-Small" TargetType="Control" BasedOn="{StaticResource ImageBase}">
     <Setter Property="Width" Value="16" />
