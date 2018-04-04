@@ -86,7 +86,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             FileStreamPostionKeeper.Reset();
 
             var es = new MicrosoftOfficeExcelSearcher();
-            var result = es.Search(excelType, FileStream, regex, setting);
+            var result = es.Search(excelType, new KeepOpenStream(FileStream), regex, setting);
             MicrosoftOfficeSearchResult = result;
             return result;
         }
@@ -100,7 +100,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             FileStreamPostionKeeper.Reset();
 
             var ws = new MicrosoftOfficeWordSearcher();
-            var result = ws.Search(wordType, FileStream, regex, setting);
+            var result = ws.Search(wordType, new KeepOpenStream(FileStream), regex, setting);
             MicrosoftOfficeSearchResult = result;
             return result;
         }
@@ -144,7 +144,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             FileStreamPostionKeeper.Reset();
 
             var ps = new PdfSearcher();
-            return PdfSearchResult = ps.Search(FileStream, regex);
+            return PdfSearchResult = ps.Search(new KeepOpenStream(FileStream), regex);
         }
 
         public XmlHtmlSearchResult SearchXmlHtml(Regex regex, IReadOnlyFindXmlHtmlContentSetting setting)
@@ -157,9 +157,9 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             XmlHtmlSearchResult result;
             var xs = new XmlHtmlSearcher();
             if(TextSearchResult != null && TextSearchResult.EncodingCheck != null && TextSearchResult.EncodingCheck.IsSuccess) {
-                result = xs.Search(FileStream, regex, TextSearchResult.EncodingCheck.Encoding, setting);
+                result = xs.Search(new KeepOpenStream(FileStream), regex, TextSearchResult.EncodingCheck.Encoding, setting);
             } else {
-                result = xs.Search(FileStream, regex, setting);
+                result = xs.Search(new KeepOpenStream(FileStream), regex, setting);
             }
             XmlHtmlSearchResult = result;
             return result;
