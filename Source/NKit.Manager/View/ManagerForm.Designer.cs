@@ -57,8 +57,16 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.selectAutoUpdateCheck = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.viewLog = new ContentTypeTextNet.NKit.Manager.View.LogListView();
+            this.viewLogColumnNumber = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.viewLogColumnTimestamp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.viewLogColumnKind = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.viewLogColumnSender = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.viewLogColumnSubject = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.viewLogColumnMessage = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
@@ -76,14 +84,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.statusbarLabelBuildType = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusbarLabelVersion = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusbarLabelHash = new System.Windows.Forms.ToolStripStatusLabel();
-            this.selectAutoUpdateCheck = new System.Windows.Forms.CheckBox();
-            this.viewLog = new ContentTypeTextNet.NKit.Manager.View.LogListView();
-            this.viewLogColumnNumber = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.viewLogColumnTimestamp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.viewLogColumnKind = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.viewLogColumnSender = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.viewLogColumnSubject = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.viewLogColumnMessage = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -412,6 +412,17 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.flowLayoutPanel2.Size = new System.Drawing.Size(286, 66);
             this.flowLayoutPanel2.TabIndex = 3;
             // 
+            // selectAutoUpdateCheck
+            // 
+            this.selectAutoUpdateCheck.AutoSize = true;
+            this.selectAutoUpdateCheck.Location = new System.Drawing.Point(3, 47);
+            this.selectAutoUpdateCheck.Name = "selectAutoUpdateCheck";
+            this.selectAutoUpdateCheck.Size = new System.Drawing.Size(174, 16);
+            this.selectAutoUpdateCheck.TabIndex = 2;
+            this.selectAutoUpdateCheck.Text = "アップデートを自動的に確認する";
+            this.selectAutoUpdateCheck.UseVisualStyleBackColor = true;
+            this.selectAutoUpdateCheck.CheckedChanged += new System.EventHandler(this.selectAutoUpdateCheck_CheckedChanged);
+            // 
             // flowLayoutPanel3
             // 
             this.flowLayoutPanel3.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -442,6 +453,57 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(838, 94);
             this.tableLayoutPanel3.TabIndex = 9;
+            // 
+            // viewLog
+            // 
+            this.viewLog.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.viewLogColumnNumber,
+            this.viewLogColumnTimestamp,
+            this.viewLogColumnKind,
+            this.viewLogColumnSender,
+            this.viewLogColumnSubject,
+            this.viewLogColumnMessage});
+            this.viewLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.viewLog.GridLines = true;
+            this.viewLog.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.viewLog.Location = new System.Drawing.Point(96, 3);
+            this.viewLog.MultiSelect = false;
+            this.viewLog.Name = "viewLog";
+            this.viewLog.ShowGroups = false;
+            this.viewLog.ShowItemToolTips = true;
+            this.viewLog.Size = new System.Drawing.Size(739, 88);
+            this.viewLog.TabIndex = 0;
+            this.viewLog.UseCompatibleStateImageBehavior = false;
+            this.viewLog.View = System.Windows.Forms.View.Details;
+            this.viewLog.VirtualMode = true;
+            this.viewLog.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.viewLog_ItemSelectionChanged);
+            this.viewLog.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.viewLog_RetrieveVirtualItem);
+            // 
+            // viewLogColumnNumber
+            // 
+            this.viewLogColumnNumber.Text = "#";
+            // 
+            // viewLogColumnTimestamp
+            // 
+            this.viewLogColumnTimestamp.Text = "タイムスタンプ";
+            this.viewLogColumnTimestamp.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // viewLogColumnKind
+            // 
+            this.viewLogColumnKind.Text = "種別";
+            this.viewLogColumnKind.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // viewLogColumnSender
+            // 
+            this.viewLogColumnSender.Text = "送信元";
+            // 
+            // viewLogColumnSubject
+            // 
+            this.viewLogColumnSubject.Text = "グループ";
+            // 
+            // viewLogColumnMessage
+            // 
+            this.viewLogColumnMessage.Text = "メッセージ";
             // 
             // tableLayoutPanel5
             // 
@@ -648,68 +710,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.statusbarLabelHash.Name = "statusbarLabelHash";
             this.statusbarLabelHash.Size = new System.Drawing.Size(88, 17);
             this.statusbarLabelHash.Text = "<CODE:HASH>";
-            // 
-            // selectAutoUpdateCheck
-            // 
-            this.selectAutoUpdateCheck.AutoSize = true;
-            this.selectAutoUpdateCheck.Location = new System.Drawing.Point(3, 47);
-            this.selectAutoUpdateCheck.Name = "selectAutoUpdateCheck";
-            this.selectAutoUpdateCheck.Size = new System.Drawing.Size(174, 16);
-            this.selectAutoUpdateCheck.TabIndex = 2;
-            this.selectAutoUpdateCheck.Text = "アップデートを自動的に確認する";
-            this.selectAutoUpdateCheck.UseVisualStyleBackColor = true;
-            this.selectAutoUpdateCheck.CheckedChanged += new System.EventHandler(this.selectAutoUpdateCheck_CheckedChanged);
-            // 
-            // viewLog
-            // 
-            this.viewLog.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.viewLogColumnNumber,
-            this.viewLogColumnTimestamp,
-            this.viewLogColumnKind,
-            this.viewLogColumnSender,
-            this.viewLogColumnSubject,
-            this.viewLogColumnMessage});
-            this.viewLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.viewLog.GridLines = true;
-            this.viewLog.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.viewLog.Location = new System.Drawing.Point(96, 3);
-            this.viewLog.MultiSelect = false;
-            this.viewLog.Name = "viewLog";
-            this.viewLog.ShowGroups = false;
-            this.viewLog.ShowItemToolTips = true;
-            this.viewLog.Size = new System.Drawing.Size(739, 88);
-            this.viewLog.TabIndex = 0;
-            this.viewLog.UseCompatibleStateImageBehavior = false;
-            this.viewLog.View = System.Windows.Forms.View.Details;
-            this.viewLog.VirtualMode = true;
-            this.viewLog.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.viewLog_ItemSelectionChanged);
-            this.viewLog.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.viewLog_RetrieveVirtualItem);
-            // 
-            // viewLogColumnNumber
-            // 
-            this.viewLogColumnNumber.Text = "#";
-            // 
-            // viewLogColumnTimestamp
-            // 
-            this.viewLogColumnTimestamp.Text = "タイムスタンプ";
-            this.viewLogColumnTimestamp.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // viewLogColumnKind
-            // 
-            this.viewLogColumnKind.Text = "種別";
-            this.viewLogColumnKind.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // viewLogColumnSender
-            // 
-            this.viewLogColumnSender.Text = "送信元";
-            // 
-            // viewLogColumnSubject
-            // 
-            this.viewLogColumnSubject.Text = "グループ";
-            // 
-            // viewLogColumnMessage
-            // 
-            this.viewLogColumnMessage.Text = "メッセージ";
             // 
             // ManagerForm
             // 
