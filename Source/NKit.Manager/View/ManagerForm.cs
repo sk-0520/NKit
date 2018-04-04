@@ -560,7 +560,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             }
         }
 
-        private void ManagerForm_Shown(object sender, EventArgs e)
+        private async void ManagerForm_Shown(object sender, EventArgs e)
         {
             // バージョンアップ時とかなら強制で全アプリケーションを起動
             if(Worker.IsFirstExecute || Worker.IsUpdatedFirstExecute) {
@@ -592,6 +592,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
                         diposer.Dispose();
                     }
                 }
+            }
+
+            // アップデート確認は少し時間がたってから行う
+            await Task.Delay(Constants.UpdateCheckWaitTime);
+            if(Worker.WorkspaceState == WorkspaceState.None || Worker.WorkspaceState == WorkspaceState.Creating || Worker.WorkspaceState == WorkspaceState.Selecting) {
+                this.commandCheckUpdate.PerformClick();
             }
         }
 
