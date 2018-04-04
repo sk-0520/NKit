@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model.File;
+using ContentTypeTextNet.NKit.Main.Model.Searcher;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Setting.File;
 using ContentTypeTextNet.NKit.Setting.Finder;
@@ -179,6 +180,16 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                         Logger.Warning(ex);
                     }
                 }
+
+                if(Cache.Setting.PdfContent.IsEnabled && Cache.FileNameKinds[FileNameKind.Pdf].IsMatch(fileInfo.Name)) {
+                    try {
+                        result.Pdf = searcher.SearchPdf(Cache.FileContent);
+                    } catch(Exception ex) {
+                        Logger.Warning(ex);
+                    }
+                }
+
+
                 if(Cache.Setting.XmlHtmlContent.IsEnabled && Cache.FileNameKinds[FileNameKind.XmlHtml].IsMatch(fileInfo.Name)) {
                     try {
                         // XMLとか検索した記憶あんまねぇなぁ
@@ -192,6 +203,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             var isMatches = new SearchResultBase[] {
                 result.Text,
                 result.MicrosoftOffice,
+                result.Pdf,
                 result.XmlHtml
             };
 
@@ -290,6 +302,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                     Cache.FileNameKinds = new[] {
                         new { Kind = FileNameKind.Text,  Pattern = FinderSetting.TextFileNamePattern, },
                         new { Kind = FileNameKind.MicrosoftOffice,  Pattern = FinderSetting.MicrosoftOfficeFileNamePattern, },
+                        new { Kind = FileNameKind.Pdf,  Pattern = FinderSetting.PdfFileNamePattern, },
                         new { Kind = FileNameKind.XmlHtml,  Pattern = FinderSetting.XmlHtmlFileNamePattern, },
                     }.Select(i => new {
                         Kind = i.Kind,
@@ -299,6 +312,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                         i => i.Regex
                     )
                     ;
+                    Debug.Assert(Cache.FileNameKinds.Count == EnumUtility.GetMembers<FileNameKind>().Count());
 
                 } catch(ArgumentException ex) {
                     Logger.Error(ex);

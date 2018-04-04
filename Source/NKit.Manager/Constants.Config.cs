@@ -17,7 +17,8 @@ namespace ContentTypeTextNet.NKit.Manager
 
         public static int LogViewLimit { get; } = int.Parse(ConfigurationManager.AppSettings["log-view-limit"]);
         public static string LogTimestampFormat { get; } = ConfigurationManager.AppSettings["log-timestamp-format"];
-
+        
+        public static TimeSpan UpdateCheckWaitTime { get; } = TimeSpan.Parse(ConfigurationManager.AppSettings["update-check-wait-time"]);
         public static bool UpdateCheckUriAppendRandom => bool.Parse(ConfigurationManager.AppSettings["update-check-uri-append-random"]);
 
         public static string UpdateCheckBranchBaseUri => ConfigurationManager.AppSettings["update-check-branch-base-uri"];

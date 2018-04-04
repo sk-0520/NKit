@@ -58,6 +58,11 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
             wo.Open();
         }
 
+        void OpenPdf()
+        {
+            var po = new PdfOpener(FilePath, DocumentLineNumber, DocumentCharacterPosition, DocumentLength, DocumentPageNumber);
+            po.Open();
+        }
 
         #endregion
 
@@ -101,6 +106,13 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
                     DocumentPageNumber = int.Parse(optionDocumentPageNumber.Value());
                     break;
 
+                case AssociationFileKind.Pdf:
+                    DocumentLineNumber = int.Parse(optionDocumentLineNumber.Value());
+                    DocumentCharacterPosition = int.Parse(optionDocumentCharacterPosition.Value());
+                    DocumentLength = int.Parse(optionDocumentLength.Value());
+                    DocumentPageNumber = int.Parse(optionDocumentPageNumber.Value());
+                    break;
+
                 default:
                     break;
             }
@@ -117,6 +129,10 @@ namespace ContentTypeTextNet.NKit.Rocket.Model
 
                 case AssociationFileKind.MicrosoftOfficeWord:
                     OpenMicrosoftWord();
+                    break;
+
+                case AssociationFileKind.Pdf:
+                    OpenPdf();
                     break;
 
                 default:

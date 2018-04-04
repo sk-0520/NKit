@@ -227,6 +227,14 @@
         </ScrollViewer>
       </TabItem>
 
+      <TabItem Header="PDF" IsSelected="{Binding SingleItem.IsSelectedContentPdf, ElementName=root}" Visibility="{Binding SingleItem.ContentIsPdf, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <ScrollViewer>
+          <StackPanel>
+            <app_main_view_control:TextSearchMatchControl HiddenTopLineOnly="False"  ItemsSource="{Binding SingleItem.ContentPdfMatches, Mode=TwoWay, ElementName=root}" UserSelectedCommand="{Binding SingleItem.OpenPdfFileCommand, Mode=TwoWay, ElementName=root}" MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" />
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+      
       <TabItem Header="XML/HTML" IsSelected="{Binding SingleItem.IsSelectedContentXmlHtml, ElementName=root}" Visibility="{Binding SingleItem.ContentIsXmlHtml, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
         <ScrollViewer>
           <StackPanel DataContext="{Binding SingleItem.ContentXmlHtml, ElementName=root}">

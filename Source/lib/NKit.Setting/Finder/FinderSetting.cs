@@ -28,6 +28,7 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         /// MS Officeファイルとしてのファイル名パターン。
         /// </summary>
         string MicrosoftOfficeFileNamePattern { get; }
+        string PdfFileNamePattern { get; }
         /// <summary>
         /// Xml/HTMLファイルとしてのファイル名パターン。
         /// </summary>
@@ -77,6 +78,11 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
             "xlsm",
             "docx"
         );
+
+        public string PdfFileNamePattern { get; set; } = CreateExtensions(
+            "pdf"
+        );
+
         [DataMember]
         public string XmlHtmlFileNamePattern { get; set; } = CreateExtensions(
             "xml", "setting", "xaml", "config",

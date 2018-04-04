@@ -19,7 +19,7 @@ using NPOI.WP.UserModel;
 using NPOI.XSSF.UserModel;
 using NPOI.XWPF.UserModel;
 
-namespace ContentTypeTextNet.NKit.Main.Model
+namespace ContentTypeTextNet.NKit.Main.Model.Searcher
 {
     public abstract class MicrosoftOfficeSearchParameterBase : SearchParameterBase
     { }
@@ -361,6 +361,11 @@ namespace ContentTypeTextNet.NKit.Main.Model
                                 var cellReference = new CellReference(result.RowIndex, result.ColumnIndex);
                                 match.Footer = " SHAPE";
                                 match.Header = $"[{cellReference.FormatAsString()}] ";
+                                match.Tag = new AssociationSpreadSeetParameter() {
+                                    SheetName = sheet.Raw.SheetName,
+                                    RowIndex = result.RowIndex,
+                                    ColumnIndex = result.ColumnIndex,
+                                };
                             }
                         }
 
@@ -587,6 +592,9 @@ namespace ContentTypeTextNet.NKit.Main.Model
                                 // TODO: 何かしらで外部に逃がしたい
                                 macth.Header = $"TABLE";
                                 macth.Footer = $"[{row.Index + 1}:{cell.Index + 1}]";
+                                macth.Tag = new AssociationDocumentParameter() {
+                                    Page = -1,//TODO: ページ番号の取り方が分かるんなら最初から対応してる
+                                };
                             }
                             tableResult.CellResults.Add(cellResult);
                         }

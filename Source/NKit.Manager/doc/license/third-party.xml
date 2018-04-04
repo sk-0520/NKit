@@ -19,6 +19,7 @@
 	<component name="Prism" project-uri="http://prismlibrary.github.io/" license-name="MIT" license-uri="https://github.com/PrismLibrary/Prism/blob/master/LICENSE" />
 	<component name="ReadJEnc" project-uri="https://github.com/hnx8/ReadJEnc" license-name="MIT" license-uri="http://hp.vector.co.jp/authors/VA055804/HNXgrep/ReadJEnc_Readme.txt" />
 	<component name="SharpZipLib" project-uri="http://www.icsharpcode.net/OpenSource/SharpZipLib/Default.aspx" license-name="MIT" license-uri="https://github.com/icsharpcode/SharpZipLib/blob/master/LICENSE.txt" />
+	<component name="iTextSharp" project-uri="https://itextpdf.com/" license-name="AGPL 3" license-uri="https://www.gnu.org/licenses/agpl.html" />
 
 	<component name="busybox-w32" project-uri="https://frippery.org/busybox/" license-name="GPL2" license-uri="" />
 

@@ -50,6 +50,10 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         /// </summary>
         Rectangle WindowArea { get; }
 
+        /// <summary>
+        /// アップデートチェックを自動的に行うか。
+        /// </summary>
+        bool AutoUpdateCheck { get; }
         #endregion
     }
 
@@ -85,6 +89,8 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         [DataMember]
         public Rectangle WindowArea { get; set; }
 
+        [DataMember]
+        public bool AutoUpdateCheck { get; set; } = true;
 
         #endregion
     }

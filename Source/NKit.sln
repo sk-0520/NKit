@@ -53,6 +53,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9A2B0246-1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Manager.Test", "NKit.Manager.Test\NKit.Manager.Test.csproj", "{6B8C3411-A7C8-4DB8-8E52-D2E992629840}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKit.Setting.Test", "lib\NKit.Setting.Test\NKit.Setting.Test.csproj", "{26B9FDD8-8B9D-49C7-ACB5-D8DBAE55B8A3}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		common\NKit.Common.Application\NKit.Common.Application.projitems*{248cd44d-7fa9-4e7f-94aa-e1507f527cc0}*SharedItemsImports = 4
@@ -117,6 +119,10 @@ Global
 		{6B8C3411-A7C8-4DB8-8E52-D2E992629840}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B8C3411-A7C8-4DB8-8E52-D2E992629840}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B8C3411-A7C8-4DB8-8E52-D2E992629840}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26B9FDD8-8B9D-49C7-ACB5-D8DBAE55B8A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26B9FDD8-8B9D-49C7-ACB5-D8DBAE55B8A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26B9FDD8-8B9D-49C7-ACB5-D8DBAE55B8A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26B9FDD8-8B9D-49C7-ACB5-D8DBAE55B8A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -138,6 +144,7 @@ Global
 		{50336ED4-17A7-4FA0-8505-FC5FCDD45B1A} = {91FBCEEB-423A-4ACA-84B8-80970B97402B}
 		{48480E4E-FE7F-45D7-8757-E6EDDC64758F} = {50336ED4-17A7-4FA0-8505-FC5FCDD45B1A}
 		{6B8C3411-A7C8-4DB8-8E52-D2E992629840} = {9A2B0246-1D08-476A-AF9A-2FF2E0F6CCF6}
+		{26B9FDD8-8B9D-49C7-ACB5-D8DBAE55B8A3} = {66D532B9-D238-4BFA-A493-7CE2FEA5EFA2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DCA37A7D-11B2-4BEF-BD2E-1441C71C69AB}

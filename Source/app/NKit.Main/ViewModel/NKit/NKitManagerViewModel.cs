@@ -27,6 +27,12 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.App
             set { SetPropertyValue(Model.Finder, value, nameof(Model.Finder.MicrosoftOfficeFileNamePattern)); }
         }
 
+        public string FinderPdfFileNamePattern
+        {
+            get { return Model.Finder.PdfFileNamePattern; }
+            set { SetPropertyValue(Model.Finder, value, nameof(Model.Finder.PdfFileNamePattern)); }
+        }
+
         public string FinderXmlHtmlFileNamePattern
         {
             get { return Model.Finder.XmlHtmlFileNamePattern; }

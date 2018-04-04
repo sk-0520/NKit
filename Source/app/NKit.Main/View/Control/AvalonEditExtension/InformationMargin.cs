@@ -12,6 +12,7 @@ using ICSharpCode.AvalonEdit.Rendering;
 using System.Globalization;
 using ContentTypeTextNet.NKit.Main.Model;
 using ContentTypeTextNet.NKit.Utility.Model;
+using ContentTypeTextNet.NKit.Main.Model.Searcher;
 
 namespace ContentTypeTextNet.NKit.Main.View.Control.AvalonEditExtension
 {

@@ -266,6 +266,15 @@
 
               <GroupBox>
                 <GroupBox.Header>
+                  <CheckBox IsChecked="{Binding PdfContentIsEnabled}">PDF</CheckBox>
+                </GroupBox.Header>
+                <StackPanel>
+                  <TextBlock>なにもない</TextBlock>
+                </StackPanel>
+              </GroupBox>
+
+              <GroupBox>
+                <GroupBox.Header>
                   <CheckBox IsChecked="{Binding XmlHtmlContentIsEnabled}">XML/HTML</CheckBox>
                 </GroupBox.Header>
                 <StackPanel>
