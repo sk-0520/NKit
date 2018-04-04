@@ -35,7 +35,8 @@ for /F "usebackq" %%s in (`cscript "%GV%" "%VER_TARGET%"`) do set EXEVER=%%s
 if "%2" == "FULL" goto REMOVED
 
 echo remove
-echo remove *.pdb, *.xml
+echo remove *.pdb, *.xml, @NKit.*.user.config
+del /Q "%OUTPUT_ANY%\@NKit.*.user.config
 del /S /Q "%OUTPUT_ANY%\*.pdb
 del /S /Q "%OUTPUT_ANY%\lib\*.xml"
 
