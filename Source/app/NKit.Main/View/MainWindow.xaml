@@ -16,8 +16,12 @@
 
   Icon="/Resources/NKit.Main.ico"
 
-  Width="640"
-  Height="480"
+  WindowState="{Binding WindowState}"
+  Left="{Binding Left}"
+  Top="{Binding Top}"
+  Width="{Binding Width}"
+  Height="{Binding Height}"
+  
   ResizeMode="CanResizeWithGrip"
 
   Foreground="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"

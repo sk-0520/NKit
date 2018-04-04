@@ -25,7 +25,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
 #if DEBUG
         public bool IsInitialized { get; private set; } = false;
 #endif
-        MainSetting Setting { get; set; }
+        public MainSetting Setting { get; private set; }
 
         public NKitManagerModel NKitManager { get; private set; }
         public FinderManagerModel FinderManager { get; private set; }
@@ -56,6 +56,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
             Logger.Information("!!START!!");
 
             Setting = LoadSetting();
+            InitializeMainSetting();
 
             NKitManager = new NKitManagerModel(Setting);
             FinderManager = new FinderManagerModel(Setting);
@@ -124,6 +125,9 @@ namespace ContentTypeTextNet.NKit.Main.Model
             }
         }
 
+        void InitializeMainSetting()
+        {
+        }
 
         #endregion
     }

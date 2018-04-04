@@ -17,5 +17,39 @@ namespace ContentTypeTextNet.NKit.Setting
         public double Height { get; set; }
 
         #endregion
+
+        #region function
+
+        bool IsEnabledWindowValue(double value)
+        {
+            return !(double.IsNaN(value) || double.IsInfinity(value));
+        }
+
+        public bool Clamp(double left, double top, double width, double height)
+        {
+            bool isUpdated = false;
+
+            if(!IsEnabledWindowValue(Left)) {
+                Left = left;
+                isUpdated = true;
+            }
+            if(!IsEnabledWindowValue(Top)) {
+                Top = top;
+                isUpdated = true;
+            }
+
+            if(!IsEnabledWindowValue(Width)) {
+                Width = width;
+                isUpdated = true;
+            }
+            if(!IsEnabledWindowValue(Height)) {
+                Height = height;
+                isUpdated = true;
+            }
+
+            return isUpdated;
+        }
+
+        #endregion
     }
 }
