@@ -328,6 +328,14 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
         static void WriteListFileFindItemDetail(TextWriter writer, string path, FindItemModel findItemModel)
         {
+            if(!findItemModel.FileContentSearchResult.IsMatched) {
+                writer.Write(path);
+                writer.Write(": ");
+                writer.Write(Properties.Resources.String_Finder_FindGroup_Output_Unmatched);
+                writer.WriteLine();
+                return;
+            }
+
             if(findItemModel.FileContentSearchResult.Text.IsMatched) {
                 WriteListFileFindItemDetailCore(writer, path, findItemModel.FileContentSearchResult.Text.Matches);
             }

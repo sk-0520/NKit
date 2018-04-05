@@ -118,6 +118,15 @@ namespace ContentTypeTextNet.NKit.Main.Properties {
         }
         
         /// <summary>
+        ///   (非検索一致) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Finder_FindGroup_Output_Unmatched {
+            get {
+                return ResourceManager.GetString("String_Finder_FindGroup_Output_Unmatched", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   取消 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_View_Control_RunnableControl_CancelText {
