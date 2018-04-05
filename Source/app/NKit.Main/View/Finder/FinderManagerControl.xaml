@@ -83,7 +83,7 @@
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Button Command="{Binding ClearHistoryCommand}">clear</Button>
+            <Button Margin="{StaticResource TopMargin}" Command="{Binding ClearHistoryCommand}">clear</Button>
           </StackPanel>
         </xctk:DropDownButton.DropDownContent>
       </xctk:DropDownButton>

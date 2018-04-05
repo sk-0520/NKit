@@ -63,6 +63,11 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
         public void AddHistory(FindGroupModel model)
         {
+            while(Constants.FinderHistoryLimit <= Setting.Finder.Histories.Count) {
+                Setting.Finder.Histories.RemoveAt(0);
+                HistoryItems.RemoveAt(0);
+            }
+
             Setting.Finder.Histories.Add(model.FindGroupSetting);
             HistoryItems.Add(model.FindGroupSetting);
         }
