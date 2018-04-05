@@ -47,7 +47,8 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                 var baseUri = new Uri(BaseDirectory.FullName);
                 var parentDirectoryUri = new Uri(Path.GetDirectoryName(FileInfo.FullName));
                 var relativeUri = baseUri.MakeRelativeUri(parentDirectoryUri);
-                return relativeUri.ToString();
+                var relativeUriText = relativeUri.ToString();
+                return Uri.UnescapeDataString(relativeUriText).Replace('/', Path.DirectorySeparatorChar);
             }
         }
 

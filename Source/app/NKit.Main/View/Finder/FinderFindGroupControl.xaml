@@ -405,6 +405,7 @@
           <ListView.View>
             <GridView>
               <GridViewColumn Header="ディレクトリ" DisplayMemberBinding="{Binding RelativeDirectoryPath}" />
+              <GridViewColumn Header="階層" DisplayMemberBinding="{Binding RelativeDirectoryDepth}" />
               <GridViewColumn>
                 <GridViewColumn.Header>
                   <Grid HorizontalAlignment="Stretch">

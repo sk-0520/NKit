@@ -65,6 +65,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public bool MatchedContent => Model.FileContentSearchResult.IsMatched;
 
         public string RelativeDirectoryPath => Model.RelativeDirectoryPath;
+
+        public int RelativeDirectoryDepth => RelativeDirectoryPath.Split(Path.DirectorySeparatorChar).Length;
+
         public string FilePath => Model.FileInfo.FullName;
         public string FileName => Model.FileInfo.Name;
         public string FileNameWithoutExtension => Path.GetFileNameWithoutExtension(FileName);
