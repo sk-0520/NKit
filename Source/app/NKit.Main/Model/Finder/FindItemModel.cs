@@ -5,11 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Main.Model.File.Browser;
 using ContentTypeTextNet.NKit.Main.Model.Searcher;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Setting.File;
+using ContentTypeTextNet.NKit.Setting.Finder;
 using ContentTypeTextNet.NKit.Setting.NKit;
 using ContentTypeTextNet.NKit.Utility.Model;
 
@@ -17,7 +19,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 {
     public class FindItemModel : ModelBase
     {
-        public FindItemModel(DirectoryInfo baseDirectory, FileInfo fileInfo, TextSearchResult fileNameSearchResult, bool matchedFileSize, FilePropertySearchResult filePropertySearchResult, FileContentSearchResult fileContentSearchResult, IReadOnlyAssociationFileSetting associationFileSetting, IReadOnlyNKitSetting nkitSetting)
+        public FindItemModel(DirectoryInfo baseDirectory, FileInfo fileInfo, TextSearchResult fileNameSearchResult, bool matchedFileSize, FilePropertySearchResult filePropertySearchResult, FileContentSearchResult fileContentSearchResult, IReadOnlyFinderSetting finderSetting, IReadOnlyAssociationFileSetting associationFileSetting, IReadOnlyNKitSetting nkitSetting)
         {
             BaseDirectory = baseDirectory;
             FileInfo = fileInfo;
@@ -25,6 +27,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             MatchedFileSize = matchedFileSize;
             FilePropertySearchResult = filePropertySearchResult;
             FileContentSearchResult = fileContentSearchResult;
+            FinderSetting = finderSetting;
             AssociationFileSetting = associationFileSetting;
             NKitSetting = nkitSetting;
         }
@@ -38,6 +41,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         public FilePropertySearchResult FilePropertySearchResult { get; }
         public FileContentSearchResult FileContentSearchResult { get; }
 
+        IReadOnlyFinderSetting FinderSetting { get; }
         IReadOnlyAssociationFileSetting AssociationFileSetting { get; }
         IReadOnlyNKitSetting NKitSetting { get; }
 
@@ -118,31 +122,43 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             return ao.Open(associationFileKind, FileInfo, parameter);
         }
 
-        BrowserKind GetBrowserKind(string fileName)
+        BrowserKind GetBrowserKindForce(string lowDotExtension)
         {
-            var ext = Path.GetExtension(fileName).Replace(".", string.Empty).ToLower();
-            switch(ext) {
-                case "txt":
-                case "log":
-                case "inf":
-                    return BrowserKind.PlainText;
-
-                case "ini":
-                    return BrowserKind.Ini;
-
-                case "cs":
-                    return BrowserKind.CSharp;
-
-                case "html":
-                case "htm":
-                    return BrowserKind.Html;
-
-                case "xml":
+            switch(lowDotExtension) {
+                case ".xml":
                     return BrowserKind.Xml;
 
                 default:
                     return BrowserKind.Unknown;
             }
+        }
+
+        BrowserKind GetBrowserKindFromSetting(string lowDotExtension)
+        {
+            var patternCreator = new SearchPatternCreator();
+
+            var map = FinderUtility.CreateFileNameKinds(FinderSetting);
+
+            if(map[FileNameKind.XmlHtml].IsMatch(lowDotExtension)) {
+                return BrowserKind.Xml;
+            }
+
+            if(map[FileNameKind.Text].IsMatch(lowDotExtension)) {
+                return BrowserKind.PlainText;
+            }
+
+            return BrowserKind.Unknown;
+        }
+
+        BrowserKind GetBrowserKind(string fileName)
+        {
+            var lowDotExtension = Path.GetExtension(fileName).ToLower();
+            var force = GetBrowserKindForce(lowDotExtension);
+            if(force != BrowserKind.Unknown) {
+                return force;
+            }
+
+            return GetBrowserKindFromSetting(lowDotExtension);
         }
 
         public BrowserModel GetBrowser()

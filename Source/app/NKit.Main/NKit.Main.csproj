@@ -185,6 +185,7 @@
     <Compile Include="Model\File\Browser\BrowserKind.cs" />
     <Compile Include="Model\File\Browser\BrowserModel.cs" />
     <Compile Include="Model\File\FilePropertySearchResult.cs" />
+    <Compile Include="Model\Finder\FinderUtility.cs" />
     <Compile Include="Model\Finder\FindGroupCache.cs" />
     <Compile Include="Model\ISelectable.cs" />
     <Compile Include="Model\NKit\NKitApplicationExecutor.cs" />
