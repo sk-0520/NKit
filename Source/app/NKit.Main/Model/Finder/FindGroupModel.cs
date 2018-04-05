@@ -17,6 +17,7 @@ using ContentTypeTextNet.NKit.Setting.File;
 using ContentTypeTextNet.NKit.Setting.Finder;
 using ContentTypeTextNet.NKit.Setting.NKit;
 using ContentTypeTextNet.NKit.Utility.Model;
+using NPOI.SS.Util;
 
 namespace ContentTypeTextNet.NKit.Main.Model.Finder
 {
@@ -283,12 +284,106 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             writer.WriteLine(titleText);
         }
 
+        static void WriteListFileFindItemSimple(TextWriter writer, string path, FindItemModel findItemModel)
+        {
+            writer.WriteLine(path);
+        }
+
+        static void WriteListFileFindItemDetailCore(TextWriter writer, string path, IEnumerable<TextSearchMatch> matches)
+        {
+
+        }
+
+        static void WriteListFileFindItemDetail(TextWriter writer, string path, FindItemModel findItemModel)
+        {
+            if(findItemModel.FileContentSearchResult.Text.IsMatched) {
+                WriteListFileFindItemDetailCore(writer, path, findItemModel.FileContentSearchResult.Text.Matches);
+            }
+
+            if(findItemModel.FileContentSearchResult.MicrosoftOffice.IsMatched) {
+                switch(findItemModel.FileContentSearchResult.MicrosoftOffice.OfficeType) {
+                    case MicrosoftOfficeFileType.Excel1997:
+                    case MicrosoftOfficeFileType.Excel2007: {
+                            var excel = (MicrosoftOfficeExcelSearchResult)findItemModel.FileContentSearchResult.MicrosoftOffice;
+                            foreach(var sheet in excel.MatchSheet) {
+                                if(sheet.SheetNameResult.IsMatched) {
+                                    WriteListFileFindItemDetailCore(writer, path, sheet.SheetNameResult.Matches);
+                                }
+                                if(sheet.CellResults.Any()) {
+                                    foreach(var cellResult in sheet.CellResults) {
+                                        WriteListFileFindItemDetailCore(writer, path, cellResult.Matches);
+                                    }
+                                }
+                                if(sheet.ShapeResults.Any()) {
+                                    foreach(var shapeResult in sheet.ShapeResults) {
+                                        WriteListFileFindItemDetailCore(writer, path, shapeResult.Matches);
+                                    }
+                                }
+                            }
+                        }
+                        break;
+
+                    case MicrosoftOfficeFileType.Word1997:
+                    case MicrosoftOfficeFileType.Word2007: {
+                            var word = (MicrosoftOfficeWordSearchResult)findItemModel.FileContentSearchResult.MicrosoftOffice;
+                            var matches = word.ElementResults.Select(wer => {
+                                switch(wer.ElementType) {
+                                    case NPOI.XWPF.UserModel.BodyElementType.PARAGRAPH:
+                                        var p = (MicrosoftOfficeWordParagraphSearchResult)wer;
+                                        return (IEnumerable<TextSearchMatch>)p.TextResult;
+
+                                    case NPOI.XWPF.UserModel.BodyElementType.TABLE:
+                                        var t = (MicrosoftOfficeWordTableSearchResult)wer;
+                                        return t.CellResults.SelectMany(c => c.TextResult.Matches);
+
+                                    default:
+                                        throw new NotImplementedException();
+                                }
+                            }).SelectMany(m => m)
+                            ;
+                            WriteListFileFindItemDetailCore(writer, path, matches);
+                        }
+                        break;
+                }
+            }
+
+            if(findItemModel.FileContentSearchResult.Pdf.IsMatched) {
+                WriteListFileFindItemDetailCore(writer, path, findItemModel.FileContentSearchResult.Pdf.Matches);
+            }
+
+            if(findItemModel.FileContentSearchResult.XmlHtml.IsMatched) {
+                foreach(var result in  findItemModel.FileContentSearchResult.XmlHtml.Results) {
+                    var list = new List<TextSearchMatch>();
+                    if(result.NodeType == HtmlAgilityPack.HtmlNodeType.Comment) {
+                        var comment = (XmlHtmlCommentSearchResult)result;
+                        list.AddRange(comment.Matches);
+                    } else if(result.NodeType == HtmlAgilityPack.HtmlNodeType.Text) {
+                        var text = (XmlHtmlTextSearchResult)result;
+                        list.AddRange(text.Matches);
+                    } else {
+                        var element = (XmlHtmlElementSearchResult)result;
+                        list.AddRange(element.ElementResult.Matches);
+                        foreach(var attribute in element.AttributeKeyResults) {
+                            list.AddRange(attribute.KeyResult.Matches);
+                            list.AddRange(attribute.ValueResult.Matches);
+                        }
+                    }
+                    WriteListFileFindItemDetailCore(writer, path, list);
+                }
+            }
+        }
+
         static void WriteListFileFindItem(TextWriter writer, bool absolutePath, bool isSimple, FindItemModel findItemModel)
         {
-            if(absolutePath) {
-                writer.WriteLine(findItemModel.FileInfo.FullName);
+            var filePath = absolutePath
+                ? findItemModel.FileInfo.FullName
+                : findItemModel.RelativeDirectoryPath
+            ;
+
+            if(isSimple) {
+                WriteListFileFindItemSimple(writer, filePath, findItemModel);
             } else {
-                writer.WriteLine(findItemModel.RelativeDirectoryPath);
+                WriteListFileFindItemDetail(writer, filePath, findItemModel);
             }
         }
 
