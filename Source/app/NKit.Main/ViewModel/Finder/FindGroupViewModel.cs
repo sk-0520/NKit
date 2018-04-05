@@ -48,6 +48,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         bool _showSelectedFileDetail;
 
+        bool _outputDisplayItemOnly = true;
+        bool _outputAbsolutePath = true;
+
         #endregion
 
         public FindGroupViewModel(FindGroupModel model)
@@ -369,6 +372,18 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 }
             }
         }
+
+        public bool OutputDisplayItemOnly
+        {
+            get { return this._outputDisplayItemOnly; }
+            set { SetProperty(ref this._outputDisplayItemOnly, value); }
+        }
+        public bool OutputAbsolutePath
+        {
+            get { return this._outputAbsolutePath; }
+            set { SetProperty(ref this._outputAbsolutePath, value); }
+        }
+
 
         public bool IsEnabledHiddenFileFiler
         {

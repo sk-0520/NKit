@@ -306,6 +306,7 @@
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
         <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
 
       <ToolBar Grid.Row="0">
@@ -523,6 +524,14 @@
         <GridSplitter Grid.Row="1" Style="{StaticResource DefaultHorizonGridSplitter}" Visibility="{Binding ShowSelectedFileDetail, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
       </Grid>
+
+      <StatusBar Grid.Row="2">
+        <Label>リスト出力: </Label>
+        <CheckBox Style="{StaticResource HorizontalCheckBox}" IsChecked="{Binding OutputDisplayItemOnly}">表示中項目に限定</CheckBox>
+        <CheckBox Style="{StaticResource HorizontalCheckBox}" IsChecked="{Binding OutputAbsolutePath}">絶対パス</CheckBox>
+        <Button>プレビュー</Button>
+        <Button>ファイル出力</Button>
+      </StatusBar>
     </Grid>
 
     <GridSplitter Grid.Column="1" Style="{StaticResource DefaultVericalGridSplitter}" />
