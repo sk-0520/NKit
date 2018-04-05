@@ -68,14 +68,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.viewLogColumnSubject = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.viewLogColumnMessage = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
-            this.selectLogTrace = new System.Windows.Forms.CheckBox();
-            this.selectLogDebug = new System.Windows.Forms.CheckBox();
-            this.selectLogInformation = new System.Windows.Forms.CheckBox();
-            this.selectLogWarning = new System.Windows.Forms.CheckBox();
-            this.selectLogError = new System.Windows.Forms.CheckBox();
-            this.selectLogFatal = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
             this.commandLogClear = new System.Windows.Forms.Button();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -84,6 +76,14 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.statusbarLabelBuildType = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusbarLabelVersion = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusbarLabelHash = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.selectLogTrace = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectLogDebug = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectLogInformation = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectLogWarning = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectLogError = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectLogFatal = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -93,8 +93,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.flowLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.flowLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
@@ -511,112 +509,14 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.tableLayoutPanel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel5.ColumnCount = 1;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel5.Controls.Add(this.groupBox2, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.flowLayoutPanel5, 0, 1);
             this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(87, 88);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(87, 35);
             this.tableLayoutPanel5.TabIndex = 1;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.AutoSize = true;
-            this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox2.Controls.Add(this.flowLayoutPanel4);
-            this.groupBox2.Location = new System.Drawing.Point(3, 3);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(72, 47);
-            this.groupBox2.TabIndex = 0;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "表示ログ";
-            // 
-            // flowLayoutPanel4
-            // 
-            this.flowLayoutPanel4.AutoScroll = true;
-            this.flowLayoutPanel4.AutoSize = true;
-            this.flowLayoutPanel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanel4.Controls.Add(this.selectLogTrace);
-            this.flowLayoutPanel4.Controls.Add(this.selectLogDebug);
-            this.flowLayoutPanel4.Controls.Add(this.selectLogInformation);
-            this.flowLayoutPanel4.Controls.Add(this.selectLogWarning);
-            this.flowLayoutPanel4.Controls.Add(this.selectLogError);
-            this.flowLayoutPanel4.Controls.Add(this.selectLogFatal);
-            this.flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel4.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 15);
-            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(66, 29);
-            this.flowLayoutPanel4.TabIndex = 0;
-            this.flowLayoutPanel4.WrapContents = false;
-            // 
-            // selectLogTrace
-            // 
-            this.selectLogTrace.AutoSize = true;
-            this.selectLogTrace.Location = new System.Drawing.Point(3, 3);
-            this.selectLogTrace.Name = "selectLogTrace";
-            this.selectLogTrace.Size = new System.Drawing.Size(60, 16);
-            this.selectLogTrace.TabIndex = 0;
-            this.selectLogTrace.Text = "トレース";
-            this.selectLogTrace.UseVisualStyleBackColor = true;
-            this.selectLogTrace.CheckedChanged += new System.EventHandler(this.selectLogTrace_CheckedChanged);
-            // 
-            // selectLogDebug
-            // 
-            this.selectLogDebug.AutoSize = true;
-            this.selectLogDebug.Location = new System.Drawing.Point(3, 25);
-            this.selectLogDebug.Name = "selectLogDebug";
-            this.selectLogDebug.Size = new System.Drawing.Size(60, 16);
-            this.selectLogDebug.TabIndex = 0;
-            this.selectLogDebug.Text = "デバッグ";
-            this.selectLogDebug.UseVisualStyleBackColor = true;
-            this.selectLogDebug.CheckedChanged += new System.EventHandler(this.selectLogDebug_CheckedChanged);
-            // 
-            // selectLogInformation
-            // 
-            this.selectLogInformation.AutoSize = true;
-            this.selectLogInformation.Location = new System.Drawing.Point(3, 47);
-            this.selectLogInformation.Name = "selectLogInformation";
-            this.selectLogInformation.Size = new System.Drawing.Size(48, 16);
-            this.selectLogInformation.TabIndex = 0;
-            this.selectLogInformation.Text = "情報";
-            this.selectLogInformation.UseVisualStyleBackColor = true;
-            this.selectLogInformation.CheckedChanged += new System.EventHandler(this.selectLogInformation_CheckedChanged);
-            // 
-            // selectLogWarning
-            // 
-            this.selectLogWarning.AutoSize = true;
-            this.selectLogWarning.Location = new System.Drawing.Point(3, 69);
-            this.selectLogWarning.Name = "selectLogWarning";
-            this.selectLogWarning.Size = new System.Drawing.Size(48, 16);
-            this.selectLogWarning.TabIndex = 0;
-            this.selectLogWarning.Text = "警告";
-            this.selectLogWarning.UseVisualStyleBackColor = true;
-            this.selectLogWarning.CheckedChanged += new System.EventHandler(this.selectLogWarning_CheckedChanged);
-            // 
-            // selectLogError
-            // 
-            this.selectLogError.AutoSize = true;
-            this.selectLogError.Location = new System.Drawing.Point(3, 91);
-            this.selectLogError.Name = "selectLogError";
-            this.selectLogError.Size = new System.Drawing.Size(51, 16);
-            this.selectLogError.TabIndex = 0;
-            this.selectLogError.Text = "エラー";
-            this.selectLogError.UseVisualStyleBackColor = true;
-            this.selectLogError.CheckedChanged += new System.EventHandler(this.selectLogError_CheckedChanged);
-            // 
-            // selectLogFatal
-            // 
-            this.selectLogFatal.AutoSize = true;
-            this.selectLogFatal.Location = new System.Drawing.Point(3, 113);
-            this.selectLogFatal.Name = "selectLogFatal";
-            this.selectLogFatal.Size = new System.Drawing.Size(48, 16);
-            this.selectLogFatal.TabIndex = 0;
-            this.selectLogFatal.Text = "致命";
-            this.selectLogFatal.UseVisualStyleBackColor = true;
-            this.selectLogFatal.CheckedChanged += new System.EventHandler(this.selectLogFatal_CheckedChanged);
             // 
             // flowLayoutPanel5
             // 
@@ -624,7 +524,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.flowLayoutPanel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel5.Controls.Add(this.commandLogClear);
             this.flowLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 56);
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel5.Name = "flowLayoutPanel5";
             this.flowLayoutPanel5.Size = new System.Drawing.Size(81, 29);
             this.flowLayoutPanel5.TabIndex = 1;
@@ -687,7 +587,9 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.statusbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusbarLabelBuildType,
             this.statusbarLabelVersion,
-            this.statusbarLabelHash});
+            this.statusbarLabelHash,
+            this.toolStripStatusLabel1,
+            this.toolStripDropDownButton1});
             this.statusbar.Location = new System.Drawing.Point(0, 0);
             this.statusbar.Name = "statusbar";
             this.statusbar.Size = new System.Drawing.Size(844, 22);
@@ -710,6 +612,76 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.statusbarLabelHash.Name = "statusbarLabelHash";
             this.statusbarLabelHash.Size = new System.Drawing.Size(88, 17);
             this.statusbarLabelHash.Text = "<CODE:HASH>";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(28, 17);
+            this.toolStripStatusLabel1.Text = "ログ:";
+            // 
+            // toolStripDropDownButton1
+            // 
+            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.selectLogTrace,
+            this.selectLogDebug,
+            this.selectLogInformation,
+            this.selectLogWarning,
+            this.selectLogError,
+            this.selectLogFatal});
+            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
+            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(62, 20);
+            this.toolStripDropDownButton1.Text = "表示ログ";
+            // 
+            // selectLogTrace
+            // 
+            this.selectLogTrace.CheckOnClick = true;
+            this.selectLogTrace.Name = "selectLogTrace";
+            this.selectLogTrace.Size = new System.Drawing.Size(180, 22);
+            this.selectLogTrace.Text = "トレース";
+            this.selectLogTrace.Click += new System.EventHandler(this.selectLogTrace_CheckedChanged);
+            // 
+            // selectLogDebug
+            // 
+            this.selectLogDebug.CheckOnClick = true;
+            this.selectLogDebug.Name = "selectLogDebug";
+            this.selectLogDebug.Size = new System.Drawing.Size(180, 22);
+            this.selectLogDebug.Text = "デバッグ";
+            this.selectLogDebug.Click += new System.EventHandler(this.selectLogDebug_CheckedChanged);
+            // 
+            // selectLogInformation
+            // 
+            this.selectLogInformation.CheckOnClick = true;
+            this.selectLogInformation.Name = "selectLogInformation";
+            this.selectLogInformation.Size = new System.Drawing.Size(180, 22);
+            this.selectLogInformation.Text = "情報";
+            this.selectLogInformation.Click += new System.EventHandler(this.selectLogInformation_CheckedChanged);
+            // 
+            // selectLogWarning
+            // 
+            this.selectLogWarning.CheckOnClick = true;
+            this.selectLogWarning.Name = "selectLogWarning";
+            this.selectLogWarning.Size = new System.Drawing.Size(180, 22);
+            this.selectLogWarning.Text = "警告";
+            this.selectLogWarning.Click += new System.EventHandler(this.selectLogWarning_CheckedChanged);
+            // 
+            // selectLogError
+            // 
+            this.selectLogError.CheckOnClick = true;
+            this.selectLogError.Name = "selectLogError";
+            this.selectLogError.Size = new System.Drawing.Size(180, 22);
+            this.selectLogError.Text = "異常";
+            this.selectLogError.Click += new System.EventHandler(this.selectLogError_CheckedChanged);
+            // 
+            // selectLogFatal
+            // 
+            this.selectLogFatal.CheckOnClick = true;
+            this.selectLogFatal.Name = "selectLogFatal";
+            this.selectLogFatal.Size = new System.Drawing.Size(180, 22);
+            this.selectLogFatal.Text = "致命";
+            this.selectLogFatal.Click += new System.EventHandler(this.selectLogFatal_CheckedChanged);
             // 
             // ManagerForm
             // 
@@ -740,10 +712,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.flowLayoutPanel4.ResumeLayout(false);
-            this.flowLayoutPanel4.PerformLayout();
             this.flowLayoutPanel5.ResumeLayout(false);
             this.flowLayoutPanel5.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
@@ -806,17 +774,17 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.ColumnHeader viewLogColumnMessage;
         private System.Windows.Forms.ColumnHeader viewLogColumnNumber;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
-        private System.Windows.Forms.CheckBox selectLogTrace;
-        private System.Windows.Forms.CheckBox selectLogDebug;
-        private System.Windows.Forms.CheckBox selectLogInformation;
-        private System.Windows.Forms.CheckBox selectLogWarning;
-        private System.Windows.Forms.CheckBox selectLogError;
-        private System.Windows.Forms.CheckBox selectLogFatal;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
         private System.Windows.Forms.Button commandLogClear;
         private System.Windows.Forms.CheckBox selectAutoUpdateCheck;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+        private System.Windows.Forms.ToolStripMenuItem selectLogTrace;
+        private System.Windows.Forms.ToolStripMenuItem selectLogDebug;
+        private System.Windows.Forms.ToolStripMenuItem selectLogInformation;
+        private System.Windows.Forms.ToolStripMenuItem selectLogWarning;
+        private System.Windows.Forms.ToolStripMenuItem selectLogError;
+        private System.Windows.Forms.ToolStripMenuItem selectLogFatal;
     }
 }
 
