@@ -23,7 +23,9 @@ using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Setting.Finder;
 using ContentTypeTextNet.NKit.Utility.Model;
 using ContentTypeTextNet.NKit.Utility.ViewModel;
+using Microsoft.Win32;
 using Prism.Commands;
+using Prism.Interactivity.InteractionRequest;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 {
@@ -476,6 +478,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             }
         }
 
+        public InteractionRequest<Confirmation> SaveFileDialogRequest { get; } = new InteractionRequest<Confirmation>();
 
 
         #endregion
@@ -527,6 +530,19 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 }
                 foreach(var item in e.AddedItems.Cast<ISelectable>()) {
                     item.IsSelected = true;
+                }
+            }
+        );
+
+        public ICommand OutputListFileCommand => new DelegateCommand(
+            () => {
+                var confirmation = new Confirmation();
+                var dialog = new SaveFileDialog();
+                confirmation.Content = dialog;
+
+                SaveFileDialogRequest.Raise(confirmation);
+                if(confirmation.Confirmed) {
+
                 }
             }
         );
