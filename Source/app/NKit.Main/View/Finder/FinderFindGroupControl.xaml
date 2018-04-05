@@ -27,7 +27,7 @@
       <prism:InvokeCommandAction Command="{Binding SaveFileDialogCommand, ElementName=root}" />
     </prism:InteractionRequestTrigger>
   </i:Interaction.Triggers>
-  
+
   <UserControl.Resources>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <app_utility_view_converter:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
@@ -534,11 +534,9 @@
 
       <StatusBar Grid.Row="2">
         <Label>リスト出力: </Label>
-        <CheckBox Style="{StaticResource HorizontalCheckBox}" IsChecked="{Binding OutputDisplayItemOnly}">表示中項目に限定</CheckBox>
-        <CheckBox Style="{StaticResource HorizontalCheckBox}" IsChecked="{Binding OutputAbsolutePath}">絶対パス</CheckBox>
-        <CheckBox Style="{StaticResource HorizontalCheckBox}" IsChecked="{Binding OutputIsSimple}">
-          <TextBlock TextDecorations="Strikethrough">シンプル</TextBlock>
-        </CheckBox>
+        <CheckBox IsChecked="{Binding OutputDisplayItemOnly}">表示中項目に限定</CheckBox>
+        <CheckBox IsChecked="{Binding OutputAbsolutePath}">絶対パス</CheckBox>
+        <CheckBox IsChecked="{Binding OutputIsDetail}">詳細</CheckBox>
         <Button>
           <TextBlock TextDecorations="Strikethrough">プレビュー</TextBlock>
         </Button>

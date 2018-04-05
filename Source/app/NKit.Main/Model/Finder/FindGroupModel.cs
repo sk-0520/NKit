@@ -387,21 +387,21 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             }
         }
 
-        static void WriteListFileFindItem(TextWriter writer, bool absolutePath, bool isSimple, FindItemModel findItemModel)
+        static void WriteListFileFindItem(TextWriter writer, bool absolutePath, bool isDetail, FindItemModel findItemModel)
         {
             var filePath = absolutePath
                 ? findItemModel.FileInfo.FullName
                 : findItemModel.RelativeDirectoryPath
             ;
 
-            if(isSimple) {
-                WriteListFileFindItemSimple(writer, filePath, findItemModel);
-            } else {
+            if(isDetail) {
                 WriteListFileFindItemDetail(writer, filePath, findItemModel);
+            } else {
+                WriteListFileFindItemSimple(writer, filePath, findItemModel);
             }
         }
 
-        void WriteListFile(TextWriter writer, bool absolutePath, bool isSimple, IReadOnlyList<int> outputitemsIndex)
+        void WriteListFile(TextWriter writer, bool absolutePath, bool isDetail, IReadOnlyList<int> outputitemsIndex)
         {
             WriteListFileTitle(writer, CurrentCache.Setting, outputitemsIndex.Count);
 
@@ -409,14 +409,14 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
             foreach(var index in outputitemsIndex) {
                 var findItemModel = Items[index];
-                WriteListFileFindItem(writer, absolutePath, isSimple, findItemModel);
+                WriteListFileFindItem(writer, absolutePath, isDetail, findItemModel);
             }
         }
 
-        public void OutputListFile(string outputPath, bool absolutePath, bool isSimple, IReadOnlyList<int> outputitemsIndex)
+        public void OutputListFile(string outputPath, bool absolutePath, bool isDetail, IReadOnlyList<int> outputitemsIndex)
         {
             using(var writer = System.IO.File.CreateText(outputPath)) {
-                WriteListFile(writer, absolutePath, isSimple, outputitemsIndex);
+                WriteListFile(writer, absolutePath, isDetail, outputitemsIndex);
             }
         }
 

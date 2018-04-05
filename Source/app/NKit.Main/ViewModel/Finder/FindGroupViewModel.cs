@@ -52,7 +52,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         bool _outputDisplayItemOnly = true;
         bool _outputAbsolutePath = true;
-        bool _outputIsSimple = true;
+        bool _outputIsDetail = false;
 
         #endregion
 
@@ -387,10 +387,10 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { SetProperty(ref this._outputAbsolutePath, value); }
         }
 
-        public bool OutputIsSimple
+        public bool OutputIsDetail
         {
-            get { return this._outputIsSimple; }
-            set { SetProperty(ref this._outputIsSimple, value); }
+            get { return this._outputIsDetail; }
+            set { SetProperty(ref this._outputIsDetail, value); }
         }
 
 
@@ -561,7 +561,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 if(confirmation.Confirmed) {
                     var outputPath = dialog.FileName;
 
-                    Model.OutputListFile(outputPath, OutputAbsolutePath, OutputIsSimple, outputItemsIndex);
+                    Model.OutputListFile(outputPath, OutputAbsolutePath, OutputIsDetail, outputItemsIndex);
                 }
             }//,
             //NOTE うごかねぇぇぇ, () => CanRun //&& GetOutputItemsIndex().Any()
