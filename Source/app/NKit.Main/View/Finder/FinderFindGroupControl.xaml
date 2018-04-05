@@ -77,6 +77,10 @@
 
       <ScrollViewer Grid.Row="0">
         <StackPanel>
+          <StackPanel.InputBindings>
+            <KeyBinding Key="Return" Command="{Binding RunCommand}" />
+            <KeyBinding Key="Esc" Command="{Binding CancelRunCommand}" />
+          </StackPanel.InputBindings>
           <Expander Header="グループ設定">
             <Grid>
               <Grid.RowDefinitions>
