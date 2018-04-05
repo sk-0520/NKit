@@ -166,27 +166,27 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
 
         protected override void AddItemsCore(ObservableCoreKind kind, IReadOnlyList<TModel> newModels, IReadOnlyList<TViewModel> newViewModels)
         {
-            AddItems(kind, newModels, newViewModels);
+            AddItems?.Invoke(kind, newModels, newViewModels);
         }
 
         protected override void RemoveItemsCore(ObservableCoreKind kind, IReadOnlyList<TModel> oldItems, int oldStartingIndex, IReadOnlyList<TViewModel> oldViewModels)
         {
-            RemoveItems(kind, oldItems, oldStartingIndex, oldViewModels);
+            RemoveItems?.Invoke(kind, oldItems, oldStartingIndex, oldViewModels);
         }
 
         protected override void ReplaceItemsCore(ObservableCoreKind kind, IReadOnlyList<TModel> newModels, IReadOnlyList<TModel> oldModels, IReadOnlyList<TViewModel> newViewModels, IReadOnlyList<TViewModel> oldViewModels)
         {
-            ReplaceItems(kind, newModels, oldModels, newViewModels, oldViewModels);
+            ReplaceItems?.Invoke(kind, newModels, oldModels, newViewModels, oldViewModels);
         }
 
         protected override void MoveItemsCore(ObservableCoreKind kind, int newStartingIndex, int oldStartingIndex)
         {
-            MoveItems(kind, newStartingIndex, oldStartingIndex);
+            MoveItems?.Invoke(kind, newStartingIndex, oldStartingIndex);
         }
 
         protected override void ResetItemsCore(ObservableCoreKind kind, IReadOnlyList<TViewModel> oldViewModels)
         {
-            ResetItems(kind, oldViewModels);
+            ResetItems?.Invoke(kind, oldViewModels);
         }
 
         protected override void Dispose(bool disposing)
