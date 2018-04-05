@@ -67,9 +67,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.viewLogColumnSender = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.viewLogColumnSubject = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.viewLogColumnMessage = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
-            this.commandLogClear = new System.Windows.Forms.Button();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.statusbar = new System.Windows.Forms.StatusStrip();
@@ -84,6 +81,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.selectLogWarning = new System.Windows.Forms.ToolStripMenuItem();
             this.selectLogError = new System.Windows.Forms.ToolStripMenuItem();
             this.selectLogFatal = new System.Windows.Forms.ToolStripMenuItem();
+            this.commandLogClear = new System.Windows.Forms.ToolStripDropDownButton();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -92,8 +90,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
-            this.tableLayoutPanel5.SuspendLayout();
-            this.flowLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -438,12 +434,11 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 
             // tableLayoutPanel3
             // 
-            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel4.SetColumnSpan(this.tableLayoutPanel3, 2);
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.viewLog, 1, 0);
-            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel5, 0, 0);
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.Controls.Add(this.viewLog, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 142);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -464,12 +459,12 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.viewLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.viewLog.GridLines = true;
             this.viewLog.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.viewLog.Location = new System.Drawing.Point(96, 3);
+            this.viewLog.Location = new System.Drawing.Point(3, 3);
             this.viewLog.MultiSelect = false;
             this.viewLog.Name = "viewLog";
             this.viewLog.ShowGroups = false;
             this.viewLog.ShowItemToolTips = true;
-            this.viewLog.Size = new System.Drawing.Size(739, 88);
+            this.viewLog.Size = new System.Drawing.Size(832, 88);
             this.viewLog.TabIndex = 0;
             this.viewLog.UseCompatibleStateImageBehavior = false;
             this.viewLog.View = System.Windows.Forms.View.Details;
@@ -502,43 +497,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // viewLogColumnMessage
             // 
             this.viewLogColumnMessage.Text = "メッセージ";
-            // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.AutoSize = true;
-            this.tableLayoutPanel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel5.ColumnCount = 1;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel5.Controls.Add(this.flowLayoutPanel5, 0, 1);
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 2;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(87, 35);
-            this.tableLayoutPanel5.TabIndex = 1;
-            // 
-            // flowLayoutPanel5
-            // 
-            this.flowLayoutPanel5.AutoSize = true;
-            this.flowLayoutPanel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanel5.Controls.Add(this.commandLogClear);
-            this.flowLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
-            this.flowLayoutPanel5.Size = new System.Drawing.Size(81, 29);
-            this.flowLayoutPanel5.TabIndex = 1;
-            // 
-            // commandLogClear
-            // 
-            this.commandLogClear.AutoSize = true;
-            this.commandLogClear.Location = new System.Drawing.Point(3, 3);
-            this.commandLogClear.Name = "commandLogClear";
-            this.commandLogClear.Size = new System.Drawing.Size(75, 23);
-            this.commandLogClear.TabIndex = 0;
-            this.commandLogClear.Text = "ログクリア";
-            this.commandLogClear.UseVisualStyleBackColor = true;
-            this.commandLogClear.Click += new System.EventHandler(this.commandLogClear_Click);
             // 
             // tableLayoutPanel4
             // 
@@ -589,7 +547,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.statusbarLabelVersion,
             this.statusbarLabelHash,
             this.toolStripStatusLabel1,
-            this.toolStripDropDownButton1});
+            this.toolStripDropDownButton1,
+            this.commandLogClear});
             this.statusbar.Location = new System.Drawing.Point(0, 0);
             this.statusbar.Name = "statusbar";
             this.statusbar.Size = new System.Drawing.Size(844, 22);
@@ -683,6 +642,16 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.selectLogFatal.Text = "致命";
             this.selectLogFatal.Click += new System.EventHandler(this.selectLogFatal_CheckedChanged);
             // 
+            // commandLogClear
+            // 
+            this.commandLogClear.Image = global::ContentTypeTextNet.NKit.Manager.Properties.Resources.Image_Clear;
+            this.commandLogClear.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.commandLogClear.Name = "commandLogClear";
+            this.commandLogClear.ShowDropDownArrow = false;
+            this.commandLogClear.Size = new System.Drawing.Size(53, 20);
+            this.commandLogClear.Text = "クリア";
+            this.commandLogClear.Click += new System.EventHandler(this.commandLogClear_Click);
+            // 
             // ManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -709,11 +678,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
             this.flowLayoutPanel2.PerformLayout();
             this.flowLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel3.PerformLayout();
-            this.tableLayoutPanel5.ResumeLayout(false);
-            this.tableLayoutPanel5.PerformLayout();
-            this.flowLayoutPanel5.ResumeLayout(false);
-            this.flowLayoutPanel5.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
             this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
@@ -773,9 +737,6 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.ColumnHeader viewLogColumnSubject;
         private System.Windows.Forms.ColumnHeader viewLogColumnMessage;
         private System.Windows.Forms.ColumnHeader viewLogColumnNumber;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
-        private System.Windows.Forms.Button commandLogClear;
         private System.Windows.Forms.CheckBox selectAutoUpdateCheck;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
@@ -785,6 +746,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private System.Windows.Forms.ToolStripMenuItem selectLogWarning;
         private System.Windows.Forms.ToolStripMenuItem selectLogError;
         private System.Windows.Forms.ToolStripMenuItem selectLogFatal;
+        private System.Windows.Forms.ToolStripDropDownButton commandLogClear;
     }
 }
 
