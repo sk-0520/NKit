@@ -138,7 +138,7 @@
     <Compile Include="Model\Unmanaged\GlobalAllocModel.cs" />
     <Compile Include="Model\Unmanaged\UnmanagedModelBase.cs" />
     <Compile Include="ViewModel\RunnableViewModel.cs" />
-    <Compile Include="ViewModel\ViewViewModelObservableManager.cs" />
+    <Compile Include="ViewModel\ViewViewModelObservableCollectionManager.cs" />
     <Compile Include="View\Attach\GridHelpers.cs" />
     <Compile Include="Model\Cacher.cs" />
     <Compile Include="Model\ConfigurationCacher.cs" />

@@ -10,7 +10,7 @@ using ContentTypeTextNet.NKit.Utility.Model;
 
 namespace ContentTypeTextNet.NKit.Utility.ViewModel
 {
-    public enum ObservableCoreKind
+    public enum ObservableCollectionKind
     {
         Before,
         After,
@@ -22,11 +22,11 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
     /// <typeparam name="TViewModel"></typeparam>
-    public abstract class ViewViewModelObservableManagerBase<TModel, TViewModel> : ObservableManager<TModel>
+    public abstract class ViewViewModelObservableCollectionManagerBase<TModel, TViewModel> : ObservableManager<TModel>
         where TModel : ModelBase
         where TViewModel: ViewModelBase
     {
-        public ViewViewModelObservableManagerBase(ObservableCollection<TModel> collection)
+        public ViewViewModelObservableCollectionManagerBase(ObservableCollection<TModel> collection)
             : base(collection)
         {
             ViewModels = new ObservableCollection<TViewModel>(Collection.Select(m => ToViewModelCore(m)));
@@ -42,11 +42,11 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
 
         protected abstract TViewModel ToViewModelCore(TModel model);
 
-        protected abstract void AddItemsCore(ObservableCoreKind kind, IReadOnlyList<TModel> newModels, IReadOnlyList<TViewModel> newViewModels);
-        protected abstract void RemoveItemsCore(ObservableCoreKind kind, IReadOnlyList<TModel> oldItems, int oldStartingIndex, IReadOnlyList<TViewModel> oldViewModels);
-        protected abstract void ReplaceItemsCore(ObservableCoreKind kind, IReadOnlyList<TModel> newModels, IReadOnlyList<TModel> oldModels, IReadOnlyList<TViewModel> newViewModels, IReadOnlyList<TViewModel> oldViewModels);
-        protected abstract void MoveItemsCore(ObservableCoreKind kind, int newStartingIndex, int oldStartingIndex);
-        protected abstract void ResetItemsCore(ObservableCoreKind kind, IReadOnlyList<TViewModel> oldViewModels);
+        protected abstract void AddItemsCore(ObservableCollectionKind kind, IReadOnlyList<TModel> newModels, IReadOnlyList<TViewModel> newViewModels);
+        protected abstract void RemoveItemsCore(ObservableCollectionKind kind, IReadOnlyList<TModel> oldItems, int oldStartingIndex, IReadOnlyList<TViewModel> oldViewModels);
+        protected abstract void ReplaceItemsCore(ObservableCollectionKind kind, IReadOnlyList<TModel> newModels, IReadOnlyList<TModel> oldModels, IReadOnlyList<TViewModel> newViewModels, IReadOnlyList<TViewModel> oldViewModels);
+        protected abstract void MoveItemsCore(ObservableCollectionKind kind, int newStartingIndex, int oldStartingIndex);
+        protected abstract void ResetItemsCore(ObservableCollectionKind kind, IReadOnlyList<TViewModel> oldViewModels);
 
         #endregion
 
@@ -60,11 +60,11 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
                 .ToList()
             ;
 
-            AddItemsCore(ObservableCoreKind.Before, newItems, newViewModels);
+            AddItemsCore(ObservableCollectionKind.Before, newItems, newViewModels);
 
             ViewModels.AddRange(newViewModels);
 
-            AddItemsCore(ObservableCoreKind.After, newItems, newViewModels);
+            AddItemsCore(ObservableCollectionKind.After, newItems, newViewModels);
         }
 
         protected override void RemoveItemsCore(IReadOnlyList<TModel> oldItems, int oldStartingIndex)
@@ -75,7 +75,7 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
                 .ToList()
             ;
 
-            RemoveItemsCore(ObservableCoreKind.Before, oldItems, oldStartingIndex, oldViewModels);
+            RemoveItemsCore(ObservableCollectionKind.Before, oldItems, oldStartingIndex, oldViewModels);
 
             foreach(var counter in new Counter(oldViewModels.Count)) {
                 ViewModels.RemoveAt(oldStartingIndex);
@@ -84,37 +84,37 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
                 oldViewModel.Dispose();
             }
 
-            RemoveItemsCore(ObservableCoreKind.After, oldItems, oldStartingIndex, oldViewModels);
+            RemoveItemsCore(ObservableCollectionKind.After, oldItems, oldStartingIndex, oldViewModels);
         }
 
         protected override void ReplaceItemsCore(IReadOnlyList<TModel> newItems, IReadOnlyList<TModel> oldItems)
         {
             // TODO: 正直こいつがいつ呼ばれるのか分かってない
-            ReplaceItemsCore(ObservableCoreKind.Before, newItems, oldItems, null, null);
-            ReplaceItemsCore(ObservableCoreKind.After, newItems, oldItems, null, null);
+            ReplaceItemsCore(ObservableCollectionKind.Before, newItems, oldItems, null, null);
+            ReplaceItemsCore(ObservableCollectionKind.After, newItems, oldItems, null, null);
         }
 
         protected override void MoveItemsCore(int newStartingIndex, int oldStartingIndex)
         {
-            MoveItemsCore(ObservableCoreKind.Before, newStartingIndex, oldStartingIndex);
+            MoveItemsCore(ObservableCollectionKind.Before, newStartingIndex, oldStartingIndex);
 
             ViewModels.Move(oldStartingIndex, newStartingIndex);
 
-            MoveItemsCore(ObservableCoreKind.After, newStartingIndex, oldStartingIndex);
+            MoveItemsCore(ObservableCollectionKind.After, newStartingIndex, oldStartingIndex);
         }
 
         protected override void ResetItemsCore()
         {
             var oldViewModels = ViewModels;
 
-            ResetItemsCore(ObservableCoreKind.Before, oldViewModels);
+            ResetItemsCore(ObservableCollectionKind.Before, oldViewModels);
 
             ViewModels.Clear();
             foreach(var viewModel in oldViewModels) {
                 viewModel.Dispose();
             }
 
-            ResetItemsCore(ObservableCoreKind.After, oldViewModels);
+            ResetItemsCore(ObservableCollectionKind.After, oldViewModels);
         }
 
         protected override void CollectionChanged(NotifyCollectionChangedEventArgs e)
@@ -126,22 +126,22 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
     }
 
 
-    public class ActionViewViewModelObservableManager<TModel, TViewModel> : ViewViewModelObservableManagerBase<TModel, TViewModel>
+    public class ActionViewViewModelObservableCollectionManager<TModel, TViewModel> : ViewViewModelObservableCollectionManagerBase<TModel, TViewModel>
         where TModel : ModelBase
         where TViewModel : ViewModelBase
     {
         #region define
 
         public delegate TViewModel ToViewModelDelegate(TModel model);
-        public delegate void AddItemsDelegate(ObservableCoreKind kind, IReadOnlyList<TModel> newModels, IReadOnlyList<TViewModel> newViewModels);
-        public delegate void RemoveItemsDelegate(ObservableCoreKind kind, IReadOnlyList<TModel> oldItems, int oldStartingIndex, IReadOnlyList<TViewModel> oldViewModels);
-        public delegate void ReplaceItemsDelegate(ObservableCoreKind kind, IReadOnlyList<TModel> newModels, IReadOnlyList<TModel> oldModels, IReadOnlyList<TViewModel> newViewModels, IReadOnlyList<TViewModel> oldViewModels);
-        public delegate void MoveItemsDelegate(ObservableCoreKind kind, int newStartingIndex, int oldStartingIndex);
-        public delegate void ResetItemsDelegate(ObservableCoreKind kind, IReadOnlyList<TViewModel> oldViewModels);
+        public delegate void AddItemsDelegate(ObservableCollectionKind kind, IReadOnlyList<TModel> newModels, IReadOnlyList<TViewModel> newViewModels);
+        public delegate void RemoveItemsDelegate(ObservableCollectionKind kind, IReadOnlyList<TModel> oldItems, int oldStartingIndex, IReadOnlyList<TViewModel> oldViewModels);
+        public delegate void ReplaceItemsDelegate(ObservableCollectionKind kind, IReadOnlyList<TModel> newModels, IReadOnlyList<TModel> oldModels, IReadOnlyList<TViewModel> newViewModels, IReadOnlyList<TViewModel> oldViewModels);
+        public delegate void MoveItemsDelegate(ObservableCollectionKind kind, int newStartingIndex, int oldStartingIndex);
+        public delegate void ResetItemsDelegate(ObservableCollectionKind kind, IReadOnlyList<TViewModel> oldViewModels);
 
         #endregion
 
-        public ActionViewViewModelObservableManager(ObservableCollection<TModel> collection)
+        public ActionViewViewModelObservableCollectionManager(ObservableCollection<TModel> collection)
             : base(collection)
         { }
 
@@ -164,27 +164,27 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
             return ToViewModel(model);
         }
 
-        protected override void AddItemsCore(ObservableCoreKind kind, IReadOnlyList<TModel> newModels, IReadOnlyList<TViewModel> newViewModels)
+        protected override void AddItemsCore(ObservableCollectionKind kind, IReadOnlyList<TModel> newModels, IReadOnlyList<TViewModel> newViewModels)
         {
             AddItems?.Invoke(kind, newModels, newViewModels);
         }
 
-        protected override void RemoveItemsCore(ObservableCoreKind kind, IReadOnlyList<TModel> oldItems, int oldStartingIndex, IReadOnlyList<TViewModel> oldViewModels)
+        protected override void RemoveItemsCore(ObservableCollectionKind kind, IReadOnlyList<TModel> oldItems, int oldStartingIndex, IReadOnlyList<TViewModel> oldViewModels)
         {
             RemoveItems?.Invoke(kind, oldItems, oldStartingIndex, oldViewModels);
         }
 
-        protected override void ReplaceItemsCore(ObservableCoreKind kind, IReadOnlyList<TModel> newModels, IReadOnlyList<TModel> oldModels, IReadOnlyList<TViewModel> newViewModels, IReadOnlyList<TViewModel> oldViewModels)
+        protected override void ReplaceItemsCore(ObservableCollectionKind kind, IReadOnlyList<TModel> newModels, IReadOnlyList<TModel> oldModels, IReadOnlyList<TViewModel> newViewModels, IReadOnlyList<TViewModel> oldViewModels)
         {
             ReplaceItems?.Invoke(kind, newModels, oldModels, newViewModels, oldViewModels);
         }
 
-        protected override void MoveItemsCore(ObservableCoreKind kind, int newStartingIndex, int oldStartingIndex)
+        protected override void MoveItemsCore(ObservableCollectionKind kind, int newStartingIndex, int oldStartingIndex)
         {
             MoveItems?.Invoke(kind, newStartingIndex, oldStartingIndex);
         }
 
-        protected override void ResetItemsCore(ObservableCoreKind kind, IReadOnlyList<TViewModel> oldViewModels)
+        protected override void ResetItemsCore(ObservableCollectionKind kind, IReadOnlyList<TViewModel> oldViewModels)
         {
             ResetItems?.Invoke(kind, oldViewModels);
         }

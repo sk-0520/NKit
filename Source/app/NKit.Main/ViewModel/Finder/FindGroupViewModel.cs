@@ -53,8 +53,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public FindGroupViewModel(FindGroupModel model)
             : base(model)
         {
-            FindItems = new ActionViewViewModelObservableManager<FindItemModel, FindItemViewModel>(Model.Items);
-            Items = GetInvokeUI(() => CollectionViewSource.GetDefaultView(FindItems.ViewModels));
+            FindItemCollectionManager = new ActionViewViewModelObservableCollectionManager<FindItemModel, FindItemViewModel>(Model.Items);
+            Items = GetInvokeUI(() => CollectionViewSource.GetDefaultView(FindItemCollectionManager.ViewModels));
 
             Items.Filter = FilterFileList;
 
@@ -339,9 +339,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         //    set { SetProperty(ref this._expandedFileContent, value); }
         //}
 
-        ActionViewViewModelObservableManager<FindItemModel, FindItemViewModel> FindItems { get; }
-        public long EnabledItemsCount => FindItems.ViewModels.Count(i => i.MatchedName && (!Model.CurrentCache.Setting.FindFileContent || (Model.CurrentCache.Setting.FindFileContent && i.MatchedContent)));
-        public long TotalItemsCount => FindItems.ViewModels.Count;
+        ActionViewViewModelObservableCollectionManager<FindItemModel, FindItemViewModel> FindItemCollectionManager { get; }
+        public long EnabledItemsCount => FindItemCollectionManager.ViewModels.Count(i => i.MatchedName && (!Model.CurrentCache.Setting.FindFileContent || (Model.CurrentCache.Setting.FindFileContent && i.MatchedContent)));
+        public long TotalItemsCount => FindItemCollectionManager.ViewModels.Count;
 
         public SortedSet<string> ExtensionItems { get; } = new SortedSet<string>();
         public ICollectionView Items { get; set; }
@@ -602,7 +602,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 MultiSelectedItem.Items.Remove(item);
             }
 
-            var addItems = FindItems.ViewModels
+            var addItems = FindItemCollectionManager.ViewModels
                 .Where(i => i.IsSelected)
                 .Except(MultiSelectedItem.Items)
                 .ToList()
@@ -625,10 +625,10 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         void AttachItemsCollectionChanged()
         {
-            FindItems.ToViewModel = (FindItemModel model) => new FindItemViewModel(model);
+            FindItemCollectionManager.ToViewModel = (FindItemModel model) => new FindItemViewModel(model);
 
-            FindItems.AddItems = (ObservableCoreKind kind, IReadOnlyList<FindItemModel> newModels, IReadOnlyList<FindItemViewModel> newViewModels) => {
-                if(kind == ObservableCoreKind.After) {
+            FindItemCollectionManager.AddItems = (ObservableCollectionKind kind, IReadOnlyList<FindItemModel> newModels, IReadOnlyList<FindItemViewModel> newViewModels) => {
+                if(kind == ObservableCollectionKind.After) {
                     foreach(var vm in newViewModels) {
                         vm.PropertyChanged += FindItemModel_PropertyChanged;
                         ExtensionItems.Add(vm.Extension);
@@ -638,8 +638,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 }
             };
 
-            FindItems.RemoveItems = (ObservableCoreKind kind, IReadOnlyList<FindItemModel> oldItems, int oldStartingIndex, IReadOnlyList<FindItemViewModel> oldViewModels) => {
-                if(kind == ObservableCoreKind.After) {
+            FindItemCollectionManager.RemoveItems = (ObservableCollectionKind kind, IReadOnlyList<FindItemModel> oldItems, int oldStartingIndex, IReadOnlyList<FindItemViewModel> oldViewModels) => {
+                if(kind == ObservableCollectionKind.After) {
                     foreach(var oldViewModel in oldViewModels) {
                         oldViewModel.PropertyChanged -= FindItemModel_PropertyChanged;
                     }
@@ -647,8 +647,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 }
             };
 
-            FindItems.ResetItems = (ObservableCoreKind kind, IReadOnlyList<FindItemViewModel> oldViewModels) => {
-                if(kind == ObservableCoreKind.After) {
+            FindItemCollectionManager.ResetItems = (ObservableCollectionKind kind, IReadOnlyList<FindItemViewModel> oldViewModels) => {
+                if(kind == ObservableCollectionKind.After) {
                     foreach(var oldItem in oldViewModels) {
                         oldItem.PropertyChanged -= FindItemModel_PropertyChanged;
                     }
@@ -671,7 +671,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         {
             base.DetachModelEventsCore();
 
-            foreach(var vm in FindItems.ViewModels) {
+            foreach(var vm in FindItemCollectionManager.ViewModels) {
                 vm.PropertyChanged -= FindItemModel_PropertyChanged;
             }
 
