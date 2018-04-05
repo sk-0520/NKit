@@ -40,8 +40,11 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         public CaptureGroupViewModel(CaptureGroupModel model)
             : base(model)
         {
-            ImageItems = GetInvokeUI(() => CollectionViewSource.GetDefaultView(ImageItemViewModels));
+            ImageItemsManager = new ActionViewViewModelObservableManager<CaptureImageModel, CaptureImageViewModel>(Model.Images);
+            ImageItems = GetInvokeUI(() => CollectionViewSource.GetDefaultView(ImageItemsManager.ViewModels));
             ImageItems.Filter = CaptureItemFilter;
+
+            AttachItemsCollectionChanged();
         }
 
         #region property
@@ -106,8 +109,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             set { SetProperty(ref this._selectedImageItem, value); }
         }
 
-
-        ObservableCollection<CaptureImageViewModel> ImageItemViewModels { get; } = new ObservableCollection<CaptureImageViewModel>();
+        ActionViewViewModelObservableManager<CaptureImageModel, CaptureImageViewModel> ImageItemsManager { get; }
         public ICollectionView ImageItems { get; set; }
 
         public ObservableCollection<DateTime> FilterStartUtcTimestampItems { get; } = new ObservableCollection<DateTime>();
@@ -138,7 +140,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
 
         public ICommand RemoveImageCommand => new DelegateCommand<CaptureImageViewModel>(
             vm => {
-                var index = ImageItemViewModels.IndexOf(vm);
+                var index = ImageItemsManager.ViewModels.IndexOf(vm);
                 Model.RemoveImageAt(index);
             }
         );
@@ -162,7 +164,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
                         InitialRunState = RunState.Finished;
                     }
 
-                    var startTimestamps = ImageItemViewModels
+                    var startTimestamps = ImageItemsManager.ViewModels
                         .Select(vm => vm.CaptureStartUtcTimestamp)
                         .GroupBy(time => time)
                         .Select(g => g.First())
@@ -199,24 +201,56 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             RaisePropertyChanged(nameof(CanRun));
         }
 
+        void AttachItemsCollectionChanged()
+        {
+            ImageItemsManager.ToViewModel = m => new CaptureImageViewModel(m);
+
+            ImageItemsManager.AddItems = (kind, newModels, newViewModels) => {
+                if(kind == ObservableCoreKind.After) {
+                    if(IsEnabledLastItemScroll) {
+                        ScrollRequest.Raise(new ScrollNotification<CaptureImageViewModel>(newViewModels.Last()));
+                    }
+                    if(IsEnabledAddCaptureStartTimestamp) {
+                        if(FilterStartUtcTimestampItems.Count == 0) {
+                            FilterStartUtcTimestampItems.Add(UnSelectedFilterTimestamp);
+                        }
+                        foreach(var addTimestamp in newViewModels.GroupBy(vm => vm.CaptureStartUtcTimestamp).Select(g => g.Key).OrderBy(t => t)) {
+                            if(FilterStartUtcTimestampItems.IndexOf(addTimestamp) == -1) {
+                                FilterStartUtcTimestampItems.Add(addTimestamp);
+                                // 現実問題 後にしか入らないだろ。システム日時変更なんか知らんし
+                                //var sorted = FilterStartTimestampItems.OrderBy(t => t).ToList();
+                                //FilterStartTimestampItems.Clear();
+                                //FilterStartTimestampItems.AddRange(sorted);
+                            }
+                        }
+                    }
+                }
+            };
+
+            ImageItemsManager.RemoveItems = (kind, oldItems, oldStartingIndex, oldViewModels) => {
+                if(kind == ObservableCoreKind.After) {
+                    var removeStartTimestamp = oldViewModels[0].CaptureStartUtcTimestamp;
+                    if(oldViewModels.Any(i => i == SelectedImageItem)) {
+                        SelectedImageItem = null;
+                    }
+                    if(!ImageItemsManager.ViewModels.Any(vm => vm.CaptureStartUtcTimestamp == removeStartTimestamp)) {
+                        FilterStartUtcTimestampItems.Remove(removeStartTimestamp);
+                    }
+                    //TODO: SelectedFilterStartTimestamp への補正処理
+                }
+            };
+
+            ImageItemsManager.ResetItems = (kind, oldViewModels) => {
+                FilterStartUtcTimestampItems.Clear();
+                SelectedFilterStartUtcTimestamp = UnSelectedFilterTimestamp;
+                SelectedImageItem = null;
+            };
+        }
+
 
         #endregion
 
         #region SingleModelViewModelBase
-
-        override protected void AttachModelEventsCore()
-        {
-            base.AttachModelEventsCore();
-
-            Model.Images.CollectionChanged += Items_CollectionChanged;
-        }
-
-        override protected void DetachModelEventsCore()
-        {
-            base.DetachModelEventsCore();
-
-            Model.Images.CollectionChanged -= Items_CollectionChanged;
-        }
 
         protected override void CancelCore()
         {
@@ -225,74 +259,5 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         }
 
         #endregion
-
-        private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(() => {
-                switch(e.Action) {
-                    case NotifyCollectionChangedAction.Reset:
-                        var oldItems = ImageItemViewModels;
-                        ImageItemViewModels.Clear();
-                        foreach(var oldItem in oldItems) {
-                            oldItem.Dispose();
-                        }
-                        FilterStartUtcTimestampItems.Clear();
-                        SelectedFilterStartUtcTimestamp = UnSelectedFilterTimestamp;
-                        SelectedImageItem = null;
-                        break;
-
-                    case NotifyCollectionChangedAction.Move:
-                        ImageItemViewModels.Move(e.OldStartingIndex, e.NewStartingIndex);
-                        break;
-
-                    case NotifyCollectionChangedAction.Remove:
-                        var removeStartTimestamp = ImageItemViewModels[e.OldStartingIndex].CaptureStartUtcTimestamp;
-                        var oldViewModels = ImageItemViewModels.Skip(e.OldStartingIndex).Take(e.OldItems.Count).ToList();
-                        foreach(var counter in new Counter(oldViewModels.Count)) {
-                            ImageItemViewModels.RemoveAt(e.OldStartingIndex);
-                        }
-                        foreach(var oldViewModel in oldViewModels) {
-                            oldViewModel.Dispose();
-                        }
-                        if(oldViewModels.Any(i => i == SelectedImageItem)) {
-                            SelectedImageItem = null;
-                        }
-                        if(!ImageItemViewModels.Any(vm => vm.CaptureStartUtcTimestamp == removeStartTimestamp)) {
-                            FilterStartUtcTimestampItems.Remove(removeStartTimestamp);
-                        }
-
-                        //TODO: SelectedFilterStartTimestamp にへの補正処理
-                        break;
-
-                    case NotifyCollectionChangedAction.Add:
-                        var vms = e.NewItems
-                            .Cast<CaptureImageModel>()
-                            .Select(i => new CaptureImageViewModel(i))
-                            .ToList()
-                        ;
-                        ImageItemViewModels.AddRange(vms);
-                        if(IsEnabledLastItemScroll) {
-                            ScrollRequest.Raise(new ScrollNotification<CaptureImageViewModel>(vms.Last()));
-                        }
-                        if(IsEnabledAddCaptureStartTimestamp) {
-                            if(FilterStartUtcTimestampItems.Count == 0) {
-                                FilterStartUtcTimestampItems.Add(UnSelectedFilterTimestamp);
-                            }
-                            foreach(var addTimestamp in vms.GroupBy(vm => vm.CaptureStartUtcTimestamp).Select(g => g.Key).OrderBy(t => t)) {
-                                if(FilterStartUtcTimestampItems.IndexOf(addTimestamp) == -1) {
-                                    FilterStartUtcTimestampItems.Add(addTimestamp);
-                                    // 現実問題 後にしか入らないだろ。システム日時変更なんか知らんし
-                                    //var sorted = FilterStartTimestampItems.OrderBy(t => t).ToList();
-                                    //FilterStartTimestampItems.Clear();
-                                    //FilterStartTimestampItems.AddRange(sorted);
-                                }
-                            }
-                        }
-                        break;
-                }
-
-            });
-        }
-
     }
 }

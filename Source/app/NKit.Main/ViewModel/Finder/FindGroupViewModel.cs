@@ -53,9 +53,12 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public FindGroupViewModel(FindGroupModel model)
             : base(model)
         {
-            Items = GetInvokeUI(() => CollectionViewSource.GetDefaultView(ItemViewModels));
+            FindItems = new ActionViewViewModelObservableManager<FindItemModel, FindItemViewModel>(Model.Items);
+            Items = GetInvokeUI(() => CollectionViewSource.GetDefaultView(FindItems.ViewModels));
 
             Items.Filter = FilterFileList;
+
+            AttachItemsCollectionChanged();
         }
 
         #region property
@@ -336,9 +339,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         //    set { SetProperty(ref this._expandedFileContent, value); }
         //}
 
-        ObservableCollection<FindItemViewModel> ItemViewModels { get; } = new ObservableCollection<FindItemViewModel>();
-        public long EnabledItemsCount => ItemViewModels.Count(i => i.MatchedName && (!Model.CurrentCache.Setting.FindFileContent || (Model.CurrentCache.Setting.FindFileContent && i.MatchedContent)));
-        public long TotalItemsCount => ItemViewModels.Count;
+        ActionViewViewModelObservableManager<FindItemModel, FindItemViewModel> FindItems { get; }
+        public long EnabledItemsCount => FindItems.ViewModels.Count(i => i.MatchedName && (!Model.CurrentCache.Setting.FindFileContent || (Model.CurrentCache.Setting.FindFileContent && i.MatchedContent)));
+        public long TotalItemsCount => FindItems.ViewModels.Count;
 
         public SortedSet<string> ExtensionItems { get; } = new SortedSet<string>();
         public ICollectionView Items { get; set; }
@@ -599,7 +602,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 MultiSelectedItem.Items.Remove(item);
             }
 
-            var addItems = ItemViewModels
+            var addItems = FindItems.ViewModels
                 .Where(i => i.IsSelected)
                 .Except(MultiSelectedItem.Items)
                 .ToList()
@@ -620,6 +623,39 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             SetPropertyValue(Model.FindGroupSetting, setValue, nameof(Model.FindGroupSetting.FilePropertyFileAttributes), _callerMemberName);
         }
 
+        void AttachItemsCollectionChanged()
+        {
+            FindItems.ToViewModel = (FindItemModel model) => new FindItemViewModel(model);
+
+            FindItems.AddItems = (ObservableCoreKind kind, IReadOnlyList<FindItemModel> newModels, IReadOnlyList<FindItemViewModel> newViewModels) => {
+                if(kind == ObservableCoreKind.After) {
+                    foreach(var vm in newViewModels) {
+                        vm.PropertyChanged += FindItemModel_PropertyChanged;
+                        ExtensionItems.Add(vm.Extension);
+                        RaisePropertyChanged(nameof(ExtensionItems));
+                    }
+                    RaiseCountPropertyChanged();
+                }
+            };
+
+            FindItems.RemoveItems = (ObservableCoreKind kind, IReadOnlyList<FindItemModel> oldItems, int oldStartingIndex, IReadOnlyList<FindItemViewModel> oldViewModels) => {
+                if(kind == ObservableCoreKind.After) {
+                    foreach(var oldViewModel in oldViewModels) {
+                        oldViewModel.PropertyChanged -= FindItemModel_PropertyChanged;
+                    }
+                    RaiseCountPropertyChanged();
+                }
+            };
+
+            FindItems.ResetItems = (ObservableCoreKind kind, IReadOnlyList<FindItemViewModel> oldViewModels) => {
+                if(kind == ObservableCoreKind.After) {
+                    foreach(var oldItem in oldViewModels) {
+                        oldItem.PropertyChanged -= FindItemModel_PropertyChanged;
+                    }
+                }
+            };
+        }
+
         #endregion
 
         #region SingleModelViewModelBase
@@ -628,75 +664,21 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         {
             base.AttachModelEventsCore();
 
-            Model.Items.CollectionChanged += Items_CollectionChanged;
+            //Model.Items.CollectionChanged += Items_CollectionChanged;
         }
 
         override protected void DetachModelEventsCore()
         {
             base.DetachModelEventsCore();
 
-            foreach(var vm in ItemViewModels) {
+            foreach(var vm in FindItems.ViewModels) {
                 vm.PropertyChanged -= FindItemModel_PropertyChanged;
             }
 
-            Model.Items.CollectionChanged -= Items_CollectionChanged;
+            //Model.Items.CollectionChanged -= Items_CollectionChanged;
         }
 
         #endregion
-
-        private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(() => {
-                switch(e.Action) {
-                    case NotifyCollectionChangedAction.Reset:
-                        var oldItems = ItemViewModels;
-                        ItemViewModels.Clear();
-                        MultiSelectedItem.Items.Clear();
-                        foreach(var oldItem in oldItems) {
-                            oldItem.PropertyChanged -= FindItemModel_PropertyChanged;
-                            oldItem.Dispose();
-                        }
-                        RaiseCountPropertyChanged();
-                        break;
-
-                    case NotifyCollectionChangedAction.Move:
-                        ItemViewModels.Move(e.OldStartingIndex, e.NewStartingIndex);
-                        break;
-
-                    case NotifyCollectionChangedAction.Remove:
-                        var oldViewModels = ItemViewModels.Skip(e.OldStartingIndex).Take(e.OldItems.Count).ToList();
-                        foreach(var counter in new Counter(oldViewModels.Count)) {
-                            ItemViewModels.RemoveAt(e.OldStartingIndex);
-                        }
-                        foreach(var oldViewModel in oldViewModels) {
-                            oldViewModel.PropertyChanged -= FindItemModel_PropertyChanged;
-                            oldViewModel.Dispose();
-                        }
-                        ItemViewModels.RemoveAt(e.OldStartingIndex);
-
-                        RaiseCountPropertyChanged();
-                        break;
-
-                    case NotifyCollectionChangedAction.Add:
-                        var vms = e.NewItems
-                            .Cast<FindItemModel>()
-                            .Select(i => new FindItemViewModel(i))
-                            .ToList()
-                        ;
-                        ItemViewModels.AddRange(vms);
-
-                        foreach(var vm in vms) {
-                            vm.PropertyChanged += FindItemModel_PropertyChanged;
-                            ExtensionItems.Add(vm.Extension);
-                            RaisePropertyChanged(nameof(ExtensionItems));
-                        }
-
-                        RaiseCountPropertyChanged();
-                        break;
-                }
-            });
-
-        }
 
         private void FindItemModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {

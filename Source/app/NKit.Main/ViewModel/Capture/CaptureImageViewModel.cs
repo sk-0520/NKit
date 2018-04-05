@@ -23,7 +23,10 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
 
         public CaptureImageViewModel(CaptureImageModel model)
             : base(model)
-        { }
+        {
+            CaptureStartUtcTimestamp = Model.ImageFile.Directory.CreationTime.ToUniversalTime();
+            CaptureUtcTimestamp = Model.ImageFile.CreationTime.ToUniversalTime();
+        }
 
         #region property
 
@@ -50,8 +53,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             }
         }
 
-        public DateTime CaptureStartUtcTimestamp => Model.ImageFile.Directory.CreationTime.ToUniversalTime();
-        public DateTime CaptureUtcTimestamp => Model.ImageFile.CreationTime.ToUniversalTime();
+        public DateTime CaptureStartUtcTimestamp { get; }
+        public DateTime CaptureUtcTimestamp { get; }
 
         #endregion
 
