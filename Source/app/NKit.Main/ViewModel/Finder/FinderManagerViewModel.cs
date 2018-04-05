@@ -18,6 +18,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
     {
         #region variable
 
+        bool _isOpenHistory;
         FindGroupViewModel _selectedGroupItem;
 
         #endregion
@@ -46,6 +47,12 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { SetProperty(ref this._selectedGroupItem, value); }
         }
 
+        public bool IsOpenHistory
+        {
+            get { return this._isOpenHistory; }
+            set { SetProperty(ref this._isOpenHistory, value); }
+        }
+
         #endregion
 
         #region command
@@ -65,6 +72,12 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
             GroupViewModels.Add(viewModel);
             SelectedGroupItem = viewModel;
+            IsOpenHistory = false;
+        });
+
+        public ICommand ClearHistoryCommand => new DelegateCommand(() => {
+            Model.ClearHistory();
+            IsOpenHistory = false;
         });
 
         public ICommand RemoveGroupCommand => new DelegateCommand<FindGroupViewModel>(vm => {

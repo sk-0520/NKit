@@ -45,7 +45,16 @@
       </Grid.ColumnDefinitions>
       
       <Button Grid.Column="0" Command="{Binding AddNewGroupCommand}">add new group</Button>
-      <xctk:DropDownButton Grid.Column="1">
+      <xctk:DropDownButton x:Name="commandHistory" Grid.Column="1" IsOpen="{Binding IsOpenHistory, Mode=TwoWay}">
+        <xctk:DropDownButton.Style>
+          <Style TargetType="xctk:DropDownButton">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding HistoryItems.Count}" Value="0">
+                <Setter Property="IsEnabled" Value="False" />
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </xctk:DropDownButton.Style>
         <xctk:DropDownButton.Content>
           <TextBlock>
             <Run>履歴: </Run>
@@ -53,20 +62,29 @@
           </TextBlock>
         </xctk:DropDownButton.Content>
         <xctk:DropDownButton.DropDownContent>
-          <ItemsControl ItemsSource="{Binding HistoryItems}">
-            <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <TextBlock>
-                  <Hyperlink Command="{Binding DataContext.RecallHistoryCommand, ElementName=root}" CommandParameter="{Binding}">
-                    <Run Text="{Binding RootDirectoryPath, Mode=OneTime}" />
-                    <Run>, </Run>
-                    <Run Text="{Binding FileNameSearchPattern, Mode=OneTime}" />
-                  </Hyperlink>
-                </TextBlock>
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
+          <StackPanel>
+            <ItemsControl ItemsSource="{Binding HistoryItems}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-          </ItemsControl>
+                    <TextBlock Grid.Column="0">
+                      <Hyperlink Command="{Binding DataContext.RecallHistoryCommand, ElementName=root}" CommandParameter="{Binding}">
+                        <Run Text="{Binding RootDirectoryPath, Mode=OneTime}" />
+                        <Run>, </Run>
+                        <Run Text="{Binding FileNameSearchPattern, Mode=OneTime}" />
+                      </Hyperlink>
+                    </TextBlock>
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button Command="{Binding ClearHistoryCommand}">clear</Button>
+          </StackPanel>
         </xctk:DropDownButton.DropDownContent>
       </xctk:DropDownButton>
     </Grid>

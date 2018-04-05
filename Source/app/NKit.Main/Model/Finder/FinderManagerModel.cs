@@ -77,6 +77,12 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             return model;
         }
 
+        public void ClearHistory()
+        {
+            Setting.Finder.Histories.Clear();
+            HistoryItems.Clear();
+        }
+
         public void RemoveGroupAt(int index)
         {
             var model = Groups[index];
