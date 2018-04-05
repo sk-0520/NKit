@@ -23,7 +23,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 {
     public class FindGroupModel : RunnableAsyncModel<None>
     {
-        public FindGroupModel(FinderManagerModel manager, FindGroupSetting findGroupSetting, IReadOnlyFinderSetting finderSetting, IReadOnlyFileSetting fileSetting, IReadOnlyNKitSetting nkitSetting)
+        public FindGroupModel(FinderManagerModel manager, FindGroupSetting findGroupSetting, FinderSetting finderSetting, IReadOnlyFileSetting fileSetting, IReadOnlyNKitSetting nkitSetting)
         {
             Manager = manager;
             FindGroupSetting = findGroupSetting;
@@ -36,7 +36,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
         FinderManagerModel Manager { get; }
         public FindGroupSetting FindGroupSetting { get; }
-        public IReadOnlyFinderSetting FinderSetting { get; }
+        FinderSetting FinderSetting { get; }
         public IReadOnlyFileSetting FileSetting { get; }
         public IReadOnlyNKitSetting NKitSetting { get; }
         /// <summary>
@@ -46,6 +46,24 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         public IReadOnlyFindGroupCache CurrentCache => Cache;
 
         public ObservableCollection<FindItemModel> Items { get; } = new ObservableCollection<FindItemModel>();
+
+        public bool OutputAbsolutePath
+        {
+            get { return FinderSetting.OutputAbsolutePath; }
+            set { FinderSetting.OutputAbsolutePath = value; }
+        }
+
+        public bool OutputIsDetail
+        {
+            get { return FinderSetting.OutputIsDetail; }
+            set { FinderSetting.OutputIsDetail = value; }
+        }
+
+        public bool OutputDisplayItemOnly
+        {
+            get { return FinderSetting.OutputDisplayItemOnly; }
+            set { FinderSetting.OutputDisplayItemOnly = value; }
+        }
 
         #endregion
 
@@ -391,7 +409,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         {
             var filePath = absolutePath
                 ? findItemModel.FileInfo.FullName
-                : findItemModel.RelativeDirectoryPath
+                : Path.Combine(findItemModel.RelativeDirectoryPath, findItemModel.FileInfo.Name)
             ;
 
             if(isDetail) {

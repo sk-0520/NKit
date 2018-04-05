@@ -32,11 +32,18 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         /// MS Officeファイルとしてのファイル名パターン。
         /// </summary>
         string MicrosoftOfficeFileNamePattern { get; }
+        /// <summary>
+        /// PDFファイルとしてのファイル名パターン。
+        /// </summary>
         string PdfFileNamePattern { get; }
         /// <summary>
         /// Xml/HTMLファイルとしてのファイル名パターン。
         /// </summary>
         string XmlHtmlFileNamePattern { get; }
+
+        bool OutputDisplayItemOnly { get; }
+        bool OutputAbsolutePath { get; }
+        bool OutputIsDetail { get; }
     }
 
     [Serializable, DataContract]
@@ -99,6 +106,13 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
             "csproj", "csproj.user",
             "svg"
         );
+
+        [DataMember]
+        public bool OutputDisplayItemOnly { get; set; } = true;
+        [DataMember]
+        public bool OutputAbsolutePath { get; set; } = true;
+        [DataMember]
+        public bool OutputIsDetail { get; set; } = false;
 
         #endregion
 

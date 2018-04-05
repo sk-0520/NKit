@@ -50,9 +50,10 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         bool _showSelectedFileDetail;
 
-        bool _outputDisplayItemOnly = true;
-        bool _outputAbsolutePath = true;
-        bool _outputIsDetail = false;
+        // こいつら三つは稼働中に限り独立させておきたい
+        bool _outputDisplayItemOnly;
+        bool _outputAbsolutePath;
+        bool _outputIsDetail;
 
         #endregion
 
@@ -63,6 +64,10 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             Items = GetInvokeUI(() => CollectionViewSource.GetDefaultView(FindItemCollectionManager.ViewModels));
 
             Items.Filter = FilterFileList;
+
+            this._outputDisplayItemOnly = Model.OutputDisplayItemOnly;
+            this._outputAbsolutePath = Model.OutputAbsolutePath;
+            this._outputIsDetail = Model.OutputIsDetail;
 
             AttachItemsCollectionChanged();
         }
@@ -369,28 +374,38 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public bool ShowSelectedFileDetail
         {
             get { return this._showSelectedFileDetail; }
-            set
-            {
-                if(SetProperty(ref this._showSelectedFileDetail, value)) {
-                }
-            }
+            set { SetProperty(ref this._showSelectedFileDetail, value); }
         }
 
         public bool OutputDisplayItemOnly
         {
             get { return this._outputDisplayItemOnly; }
-            set { SetProperty(ref this._outputDisplayItemOnly, value); }
+            set
+            {
+                if(SetProperty(ref this._outputDisplayItemOnly, value)) {
+                    Model.OutputDisplayItemOnly = this._outputDisplayItemOnly;
+                }
+            }
         }
         public bool OutputAbsolutePath
         {
             get { return this._outputAbsolutePath; }
-            set { SetProperty(ref this._outputAbsolutePath, value); }
+            set
+            {
+                if(SetProperty(ref this._outputAbsolutePath, value)) {
+                    Model.OutputAbsolutePath = value;
+                }
+            }
         }
-
         public bool OutputIsDetail
         {
             get { return this._outputIsDetail; }
-            set { SetProperty(ref this._outputIsDetail, value); }
+            set
+            {
+                if(SetProperty(ref this._outputIsDetail, value)) {
+                    Model.OutputIsDetail = value;
+                }
+            }
         }
 
 
@@ -585,7 +600,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                     }
                 }
             } else {
-                foreach(var index in  Enumerable.Range(0, FindItemCollectionManager.ViewModels.Count)) {
+                foreach(var index in Enumerable.Range(0, FindItemCollectionManager.ViewModels.Count)) {
                     yield return index;
                 }
             }
