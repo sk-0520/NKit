@@ -74,8 +74,10 @@
 
                     <TextBlock Grid.Column="0">
                       <Hyperlink Command="{Binding DataContext.RecallHistoryCommand, ElementName=root}" CommandParameter="{Binding}">
+                        <Run>ディレクトリ: </Run>
                         <Run Text="{Binding RootDirectoryPath, Mode=OneTime}" />
                         <Run>, </Run>
+                        <Run>ファイル名: </Run>
                         <Run Text="{Binding FileNameSearchPattern, Mode=OneTime}" />
                       </Hyperlink>
                     </TextBlock>
