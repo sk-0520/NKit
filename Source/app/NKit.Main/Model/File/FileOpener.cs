@@ -227,6 +227,35 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
             }
         }
 
+        void OpenPdfFile(FileInfo file, AssociationOpenParameter parameter)
+        {
+            var args = new[] {
+                "--kind",
+                ProgramRelationUtility.EscapesequenceToArgument(AssociationFileKind.Pdf.ToString()),
+
+                "--path",
+                ProgramRelationUtility.EscapesequenceToArgument(file.FullName),
+
+                "--document_line",
+                ProgramRelationUtility.EscapesequenceToArgument(parameter.LineNumber.ToString()),
+
+                "--document_position",
+                ProgramRelationUtility.EscapesequenceToArgument(parameter.CharacterPostion.ToString()),
+
+                "--document_length",
+                ProgramRelationUtility.EscapesequenceToArgument(parameter.CharacterLength.ToString()),
+
+                "--document_page",
+                ProgramRelationUtility.EscapesequenceToArgument(parameter.Document.Page.ToString()),
+            };
+            var arguments = string.Join(" ", args);
+            using(var client = new ApplicationSwitcher(StartupOptions.ServiceUri)) {
+                client.Initialize();
+                var manageId = client.PreparateApplication(NKitApplicationKind.Rocket, arguments, string.Empty);
+                client.WakeupApplication(manageId);
+            }
+        }
+
 
         public Process Open(AssociationFileKind associationFileKind, FileSystemInfo fileSystemInfo, AssociationOpenParameter parameter)
         {
@@ -252,6 +281,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
                 case AssociationFileKind.MicrosoftOfficeWord:
                     OpenMicrosoftOfficeWordFile((FileInfo)fileSystemInfo, parameter);
+                    return null;
+
+                case AssociationFileKind.Pdf:
+                    OpenPdfFile((FileInfo)fileSystemInfo, parameter);
                     return null;
 
                 default:

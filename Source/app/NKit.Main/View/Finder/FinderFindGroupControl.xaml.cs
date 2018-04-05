@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
+using Prism.Commands;
+using Prism.Interactivity.InteractionRequest;
 
 namespace ContentTypeTextNet.NKit.Main.View.Finder
 {
@@ -24,5 +27,17 @@ namespace ContentTypeTextNet.NKit.Main.View.Finder
         {
             InitializeComponent();
         }
+
+        #region command
+
+        public ICommand SaveFileDialogCommand => new DelegateCommand<InteractionRequestedEventArgs>(
+            o => {
+                var confirmation = (Confirmation)o.Context;
+                var dialog = (SaveFileDialog)confirmation.Content;
+                confirmation.Confirmed =  dialog.ShowDialog().GetValueOrDefault();
+            }
+        );
+
+        #endregion
     }
 }

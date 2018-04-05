@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ContentTypeTextNet.NKit.Main.Model;
+using ContentTypeTextNet.NKit.Main.Model.Searcher;
 using ContentTypeTextNet.NKit.Main.View.Control.AvalonEditExtension;
 using ContentTypeTextNet.NKit.Utility.Model;
 using ICSharpCode.AvalonEdit.Document;

@@ -59,7 +59,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -122,9 +123,11 @@
     <Compile Include="Define\Px.cs" />
     <Compile Include="Model\EnumUtility.cs" />
     <Compile Include="Model\Icon.cs" />
+    <Compile Include="Model\KeepOpenStream.cs" />
     <Compile Include="Model\Logging.cs" />
     <Compile Include="Model\NKitTalkerClient.cs" />
     <Compile Include="Model\Notification.cs" />
+    <Compile Include="Model\ObservableCollectionManagerBase.cs" />
     <Compile Include="Model\Range.cs" />
     <Compile Include="Model\RunnableModel.cs" />
     <Compile Include="Model\Serializer.cs" />
@@ -135,6 +138,7 @@
     <Compile Include="Model\Unmanaged\GlobalAllocModel.cs" />
     <Compile Include="Model\Unmanaged\UnmanagedModelBase.cs" />
     <Compile Include="ViewModel\RunnableViewModel.cs" />
+    <Compile Include="ViewModel\ViewViewModelObservableCollectionManager.cs" />
     <Compile Include="View\Attach\GridHelpers.cs" />
     <Compile Include="Model\Cacher.cs" />
     <Compile Include="Model\ConfigurationCacher.cs" />
@@ -171,6 +175,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -16,6 +16,10 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         /// </summary>
         IReadOnlyCollection<IReadOnlyFindGroupSetting> Groups { get; }
         /// <summary>
+        /// 検索履歴。
+        /// </summary>
+        IReadOnlyCollection<IReadOnlyFindGroupSetting> Histories { get; }
+        /// <summary>
         /// デフォルト検索条件。
         /// </summary>
         IReadOnlyFindGroupSetting DefaultGroupSetting { get; }
@@ -29,9 +33,17 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         /// </summary>
         string MicrosoftOfficeFileNamePattern { get; }
         /// <summary>
+        /// PDFファイルとしてのファイル名パターン。
+        /// </summary>
+        string PdfFileNamePattern { get; }
+        /// <summary>
         /// Xml/HTMLファイルとしてのファイル名パターン。
         /// </summary>
         string XmlHtmlFileNamePattern { get; }
+
+        bool OutputDisplayItemOnly { get; }
+        bool OutputAbsolutePath { get; }
+        bool OutputIsDetail { get; }
     }
 
     [Serializable, DataContract]
@@ -42,6 +54,10 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         [DataMember]
         public Collection<FindGroupSetting> Groups { get; set; } = new Collection<FindGroupSetting>();
         IReadOnlyCollection<IReadOnlyFindGroupSetting> IReadOnlyFinderSetting.Groups => Groups;
+
+        [DataMember]
+        public Collection<FindGroupSetting> Histories { get; set; } = new Collection<FindGroupSetting>();
+        IReadOnlyCollection<IReadOnlyFindGroupSetting> IReadOnlyFinderSetting.Histories => Histories;
 
         [DataMember]
         public FindGroupSetting DefaultGroupSetting { get; set; } = new FindGroupSetting();
@@ -77,6 +93,11 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
             "xlsm",
             "docx"
         );
+
+        public string PdfFileNamePattern { get; set; } = CreateExtensions(
+            "pdf"
+        );
+
         [DataMember]
         public string XmlHtmlFileNamePattern { get; set; } = CreateExtensions(
             "xml", "setting", "xaml", "config",
@@ -85,6 +106,13 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
             "csproj", "csproj.user",
             "svg"
         );
+
+        [DataMember]
+        public bool OutputDisplayItemOnly { get; set; } = true;
+        [DataMember]
+        public bool OutputAbsolutePath { get; set; } = true;
+        [DataMember]
+        public bool OutputIsDetail { get; set; } = false;
 
         #endregion
 

@@ -1,4 +1,4 @@
-﻿root = true
+root = true
 
 [*]
 end_of_line = crlf
@@ -72,4 +72,9 @@ indent_size = 2
 [*.md]
 indent_style = space
 indent_size = 4
+
+[*.bat]
+indent_style = tab
+indent_size = 4
+charset = shift-jis
 

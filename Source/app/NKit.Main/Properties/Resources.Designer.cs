@@ -97,6 +97,36 @@ namespace ContentTypeTextNet.NKit.Main.Properties {
         }
         
         /// <summary>
+        ///   (未選択) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Finder_FindGroup_Output_NotSelected {
+            get {
+                return ResourceManager.GetString("String_Finder_FindGroup_Output_NotSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   検索結果: ${COUNT} 件 (${YYYY}-${MM}-${DD} ${hh24}:${mm}:${ss})
+        ///ディレクトリ: ${DIR}
+        ///ファイル名: ${NAME}
+        ///ファイル内容: ${CONTENT} に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Finder_FindGroup_Output_Title_Format {
+            get {
+                return ResourceManager.GetString("String_Finder_FindGroup_Output_Title_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   (非検索一致) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Finder_FindGroup_Output_Unmatched {
+            get {
+                return ResourceManager.GetString("String_Finder_FindGroup_Output_Unmatched", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   取消 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_View_Control_RunnableControl_CancelText {

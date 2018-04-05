@@ -10,6 +10,7 @@ using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
 using ContentTypeTextNet.NKit.Main.Model.Microsoft.Office;
+using ContentTypeTextNet.NKit.Main.Model.Searcher;
 using ContentTypeTextNet.NKit.Setting.Finder;
 using ContentTypeTextNet.NKit.Utility.Model;
 
@@ -27,9 +28,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         #region property
 
-        public TextSearchResult Text { get; set; }
-        public MicrosoftOfficeSearchResultBase MicrosoftOffice { get; set; }
-        public XmlHtmlSearchResult XmlHtml { get; set; }
+        public TextSearchResult Text { get; set; } = TextSearchResult.NotFound;
+        public MicrosoftOfficeSearchResultBase MicrosoftOffice { get; set; } = MicrosoftOfficeSearchResultBase.NotFound;
+        public PdfSearchResult Pdf { get; set; } = PdfSearchResult.NotFound;
+        public XmlHtmlSearchResult XmlHtml { get; set; } = XmlHtmlSearchResult.NotFound;
 
         #endregion
     }
@@ -43,6 +45,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
             FileStream = file.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
             Debug.Assert(FileStream.CanSeek);
+            FileStreamPostionKeeper = new StreamPostionKeeper(FileStream);
         }
 
         #region property
@@ -51,9 +54,11 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
         ILogFactory LogFactory { get; }
 
         Stream FileStream { get; }
+        StreamPostionKeeper FileStreamPostionKeeper { get; }
 
         TextSearchResult TextSearchResult { get;set;}
         MicrosoftOfficeSearchResultBase MicrosoftOfficeSearchResult { get;set;}
+        PdfSearchResult PdfSearchResult { get; set; }
         XmlHtmlSearchResult XmlHtmlSearchResult { get;set;}
 
         #endregion
@@ -66,7 +71,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
                 return TextSearchResult.NotFound;
             }
 
-            FileStream.Position = 0;
+            FileStreamPostionKeeper.Reset();
 
             var ts = new TextSearcher();
             return TextSearchResult = ts.Search(FileStream, regex);
@@ -78,10 +83,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
                 return MicrosoftOfficeExcelSearchResult.NotFound;
             }
 
-            FileStream.Position = 0;
+            FileStreamPostionKeeper.Reset();
 
             var es = new MicrosoftOfficeExcelSearcher();
-            var result = es.Search(excelType, FileStream, regex, setting);
+            var result = es.Search(excelType, new KeepOpenStream(FileStream), regex, setting);
             MicrosoftOfficeSearchResult = result;
             return result;
         }
@@ -92,10 +97,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
                 return MicrosoftOfficeWordSearchResult.NotFound;
             }
 
-            FileStream.Position = 0;
+            FileStreamPostionKeeper.Reset();
 
             var ws = new MicrosoftOfficeWordSearcher();
-            var result = ws.Search(wordType, FileStream, regex, setting);
+            var result = ws.Search(wordType, new KeepOpenStream(FileStream), regex, setting);
             MicrosoftOfficeSearchResult = result;
             return result;
         }
@@ -130,19 +135,31 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         }
 
+        public PdfSearchResult SearchPdf(Regex regex)
+        {
+            if(File.Length == 0) {
+                return PdfSearchResult.NotFound;
+            }
+
+            FileStreamPostionKeeper.Reset();
+
+            var ps = new PdfSearcher();
+            return PdfSearchResult = ps.Search(new KeepOpenStream(FileStream), regex);
+        }
+
         public XmlHtmlSearchResult SearchXmlHtml(Regex regex, IReadOnlyFindXmlHtmlContentSetting setting)
         {
             if(File.Length == 0) {
                 return XmlHtmlSearchResult.NotFound;
             }
-            FileStream.Position = 0;
+            FileStreamPostionKeeper.Reset();
 
             XmlHtmlSearchResult result;
             var xs = new XmlHtmlSearcher();
             if(TextSearchResult != null && TextSearchResult.EncodingCheck != null && TextSearchResult.EncodingCheck.IsSuccess) {
-                result = xs.Search(FileStream, regex, TextSearchResult.EncodingCheck.Encoding, setting);
+                result = xs.Search(new KeepOpenStream(FileStream), regex, TextSearchResult.EncodingCheck.Encoding, setting);
             } else {
-                result = xs.Search(FileStream, regex, setting);
+                result = xs.Search(new KeepOpenStream(FileStream), regex, setting);
             }
             XmlHtmlSearchResult = result;
             return result;
@@ -156,6 +173,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
         {
             if(!IsDisposed) {
                 if(disposing) {
+                    FileStreamPostionKeeper.Dispose();
                     FileStream.Dispose();
                 }
             }

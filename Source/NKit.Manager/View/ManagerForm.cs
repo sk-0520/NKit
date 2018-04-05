@@ -356,6 +356,8 @@ namespace ContentTypeTextNet.NKit.Manager.View
             // 設定値をどばーっと反映
             Worker.ListupWorkspace(this.selectWorkspace, Guid.Empty);
             this.selectWorkspaceLoadToMinimize.Checked = Worker.WorkspaceLoadToMinimize;
+            this.selectWorkspaceRunningMinimizeToNotifyArea.Checked = Worker.WorkspaceRunningMinimizeToNotifyArea;
+            this.selectAutoUpdateCheck.Checked = Worker.AutoUpdateCheck;
 
             this.selectLogTrace.Checked = Worker.IsReceiveTraceLog;
             this.selectLogDebug.Checked = Worker.IsReceiveDebugLog;
@@ -560,7 +562,7 @@ namespace ContentTypeTextNet.NKit.Manager.View
             }
         }
 
-        private void ManagerForm_Shown(object sender, EventArgs e)
+        private async void ManagerForm_Shown(object sender, EventArgs e)
         {
             // バージョンアップ時とかなら強制で全アプリケーションを起動
             if(Worker.IsFirstExecute || Worker.IsUpdatedFirstExecute) {
@@ -591,6 +593,14 @@ namespace ContentTypeTextNet.NKit.Manager.View
                     if(logger is IDisposable diposer) {
                         diposer.Dispose();
                     }
+                }
+            }
+
+            // アップデート確認は少し時間がたってから行う
+            if(Worker.AutoUpdateCheck) {
+                await Task.Delay(Constants.UpdateCheckWaitTime);
+                if(Worker.WorkspaceState == WorkspaceState.None || Worker.WorkspaceState == WorkspaceState.Creating || Worker.WorkspaceState == WorkspaceState.Selecting) {
+                    this.commandCheckUpdate.PerformClick();
                 }
             }
         }
@@ -702,6 +712,11 @@ namespace ContentTypeTextNet.NKit.Manager.View
         private void commandLogClear_Click(object sender, EventArgs e)
         {
             ClearLogItems();
+        }
+
+        private void selectAutoUpdateCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            Worker.AutoUpdateCheck = this.selectAutoUpdateCheck.Checked;
         }
 
         #region DEBUG

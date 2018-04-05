@@ -52,6 +52,10 @@
 
       <ScrollViewer Grid.Row="0">
         <StackPanel>
+          <StackPanel.InputBindings>
+            <KeyBinding Key="Return" Command="{Binding RunCommand}" />
+            <KeyBinding Key="Esc" Command="{Binding CancelRunCommand}" />
+          </StackPanel.InputBindings>
           <Expander Header="グループ設定">
             <Grid>
               <Grid.ColumnDefinitions>
@@ -76,14 +80,15 @@
               これはまずい
               <RadioButton IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Screen}}" Content="Screen" />
               -->
+              <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Control}}" Content="コントロール" />
               <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Window}}" Content="ウィンドウ" />
               <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Client}}" Content="クライアント領域" />
-              <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Control}}" Content="コントロール" />
               <RadioButton Style="{StaticResource VerticalRadioButton}" IsChecked="{Binding CaptureTarget, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_setting_define:CaptureTarget.Scroll}}" Content="スクロール領域" />
             </StackPanel>
 
           </Grid>
 
+          <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding IsEnabledClipboard}">クリップボードにコピー</CheckBox>
           <CheckBox Style="{StaticResource VerticalCheckBox}" IsChecked="{Binding IsImmediateSelect}">すぐに選択を始める</CheckBox>
 
           <GroupBox>

@@ -6,10 +6,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Main.Model;
+using ContentTypeTextNet.NKit.Main.Model.Searcher;
 using ContentTypeTextNet.NKit.Setting.Finder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ContentTypeTextNet.NKit.Main.Test.Model
+namespace ContentTypeTextNet.NKit.Main.Test.Model.Searcher
 {
     [TestClass]
     public class XmlHtmlSearcherTest

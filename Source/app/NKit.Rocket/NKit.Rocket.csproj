@@ -68,7 +68,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -96,6 +96,7 @@
     <Compile Include="Model\MicrosoftExcelOpener.cs" />
     <Compile Include="Model\MicrosoftWordOpener.cs" />
     <Compile Include="Model\OpenerBase.cs" />
+    <Compile Include="Model\PdfOpener.cs" />
     <Compile Include="Model\RocketModel.cs" />
     <Compile Include="Program.cs">
       <AutoGen>True</AutoGen>
@@ -105,11 +106,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="%40NKit.Rocket.user.config">
+    <Content Include="%40NKit.Rocket.user.config">
       <DependentUpon>%40NKit.Rocket.user.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-    </None>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="App.config" />
     <None Include="NKit.Rocket.exe.config">
       <DependentUpon>App.config</DependentUpon>

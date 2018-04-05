@@ -22,6 +22,10 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         /// </summary>
         string GroupName { get; }
 
+        DateTime CreatedUtcTimestamp { get; }
+        DateTime UpdatedUtcTimestamp { get; }
+
+
         /// <summary>
         /// 検索対象ディレクトリパス。
         /// </summary>
@@ -105,6 +109,9 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         bool IsEnabledFileContentSizeLimit { get; }
 
         IReadOnlyFindMicrosoftOfficeContentSetting MicrosoftOfficeContent { get; }
+
+        IReadOnlyFindPdfContentSetting PdfContent { get; }
+
         IReadOnlyFindXmlHtmlContentSetting XmlHtmlContent { get; }
 
         #endregion
@@ -117,6 +124,11 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
 
         [DataMember]
         public string GroupName { get; set; }
+
+        [DataMember]
+        public DateTime CreatedUtcTimestamp { get; set; } = DateTime.UtcNow;
+        [DataMember]
+        public DateTime UpdatedUtcTimestamp { get; set; }
 
         [DataMember]
         public string RootDirectoryPath { get; set; }
@@ -170,6 +182,10 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         [DataMember]
         public FindMicrosoftOfficeContentSetting MicrosoftOfficeContent { get; set; } = new FindMicrosoftOfficeContentSetting();
         IReadOnlyFindMicrosoftOfficeContentSetting IReadOnlyFindGroupSetting.MicrosoftOfficeContent => MicrosoftOfficeContent;
+
+        [DataMember]
+        public FindPdfContentSetting PdfContent { get; set; } = new FindPdfContentSetting();
+        IReadOnlyFindPdfContentSetting IReadOnlyFindGroupSetting.PdfContent => PdfContent;
 
         [DataMember]
         public FindXmlHtmlContentSetting XmlHtmlContent { get; set; } = new FindXmlHtmlContentSetting();

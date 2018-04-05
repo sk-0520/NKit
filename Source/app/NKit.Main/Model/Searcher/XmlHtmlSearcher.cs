@@ -11,7 +11,7 @@ using ContentTypeTextNet.NKit.Utility.Model;
 using Hnx8.ReadJEnc;
 using HtmlAgilityPack;
 
-namespace ContentTypeTextNet.NKit.Main.Model
+namespace ContentTypeTextNet.NKit.Main.Model.Searcher
 {
     public abstract class XmlHtmlSearchResultBase : SearchResultBase
     { }
