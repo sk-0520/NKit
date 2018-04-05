@@ -22,6 +22,10 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         /// </summary>
         string GroupName { get; }
 
+        DateTime CreatedUtcTimestamp { get; }
+        DateTime UpdatedUtcTimestamp { get; }
+
+
         /// <summary>
         /// 検索対象ディレクトリパス。
         /// </summary>
@@ -120,6 +124,11 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
 
         [DataMember]
         public string GroupName { get; set; }
+
+        [DataMember]
+        public DateTime CreatedUtcTimestamp { get; set; } = DateTime.UtcNow;
+        [DataMember]
+        public DateTime UpdatedUtcTimestamp { get; set; }
 
         [DataMember]
         public string RootDirectoryPath { get; set; }

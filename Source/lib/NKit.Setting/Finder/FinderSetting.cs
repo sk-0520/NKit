@@ -16,6 +16,10 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         /// </summary>
         IReadOnlyCollection<IReadOnlyFindGroupSetting> Groups { get; }
         /// <summary>
+        /// 検索履歴。
+        /// </summary>
+        IReadOnlyCollection<IReadOnlyFindGroupSetting> Histories { get; }
+        /// <summary>
         /// デフォルト検索条件。
         /// </summary>
         IReadOnlyFindGroupSetting DefaultGroupSetting { get; }
@@ -43,6 +47,10 @@ namespace ContentTypeTextNet.NKit.Setting.Finder
         [DataMember]
         public Collection<FindGroupSetting> Groups { get; set; } = new Collection<FindGroupSetting>();
         IReadOnlyCollection<IReadOnlyFindGroupSetting> IReadOnlyFinderSetting.Groups => Groups;
+
+        [DataMember]
+        public Collection<FindGroupSetting> Histories { get; set; } = new Collection<FindGroupSetting>();
+        IReadOnlyCollection<IReadOnlyFindGroupSetting> IReadOnlyFinderSetting.Histories => Histories;
 
         [DataMember]
         public FindGroupSetting DefaultGroupSetting { get; set; } = new FindGroupSetting();

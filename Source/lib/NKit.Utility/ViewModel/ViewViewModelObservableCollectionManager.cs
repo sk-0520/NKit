@@ -22,7 +22,7 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
     /// <typeparam name="TViewModel"></typeparam>
-    public abstract class ViewViewModelObservableCollectionManagerBase<TModel, TViewModel> : ObservableManager<TModel>
+    public abstract class ViewViewModelObservableCollectionManagerBase<TModel, TViewModel> : ObservableCollectionManagerBase<TModel>
         where TModel : ModelBase
         where TViewModel: ViewModelBase
     {

@@ -336,6 +336,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             var dirInfo = new DirectoryInfo(Cache.RootDirectoryPath);
             var limitLevel = Cache.Setting.DirectoryLimitLevel;
 
+            // 履歴に追加
+            FindGroupSetting.UpdatedUtcTimestamp = DateTime.UtcNow;
+            Manager.AddHistory(this);
+
             return Task.Run(() => {
                 var files = GetFiles(dirInfo, "*", limitLevel, cancelToken);
 
