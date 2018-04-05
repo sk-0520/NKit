@@ -2,6 +2,7 @@
   上位から DataContext を設定して使用。
 -->
 <UserControl
+  x:Name="root"
   x:Class="ContentTypeTextNet.NKit.Main.View.Finder.FinderFindGroupControl"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -21,6 +22,12 @@
   d:DesignHeight="450"
   d:DesignWidth="800"
 >
+  <i:Interaction.Triggers>
+    <prism:InteractionRequestTrigger SourceObject="{Binding SaveFileDialogRequest, Mode=OneWay}">
+      <prism:InvokeCommandAction Command="{Binding SaveFileDialogCommand, ElementName=root}" />
+    </prism:InteractionRequestTrigger>
+  </i:Interaction.Triggers>
+
   <UserControl.Resources>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <app_utility_view_converter:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
@@ -306,6 +313,7 @@
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
         <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
 
       <ToolBar Grid.Row="0">
@@ -523,6 +531,17 @@
         <GridSplitter Grid.Row="1" Style="{StaticResource DefaultHorizonGridSplitter}" Visibility="{Binding ShowSelectedFileDetail, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
       </Grid>
+
+      <StatusBar Grid.Row="2">
+        <Label>リスト出力: </Label>
+        <CheckBox IsChecked="{Binding OutputDisplayItemOnly}">表示中項目に限定</CheckBox>
+        <CheckBox IsChecked="{Binding OutputAbsolutePath}">絶対パス</CheckBox>
+        <CheckBox IsChecked="{Binding OutputIsDetail}">詳細</CheckBox>
+        <Button>
+          <TextBlock TextDecorations="Strikethrough">プレビュー</TextBlock>
+        </Button>
+        <Button Command="{Binding OutputListFileCommand}">ファイル出力</Button>
+      </StatusBar>
     </Grid>
 
     <GridSplitter Grid.Column="1" Style="{StaticResource DefaultVericalGridSplitter}" />

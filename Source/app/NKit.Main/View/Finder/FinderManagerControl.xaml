@@ -8,7 +8,7 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 
   xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-  
+
   xmlns:app_utility_view_converter="clr-namespace:ContentTypeTextNet.NKit.Utility.View.Converter;assembly=NKit.Utility"
 
   xmlns:app_main_define="clr-namespace:ContentTypeTextNet.NKit.Main.Define"
@@ -43,7 +43,7 @@
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="Auto" />
       </Grid.ColumnDefinitions>
-      
+
       <Button Grid.Column="0" Command="{Binding AddNewGroupCommand}">add new group</Button>
       <xctk:DropDownButton x:Name="commandHistory" Grid.Column="1" IsOpen="{Binding IsOpenHistory, Mode=TwoWay}">
         <xctk:DropDownButton.Style>
@@ -56,10 +56,13 @@
           </Style>
         </xctk:DropDownButton.Style>
         <xctk:DropDownButton.Content>
-          <TextBlock>
-            <Run>履歴: </Run>
-            <Run Text="{Binding HistoryItems.Count, Mode=OneWay}" />
-          </TextBlock>
+          <StackPanel Style="{StaticResource IconPanel}">
+            <Control Style="{StaticResource Image-Small}" Template="{StaticResource Image_History}" />
+            <TextBlock>
+              <Run>履歴: </Run>
+              <Run Text="{Binding HistoryItems.Count, Mode=OneWay}" />
+            </TextBlock>
+          </StackPanel>
         </xctk:DropDownButton.Content>
         <xctk:DropDownButton.DropDownContent>
           <StackPanel>

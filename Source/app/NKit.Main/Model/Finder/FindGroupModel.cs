@@ -17,12 +17,13 @@ using ContentTypeTextNet.NKit.Setting.File;
 using ContentTypeTextNet.NKit.Setting.Finder;
 using ContentTypeTextNet.NKit.Setting.NKit;
 using ContentTypeTextNet.NKit.Utility.Model;
+using NPOI.SS.Util;
 
 namespace ContentTypeTextNet.NKit.Main.Model.Finder
 {
     public class FindGroupModel : RunnableAsyncModel<None>
     {
-        public FindGroupModel(FinderManagerModel manager, FindGroupSetting findGroupSetting, IReadOnlyFinderSetting finderSetting, IReadOnlyFileSetting fileSetting, IReadOnlyNKitSetting nkitSetting)
+        public FindGroupModel(FinderManagerModel manager, FindGroupSetting findGroupSetting, FinderSetting finderSetting, IReadOnlyFileSetting fileSetting, IReadOnlyNKitSetting nkitSetting)
         {
             Manager = manager;
             FindGroupSetting = findGroupSetting;
@@ -35,7 +36,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
         FinderManagerModel Manager { get; }
         public FindGroupSetting FindGroupSetting { get; }
-        public IReadOnlyFinderSetting FinderSetting { get; }
+        FinderSetting FinderSetting { get; }
         public IReadOnlyFileSetting FileSetting { get; }
         public IReadOnlyNKitSetting NKitSetting { get; }
         /// <summary>
@@ -45,6 +46,24 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         public IReadOnlyFindGroupCache CurrentCache => Cache;
 
         public ObservableCollection<FindItemModel> Items { get; } = new ObservableCollection<FindItemModel>();
+
+        public bool OutputAbsolutePath
+        {
+            get { return FinderSetting.OutputAbsolutePath; }
+            set { FinderSetting.OutputAbsolutePath = value; }
+        }
+
+        public bool OutputIsDetail
+        {
+            get { return FinderSetting.OutputIsDetail; }
+            set { FinderSetting.OutputIsDetail = value; }
+        }
+
+        public bool OutputDisplayItemOnly
+        {
+            get { return FinderSetting.OutputDisplayItemOnly; }
+            set { FinderSetting.OutputDisplayItemOnly = value; }
+        }
 
         #endregion
 
@@ -263,6 +282,167 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                         yield return file;
                     }
                 }
+            }
+        }
+
+        static void WriteListFileTitle(TextWriter writer, IReadOnlyFindGroupSetting setting, int count)
+        {
+            // 数は少ないけど、一旦はこれで
+
+            var titleMap = new Dictionary<string, string>() {
+                ["COUNT"] = count.ToString(),
+                ["DIR"] = setting.RootDirectoryPath,
+                ["NAME"] = setting.FileNameSearchPattern,
+                ["CONTENT"] = setting.FindFileContent
+                    ? setting.FileContentSearchPattern
+                    : Properties.Resources.String_Finder_FindGroup_Output_NotSelected
+                ,
+            };
+            var titleText = CommonUtility.ReplaceNKitText(Properties.Resources.String_Finder_FindGroup_Output_Title_Format, setting.UpdatedUtcTimestamp, titleMap);
+            writer.WriteLine(titleText);
+        }
+
+        static void WriteListFileFindItemSimple(TextWriter writer, string path, FindItemModel findItemModel)
+        {
+            writer.WriteLine(path);
+        }
+
+        static void WriteListFileFindItemDetailCore(TextWriter writer, string path, IEnumerable<TextSearchMatch> matches)
+        {
+            foreach(var match in matches) {
+                writer.Write(path);
+                if(match.Header != null) {
+                    writer.Write(' ');
+                    writer.Write(match.Header);
+                }
+                writer.Write($"({match.DisplayLineNumber},{match.DisplayCharacterPosition})");
+                if(match.Footer != null) {
+                    writer.Write(' ');
+                    writer.Write(match.Footer);
+                }
+                writer.Write(": ");
+                writer.Write(match.LineText);
+                writer.WriteLine();
+            }
+        }
+
+        static void WriteListFileFindItemDetail(TextWriter writer, string path, FindItemModel findItemModel)
+        {
+            if(!findItemModel.FileContentSearchResult.IsMatched) {
+                writer.Write(path);
+                writer.Write(": ");
+                writer.Write(Properties.Resources.String_Finder_FindGroup_Output_Unmatched);
+                writer.WriteLine();
+                return;
+            }
+
+            if(findItemModel.FileContentSearchResult.Text.IsMatched) {
+                WriteListFileFindItemDetailCore(writer, path, findItemModel.FileContentSearchResult.Text.Matches);
+            }
+
+            if(findItemModel.FileContentSearchResult.MicrosoftOffice.IsMatched) {
+                switch(findItemModel.FileContentSearchResult.MicrosoftOffice.OfficeType) {
+                    case MicrosoftOfficeFileType.Excel1997:
+                    case MicrosoftOfficeFileType.Excel2007: {
+                            var excel = (MicrosoftOfficeExcelSearchResult)findItemModel.FileContentSearchResult.MicrosoftOffice;
+                            foreach(var sheet in excel.MatchSheet) {
+                                if(sheet.SheetNameResult.IsMatched) {
+                                    WriteListFileFindItemDetailCore(writer, path, sheet.SheetNameResult.Matches);
+                                }
+                                if(sheet.CellResults.Any()) {
+                                    foreach(var cellResult in sheet.CellResults) {
+                                        WriteListFileFindItemDetailCore(writer, path, cellResult.Matches);
+                                    }
+                                }
+                                if(sheet.ShapeResults.Any()) {
+                                    foreach(var shapeResult in sheet.ShapeResults) {
+                                        WriteListFileFindItemDetailCore(writer, path, shapeResult.Matches);
+                                    }
+                                }
+                            }
+                        }
+                        break;
+
+                    case MicrosoftOfficeFileType.Word1997:
+                    case MicrosoftOfficeFileType.Word2007: {
+                            var word = (MicrosoftOfficeWordSearchResult)findItemModel.FileContentSearchResult.MicrosoftOffice;
+                            var matches = word.ElementResults.Select(wer => {
+                                switch(wer.ElementType) {
+                                    case NPOI.XWPF.UserModel.BodyElementType.PARAGRAPH:
+                                        var p = (MicrosoftOfficeWordParagraphSearchResult)wer;
+                                        return (IEnumerable<TextSearchMatch>)p.TextResult;
+
+                                    case NPOI.XWPF.UserModel.BodyElementType.TABLE:
+                                        var t = (MicrosoftOfficeWordTableSearchResult)wer;
+                                        return t.CellResults.SelectMany(c => c.TextResult.Matches);
+
+                                    default:
+                                        throw new NotImplementedException();
+                                }
+                            }).SelectMany(m => m)
+                            ;
+                            WriteListFileFindItemDetailCore(writer, path, matches);
+                        }
+                        break;
+                }
+            }
+
+            if(findItemModel.FileContentSearchResult.Pdf.IsMatched) {
+                WriteListFileFindItemDetailCore(writer, path, findItemModel.FileContentSearchResult.Pdf.Matches);
+            }
+
+            if(findItemModel.FileContentSearchResult.XmlHtml.IsMatched) {
+                foreach(var result in findItemModel.FileContentSearchResult.XmlHtml.Results) {
+                    var list = new List<TextSearchMatch>();
+                    if(result.NodeType == HtmlAgilityPack.HtmlNodeType.Comment) {
+                        var comment = (XmlHtmlCommentSearchResult)result;
+                        list.AddRange(comment.Matches);
+                    } else if(result.NodeType == HtmlAgilityPack.HtmlNodeType.Text) {
+                        var text = (XmlHtmlTextSearchResult)result;
+                        list.AddRange(text.Matches);
+                    } else {
+                        var element = (XmlHtmlElementSearchResult)result;
+                        list.AddRange(element.ElementResult.Matches);
+                        foreach(var attribute in element.AttributeKeyResults) {
+                            list.AddRange(attribute.KeyResult.Matches);
+                            list.AddRange(attribute.ValueResult.Matches);
+                        }
+                    }
+                    WriteListFileFindItemDetailCore(writer, path, list);
+                }
+            }
+        }
+
+        static void WriteListFileFindItem(TextWriter writer, bool absolutePath, bool isDetail, FindItemModel findItemModel)
+        {
+            var filePath = absolutePath
+                ? findItemModel.FileInfo.FullName
+                : Path.Combine(findItemModel.RelativeDirectoryPath, findItemModel.FileInfo.Name)
+            ;
+
+            if(isDetail) {
+                WriteListFileFindItemDetail(writer, filePath, findItemModel);
+            } else {
+                WriteListFileFindItemSimple(writer, filePath, findItemModel);
+            }
+        }
+
+        void WriteListFile(TextWriter writer, bool absolutePath, bool isDetail, IReadOnlyList<int> outputitemsIndex)
+        {
+            WriteListFileTitle(writer, CurrentCache.Setting, outputitemsIndex.Count);
+
+            writer.WriteLine();
+
+            foreach(var index in outputitemsIndex) {
+                var findItemModel = Items[index];
+                WriteListFileFindItem(writer, absolutePath, isDetail, findItemModel);
+            }
+        }
+
+        public void OutputListFile(string outputPath, bool absolutePath, bool isDetail, IReadOnlyList<int> outputitemsIndex)
+        {
+            using(var writer = System.IO.File.CreateText(outputPath)) {
+                WriteListFile(writer, absolutePath, isDetail, outputitemsIndex);
             }
         }
 

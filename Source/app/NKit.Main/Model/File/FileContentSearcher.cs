@@ -28,10 +28,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
 
         #region property
 
-        public TextSearchResult Text { get; set; }
-        public MicrosoftOfficeSearchResultBase MicrosoftOffice { get; set; }
-        public PdfSearchResult Pdf { get; set; }
-        public XmlHtmlSearchResult XmlHtml { get; set; }
+        public TextSearchResult Text { get; set; } = TextSearchResult.NotFound;
+        public MicrosoftOfficeSearchResultBase MicrosoftOffice { get; set; } = MicrosoftOfficeSearchResultBase.NotFound;
+        public PdfSearchResult Pdf { get; set; } = PdfSearchResult.NotFound;
+        public XmlHtmlSearchResult XmlHtml { get; set; } = XmlHtmlSearchResult.NotFound;
 
         #endregion
     }

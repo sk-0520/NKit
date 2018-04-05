@@ -23,7 +23,9 @@ using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Setting.Finder;
 using ContentTypeTextNet.NKit.Utility.Model;
 using ContentTypeTextNet.NKit.Utility.ViewModel;
+using Microsoft.Win32;
 using Prism.Commands;
+using Prism.Interactivity.InteractionRequest;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 {
@@ -48,6 +50,11 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         bool _showSelectedFileDetail;
 
+        // こいつら三つは稼働中に限り独立させておきたい
+        bool _outputDisplayItemOnly;
+        bool _outputAbsolutePath;
+        bool _outputIsDetail;
+
         #endregion
 
         public FindGroupViewModel(FindGroupModel model)
@@ -57,6 +64,10 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             Items = GetInvokeUI(() => CollectionViewSource.GetDefaultView(FindItemCollectionManager.ViewModels));
 
             Items.Filter = FilterFileList;
+
+            this._outputDisplayItemOnly = Model.OutputDisplayItemOnly;
+            this._outputAbsolutePath = Model.OutputAbsolutePath;
+            this._outputIsDetail = Model.OutputIsDetail;
 
             AttachItemsCollectionChanged();
         }
@@ -363,12 +374,40 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public bool ShowSelectedFileDetail
         {
             get { return this._showSelectedFileDetail; }
+            set { SetProperty(ref this._showSelectedFileDetail, value); }
+        }
+
+        public bool OutputDisplayItemOnly
+        {
+            get { return this._outputDisplayItemOnly; }
             set
             {
-                if(SetProperty(ref this._showSelectedFileDetail, value)) {
+                if(SetProperty(ref this._outputDisplayItemOnly, value)) {
+                    Model.OutputDisplayItemOnly = this._outputDisplayItemOnly;
                 }
             }
         }
+        public bool OutputAbsolutePath
+        {
+            get { return this._outputAbsolutePath; }
+            set
+            {
+                if(SetProperty(ref this._outputAbsolutePath, value)) {
+                    Model.OutputAbsolutePath = value;
+                }
+            }
+        }
+        public bool OutputIsDetail
+        {
+            get { return this._outputIsDetail; }
+            set
+            {
+                if(SetProperty(ref this._outputIsDetail, value)) {
+                    Model.OutputIsDetail = value;
+                }
+            }
+        }
+
 
         public bool IsEnabledHiddenFileFiler
         {
@@ -461,6 +500,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             }
         }
 
+        public InteractionRequest<Confirmation> SaveFileDialogRequest { get; } = new InteractionRequest<Confirmation>();
 
 
         #endregion
@@ -507,18 +547,64 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         public ICommand FindItemsSelectionChangedCommand => new DelegateCommand<SelectionChangedEventArgs>(
             e => {
-                foreach(var item in e.RemovedItems.Cast<ISelectable>()) {
+                foreach(var item in e.RemovedItems.OfType<ISelectable>()) {
                     item.IsSelected = false;
                 }
-                foreach(var item in e.AddedItems.Cast<ISelectable>()) {
+                foreach(var item in e.AddedItems.OfType<ISelectable>()) {
                     item.IsSelected = true;
                 }
             }
         );
 
+        public DelegateCommand OutputListFileCommand => new DelegateCommand(
+            () => {
+                if(!CanRun || !GetOutputItemsIndex().Any()) {
+                    return;
+                }
+                var outputItemsIndex = GetOutputItemsIndex().ToList();
+
+                var confirmation = new Confirmation();
+                var dialog = new SaveFileDialog();
+                var list = new DialogFilterList() {
+                    new DialogFilterItem("text", "*.txt"),
+                    new DialogFilterItem("*", "*.*"),
+                };
+                dialog.Filter = list.FilterText;
+                confirmation.Content = dialog;
+
+                SaveFileDialogRequest.Raise(confirmation);
+                if(confirmation.Confirmed) {
+                    var outputPath = dialog.FileName;
+
+                    Model.OutputListFile(outputPath, OutputAbsolutePath, OutputIsDetail, outputItemsIndex);
+                }
+            }//,
+            //NOTE うごかねぇぇぇ, () => CanRun //&& GetOutputItemsIndex().Any()
+        );
+
         #endregion
 
         #region function
+
+        IEnumerable<int> GetOutputItemsIndex()
+        {
+            if(OutputDisplayItemOnly) {
+                var displayItems = Items
+                    .Cast<FindItemViewModel>()
+                ;
+                foreach(var displayItem in displayItems) {
+                    var index = FindItemCollectionManager.ViewModels.IndexOf(displayItem);
+                    // ログも出してないし判定いらない。。。
+                    if(0 <= index) {
+                        yield return index;
+                    }
+                }
+            } else {
+                foreach(var index in Enumerable.Range(0, FindItemCollectionManager.ViewModels.Count)) {
+                    yield return index;
+                }
+            }
+        }
 
         void RaiseCountPropertyChanged()
         {
@@ -677,7 +763,23 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
             //Model.Items.CollectionChanged -= Items_CollectionChanged;
         }
-
+        /*
+        protected override void OnChangedModelProperty(PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == nameof(RunState)) {
+                var status = new[] {
+                    Utility.Define.RunState.Cancel,
+                    Utility.Define.RunState.Error,
+                    Utility.Define.RunState.Finished,
+                };
+                if(status.Any(s => s == RunState)) {
+                    //CommandManager.InvalidateRequerySuggested();
+                    InvokeUI(() => CommandManager.InvalidateRequerySuggested());
+                }
+            }
+            base.OnChangedModelProperty(e);
+        }
+        */
         #endregion
 
         private void FindItemModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
