@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ContentTypeTextNet.NKit.Main.ViewModel.File.Browser;
 
 namespace ContentTypeTextNet.NKit.Main.View.File.Browser
 {
@@ -24,5 +25,31 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
         {
             InitializeComponent();
         }
+
+        #region BrowserProperty
+
+        public static readonly DependencyProperty BrowserProperty = DependencyProperty.Register(
+            nameof(Browser),
+            typeof(BrowserViewModel),
+            typeof(BrowserControl),
+            new FrameworkPropertyMetadata(default(BrowserViewModel), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(OnBrowserChanged))
+        );
+
+        private static void OnBrowserChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = d as BrowserControl;
+            if(control != null) {
+                control.Browser = e.NewValue as BrowserViewModel;
+            }
+        }
+
+        public BrowserViewModel Browser
+        {
+            get { return GetValue(BrowserProperty) as BrowserViewModel; }
+            set { SetValue(BrowserProperty, value); }
+        }
+
+        #endregion
+
     }
 }

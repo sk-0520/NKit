@@ -182,6 +182,8 @@
     <Compile Include="Model\Capture\CaptureImageModel.cs" />
     <Compile Include="Model\Capture\CaptureKeyUtility.cs" />
     <Compile Include="Model\Cli\CliManagerModel.cs" />
+    <Compile Include="Model\File\Browser\BrowserKind.cs" />
+    <Compile Include="Model\File\Browser\BrowserModel.cs" />
     <Compile Include="Model\File\FilePropertySearchResult.cs" />
     <Compile Include="Model\Finder\FindGroupCache.cs" />
     <Compile Include="Model\ISelectable.cs" />
@@ -192,6 +194,7 @@
     <Compile Include="ViewModel\Capture\CaptureGroupViewModel.cs" />
     <Compile Include="ViewModel\Capture\CaptureImageViewModel.cs" />
     <Compile Include="ViewModel\Cli\CliManagerViewModel.cs" />
+    <Compile Include="ViewModel\File\Browser\BrowserViewModel.cs" />
     <Compile Include="ViewModel\Other\OtherManagerViewModel.cs" />
     <Compile Include="View\File\Browser\BrowserControl.xaml.cs">
       <DependentUpon>BrowserControl.xaml</DependentUpon>
