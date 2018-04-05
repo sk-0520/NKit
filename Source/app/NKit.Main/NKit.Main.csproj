@@ -193,6 +193,9 @@
     <Compile Include="ViewModel\Capture\CaptureImageViewModel.cs" />
     <Compile Include="ViewModel\Cli\CliManagerViewModel.cs" />
     <Compile Include="ViewModel\Other\OtherManagerViewModel.cs" />
+    <Compile Include="View\File\Browser\BrowserControl.xaml.cs">
+      <DependentUpon>BrowserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Capture\CaptureGroupControl.xaml.cs">
       <DependentUpon>CaptureGroupControl.xaml</DependentUpon>
     </Compile>
@@ -229,6 +232,10 @@
     <Compile Include="View\SystemEnvironment\SystemEnvironmentManagerControl.xaml.cs">
       <DependentUpon>SystemEnvironmentManagerControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\File\Browser\BrowserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Capture\CaptureGroupControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
