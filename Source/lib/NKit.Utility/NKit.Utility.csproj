@@ -127,6 +127,7 @@
     <Compile Include="Model\Logging.cs" />
     <Compile Include="Model\NKitTalkerClient.cs" />
     <Compile Include="Model\Notification.cs" />
+    <Compile Include="Model\ObservableManager.cs" />
     <Compile Include="Model\Range.cs" />
     <Compile Include="Model\RunnableModel.cs" />
     <Compile Include="Model\Serializer.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Model\Unmanaged\GlobalAllocModel.cs" />
     <Compile Include="Model\Unmanaged\UnmanagedModelBase.cs" />
     <Compile Include="ViewModel\RunnableViewModel.cs" />
+    <Compile Include="ViewModel\ViewViewModelObservableManager.cs" />
     <Compile Include="View\Attach\GridHelpers.cs" />
     <Compile Include="Model\Cacher.cs" />
     <Compile Include="Model\ConfigurationCacher.cs" />
