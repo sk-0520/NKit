@@ -291,7 +291,21 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
         static void WriteListFileFindItemDetailCore(TextWriter writer, string path, IEnumerable<TextSearchMatch> matches)
         {
-
+            foreach(var match in matches) {
+                writer.Write(path);
+                if(match.Header != null) {
+                    writer.Write(' ');
+                    writer.Write(match.Header);
+                }
+                writer.Write($"({match.DisplayLineNumber},{match.DisplayCharacterPosition})");
+                if(match.Footer != null) {
+                    writer.Write(' ');
+                    writer.Write(match.Footer);
+                }
+                writer.Write(": ");
+                writer.Write(match.LineText);
+                writer.WriteLine();
+            }
         }
 
         static void WriteListFileFindItemDetail(TextWriter writer, string path, FindItemModel findItemModel)
@@ -352,7 +366,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             }
 
             if(findItemModel.FileContentSearchResult.XmlHtml.IsMatched) {
-                foreach(var result in  findItemModel.FileContentSearchResult.XmlHtml.Results) {
+                foreach(var result in findItemModel.FileContentSearchResult.XmlHtml.Results) {
                     var list = new List<TextSearchMatch>();
                     if(result.NodeType == HtmlAgilityPack.HtmlNodeType.Comment) {
                         var comment = (XmlHtmlCommentSearchResult)result;
