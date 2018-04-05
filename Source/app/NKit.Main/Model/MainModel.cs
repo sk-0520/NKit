@@ -11,6 +11,7 @@ using ContentTypeTextNet.NKit.Main.Model.Cli;
 using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
 using ContentTypeTextNet.NKit.Main.Model.NKit;
+using ContentTypeTextNet.NKit.Main.Model.Other;
 using ContentTypeTextNet.NKit.Main.Model.SystemEnvironment;
 using ContentTypeTextNet.NKit.Setting;
 using ContentTypeTextNet.NKit.Utility.Model;
@@ -33,6 +34,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
         public CaptureManagerModel CaptureManager { get; private set; }
         public SystemEnvironmentManagerModel SystemEnvironmentManager { get; private set; }
         public CliManagerModel CliManager { get; private set; }
+        public OtherManagerModel OtherManager { get; private set; }
 
         LogSwitcher LogSwitcher { get; set; }
 
@@ -63,6 +65,7 @@ namespace ContentTypeTextNet.NKit.Main.Model
             CaptureManager = new CaptureManagerModel(Setting);
             SystemEnvironmentManager = new SystemEnvironmentManagerModel(Setting);
             CliManager = new CliManagerModel(Setting);
+            OtherManager = new OtherManagerModel(Setting);
 
 #if DEBUG
             IsInitialized = true;

@@ -11,6 +11,7 @@ using ContentTypeTextNet.NKit.Main.ViewModel.Capture;
 using ContentTypeTextNet.NKit.Main.ViewModel.Cli;
 using ContentTypeTextNet.NKit.Main.ViewModel.File;
 using ContentTypeTextNet.NKit.Main.ViewModel.Finder;
+using ContentTypeTextNet.NKit.Main.ViewModel.Other;
 using ContentTypeTextNet.NKit.Main.ViewModel.SystemEnvironment;
 using ContentTypeTextNet.NKit.Utility.ViewModel;
 
@@ -33,6 +34,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel
             FinderManager = new FinderManagerViewModel(Model.FinderManager);
             SystemEnvironmentManager = new SystemEnvironmentManagerViewModel(Model.SystemEnvironmentManager);
             CliManager = new CliManagerViewModel(Model.CliManager);
+            OtherManager = new OtherManagerViewModel(Model.OtherManager);
         }
 
         #region property
@@ -43,6 +45,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel
         public FinderManagerViewModel FinderManager { get; }
         public SystemEnvironmentManagerViewModel SystemEnvironmentManager { get; }
         public CliManagerViewModel CliManager { get; }
+        public OtherManagerViewModel OtherManager { get; }
 
         #region window
 

@@ -186,11 +186,13 @@
     <Compile Include="Model\Finder\FindGroupCache.cs" />
     <Compile Include="Model\ISelectable.cs" />
     <Compile Include="Model\NKit\NKitApplicationExecutor.cs" />
+    <Compile Include="Model\Other\OtherManagerModel.cs" />
     <Compile Include="Model\Searcher\PdfSearcher.cs" />
     <Compile Include="Model\Searcher\XmlHtmlSearcher.cs" />
     <Compile Include="ViewModel\Capture\CaptureGroupViewModel.cs" />
     <Compile Include="ViewModel\Capture\CaptureImageViewModel.cs" />
     <Compile Include="ViewModel\Cli\CliManagerViewModel.cs" />
+    <Compile Include="ViewModel\Other\OtherManagerViewModel.cs" />
     <Compile Include="View\Capture\CaptureGroupControl.xaml.cs">
       <DependentUpon>CaptureGroupControl.xaml</DependentUpon>
     </Compile>
@@ -220,6 +222,9 @@
     </Compile>
     <Compile Include="View\NKit\NKitManagerControl.xaml.cs">
       <DependentUpon>NKitManagerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Other\OtherManagerControl.xaml.cs">
+      <DependentUpon>OtherManagerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SystemEnvironment\SystemEnvironmentManagerControl.xaml.cs">
       <DependentUpon>SystemEnvironmentManagerControl.xaml</DependentUpon>
@@ -355,6 +360,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\NKit\NKitManagerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Other\OtherManagerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
