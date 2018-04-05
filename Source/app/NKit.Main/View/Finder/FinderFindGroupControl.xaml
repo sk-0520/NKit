@@ -536,7 +536,12 @@
         <Label>リスト出力: </Label>
         <CheckBox Style="{StaticResource HorizontalCheckBox}" IsChecked="{Binding OutputDisplayItemOnly}">表示中項目に限定</CheckBox>
         <CheckBox Style="{StaticResource HorizontalCheckBox}" IsChecked="{Binding OutputAbsolutePath}">絶対パス</CheckBox>
-        <!--<Button>プレビュー</Button>-->
+        <CheckBox Style="{StaticResource HorizontalCheckBox}" IsChecked="{Binding OutputIsSimple}">
+          <TextBlock TextDecorations="Strikethrough">シンプル</TextBlock>
+        </CheckBox>
+        <Button>
+          <TextBlock TextDecorations="Strikethrough">プレビュー</TextBlock>
+        </Button>
         <Button Command="{Binding OutputListFileCommand}">ファイル出力</Button>
       </StatusBar>
     </Grid>

@@ -129,6 +129,15 @@
   <data name="String_Finder_FindGroup_NewGroupName" xml:space="preserve">
     <value>new group</value>
   </data>
+  <data name="String_Finder_FindGroup_Output_NotSelected" xml:space="preserve">
+    <value>(未選択)</value>
+  </data>
+  <data name="String_Finder_FindGroup_Output_Title_Format" xml:space="preserve">
+    <value>検索結果: ${COUNT} 件 (${YYYY}-${MM}-${DD} ${hh24}:${mm}:${ss})
+ディレクトリ: ${DIR}
+ファイル名: ${NAME}
+ファイル内容: ${CONTENT}</value>
+  </data>
   <data name="String_View_Control_RunnableControl_CancelText" xml:space="preserve">
     <value>取消</value>
   </data>

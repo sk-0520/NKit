@@ -266,6 +266,39 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             }
         }
 
+        void OutputListFileCore(TextWriter writer, bool absolutePath, bool isSimple, IReadOnlyList<int> outputitemsIndex)
+        {
+            // 数は少ないけど、一旦はこれで
+            var titleMap = new Dictionary<string, string>() {
+                ["COUNT"] = outputitemsIndex.Count.ToString(),
+                ["DIR"] = CurrentCache.Setting.RootDirectoryPath,
+                ["NAME"] = CurrentCache.Setting.FileNameSearchPattern,
+                ["CONTENT"] = CurrentCache.Setting.FindFileContent
+                    ? CurrentCache.Setting.FileContentSearchPattern
+                    : Properties.Resources.String_Finder_FindGroup_Output_NotSelected
+                ,
+            };
+            var titleText = CommonUtility.ReplaceNKitText(Properties.Resources.String_Finder_FindGroup_Output_Title_Format, CurrentCache.Setting.UpdatedUtcTimestamp, titleMap);
+            writer.WriteLine(titleText);
+            writer.WriteLine();
+
+            foreach(var index in outputitemsIndex) {
+                var file = Items[index];
+                if(absolutePath) {
+                    writer.WriteLine(file.FileInfo.FullName);
+                } else {
+                    writer.WriteLine(file.RelativeDirectoryPath);
+                }
+            }
+        }
+
+        public void OutputListFile(string outputPath, bool absolutePath, bool isSimple, IReadOnlyList<int> outputitemsIndex)
+        {
+            using(var writer = System.IO.File.CreateText(outputPath)) {
+                OutputListFileCore(writer, absolutePath, isSimple, outputitemsIndex);
+            }
+        }
+
         #endregion
 
         #region RunnableModelBase
