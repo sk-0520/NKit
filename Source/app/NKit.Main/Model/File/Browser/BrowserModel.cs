@@ -29,6 +29,8 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
 
         public Encoding Encoding { get; }
 
+        public bool IsEditable { get; set; }
+
         #endregion
 
         #region function

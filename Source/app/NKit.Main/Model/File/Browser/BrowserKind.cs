@@ -11,9 +11,10 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
         Unknown,
 
         PlainText,
+        Ini,
         CSharp,
         Html,
-        XMl,
+        Xml,
 
         Application,
 
@@ -21,4 +22,19 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
         Jpeg,
         Bmp,
     }
+
+    public static class BrowserKindExtension
+    {
+        public static bool IsText(this BrowserKind browserKind)
+        {
+            return new[] {
+                BrowserKind.PlainText,
+                BrowserKind.Ini,
+                BrowserKind.CSharp,
+                BrowserKind.Html,
+                BrowserKind.Xml,
+            }.Any(bk => bk == browserKind);
+        }
+    }
+
 }

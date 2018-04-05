@@ -1,14 +1,29 @@
 <UserControl
+  x:Name="root"
   x:Class="ContentTypeTextNet.NKit.Main.View.File.Browser.BrowserControl"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 
+  xmlns:app_browser="clr-namespace:ContentTypeTextNet.NKit.Main.View.File.Browser"
+
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   mc:Ignorable="d"
-  d:DesignWidth="800"
-  d:DesignHeight="450"
+  d:DesignWidth="200"
+  d:DesignHeight="200"
 >
-  <Grid>
-
-  </Grid>
+  <ContentControl DataContext="{Binding Browser, ElementName=root}">
+    <ContentControl.Style>
+      <Style TargetType="ContentControl">
+        <Style.Triggers>
+          <DataTrigger Binding="{Binding Browser.IsText, ElementName=root}" Value="True">
+            <Setter Property="Content">
+              <Setter.Value>
+                <app_browser:BrowserTextControl />
+              </Setter.Value>
+            </Setter>
+          </DataTrigger>
+        </Style.Triggers>
+      </Style>
+    </ContentControl.Style>
+  </ContentControl>
 </UserControl>

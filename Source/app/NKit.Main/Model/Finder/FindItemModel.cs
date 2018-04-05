@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Main.Model.File;
+using ContentTypeTextNet.NKit.Main.Model.File.Browser;
 using ContentTypeTextNet.NKit.Main.Model.Searcher;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Setting.File;
@@ -115,6 +116,43 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             var ao = new AssociationFileOpener(AssociationFileSetting);
 
             return ao.Open(associationFileKind, FileInfo, parameter);
+        }
+
+        BrowserKind GetBrowserKind(string fileName)
+        {
+            var ext = Path.GetExtension(fileName).Replace(".", string.Empty).ToLower();
+            switch(ext) {
+                case "txt":
+                case "log":
+                case "inf":
+                    return BrowserKind.PlainText;
+
+                case "ini":
+                    return BrowserKind.Ini;
+
+                case "cs":
+                    return BrowserKind.CSharp;
+
+                case "html":
+                case "htm":
+                    return BrowserKind.Html;
+
+                case "xml":
+                    return BrowserKind.Xml;
+
+                default:
+                    return BrowserKind.Unknown;
+            }
+        }
+
+        public BrowserModel GetBrowser()
+        {
+            var browserKind = GetBrowserKind(FileInfo.Name);
+            var encoding = Encoding.Default;
+            if(FileContentSearchResult.Text.IsMatched) {
+                encoding = FileContentSearchResult.Text.EncodingCheck.Encoding;
+            }
+            return new BrowserModel(browserKind, FileInfo, encoding);
         }
 
         #endregion

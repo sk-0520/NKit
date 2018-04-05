@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using ContentTypeTextNet.NKit.Main.Model;
 using ContentTypeTextNet.NKit.Main.Model.File;
+using ContentTypeTextNet.NKit.Main.Model.File.Browser;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
 using ContentTypeTextNet.NKit.Main.Model.Searcher;
 using ContentTypeTextNet.NKit.Main.ViewModel.File;
+using ContentTypeTextNet.NKit.Main.ViewModel.File.Browser;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.ViewModel;
 using Prism.Commands;
@@ -220,6 +222,15 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { SetProperty(ref this._isSelectedContentXmlHtml, value); }
         }
 
+        public BrowserViewModel Browser
+        {
+            get
+            {
+                var model = Model.GetBrowser();
+                return new BrowserViewModel(model);
+            }
+            set { /*TwoWay*/ }
+        }
 
         #endregion
 

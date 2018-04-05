@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,5 +14,19 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.File.Browser
         public BrowserViewModel(BrowserModel model)
             : base(model)
         { }
+
+        #region property
+
+        public BrowserKind BrowserKind => Model.BrowserKind;
+
+        public FileInfo FileInfo => Model.FileInfo;
+
+        public Encoding Encoding => Model.Encoding;
+
+        public bool IsEditable => Model.IsEditable;
+
+        public bool IsText => BrowserKind.IsText();
+
+        #endregion
     }
 }
