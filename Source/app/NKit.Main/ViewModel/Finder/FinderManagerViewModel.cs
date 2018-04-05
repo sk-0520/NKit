@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
+using ContentTypeTextNet.NKit.Setting.Finder;
+using ContentTypeTextNet.NKit.Utility.Model;
 using Prism.Commands;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
@@ -28,12 +30,16 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 SelectedGroupItem = GroupViewModels[0];
             }
             Groups = CollectionViewSource.GetDefaultView(GroupViewModels);
+
+            HistoryItems = CollectionViewSource.GetDefaultView(Model.HistoryItems);
         }
 
         #region property
 
         ObservableCollection<FindGroupViewModel> GroupViewModels { get; }
         public ICollectionView Groups { get; }
+        public ICollectionView HistoryItems { get; }
+
         public FindGroupViewModel SelectedGroupItem
         {
             get { return this._selectedGroupItem; }
@@ -45,7 +51,16 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         #region command
 
         public ICommand AddNewGroupCommand => new DelegateCommand(() => {
+            // TODO: ObservableManager による管理
             var model = Model.AddNewGroup();
+            var viewModel = new FindGroupViewModel(model);
+
+            GroupViewModels.Add(viewModel);
+            SelectedGroupItem = viewModel;
+        });
+
+        public ICommand RecallHistoryCommand => new DelegateCommand<IReadOnlyFindGroupSetting>(setting => {
+            var model = Model.RecallHistory(setting);
             var viewModel = new FindGroupViewModel(model);
 
             GroupViewModels.Add(viewModel);

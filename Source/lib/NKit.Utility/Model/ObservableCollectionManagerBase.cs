@@ -13,9 +13,9 @@ namespace ContentTypeTextNet.NKit.Utility.Model
     /// <see cref="ObservableCollection"/> の変更通知を受け取ってなんかする人。
     /// <para>管理者が誰かもうワケわからんことになるのです。</para>
     /// </summary>
-    public abstract class ObservableManager<T>: ModelBase
+    public abstract class ObservableCollectionManagerBase<T>: ModelBase
     {
-        public ObservableManager(ObservableCollection<T> collection)
+        public ObservableCollectionManagerBase(ObservableCollection<T> collection)
         {
             if(collection == null) {
                 throw new ArgumentNullException(nameof(collection));
