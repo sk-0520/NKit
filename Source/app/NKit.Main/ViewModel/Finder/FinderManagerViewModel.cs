@@ -33,6 +33,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             Groups = CollectionViewSource.GetDefaultView(GroupViewModels);
 
             HistoryItems = CollectionViewSource.GetDefaultView(Model.HistoryItems);
+            HistoryItems.SortDescriptions.Add(new SortDescription(nameof(IReadOnlyFindGroupSetting.UpdatedUtcTimestamp), ListSortDirection.Descending));
+            HistoryItems.SortDescriptions.Add(new SortDescription(nameof(IReadOnlyFindGroupSetting.CreatedUtcTimestamp), ListSortDirection.Descending));
         }
 
         #region property
