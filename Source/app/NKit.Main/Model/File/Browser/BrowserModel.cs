@@ -40,7 +40,17 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
         {
             var ext = Path.GetExtension(fileName).Replace(".", string.Empty).ToLower();
             var items = new[] {
+                // text
+                new { Kind = BrowserKind.PlainText, Extensions = new [] { "txt" } },
+                // ex text
                 new { Kind = BrowserKind.Xml, Extensions = new [] { "xml" } },
+                // image
+                new { Kind = BrowserKind.Bmp, Extensions = new [] { "bmp" } },
+                new { Kind = BrowserKind.Png, Extensions = new [] { "png" } },
+                new { Kind = BrowserKind.Jpeg, Extensions = new [] { "jpeg", "jpg" } },
+                // program
+                new { Kind = BrowserKind.Application, Extensions = new [] { "exe" } },
+                new { Kind = BrowserKind.Dll, Extensions = new [] { "dll" } },
             };
             var item = items.FirstOrDefault(i => i.Extensions.Any(e => e == ext));
             if(item != null) {

@@ -18,22 +18,29 @@ using ContentTypeTextNet.NKit.Main.ViewModel.File.Browser;
 namespace ContentTypeTextNet.NKit.Main.View.File.Browser
 {
     /// <summary>
-    /// BrowserTextControl.xaml の相互作用ロジック
+    /// BrowserImageControl.xaml の相互作用ロジック
     /// </summary>
-    public partial class BrowserTextControl : UserControl
+    public partial class BrowserImageControl : UserControl
     {
-        public BrowserTextControl()
+        public BrowserImageControl()
         {
             InitializeComponent();
         }
-
-
         #region function
+
+        ImageSource GetImageSource(FileInfo fileInfo)
+        {
+            using(var stream = fileInfo.Open(System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read)) {
+                var decoder = BitmapDecoder.Create(stream, BitmapCreateOptions.DelayCreation, BitmapCacheOption.Default);
+                var bitmap = new WriteableBitmap(decoder.Frames[0]);
+                bitmap.Freeze();
+                return bitmap;
+            }
+        }
 
         void SetBrowser(BrowserViewModel browser)
         {
-            //var reader = new StreamReader(, browser.Encoding);
-            this.editor.Load(browser.FileInfo.OpenRead());
+            this.image.Source = GetImageSource(browser.FileInfo);
         }
 
         #endregion
@@ -41,7 +48,7 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
         private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var browser = (BrowserViewModel)e.NewValue;
-            if(browser != null && browser.IsText) {
+            if(browser != null && browser.IsImage) {
                 SetBrowser(browser);
             }
         }

@@ -224,6 +224,9 @@
       <DependentUpon>RunnableControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Converter\ModifierKeysToBooleanConverter.cs" />
+    <Compile Include="View\File\Browser\BrowserImageControl.xaml.cs">
+      <DependentUpon>BrowserImageControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\File\Browser\BrowserTextControl.xaml.cs">
       <DependentUpon>BrowserTextControl.xaml</DependentUpon>
     </Compile>
@@ -264,6 +267,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Control\KeySettingControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\File\Browser\BrowserImageControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
