@@ -16,11 +16,12 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
         Html,
         Xml,
 
-        Application,
-
         Png,
         Jpeg,
         Bmp,
+
+        Application,
+        Dll,
     }
 
     public static class BrowserKindExtension
@@ -33,6 +34,23 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
                 BrowserKind.CSharp,
                 BrowserKind.Html,
                 BrowserKind.Xml,
+            }.Any(bk => bk == browserKind);
+        }
+
+        public static bool IsImage(this BrowserKind browserKind)
+        {
+            return new[] {
+                BrowserKind.Bmp,
+                BrowserKind.Jpeg,
+                BrowserKind.Png,
+            }.Any(bk => bk == browserKind);
+        }
+
+        public static bool IsProgram(this BrowserKind browserKind)
+        {
+            return new[] {
+                BrowserKind.Application,
+                BrowserKind.Dll,
             }.Any(bk => bk == browserKind);
         }
     }
