@@ -122,28 +122,20 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             return ao.Open(associationFileKind, FileInfo, parameter);
         }
 
-        BrowserKind GetBrowserKindForce(string lowDotExtension)
-        {
-            switch(lowDotExtension) {
-                case ".xml":
-                    return BrowserKind.Xml;
 
-                default:
-                    return BrowserKind.Unknown;
-            }
-        }
-
-        BrowserKind GetBrowserKindFromSetting(string lowDotExtension)
+        BrowserKind GetBrowserKindFromSetting(string fileName)
         {
+            var dotExt = Path.GetExtension(fileName).ToLower();
+
             var patternCreator = new SearchPatternCreator();
 
             var map = FinderUtility.CreateFileNameKinds(FinderSetting);
 
-            if(map[FileNameKind.XmlHtml].IsMatch(lowDotExtension)) {
+            if(map[FileNameKind.XmlHtml].IsMatch(dotExt)) {
                 return BrowserKind.Xml;
             }
 
-            if(map[FileNameKind.Text].IsMatch(lowDotExtension)) {
+            if(map[FileNameKind.Text].IsMatch(dotExt)) {
                 return BrowserKind.PlainText;
             }
 
@@ -152,13 +144,12 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 
         BrowserKind GetBrowserKind(string fileName)
         {
-            var lowDotExtension = Path.GetExtension(fileName).ToLower();
-            var force = GetBrowserKindForce(lowDotExtension);
+            var force = BrowserModel.GetBrowserKind(fileName);
             if(force != BrowserKind.Unknown) {
                 return force;
             }
 
-            return GetBrowserKindFromSetting(lowDotExtension);
+            return GetBrowserKindFromSetting(fileName);
         }
 
         public BrowserModel GetBrowser()
