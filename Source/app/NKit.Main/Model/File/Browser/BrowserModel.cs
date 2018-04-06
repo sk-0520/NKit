@@ -30,7 +30,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
 
         public Encoding Encoding { get; }
 
-        public bool IsEditable { get; set; }
+        public bool IsReadOnly { get; set; } = true;
 
         #endregion
 
@@ -43,7 +43,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
                 new { Kind = BrowserKind.Xml, Extensions = new [] { "xml" } },
             };
             var item = items.FirstOrDefault(i => i.Extensions.Any(e => e == ext));
-            if(item == null) {
+            if(item != null) {
                 return item.Kind;
             }
 

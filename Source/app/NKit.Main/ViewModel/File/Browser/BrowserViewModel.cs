@@ -23,9 +23,11 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.File.Browser
 
         public Encoding Encoding => Model.Encoding;
 
-        public bool IsEditable => Model.IsEditable;
+        public bool IsReadOnly => Model.IsReadOnly;
 
         public bool IsText => BrowserKind.IsText();
+        public bool IsImage => BrowserKind.IsImage();
+        public bool IsProgram => BrowserKind.IsProgram();
 
         #endregion
     }
