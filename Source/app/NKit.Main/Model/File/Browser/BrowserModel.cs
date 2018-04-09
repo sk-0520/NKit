@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -49,6 +50,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
                 new { Kind = BrowserKind.PlainText, Extensions = new [] { "txt" } },
                 // ex text
                 new { Kind = BrowserKind.Xml, Extensions = new [] { "xml" } },
+                new { Kind = BrowserKind.Html, Extensions = new [] { "html", "htm" } },
                 // image
                 new { Kind = BrowserKind.Bmp, Extensions = new [] { "bmp" } },
                 new { Kind = BrowserKind.Png, Extensions = new [] { "png" } },
@@ -58,6 +60,9 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
                 new { Kind = BrowserKind.Application, Extensions = new [] { "exe" } },
                 new { Kind = BrowserKind.Dll, Extensions = new [] { "dll" } },
             };
+
+            Debug.Assert(items.GroupBy(i => i.Kind).OrderByDescending(g => g.Count()).First().Count() == 1);
+
             var item = items.FirstOrDefault(i => i.Extensions.Any(e => e == ext));
             if(item != null) {
                 return item.Kind;

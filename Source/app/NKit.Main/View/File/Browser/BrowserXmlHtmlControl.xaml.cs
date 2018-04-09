@@ -12,8 +12,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
+using System.Xml.Linq;
 using ContentTypeTextNet.NKit.Main.Model.File.Browser;
 using ContentTypeTextNet.NKit.Main.ViewModel.File.Browser;
+using ContentTypeTextNet.NKit.Utility.Model;
+using HtmlAgilityPack;
 
 namespace ContentTypeTextNet.NKit.Main.View.File.Browser
 {
@@ -36,6 +40,29 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
         #endregion
 
         #region function
+
+        IEnumerable<HtmlTreeNode> GetHtmlTreeNodes(BrowserViewModel browser)
+        {
+            var doc = new HtmlAgilityPack.HtmlDocument() {
+                OptionAutoCloseOnEnd = true,
+                OptionDefaultStreamEncoding = browser.Encoding,
+                OptionReadEncoding = true,
+            };
+
+            doc.Load(browser.FileInfo.OpenRead());
+
+            return doc.DocumentNode.ChildNodes.Cast<HtmlNode>().Select(n => new HtmlTreeNode(n));
+        }
+
+        IEnumerable<XmlTreeNode> GetXmlTreeNodes(BrowserViewModel browser)
+        {
+            var doc = new XmlDocument();
+
+            doc.Load(browser.FileInfo.OpenRead());
+
+            return doc.ChildNodes.Cast<XmlNode>().Select(n => new XmlTreeNode(n));
+        }
+
         #endregion
 
         #region IBrowserDetail
@@ -47,6 +74,14 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
 
         public void BuildControl(BrowserViewModel browser)
         {
+            var nodes = new List<XmlHtmlTreeNodeBase>();
+            if(browser.BrowserKind == BrowserKind.Html) {
+                nodes.AddRange(GetHtmlTreeNodes(browser));
+            } else {
+                nodes.AddRange(GetXmlTreeNodes(browser));
+            }
+
+            this.nodes.ItemsSource = nodes;
         }
 
         #endregion
