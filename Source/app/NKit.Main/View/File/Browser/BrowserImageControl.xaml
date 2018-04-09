@@ -29,6 +29,9 @@
       </TextBlock>
       <Separator />
       <CheckBox x:Name="selectOrigin">origin</CheckBox>
+      <Slider x:Name="zoom" Width="100" Minimum="0.01" Maximum="10" Value="1" />
+      <TextBlock Text="{Binding Value, ElementName=zoom}" />
+      <Button Command="{Binding ResetCommand, ElementName=root}">reset</Button>
     </ToolBar>
     <ScrollViewer Grid.Row="1">
       <ScrollViewer.Style>
@@ -70,6 +73,11 @@
             <Style.Triggers>
               <DataTrigger Binding="{Binding IsChecked, ElementName=selectOrigin}" Value="True">
                 <Setter Property="Stretch" Value="None" />
+                <Setter Property="LayoutTransform">
+                  <Setter.Value>
+                    <ScaleTransform ScaleX="{Binding Value, ElementName=zoom}" ScaleY="{Binding Value, ElementName=zoom}" />
+                  </Setter.Value>
+                </Setter>
               </DataTrigger>
             </Style.Triggers>
             <Setter Property="Stretch" Value="Uniform" />

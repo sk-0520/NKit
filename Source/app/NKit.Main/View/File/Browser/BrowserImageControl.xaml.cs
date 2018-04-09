@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ContentTypeTextNet.NKit.Main.ViewModel.File.Browser;
+using Prism.Commands;
 
 namespace ContentTypeTextNet.NKit.Main.View.File.Browser
 {
@@ -26,6 +27,15 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
         {
             InitializeComponent();
         }
+
+        #region command
+
+        public ICommand ResetCommand => new DelegateCommand(() => {
+            this.zoom.Value = 1;
+        });
+
+        #endregion
+
         #region function
 
         ImageSource GetImageSource(FileInfo fileInfo)
