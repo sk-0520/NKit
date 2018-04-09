@@ -11,9 +11,11 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ContentTypeTextNet.NKit.Main.Model.File.Browser;
 using ContentTypeTextNet.NKit.Main.ViewModel.File.Browser;
 using ContentTypeTextNet.NKit.Utility.Model;
 using Prism.Commands;
@@ -30,6 +32,116 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
             InitializeComponent();
         }
 
+        #region IsAnimation
+
+
+        public bool IsAnimation
+        {
+            get { return (bool)GetValue(IsAnimationProperty); }
+            set { SetValue(IsAnimationProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsAnimationProperty = DependencyProperty.Register(
+             nameof(IsAnimation),
+             typeof(bool),
+             typeof(BrowserImageControl),
+             new PropertyMetadata(default(bool), new PropertyChangedCallback(IsAnimationChanged)));
+
+        private static void IsAnimationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as BrowserImageControl).IsAnimation = (bool)e.NewValue;
+        }
+
+        #endregion
+
+        #region IsReplay
+
+
+        public bool IsReplay
+        {
+            get { return (bool)GetValue(IsReplayProperty); }
+            set { SetValue(IsReplayProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsReplayProperty = DependencyProperty.Register(
+             nameof(IsReplay),
+             typeof(bool),
+             typeof(BrowserImageControl),
+             new PropertyMetadata(true, new PropertyChangedCallback(IsReplayChanged)));
+
+        private static void IsReplayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as BrowserImageControl).IsReplay = (bool)e.NewValue;
+        }
+
+        #endregion
+
+        #region Scale
+
+
+        public double Scale
+        {
+            get { return (double)GetValue(ScaleProperty); }
+            set { SetValue(ScaleProperty, value); }
+        }
+
+        public static readonly DependencyProperty ScaleProperty = DependencyProperty.Register(
+             nameof(Scale),
+             typeof(double),
+             typeof(BrowserImageControl),
+             new PropertyMetadata(default(double), new PropertyChangedCallback(ScaleChanged)));
+
+        private static void ScaleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as BrowserImageControl).Scale = (double)e.NewValue;
+        }
+
+        #endregion
+
+        #region AnimationWidth
+
+
+        public double AnimationWidth
+        {
+            get { return (double)GetValue(AnimationWidthProperty); }
+            set { SetValue(AnimationWidthProperty, value); }
+        }
+
+        public static readonly DependencyProperty AnimationWidthProperty = DependencyProperty.Register(
+             nameof(AnimationWidth),
+             typeof(double),
+             typeof(BrowserImageControl),
+             new PropertyMetadata(default(double), new PropertyChangedCallback(AnimationWidthChanged)));
+
+        private static void AnimationWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as BrowserImageControl).AnimationWidth = (double)e.NewValue;
+        }
+
+        #endregion
+
+        #region AnimationHeight
+
+
+        public double AnimationHeight
+        {
+            get { return (double)GetValue(AnimationHeightProperty); }
+            set { SetValue(AnimationHeightProperty, value); }
+        }
+
+        public static readonly DependencyProperty AnimationHeightProperty = DependencyProperty.Register(
+             nameof(AnimationHeight),
+             typeof(double),
+             typeof(BrowserImageControl),
+             new PropertyMetadata(default(double), new PropertyChangedCallback(AnimationHeightChanged)));
+
+        private static void AnimationHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as BrowserImageControl).AnimationHeight = (double)e.NewValue;
+        }
+
+        #endregion
+
         #region property
 
         Point ScrollMousePoint { get; set; }
@@ -40,8 +152,16 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
         #region command
 
         public ICommand ResetCommand => new DelegateCommand(() => {
-            this.zoom.Value = 1;
+            Scale = 1;
         });
+
+        public DelegateCommand PlayAnimationCommand => new DelegateCommand(
+            () => {
+                this.player.Stop();
+                this.player.Position = TimeSpan.FromMilliseconds(1);
+                this.player.Play();
+            }
+        );
 
         #endregion
 
@@ -57,9 +177,34 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
             }
         }
 
+        bool IsAnimationImage(BrowserKind browserKind, FileInfo fileInfo)
+        {
+            if(browserKind != BrowserKind.Gif) {
+                return false;
+            }
+
+            using(var stream = fileInfo.Open(System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read)) {
+                var gifDecoder = new GifBitmapDecoder(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+                return 1 < gifDecoder.Frames.Count;
+            }
+        }
+
         void SetBrowser(BrowserViewModel browser)
         {
-            this.image.Source = GetImageSource(browser.FileInfo);
+            IsAnimation = IsAnimationImage(browser.BrowserKind, browser.FileInfo);
+            if(IsAnimation) {
+                this.image.Visibility = Visibility.Collapsed;
+                this.player.Visibility = Visibility.Visible;
+                this.player.Source = new Uri(browser.FileInfo.FullName);
+                this.player.Play();
+            } else {
+                this.player.Stop();
+                this.player.Source = null;
+
+                this.player.Visibility = Visibility.Collapsed;
+                this.image.Visibility = Visibility.Visible;
+                this.image.Source = GetImageSource(browser.FileInfo);
+            }
         }
 
         #endregion
@@ -103,6 +248,19 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
         private void imageScroller_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             this.imageScroller.ReleaseMouseCapture();
+        }
+
+        private void player_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            if(IsReplay) {
+                this.player.Position = TimeSpan.FromMilliseconds(1);
+            }
+        }
+
+        private void player_MediaOpened(object sender, RoutedEventArgs e)
+        {
+            AnimationWidth = this.player.NaturalVideoWidth;
+            AnimationHeight = this.player.NaturalVideoHeight;
         }
     }
 }

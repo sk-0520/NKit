@@ -19,6 +19,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
         Png,
         Jpeg,
         Bmp,
+        Gif,
 
         Application,
         Dll,
@@ -43,6 +44,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
                 BrowserKind.Bmp,
                 BrowserKind.Jpeg,
                 BrowserKind.Png,
+                BrowserKind.Gif,
             }.Any(bk => bk == browserKind);
         }
 

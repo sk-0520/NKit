@@ -15,24 +15,51 @@
 
   DataContextChanged="UserControl_DataContextChanged"
 >
+  <UserControl.Resources>
+    <ScaleTransform x:Key="userScale" ScaleX="{Binding Scale, ElementName=root}" ScaleY="{Binding Scale, ElementName=root}" />
+  </UserControl.Resources>
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
-    
+
     <ToolBar Grid.Row="0">
       <TextBlock>
-        <Run Text="{Binding Source.Width, Mode=OneWay, ElementName=image, StringFormat={}{0:#,0}}" />
+        <Run>
+          <Run.Style>
+            <Style TargetType="Run">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding IsAnimation, ElementName=root}" Value="True">
+                  <Setter Property="Text" Value="{Binding AnimationWidth, Mode=OneWay, ElementName=root, StringFormat={}{0:#,0}}" />
+                </DataTrigger>
+              </Style.Triggers>
+              <Setter Property="Text" Value="{Binding Source.Width, Mode=OneWay, ElementName=image, StringFormat={}{0:#,0}}" />
+            </Style>
+          </Run.Style>
+        </Run>
         <Run>x</Run>
-        <Run Text="{Binding Source.Height, Mode=OneWay, ElementName=image, StringFormat={}{0:#,0}}" />
+        <Run>
+          <Run.Style>
+            <Style TargetType="Run">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding IsAnimation, ElementName=root}" Value="True">
+                  <Setter Property="Text" Value="{Binding AnimationHeight, Mode=OneWay, ElementName=root, StringFormat={}{0:#,0}}" />
+                </DataTrigger>
+              </Style.Triggers>
+              <Setter Property="Text" Value="{Binding Source.Height, Mode=OneWay, ElementName=image, StringFormat={}{0:#,0}}" />
+            </Style>
+          </Run.Style>
+        </Run>
       </TextBlock>
       <Separator />
       <CheckBox x:Name="selectOrigin">origin</CheckBox>
-      <Slider x:Name="zoom" Width="100" Minimum="0.01" Maximum="10" Value="1" />
-      <TextBlock Text="{Binding Value, ElementName=zoom}" />
+      <Slider Width="100" Minimum="0.01" Maximum="10" Value="{Binding Scale, ElementName=root}" />
+      <TextBlock Text="{Binding Scale, ElementName=root}" />
       <Button Command="{Binding ResetCommand, ElementName=root}">reset</Button>
     </ToolBar>
+
     <ScrollViewer x:Name="imageScroller" Grid.Row="1" PreviewMouseLeftButtonDown="imageScroller_PreviewMouseLeftButtonDown" PreviewMouseMove="imageScroller_PreviewMouseMove" PreviewMouseLeftButtonUp="imageScroller_PreviewMouseLeftButtonUp">
       <ScrollViewer.Style>
         <Style TargetType="ScrollViewer">
@@ -68,23 +95,40 @@
           </DrawingBrush.Drawing>
         </DrawingBrush>
       </ScrollViewer.Background>
-      <Image x:Name="image">
-        <Image.Style>
-          <Style TargetType="Image" BasedOn="{StaticResource {x:Type Image}}">
-            <Style.Triggers>
-              <DataTrigger Binding="{Binding IsChecked, ElementName=selectOrigin}" Value="True">
-                <Setter Property="Stretch" Value="None" />
-                <Setter Property="LayoutTransform">
-                  <Setter.Value>
-                    <ScaleTransform ScaleX="{Binding Value, ElementName=zoom}" ScaleY="{Binding Value, ElementName=zoom}" />
-                  </Setter.Value>
-                </Setter>
-              </DataTrigger>
-            </Style.Triggers>
-            <Setter Property="Stretch" Value="Uniform" />
-          </Style>
-        </Image.Style>
-      </Image>
+      <Grid>
+        <Image x:Name="image">
+          <Image.Style>
+            <Style TargetType="Image" BasedOn="{StaticResource {x:Type Image}}">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, ElementName=selectOrigin}" Value="True">
+                  <Setter Property="Stretch" Value="None" />
+                  <Setter Property="LayoutTransform" Value="{StaticResource userScale}" />
+                </DataTrigger>
+              </Style.Triggers>
+              <Setter Property="Stretch" Value="Uniform" />
+            </Style>
+          </Image.Style>
+        </Image>
+        <MediaElement x:Name="player" LoadedBehavior="Manual" MediaOpened="player_MediaOpened" MediaEnded="player_MediaEnded">
+          <MediaElement.Style>
+            <Style TargetType="MediaElement">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, ElementName=selectOrigin}" Value="True">
+                  <Setter Property="Stretch" Value="None" />
+                  <Setter Property="LayoutTransform" Value="{StaticResource userScale}" />
+                </DataTrigger>
+              </Style.Triggers>
+              <Setter Property="Stretch" Value="Uniform" />
+            </Style>
+          </MediaElement.Style>
+        </MediaElement>
+      </Grid>
     </ScrollViewer>
+
+    <StatusBar Grid.Row="2" Visibility="{Binding Visibility, ElementName=player}">
+      <CheckBox x:Name="animationReplay" IsChecked="{Binding IsReplay, ElementName=root}">replay</CheckBox>
+      <Button Command="{Binding PlayAnimationCommand, ElementName=root}">start</Button>
+    </StatusBar>
+
   </Grid>
 </UserControl>

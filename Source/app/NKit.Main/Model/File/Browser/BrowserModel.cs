@@ -48,6 +48,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
                 new { Kind = BrowserKind.Bmp, Extensions = new [] { "bmp" } },
                 new { Kind = BrowserKind.Png, Extensions = new [] { "png" } },
                 new { Kind = BrowserKind.Jpeg, Extensions = new [] { "jpeg", "jpg" } },
+                new { Kind = BrowserKind.Gif, Extensions = new [] { "gif" } },
                 // program
                 new { Kind = BrowserKind.Application, Extensions = new [] { "exe" } },
                 new { Kind = BrowserKind.Dll, Extensions = new [] { "dll" } },
