@@ -33,13 +33,14 @@
       <TextBlock Text="{Binding Value, ElementName=zoom}" />
       <Button Command="{Binding ResetCommand, ElementName=root}">reset</Button>
     </ToolBar>
-    <ScrollViewer Grid.Row="1">
+    <ScrollViewer x:Name="imageScroller" Grid.Row="1" PreviewMouseLeftButtonDown="imageScroller_PreviewMouseLeftButtonDown" PreviewMouseMove="imageScroller_PreviewMouseMove" PreviewMouseLeftButtonUp="imageScroller_PreviewMouseLeftButtonUp">
       <ScrollViewer.Style>
         <Style TargetType="ScrollViewer">
           <Style.Triggers>
             <DataTrigger Binding="{Binding IsChecked,ElementName=selectOrigin}" Value="True">
               <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
               <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+              <Setter Property="Cursor" Value="SizeAll" />
             </DataTrigger>
           </Style.Triggers>
           <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />

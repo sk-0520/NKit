@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -14,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ContentTypeTextNet.NKit.Main.ViewModel.File.Browser;
+using ContentTypeTextNet.NKit.Utility.Model;
 using Prism.Commands;
 
 namespace ContentTypeTextNet.NKit.Main.View.File.Browser
@@ -27,6 +29,13 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
         {
             InitializeComponent();
         }
+
+        #region property
+
+        Point ScrollMousePoint { get; set; }
+        Point Offset { get; set; } = new Point(1, 1);
+
+        #endregion
 
         #region command
 
@@ -61,6 +70,39 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
             if(browser != null && browser.IsImage) {
                 SetBrowser(browser);
             }
+        }
+
+        private void imageScroller_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if(!this.selectOrigin.IsChecked.GetValueOrDefault()) {
+                return;
+            }
+
+            var element = (UIElement)e.MouseDevice.DirectlyOver;
+            if(!UIUtility.IsEnabledEventArea(element, new[] { typeof(ScrollViewer) }, new[] { typeof(ScrollBar) })) {
+                return;
+            }
+
+            ScrollMousePoint = e.GetPosition(this.imageScroller);
+            Offset = new Point(
+                this.imageScroller.HorizontalOffset,
+                this.imageScroller.VerticalOffset
+            );
+            this.imageScroller.CaptureMouse();
+        }
+
+        private void imageScroller_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if(this.imageScroller.IsMouseCaptured) {
+                var current = e.GetPosition(this.imageScroller);
+                this.imageScroller.ScrollToHorizontalOffset(Offset.X + (ScrollMousePoint.X - current.X));
+                this.imageScroller.ScrollToVerticalOffset(Offset.Y + (ScrollMousePoint.Y - current.Y));
+            }
+        }
+
+        private void imageScroller_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            this.imageScroller.ReleaseMouseCapture();
         }
     }
 }
