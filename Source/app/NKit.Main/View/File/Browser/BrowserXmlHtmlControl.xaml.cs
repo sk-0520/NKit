@@ -20,27 +20,35 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
     /// <summary>
     /// BrowserXmlHtmlControl.xaml の相互作用ロジック
     /// </summary>
-    public partial class BrowserXmlHtmlControl : UserControl
+    public partial class BrowserXmlHtmlControl : UserControl, IBrowserDetail
     {
         public BrowserXmlHtmlControl()
         {
             InitializeComponent();
+
+            Detail = BrowserDetail.Create(this);
         }
 
-        #region function
+        #region property
 
-        void SetBrowser(BrowserViewModel browser)
+        BrowserDetail<BrowserXmlHtmlControl> Detail { get; }
+
+        #endregion
+
+        #region function
+        #endregion
+
+        #region IBrowserDetail
+
+        public bool CanBrowse(BrowserViewModel browser)
+        {
+            return browser.CanBrowse(BrowserKind.Xml) || browser.CanBrowse(BrowserKind.Html);
+        }
+
+        public void BuildControl(BrowserViewModel browser)
         {
         }
 
         #endregion
-
-        private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            var browser = (BrowserViewModel)e.NewValue;
-            if(browser != null && (browser.CanBrowse(BrowserKind.Xml) || browser.CanBrowse(BrowserKind.Html))) {
-                SetBrowser(browser);
-            }
-        }
     }
 }

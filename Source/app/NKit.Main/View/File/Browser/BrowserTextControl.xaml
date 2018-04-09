@@ -13,8 +13,6 @@
   mc:Ignorable="d"
   d:DesignWidth="200"
   d:DesignHeight="200"
-
-  DataContextChanged="UserControl_DataContextChanged"
 >
   <Grid>
     <sharpdevelop_avalonedit:TextEditor

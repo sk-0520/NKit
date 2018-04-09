@@ -25,11 +25,13 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
     /// <summary>
     /// BrowserImageControl.xaml の相互作用ロジック
     /// </summary>
-    public partial class BrowserImageControl : UserControl
+    public partial class BrowserImageControl : UserControl, IBrowserDetail
     {
         public BrowserImageControl()
         {
             InitializeComponent();
+
+            Detail = BrowserDetail.Create(this);
         }
 
         #region IsAnimation
@@ -186,6 +188,8 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
 
         #region property
 
+        BrowserDetail<BrowserImageControl> Detail { get; }
+
         Point ScrollMousePoint { get; set; }
         Point Offset { get; set; } = new Point(1, 1);
 
@@ -231,7 +235,16 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
             }
         }
 
-        void SetBrowser(BrowserViewModel browser)
+        #endregion
+
+        #region IBrowserDetail
+
+        public bool CanBrowse(BrowserViewModel browser)
+        {
+            return browser.IsImage;
+        }
+
+        public void BuildControl(BrowserViewModel browser)
         {
             IsAnimation = IsAnimationImage(browser.BrowserKind, browser.FileInfo);
             if(IsAnimation) {
@@ -250,14 +263,6 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
         }
 
         #endregion
-
-        private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            var browser = (BrowserViewModel)e.NewValue;
-            if(browser != null && browser.IsImage) {
-                SetBrowser(browser);
-            }
-        }
 
         private void imageScroller_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

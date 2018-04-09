@@ -224,6 +224,7 @@
       <DependentUpon>RunnableControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Converter\ModifierKeysToBooleanConverter.cs" />
+    <Compile Include="View\File\Browser\BrowserDetail.cs" />
     <Compile Include="View\File\Browser\BrowserImageControl.xaml.cs">
       <DependentUpon>BrowserImageControl.xaml</DependentUpon>
     </Compile>

@@ -12,8 +12,6 @@
   mc:Ignorable="d"
   d:DesignWidth="200"
   d:DesignHeight="200"
-
-  DataContextChanged="UserControl_DataContextChanged"
 >
   <UserControl.Resources>
     <ScaleTransform x:Key="userScale" ScaleX="{Binding Scale, ElementName=root}" ScaleY="{Binding Scale, ElementName=root}" />

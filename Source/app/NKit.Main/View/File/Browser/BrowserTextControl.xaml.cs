@@ -20,30 +20,37 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
     /// <summary>
     /// BrowserTextControl.xaml の相互作用ロジック
     /// </summary>
-    public partial class BrowserTextControl : UserControl
+    public partial class BrowserTextControl : UserControl, IBrowserDetail
     {
         public BrowserTextControl()
         {
             InitializeComponent();
+
+            Detail = BrowserDetail.Create(this);
         }
 
+        #region property
+
+        BrowserDetail<BrowserTextControl> Detail { get; }
+
+        #endregion
 
         #region function
+        #endregion
 
-        void SetBrowser(BrowserViewModel browser)
+        #region IBrowserDetail
+
+        public bool CanBrowse(BrowserViewModel browser)
+        {
+            return browser.CanBrowse(browser.BrowserKind);
+        }
+
+        public void BuildControl(BrowserViewModel browser)
         {
             //var reader = new StreamReader(, browser.Encoding);
             this.editor.Load(browser.FileInfo.OpenRead());
         }
 
         #endregion
-
-        private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            var browser = (BrowserViewModel)e.NewValue;
-            if(browser != null && browser.CanBrowse(browser.BrowserKind)) {
-                SetBrowser(browser);
-            }
-        }
     }
 }
