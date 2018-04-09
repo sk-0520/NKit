@@ -8,8 +8,8 @@
 
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-  mc:Ignorable="d" 
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  mc:Ignorable="d"
   d:DesignWidth="200"
   d:DesignHeight="200"
 
@@ -55,7 +55,7 @@
       </TextBlock>
       <Separator />
       <CheckBox x:Name="selectOrigin">origin</CheckBox>
-      <Slider Width="100" Minimum="0.01" Maximum="10" Value="{Binding Scale, ElementName=root}" />
+      <Slider Width="100" Minimum="{Binding MinimumScale, ElementName=root}" Maximum="{Binding MaximumScale, ElementName=root}" Value="{Binding Scale, ElementName=root}" />
       <TextBlock Text="{Binding Scale, ElementName=root}" />
       <Button Command="{Binding ResetCommand, ElementName=root}">reset</Button>
     </ToolBar>

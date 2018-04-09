@@ -89,7 +89,7 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
              nameof(Scale),
              typeof(double),
              typeof(BrowserImageControl),
-             new PropertyMetadata(default(double), new PropertyChangedCallback(ScaleChanged)));
+             new PropertyMetadata(1.0, new PropertyChangedCallback(ScaleChanged)));
 
         private static void ScaleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -138,6 +138,48 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
         private static void AnimationHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             (d as BrowserImageControl).AnimationHeight = (double)e.NewValue;
+        }
+
+        #endregion
+
+        #region MinimumScale
+
+        public double MinimumScale
+        {
+            get { return (double)GetValue(MinimumScaleProperty); }
+            set { SetValue(MinimumScaleProperty, value); }
+        }
+
+        public static readonly DependencyProperty MinimumScaleProperty = DependencyProperty.Register(
+             nameof(MinimumScale),
+             typeof(double),
+             typeof(BrowserImageControl),
+             new PropertyMetadata(0.05, new PropertyChangedCallback(MinimumScaleChanged)));
+
+        private static void MinimumScaleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as BrowserImageControl).MinimumScale = (double)e.NewValue;
+        }
+
+        #endregion
+
+        #region MaximumScale
+
+        public double MaximumScale
+        {
+            get { return (double)GetValue(MaximumScaleProperty); }
+            set { SetValue(MaximumScaleProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaximumScaleProperty = DependencyProperty.Register(
+             nameof(MaximumScale),
+             typeof(double),
+             typeof(BrowserImageControl),
+             new PropertyMetadata(8.0, new PropertyChangedCallback(MaximumScaleChanged)));
+
+        private static void MaximumScaleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as BrowserImageControl).MaximumScale = (double)e.NewValue;
         }
 
         #endregion
