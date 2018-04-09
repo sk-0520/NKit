@@ -25,9 +25,15 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.File.Browser
 
         public bool IsReadOnly => Model.IsReadOnly;
 
-        public bool IsText => BrowserKind.IsText();
-        public bool IsImage => BrowserKind.IsImage();
-        public bool IsProgram => BrowserKind.IsProgram();
+        public bool IsText => Model.IsText;
+        public bool IsXmlHtml => Model.IsXmlHtml;
+        public bool IsImage => Model.IsImage;
+        public bool IsProgram => Model.IsProgram;
+
+        public bool CanBrowse(BrowserKind browserKind)
+        {
+            return Model.CanBrowse(browserKind);
+        }
 
         #endregion
     }

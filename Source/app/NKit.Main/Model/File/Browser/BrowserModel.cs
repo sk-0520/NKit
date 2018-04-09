@@ -32,6 +32,11 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
 
         public bool IsReadOnly { get; set; } = true;
 
+        public bool IsText => BrowserKind.IsText();
+        public bool IsXmlHtml => BrowserKind.IsXmlHtml();
+        public bool IsImage => BrowserKind.IsImage();
+        public bool IsProgram => BrowserKind.IsProgram();
+
         #endregion
 
         #region function
@@ -59,6 +64,35 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
             }
 
             return BrowserKind.Unknown;
+        }
+
+        public bool CanBrowse(BrowserKind browserKind)
+        {
+            if(browserKind.IsText()) {
+                if(IsText || IsXmlHtml) {
+                    return true;
+                }
+            }
+
+            if(browserKind.IsXmlHtml()) {
+                if(IsText || IsXmlHtml) {
+                    return true;
+                }
+            }
+
+            if(browserKind.IsImage()) {
+                if(IsImage) {
+                    return true;
+                }
+            }
+
+            if(browserKind.IsProgram()) {
+                if(IsProgram) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
 

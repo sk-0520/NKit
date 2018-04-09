@@ -13,6 +13,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
         PlainText,
         Ini,
         CSharp,
+
         Html,
         Xml,
 
@@ -33,6 +34,12 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
                 BrowserKind.PlainText,
                 BrowserKind.Ini,
                 BrowserKind.CSharp,
+            }.Any(bk => bk == browserKind);
+        }
+
+        public static bool IsXmlHtml(this BrowserKind browserKind)
+        {
+            return new[] {
                 BrowserKind.Html,
                 BrowserKind.Xml,
             }.Any(bk => bk == browserKind);

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,27 +12,25 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ContentTypeTextNet.NKit.Main.Model.File.Browser;
 using ContentTypeTextNet.NKit.Main.ViewModel.File.Browser;
 
 namespace ContentTypeTextNet.NKit.Main.View.File.Browser
 {
     /// <summary>
-    /// BrowserTextControl.xaml の相互作用ロジック
+    /// BrowserXmlHtmlControl.xaml の相互作用ロジック
     /// </summary>
-    public partial class BrowserTextControl : UserControl
+    public partial class BrowserXmlHtmlControl : UserControl
     {
-        public BrowserTextControl()
+        public BrowserXmlHtmlControl()
         {
             InitializeComponent();
         }
-
 
         #region function
 
         void SetBrowser(BrowserViewModel browser)
         {
-            //var reader = new StreamReader(, browser.Encoding);
-            this.editor.Load(browser.FileInfo.OpenRead());
         }
 
         #endregion
@@ -41,7 +38,7 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
         private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var browser = (BrowserViewModel)e.NewValue;
-            if(browser != null && browser.CanBrowse(browser.BrowserKind)) {
+            if(browser != null && (browser.CanBrowse(BrowserKind.Xml) || browser.CanBrowse(BrowserKind.Html))) {
                 SetBrowser(browser);
             }
         }

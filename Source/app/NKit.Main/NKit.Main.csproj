@@ -230,6 +230,9 @@
     <Compile Include="View\File\Browser\BrowserTextControl.xaml.cs">
       <DependentUpon>BrowserTextControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\File\Browser\BrowserXmlHtmlControl.xaml.cs">
+      <DependentUpon>BrowserXmlHtmlControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\File\FileManagerControl.xaml.cs">
       <DependentUpon>FileManagerControl.xaml</DependentUpon>
     </Compile>
@@ -275,6 +278,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\File\Browser\BrowserTextControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\File\Browser\BrowserXmlHtmlControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
