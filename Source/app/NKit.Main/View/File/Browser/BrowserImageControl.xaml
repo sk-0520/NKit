@@ -14,8 +14,68 @@
   d:DesignHeight="200"
 
   DataContextChanged="UserControl_DataContextChanged"
-  >
+>
   <Grid>
-    <Image x:Name="image" />
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    
+    <ToolBar Grid.Row="0">
+      <TextBlock>
+        <Run Text="{Binding Source.Width, Mode=OneWay, ElementName=image, StringFormat={}{0:#,0}}" />
+        <Run>x</Run>
+        <Run Text="{Binding Source.Height, Mode=OneWay, ElementName=image, StringFormat={}{0:#,0}}" />
+      </TextBlock>
+      <Separator />
+      <CheckBox x:Name="selectOrigin">origin</CheckBox>
+    </ToolBar>
+    <ScrollViewer Grid.Row="1">
+      <ScrollViewer.Style>
+        <Style TargetType="ScrollViewer">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding IsChecked,ElementName=selectOrigin}" Value="True">
+              <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+              <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+            </DataTrigger>
+          </Style.Triggers>
+          <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
+          <Setter Property="VerticalScrollBarVisibility" Value="Disabled" />
+        </Style>
+      </ScrollViewer.Style>
+      <ScrollViewer.Background>
+        <DrawingBrush Viewport="0,0,16,16" TileMode="Tile" ViewportUnits="Absolute">
+          <DrawingBrush.Drawing>
+            <DrawingGroup>
+              <GeometryDrawing Brush="#ffcccccc">
+                <GeometryDrawing.Geometry>
+                  <RectangleGeometry Rect="0,0,100,100"  />
+                </GeometryDrawing.Geometry>
+              </GeometryDrawing>
+              <GeometryDrawing Brush="#ff666666">
+                <GeometryDrawing.Geometry>
+                  <GeometryGroup RenderOptions.EdgeMode="Aliased">
+                    <RectangleGeometry Rect="0,0,50,50" />
+                    <RectangleGeometry Rect="50,50,50,50" />
+                  </GeometryGroup>
+                </GeometryDrawing.Geometry>
+              </GeometryDrawing>
+            </DrawingGroup>
+          </DrawingBrush.Drawing>
+        </DrawingBrush>
+      </ScrollViewer.Background>
+      <Image x:Name="image">
+        <Image.Style>
+          <Style TargetType="Image" BasedOn="{StaticResource {x:Type Image}}">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding IsChecked, ElementName=selectOrigin}" Value="True">
+                <Setter Property="Stretch" Value="None" />
+              </DataTrigger>
+            </Style.Triggers>
+            <Setter Property="Stretch" Value="Uniform" />
+          </Style>
+        </Image.Style>
+      </Image>
+    </ScrollViewer>
   </Grid>
 </UserControl>
