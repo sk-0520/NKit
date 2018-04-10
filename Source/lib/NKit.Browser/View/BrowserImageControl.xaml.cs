@@ -213,25 +213,29 @@ namespace ContentTypeTextNet.NKit.Browser.View
 
         #region function
 
-        ImageSource GetImageSource(FileInfo fileInfo)
+        ImageSource GetImageSource(BrowserViewModel browser)
         {
-            using(var stream = fileInfo.Open(System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read)) {
-                var decoder = BitmapDecoder.Create(stream, BitmapCreateOptions.DelayCreation, BitmapCacheOption.Default);
-                var bitmap = new WriteableBitmap(decoder.Frames[0]);
-                bitmap.Freeze();
-                return bitmap;
+            lock(browser) {
+                using(var stream = browser.GetSharedStream()) {
+                    var decoder = BitmapDecoder.Create(stream, BitmapCreateOptions.DelayCreation, BitmapCacheOption.Default);
+                    var bitmap = new WriteableBitmap(decoder.Frames[0]);
+                    bitmap.Freeze();
+                    return bitmap;
+                }
             }
         }
 
-        bool IsAnimationImage(BrowserKind browserKind, FileInfo fileInfo)
+        bool IsAnimationImage(BrowserViewModel browser)
         {
-            if(browserKind != BrowserKind.Gif) {
+            if(browser.BrowserKind != BrowserKind.Gif) {
                 return false;
             }
 
-            using(var stream = fileInfo.Open(System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read)) {
-                var gifDecoder = new GifBitmapDecoder(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
-                return 1 < gifDecoder.Frames.Count;
+            lock(browser) {
+                using(var stream = browser.GetSharedStream()) {
+                    var gifDecoder = new GifBitmapDecoder(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+                    return 1 < gifDecoder.Frames.Count;
+                }
             }
         }
 
@@ -246,11 +250,11 @@ namespace ContentTypeTextNet.NKit.Browser.View
 
         public void BuildControl(BrowserViewModel browser)
         {
-            IsAnimation = IsAnimationImage(browser.BrowserKind, browser.FileInfo);
+            IsAnimation = IsAnimationImage(browser);
             if(IsAnimation) {
                 this.image.Visibility = Visibility.Collapsed;
                 this.player.Visibility = Visibility.Visible;
-                this.player.Source = new Uri(browser.FileInfo.FullName);
+                this.player.Source = browser.FileUri;
                 this.player.Play();
             } else {
                 this.player.Stop();
@@ -258,7 +262,7 @@ namespace ContentTypeTextNet.NKit.Browser.View
 
                 this.player.Visibility = Visibility.Collapsed;
                 this.image.Visibility = Visibility.Visible;
-                this.image.Source = GetImageSource(browser.FileInfo);
+                this.image.Source = GetImageSource(browser);
             }
         }
 

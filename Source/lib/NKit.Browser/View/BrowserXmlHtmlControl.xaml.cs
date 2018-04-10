@@ -67,13 +67,15 @@ namespace ContentTypeTextNet.NKit.Browser.View
 
         IEnumerable<HtmlTreeNode> GetHtmlTreeNodes(BrowserViewModel browser)
         {
-            var doc = new HtmlAgilityPack.HtmlDocument() {
+            var doc = new HtmlDocument() {
                 OptionAutoCloseOnEnd = true,
                 OptionDefaultStreamEncoding = browser.Encoding,
                 OptionReadEncoding = true,
             };
 
-            doc.Load(browser.FileInfo.OpenRead());
+            lock(browser) {
+                doc.Load(browser.GetSharedStream());
+            }
 
             return doc.DocumentNode.ChildNodes.Cast<HtmlNode>().Select(n => new HtmlTreeNode(n));
         }
@@ -82,7 +84,9 @@ namespace ContentTypeTextNet.NKit.Browser.View
         {
             var doc = new XmlDocument();
 
-            doc.Load(browser.FileInfo.OpenRead());
+            lock(browser) {
+                doc.Load(browser.GetSharedStream());
+            }
 
             return doc.ChildNodes.Cast<XmlNode>().Select(n => new XmlTreeNode(n));
         }
@@ -104,7 +108,7 @@ namespace ContentTypeTextNet.NKit.Browser.View
 
                 if(browser.BrowserKind == BrowserKind.Html) {
                     nodes.AddRange(GetHtmlTreeNodes(browser));
-                    this.webBrowser.NavigateToStream(browser.FileInfo.Open(System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read));
+                    this.webBrowser.NavigateToStream(browser.GetSharedStream());
                 } else {
                     nodes.AddRange(GetXmlTreeNodes(browser));
                 }

@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ContentTypeTextNet.NKit.Browser.Model;
 using ContentTypeTextNet.NKit.Browser.ViewModel;
+using ContentTypeTextNet.NKit.Utility.Model;
 using ICSharpCode.AvalonEdit.Highlighting;
 
 namespace ContentTypeTextNet.NKit.Browser.View
@@ -83,7 +84,9 @@ namespace ContentTypeTextNet.NKit.Browser.View
         public void BuildControl(BrowserViewModel browser)
         {
             //var reader = new StreamReader(, browser.Encoding);
-            this.editor.Load(browser.FileInfo.OpenRead());
+            lock(browser) {
+                this.editor.Load(browser.GetSharedStream());
+            }
             this.editor.SyntaxHighlighting = GetHighlighting(browser);
 
         }

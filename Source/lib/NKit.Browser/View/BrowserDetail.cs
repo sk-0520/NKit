@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using ContentTypeTextNet.NKit.Browser.ViewModel;
+using ContentTypeTextNet.NKit.Common;
 
 namespace ContentTypeTextNet.NKit.Browser.View
 {
@@ -41,12 +42,11 @@ namespace ContentTypeTextNet.NKit.Browser.View
         void Build()
         {
             if(UserControl.IsVisible) {
-                if(!Browser.IsBuilded && !Browser.IsBuilding) {
-                    Browser.IsBuilding = true;
-
-                    BuildControl(Browser);
-
-                    Browser.IsBuilded = true;
+                if(Browser.CanBuild(UserControl)) {
+                    Browser.BeginBuild(UserControl);
+                    using(new ActionDisposer(d => { Browser.EndBuild(UserControl); })) {
+                        BuildControl(Browser);
+                    }
                 }
             }
         }
@@ -67,10 +67,10 @@ namespace ContentTypeTextNet.NKit.Browser.View
                 return;
             }
 
-            if(browser != null && CanBrowse(browser)) {
+            if(browser != null && !browser.IsDisposed && CanBrowse(browser)) {
                 Browser = browser;
                 Build();
-            } else {
+            } else if(Browser != null) {
                 Browser = null;
             }
         }
@@ -88,5 +88,5 @@ namespace ContentTypeTextNet.NKit.Browser.View
 
             return detail;
         }
-}
+    }
 }

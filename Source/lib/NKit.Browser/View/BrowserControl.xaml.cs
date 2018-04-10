@@ -41,6 +41,9 @@ namespace ContentTypeTextNet.NKit.Browser.View
             if(control != null) {
                 control.Browser = e.NewValue as BrowserViewModel;
             }
+            if(e.OldValue is BrowserViewModel old) {
+                old.Dispose();
+            }
         }
 
         public BrowserViewModel Browser

@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ContentTypeTextNet.NKit.Browser.ViewModel;
 using ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper;
+using ContentTypeTextNet.NKit.Utility.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -73,9 +74,11 @@ namespace ContentTypeTextNet.NKit.Browser.View
         {
             SelectedTabItem = this.treeView;
 
-            using(var reader = new JsonTextReader(new StreamReader(browser.FileInfo.Open(System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read), browser.Encoding))) {
-                var json = JObject.Load(reader);
-                this.node.ItemsSource = json.Children().Select(c => new JsonNode(c));
+            lock(browser) {
+                using(var reader = new JsonTextReader(new StreamReader(browser.GetSharedStream(), browser.Encoding))) {
+                    var json = JObject.Load(reader);
+                    this.node.ItemsSource = json.Children().Select(c => new JsonNode(c));
+                }
             }
         }
 
