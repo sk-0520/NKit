@@ -96,7 +96,7 @@
       <Grid>
         <Image x:Name="image">
           <Image.Style>
-            <Style TargetType="Image" BasedOn="{StaticResource {x:Type Image}}">
+            <Style TargetType="Image" >
               <Style.Triggers>
                 <DataTrigger Binding="{Binding IsChecked, ElementName=selectOrigin}" Value="True">
                   <Setter Property="Stretch" Value="None" />

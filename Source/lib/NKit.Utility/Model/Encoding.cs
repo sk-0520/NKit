@@ -17,9 +17,9 @@ namespace ContentTypeTextNet.NKit.Utility.Model
 
         #region function
 
-        public Encoding Parse(string encodingName)
+        public static Encoding Parse(string encodingName)
         {
-            if(encodingName == "utf8n") {
+            if(encodingName == "utf-8n") {
                 return UTF8n;
             }
 
