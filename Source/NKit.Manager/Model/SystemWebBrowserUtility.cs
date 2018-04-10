@@ -75,6 +75,7 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             return new[] {
                 GetExecutingAssemblyFileName(),
                 CommonUtility.GetMainApplication(CommonUtility.GetApplicationDirectory()).Name,
+                CommonUtility.GetJustLookingApplication(CommonUtility.GetApplicationDirectory()).Name,
             };
         }
 
