@@ -79,6 +79,7 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
 
                 if(browser.BrowserKind == BrowserKind.Html) {
                     nodes.AddRange(GetHtmlTreeNodes(browser));
+                    this.webBrowser.NavigateToStream(browser.FileInfo.Open(System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read));
                 } else {
                     nodes.AddRange(GetXmlTreeNodes(browser));
                 }

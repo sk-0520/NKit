@@ -93,6 +93,7 @@
             <Setter Property="Visibility" Value="Collapsed" />
           </Style>
         </TabItem.Style>
+        <WebBrowser x:Name="webBrowser" />
       </TabItem>
       <TabItem Header="text">
         <app_browser:BrowserTextControl />
