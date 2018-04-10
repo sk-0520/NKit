@@ -22,6 +22,7 @@ namespace ContentTypeTextNet.NKit.Browser.View
         {
             UserControl = userControl;
             UserControl.DataContextChanged += BrowserDetailControl_DataContextChanged;
+            UserControl.IsVisibleChanged += UserControl_IsVisibleChanged;
         }
 
         #region property
@@ -29,22 +30,46 @@ namespace ContentTypeTextNet.NKit.Browser.View
         TUserControl UserControl { get; set; }
         BrowserViewModel Browser { get; set; }
 
-        #endregion
-
-        #region function
-
         public Func<BrowserViewModel, bool> CanBrowse { get; set; }
 
         public Action<BrowserViewModel> BuildControl { get; set; }
 
         #endregion
 
+        #region function
+
+        void Build()
+        {
+            if(UserControl.IsVisible) {
+                if(!Browser.IsBuilded && !Browser.IsBuilding) {
+                    Browser.IsBuilding = true;
+
+                    BuildControl(Browser);
+
+                    Browser.IsBuilded = true;
+                }
+            }
+        }
+
+        #endregion
+
+        private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            Build();
+        }
+
         private void BrowserDetailControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var browser = (BrowserViewModel)e.NewValue;
+
+            // 既に設定済みなら何もしない
+            if(Browser == browser) {
+                return;
+            }
+
             if(browser != null && CanBrowse(browser)) {
                 Browser = browser;
-                BuildControl(Browser);
+                Build();
             } else {
                 Browser = null;
             }

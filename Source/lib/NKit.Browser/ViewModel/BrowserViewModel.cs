@@ -11,6 +11,13 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel
 {
     public class BrowserViewModel : SingleModelViewModelBase<BrowserModel>
     {
+        #region property
+
+        bool _isBuilded = false;
+        bool _isBuilding = false;
+
+        #endregion
+
         public BrowserViewModel(BrowserModel model)
             : base(model)
         { }
@@ -30,6 +37,22 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel
         public bool IsJson => Model.IsJson;
         public bool IsImage => Model.IsImage;
         public bool IsProgram => Model.IsProgram;
+
+        public bool IsBuilded
+        {
+            get { return this._isBuilded; }
+            set { SetProperty(ref this._isBuilded, value); }
+        }
+
+        public bool IsBuilding
+        {
+            get { return this._isBuilding; }
+            set { SetProperty(ref this._isBuilding, value); }
+        }
+
+        #endregion
+
+        #region function
 
         public bool CanBrowse(BrowserKind browserKind)
         {
