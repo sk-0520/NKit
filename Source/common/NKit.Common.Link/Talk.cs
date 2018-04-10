@@ -16,6 +16,7 @@ namespace ContentTypeTextNet.NKit.Common
         Main,
         Rocket,
         Cameraman,
+        JustLooking,
     }
 
     [Serializable, DataContract]

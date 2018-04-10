@@ -117,6 +117,11 @@ namespace ContentTypeTextNet.NKit.Manager.View
                 Arguments = nkitDieArgs,
             });
             ApplicationInfos.Add(new ApplicationInfo() {
+                Kind = NKitApplicationKind.JustLooking,
+                Name = "justlooking",
+                Arguments = nkitDieArgs,
+            });
+            ApplicationInfos.Add(new ApplicationInfo() {
                 Kind = NKitApplicationKind.Others,
                 Name = "busybox",
                 File = CommonUtility.GetBusyBox(false, binDir),
