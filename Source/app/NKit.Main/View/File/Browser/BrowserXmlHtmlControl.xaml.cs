@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -91,5 +92,19 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
         }
 
         #endregion
+
+        private void webBrowser_Loaded(object sender, RoutedEventArgs e)
+        {
+            dynamic activeX = this.webBrowser.GetType().InvokeMember(
+                "ActiveXInstance",
+                BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+                null,
+                this.webBrowser,
+                new object[] { }
+            );
+
+            activeX.Silent = true;
+
+        }
     }
 }

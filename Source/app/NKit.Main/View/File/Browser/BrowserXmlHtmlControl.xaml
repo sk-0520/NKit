@@ -21,7 +21,7 @@
   <Grid>
     <TabControl>
       <TabItem Header="view">
-        <TreeView x:Name="nodes" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Item" VirtualizingPanel.VirtualizationMode="Standard">
+        <TreeView x:Name="nodes" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Item" ScrollViewer.CanContentScroll="True" VirtualizingPanel.VirtualizationMode="Standard">
           <TreeView.ItemContainerStyle>
             <Style TargetType="TreeViewItem">
               <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=OneTime}" />
@@ -93,7 +93,7 @@
             <Setter Property="Visibility" Value="Collapsed" />
           </Style>
         </TabItem.Style>
-        <WebBrowser x:Name="webBrowser" />
+        <WebBrowser x:Name="webBrowser" Loaded="webBrowser_Loaded" />
       </TabItem>
       <TabItem Header="text">
         <app_browser:BrowserTextControl />
