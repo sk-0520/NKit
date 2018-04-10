@@ -46,10 +46,12 @@ namespace ContentTypeTextNet.NKit.JustLooking.Model
             }
             var browserKind = EnumUtility.Parse<BrowserKind>(optionBrowserKind.Value());
 
+            Encoding encoding;
             if(!optionEncoding.HasValue()) {
-                throw new ArgumentException(optionEncoding.ToString());
+                encoding = Constants.DefaultEncoding;
+            } else {
+                encoding = EncodingUtility.Parse(optionEncoding.Value());
             }
-            var encoding = EncodingUtility.Parse(optionEncoding.Value());
 
             Browser = new BrowserModel(browserKind, fileInfo, encoding);
         }

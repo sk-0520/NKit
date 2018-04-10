@@ -14,15 +14,15 @@
   Height="450"
 
   ResizeMode="CanResizeWithGrip"
+  WindowStartupLocation="CenterScreen"
 
-  
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d"
 >
   <i:Interaction.Behaviors>
     <app_utility_view_attach:WindowTitleBehavior Title="MainWindow" />
   </i:Interaction.Behaviors>
-  
+
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
@@ -30,7 +30,7 @@
     </Grid.RowDefinitions>
 
     <app_browser:BrowserControl Grid.Row="0" Browser="{Binding Browser, Mode=OneTime}" />
-    
+
     <StatusBar Grid.Row="1">
       <TextBlock>
         <Run>path:</Run>
