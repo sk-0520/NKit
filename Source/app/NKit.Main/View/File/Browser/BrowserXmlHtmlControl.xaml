@@ -82,6 +82,18 @@
           </TreeView.ItemTemplate>
         </TreeView>
       </TabItem>
+      <TabItem Header="html">
+        <TabItem.Style>
+          <Style TargetType="TabItem">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding DataContext.BrowserKind, ElementName=root}" Value="Html">
+                <Setter Property="Visibility" Value="Visible" />
+              </DataTrigger>
+            </Style.Triggers>
+            <Setter Property="Visibility" Value="Collapsed" />
+          </Style>
+        </TabItem.Style>
+      </TabItem>
       <TabItem Header="text">
         <app_browser:BrowserTextControl />
       </TabItem>

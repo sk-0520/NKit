@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using ContentTypeTextNet.NKit.Common;
 using Microsoft.Win32;
 
 namespace ContentTypeTextNet.NKit.Manager.Model
@@ -69,6 +70,13 @@ namespace ContentTypeTextNet.NKit.Manager.Model
             return Path.ChangeExtension(programName, "vshost" + ext);
         }
 #endif
+        static IEnumerable<string> GetBrowserControlUseProgram()
+        {
+            return new[] {
+                GetExecutingAssemblyFileName(),
+                CommonUtility.GetMainApplication(CommonUtility.GetApplicationDirectory()).Name,
+            };
+        }
 
         /// <summary>
         /// 現在実行中のアセンブリに対して.NET Frameworkで使用するIEバージョンを設定する。
@@ -77,11 +85,13 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         /// <param name="version">IEバージョン<para>https://msdn.microsoft.com/en-us/library/ee330730%28v=vs.85%29.aspx#browser_emulation</para></param>
         public static void SetUsingBrowserVersionForExecutingAssembly(int version)
         {
-            var name = GetExecutingAssemblyFileName();
-            SetUsingBrowserVersion(version, name);
+            foreach(var name in GetBrowserControlUseProgram()) {
+                SetUsingBrowserVersion(version, name);
 #if DEBUG
-            SetUsingBrowserVersion(version, GetDebugName(name));
+                SetUsingBrowserVersion(version, GetDebugName(name));
 #endif
+
+            }
         }
         public static void SetUsingBrowserVersionForExecutingAssembly(Version version)
         {
@@ -110,11 +120,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model
         /// </summary>
         public static void ResetUsingBrowserVersionForExecutingAssembly()
         {
-            var name = GetExecutingAssemblyFileName();
-            ResetUsingBrowserVersion(name);
+            foreach(var name in GetBrowserControlUseProgram()) {
+                ResetUsingBrowserVersion(name);
 #if DEBUG
-            ResetUsingBrowserVersion(GetDebugName(name));
+                ResetUsingBrowserVersion(GetDebugName(name));
 #endif
+            }
         }
 
         public static Version GetInternetExplorerVersion()
