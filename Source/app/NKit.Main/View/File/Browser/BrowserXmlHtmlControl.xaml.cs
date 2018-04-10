@@ -34,6 +34,28 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
             Detail = BrowserDetail.Create(this);
         }
 
+        #region SelectedTabItem
+
+        public TabItem SelectedTabItem
+        {
+            get { return (TabItem)GetValue(SelectedTabItemProperty); }
+            set { SetValue(SelectedTabItemProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedTabItemProperty = DependencyProperty.Register(
+             nameof(SelectedTabItem),
+             typeof(TabItem),
+             typeof(BrowserXmlHtmlControl),
+             new PropertyMetadata(default(TabItem), new PropertyChangedCallback(SelectedTabItemChanged)));
+
+        private static void SelectedTabItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as BrowserXmlHtmlControl).SelectedTabItem = (TabItem)e.NewValue;
+        }
+
+        #endregion
+
+
         #region property
 
         BrowserDetail<BrowserXmlHtmlControl> Detail { get; }
@@ -75,6 +97,7 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
 
         public void BuildControl(BrowserViewModel browser)
         {
+            SelectedTabItem = this.treeView;
             try {
                 var nodes = new List<XmlHtmlTreeNodeBase>();
 

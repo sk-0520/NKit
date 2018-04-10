@@ -19,8 +19,8 @@
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
   </UserControl.Resources>
   <Grid>
-    <TabControl>
-      <TabItem Header="view">
+    <TabControl SelectedItem="{Binding SelectedTabItem, ElementName=root}">
+      <TabItem x:Name="treeView" Header="tree">
         <TreeView x:Name="nodes" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Item" ScrollViewer.CanContentScroll="True" VirtualizingPanel.VirtualizationMode="Standard">
           <TreeView.ItemContainerStyle>
             <Style TargetType="TreeViewItem">
