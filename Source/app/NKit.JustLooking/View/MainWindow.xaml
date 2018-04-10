@@ -13,6 +13,8 @@
   Width="800"
   Height="450"
 
+  Icon="/Resources/NKit.JustLooking.ico"
+
   ResizeMode="CanResizeWithGrip"
   WindowStartupLocation="CenterScreen"
 
