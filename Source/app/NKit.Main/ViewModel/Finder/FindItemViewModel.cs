@@ -253,6 +253,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public ICommand CopyFileSizeCommand => new DelegateCommand(() => Model.CopyFileSize());
 
         public ICommand OpenFileCommand => new DelegateCommand(() => Model.OpenFile());
+        public ICommand BrowseFileCommand => new DelegateCommand(() => Model.BrowseFile());
         public ICommand OpenDirectoryCommand => new DelegateCommand(() => Model.OpenDirectory());
         public ICommand ShowPropertyCommand => new DelegateCommand(() => Model.ShowProperty());
 

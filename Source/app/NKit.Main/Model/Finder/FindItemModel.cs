@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Browser.Model;
+using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Main.Model.Searcher;
@@ -68,6 +69,13 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         {
             var opener = new FileOpener();
             opener.Open((FileInfo)FileInfo);
+        }
+
+        public void BrowseFile()
+        {
+            var opener = new FileOpener();
+            var browser = GetBrowser();
+            opener.Browse(browser);
         }
 
         public void OpenDirectory()

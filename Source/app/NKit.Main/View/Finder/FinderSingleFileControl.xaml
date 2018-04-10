@@ -102,6 +102,7 @@
                 <StackPanel Orientation="Horizontal">
                   <Button Content="ファイルを開く" Command="{Binding SingleItem.OpenFileCommand, ElementName=root}" />
                   <Button Content="親ディレクトリを開く" Command="{Binding SingleItem.OpenDirectoryCommand, ElementName=root}"/>
+                  <Button Content="簡易表示" Command="{Binding SingleItem.BrowseFileCommand, ElementName=root}" />
                   <Button Content="プロパティ" Command="{Binding SingleItem.ShowPropertyCommand, ElementName=root}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">

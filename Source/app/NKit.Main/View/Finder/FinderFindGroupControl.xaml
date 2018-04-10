@@ -495,6 +495,7 @@
               </ContextMenu.Resources>
               <MenuItem Header="ファイルを開く" Command="{Binding SelectedItem.OpenFileCommand}" />
               <MenuItem Header="親ディレクトリを開く" Command="{Binding SelectedItem.OpenDirectoryCommand}"/>
+              <MenuItem Header="簡易表示" Command="{Binding SelectedItem.BrowseFileCommand}" />
               <MenuItem Header="プロパティ" Command="{Binding SelectedItem.ShowPropertyCommand}" />
               <Separator />
               <MenuItem Header="ファイルをコピー"  Command="{Binding SelectedItem.CopyFileCommand}"/>
