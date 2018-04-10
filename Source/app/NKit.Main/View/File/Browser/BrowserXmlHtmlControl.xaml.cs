@@ -74,14 +74,19 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
 
         public void BuildControl(BrowserViewModel browser)
         {
-            var nodes = new List<XmlHtmlTreeNodeBase>();
-            if(browser.BrowserKind == BrowserKind.Html) {
-                nodes.AddRange(GetHtmlTreeNodes(browser));
-            } else {
-                nodes.AddRange(GetXmlTreeNodes(browser));
+            try {
+                var nodes = new List<XmlHtmlTreeNodeBase>();
+
+                if(browser.BrowserKind == BrowserKind.Html) {
+                    nodes.AddRange(GetHtmlTreeNodes(browser));
+                } else {
+                    nodes.AddRange(GetXmlTreeNodes(browser));
+                }
+                this.nodes.ItemsSource = nodes.Where(n => n.Showable);
+            } catch(Exception ex) {
+                this.nodes.ItemsSource = new[] { new ExceptionNode(ex) };
             }
 
-            this.nodes.ItemsSource = nodes;
         }
 
         #endregion

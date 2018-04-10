@@ -155,7 +155,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         public BrowserModel GetBrowser()
         {
             var browserKind = GetBrowserKind(FileInfo.Name);
-            var encoding = Encoding.Default;
+            var encoding = Encoding.UTF8;
             if(FileContentSearchResult.Text.IsMatched) {
                 encoding = FileContentSearchResult.Text.EncodingCheck.Encoding;
             }
