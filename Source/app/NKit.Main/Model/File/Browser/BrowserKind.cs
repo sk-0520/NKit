@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
 {
+    /// <summary>
+    /// 表示ファイル種別。
+    /// <para>内部的な切り分け等々あるため結構いっぱい定義する必要あり。</para>
+    /// </summary>
     public enum BrowserKind
     {
+        /// <summary>
+        /// 不明。
+        /// </summary>
         Unknown,
 
         PlainText,
@@ -28,6 +35,11 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
 
     public static class BrowserKindExtension
     {
+        /// <summary>
+        /// テキストファイルとして有効か。
+        /// </summary>
+        /// <param name="browserKind"></param>
+        /// <returns></returns>
         public static bool IsText(this BrowserKind browserKind)
         {
             return new[] {
@@ -37,6 +49,11 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
             }.Any(bk => bk == browserKind);
         }
 
+        /// <summary>
+        /// XML/HTMLとして有効か。
+        /// </summary>
+        /// <param name="browserKind"></param>
+        /// <returns></returns>
         public static bool IsXmlHtml(this BrowserKind browserKind)
         {
             return new[] {
@@ -45,6 +62,11 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
             }.Any(bk => bk == browserKind);
         }
 
+        /// <summary>
+        /// 画像ファイルとして有効か。
+        /// </summary>
+        /// <param name="browserKind"></param>
+        /// <returns></returns>
         public static bool IsImage(this BrowserKind browserKind)
         {
             return new[] {
@@ -55,6 +77,12 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
             }.Any(bk => bk == browserKind);
         }
 
+        /// <summary>
+        /// プログラムとして有効か。
+        /// <para>動きそうなバイナリ。</para>
+        /// </summary>
+        /// <param name="browserKind"></param>
+        /// <returns></returns>
         public static bool IsProgram(this BrowserKind browserKind)
         {
             return new[] {
