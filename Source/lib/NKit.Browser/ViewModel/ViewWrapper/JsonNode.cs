@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
-namespace ContentTypeTextNet.NKit.Main.ViewModel.File.Browser.ViewWrapper
+namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
 {
     public class JsonNode
     {

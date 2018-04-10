@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Utility.Model;
 
-namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
+namespace ContentTypeTextNet.NKit.Browser.Model
 {
     public class BrowserModel : ModelBase
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
+namespace ContentTypeTextNet.NKit.Browser.Model
 {
     /// <summary>
     /// 表示ファイル種別。

@@ -1,10 +1,10 @@
 <UserControl
   x:Name="root"
-  x:Class="ContentTypeTextNet.NKit.Main.View.File.Browser.BrowserJsonControl"
+  x:Class="ContentTypeTextNet.NKit.Browser.View.BrowserJsonControl"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   
-  xmlns:app_browser="clr-namespace:ContentTypeTextNet.NKit.Main.View.File.Browser"
+  xmlns:app_browser="clr-namespace:ContentTypeTextNet.NKit.Browser.View"
 
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
   mc:Ignorable="d" 

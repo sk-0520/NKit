@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using ContentTypeTextNet.NKit.Main.ViewModel.File.Browser;
+using ContentTypeTextNet.NKit.Browser.ViewModel;
 
-namespace ContentTypeTextNet.NKit.Main.View.File.Browser
+namespace ContentTypeTextNet.NKit.Browser.View
 {
     public interface IBrowserDetail
     {

@@ -13,10 +13,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ContentTypeTextNet.NKit.Main.ViewModel.File.Browser;
+using ContentTypeTextNet.NKit.Browser.Model;
+using ContentTypeTextNet.NKit.Browser.ViewModel;
 using ICSharpCode.AvalonEdit.Highlighting;
 
-namespace ContentTypeTextNet.NKit.Main.View.File.Browser
+namespace ContentTypeTextNet.NKit.Browser.View
 {
     /// <summary>
     /// BrowserTextControl.xaml の相互作用ロジック
@@ -40,13 +41,13 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
         IHighlightingDefinition GetDefaultHighlighting(BrowserViewModel browser)
         {
             switch(browser.BrowserKind) {
-                case Model.File.Browser.BrowserKind.CSharp:
+                case BrowserKind.CSharp:
                     return HighlightingManager.Instance.GetDefinition("C#");
 
-                case Model.File.Browser.BrowserKind.Xml:
+                case BrowserKind.Xml:
                     return HighlightingManager.Instance.GetDefinition("XML");
 
-                case Model.File.Browser.BrowserKind.Html:
+                case BrowserKind.Html:
                     return HighlightingManager.Instance.GetDefinition("HTML");
 
                 default:

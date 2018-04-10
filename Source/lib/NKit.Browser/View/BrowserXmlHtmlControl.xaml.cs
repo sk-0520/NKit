@@ -15,13 +15,13 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 using System.Xml.Linq;
-using ContentTypeTextNet.NKit.Main.Model.File.Browser;
-using ContentTypeTextNet.NKit.Main.ViewModel.File.Browser;
-using ContentTypeTextNet.NKit.Main.ViewModel.File.Browser.ViewWrapper;
+using ContentTypeTextNet.NKit.Browser.Model;
+using ContentTypeTextNet.NKit.Browser.ViewModel;
+using ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper;
 using ContentTypeTextNet.NKit.Utility.Model;
 using HtmlAgilityPack;
 
-namespace ContentTypeTextNet.NKit.Main.View.File.Browser
+namespace ContentTypeTextNet.NKit.Browser.View
 {
     /// <summary>
     /// BrowserXmlHtmlControl.xaml の相互作用ロジック

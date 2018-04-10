@@ -12,9 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ContentTypeTextNet.NKit.Main.ViewModel.File.Browser;
+using ContentTypeTextNet.NKit.Browser.ViewModel;
 
-namespace ContentTypeTextNet.NKit.Main.View.File.Browser
+namespace ContentTypeTextNet.NKit.Browser.View
 {
     /// <summary>
     /// BrowserControl.xaml の相互作用ロジック

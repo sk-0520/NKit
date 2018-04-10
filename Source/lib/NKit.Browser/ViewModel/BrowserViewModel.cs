@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ContentTypeTextNet.NKit.Main.Model.File.Browser;
+using ContentTypeTextNet.NKit.Browser.Model;
 using ContentTypeTextNet.NKit.Utility.ViewModel;
 
-namespace ContentTypeTextNet.NKit.Main.ViewModel.File.Browser
+namespace ContentTypeTextNet.NKit.Browser.ViewModel
 {
     public class BrowserViewModel : SingleModelViewModelBase<BrowserModel>
     {

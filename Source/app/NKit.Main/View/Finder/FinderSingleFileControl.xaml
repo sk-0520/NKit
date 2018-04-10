@@ -9,7 +9,7 @@
 
   xmlns:app_utility_view_converter="clr-namespace:ContentTypeTextNet.NKit.Utility.View.Converter;assembly=NKit.Utility"
 
-  xmlns:app_browser="clr-namespace:ContentTypeTextNet.NKit.Main.View.File.Browser"
+  xmlns:app_browser="clr-namespace:ContentTypeTextNet.NKit.Browser.View;assembly=NKit.Browser"
 
   xmlns:app_main_view_converter="clr-namespace:ContentTypeTextNet.NKit.Main.View.Converter"
   xmlns:app_main_view_control="clr-namespace:ContentTypeTextNet.NKit.Main.View.Control"

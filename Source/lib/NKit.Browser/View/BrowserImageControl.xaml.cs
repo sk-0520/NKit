@@ -15,12 +15,12 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ContentTypeTextNet.NKit.Main.Model.File.Browser;
-using ContentTypeTextNet.NKit.Main.ViewModel.File.Browser;
+using ContentTypeTextNet.NKit.Browser.Model;
+using ContentTypeTextNet.NKit.Browser.ViewModel;
 using ContentTypeTextNet.NKit.Utility.Model;
 using Prism.Commands;
 
-namespace ContentTypeTextNet.NKit.Main.View.File.Browser
+namespace ContentTypeTextNet.NKit.Browser.View
 {
     /// <summary>
     /// BrowserImageControl.xaml の相互作用ロジック

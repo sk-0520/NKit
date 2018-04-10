@@ -182,10 +182,6 @@
     <Compile Include="Model\Capture\CaptureImageModel.cs" />
     <Compile Include="Model\Capture\CaptureKeyUtility.cs" />
     <Compile Include="Model\Cli\CliManagerModel.cs" />
-    <Compile Include="Model\File\Browser\BrowserKind.cs" />
-    <Compile Include="Model\File\Browser\BrowserModel.cs" />
-    <Compile Include="ViewModel\File\Browser\ViewWrapper\JsonNode.cs" />
-    <Compile Include="ViewModel\File\Browser\ViewWrapper\XmlHtmlTreeNode.cs" />
     <Compile Include="Model\File\FilePropertySearchResult.cs" />
     <Compile Include="Model\Finder\FinderUtility.cs" />
     <Compile Include="Model\Finder\FindGroupCache.cs" />
@@ -197,11 +193,7 @@
     <Compile Include="ViewModel\Capture\CaptureGroupViewModel.cs" />
     <Compile Include="ViewModel\Capture\CaptureImageViewModel.cs" />
     <Compile Include="ViewModel\Cli\CliManagerViewModel.cs" />
-    <Compile Include="ViewModel\File\Browser\BrowserViewModel.cs" />
     <Compile Include="ViewModel\Other\OtherManagerViewModel.cs" />
-    <Compile Include="View\File\Browser\BrowserControl.xaml.cs">
-      <DependentUpon>BrowserControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Capture\CaptureGroupControl.xaml.cs">
       <DependentUpon>CaptureGroupControl.xaml</DependentUpon>
     </Compile>
@@ -226,19 +218,6 @@
       <DependentUpon>RunnableControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Converter\ModifierKeysToBooleanConverter.cs" />
-    <Compile Include="View\File\Browser\BrowserDetail.cs" />
-    <Compile Include="View\File\Browser\BrowserImageControl.xaml.cs">
-      <DependentUpon>BrowserImageControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\File\Browser\BrowserJsonControl.xaml.cs">
-      <DependentUpon>BrowserJsonControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\File\Browser\BrowserTextControl.xaml.cs">
-      <DependentUpon>BrowserTextControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\File\Browser\BrowserXmlHtmlControl.xaml.cs">
-      <DependentUpon>BrowserXmlHtmlControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\File\FileManagerControl.xaml.cs">
       <DependentUpon>FileManagerControl.xaml</DependentUpon>
     </Compile>
@@ -251,10 +230,6 @@
     <Compile Include="View\SystemEnvironment\SystemEnvironmentManagerControl.xaml.cs">
       <DependentUpon>SystemEnvironmentManagerControl.xaml</DependentUpon>
     </Compile>
-    <Page Include="View\File\Browser\BrowserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Capture\CaptureGroupControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -276,22 +251,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Control\KeySettingControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\File\Browser\BrowserImageControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\File\Browser\BrowserJsonControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\File\Browser\BrowserTextControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\File\Browser\BrowserXmlHtmlControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -460,6 +419,11 @@
     <Folder Include="Model\Wapper\GnuWin32\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\lib\NKit.Browser\NKit.Browser.csproj">
+      <Project>{cc68e1cb-a7e5-4444-a2aa-bc436e1537e9}</Project>
+      <Name>NKit.Browser</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\lib\NKit.Package\NKit.Package.csproj">
       <Project>{afa0c4ad-38a8-416d-922d-f66f976f8106}</Project>
       <Name>NKit.Package</Name>

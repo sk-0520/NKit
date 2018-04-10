@@ -8,7 +8,7 @@ using System.Xml;
 using ContentTypeTextNet.NKit.Common;
 using HtmlAgilityPack;
 
-namespace ContentTypeTextNet.NKit.Main.ViewModel.File.Browser.ViewWrapper
+namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
 {
     public abstract class XmlHtmlTreeNodeBase
     {
