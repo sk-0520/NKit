@@ -118,16 +118,17 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
 
         private void webBrowser_Loaded(object sender, RoutedEventArgs e)
         {
-            dynamic activeX = this.webBrowser.GetType().InvokeMember(
-                "ActiveXInstance",
-                BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
-                null,
-                this.webBrowser,
-                new object[] { }
-            );
+            if(this.webBrowser.IsVisible) {
+                dynamic activeX = this.webBrowser.GetType().InvokeMember(
+                    "ActiveXInstance",
+                    BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+                    null,
+                    this.webBrowser,
+                    new object[] { }
+                );
 
-            activeX.Silent = true;
-
+                activeX.Silent = true;
+            }
         }
     }
 }

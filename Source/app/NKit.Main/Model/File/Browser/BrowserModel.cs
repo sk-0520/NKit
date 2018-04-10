@@ -48,6 +48,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
             var items = new[] {
                 // text
                 new { Kind = BrowserKind.PlainText, Extensions = new [] { "txt" } },
+                new { Kind = BrowserKind.CSharp, Extensions = new [] { "cs" } },
                 // ex text
                 new { Kind = BrowserKind.Xml, Extensions = new [] { "xml" } },
                 new { Kind = BrowserKind.Html, Extensions = new [] { "html", "htm" } },

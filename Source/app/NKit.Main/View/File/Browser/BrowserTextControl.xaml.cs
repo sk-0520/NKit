@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ContentTypeTextNet.NKit.Main.ViewModel.File.Browser;
+using ICSharpCode.AvalonEdit.Highlighting;
 
 namespace ContentTypeTextNet.NKit.Main.View.File.Browser
 {
@@ -36,6 +37,39 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
         #endregion
 
         #region function
+        IHighlightingDefinition GetDefaultHighlighting(BrowserViewModel browser)
+        {
+            switch(browser.BrowserKind) {
+                case Model.File.Browser.BrowserKind.CSharp:
+                    return HighlightingManager.Instance.GetDefinition("C#");
+
+                case Model.File.Browser.BrowserKind.Xml:
+                    return HighlightingManager.Instance.GetDefinition("XML");
+
+                case Model.File.Browser.BrowserKind.Html:
+                    return HighlightingManager.Instance.GetDefinition("HTML");
+
+                default:
+                    return null;
+            }
+        }
+
+        IHighlightingDefinition GetCustomHighlighting(BrowserViewModel browser)
+        {
+            return null;
+        }
+
+        IHighlightingDefinition GetHighlighting(BrowserViewModel browser)
+        {
+            var defaultHighlighting = GetDefaultHighlighting(browser);
+
+            if(defaultHighlighting != null) {
+                return defaultHighlighting;
+            }
+
+            return GetCustomHighlighting(browser);
+        }
+
         #endregion
 
         #region IBrowserDetail
@@ -49,6 +83,8 @@ namespace ContentTypeTextNet.NKit.Main.View.File.Browser
         {
             //var reader = new StreamReader(, browser.Encoding);
             this.editor.Load(browser.FileInfo.OpenRead());
+            this.editor.SyntaxHighlighting = GetHighlighting(browser);
+
         }
 
         #endregion
