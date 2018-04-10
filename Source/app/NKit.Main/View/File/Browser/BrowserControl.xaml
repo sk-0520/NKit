@@ -32,6 +32,13 @@
               </Setter.Value>
             </Setter>
           </DataTrigger>
+          <DataTrigger Binding="{Binding Browser.IsJson, ElementName=root}" Value="True">
+            <Setter Property="Content">
+              <Setter.Value>
+                <app_browser:BrowserJsonControl />
+              </Setter.Value>
+            </Setter>
+          </DataTrigger>
           <DataTrigger Binding="{Binding Browser.IsImage, ElementName=root}" Value="True">
             <Setter Property="Content">
               <Setter.Value>

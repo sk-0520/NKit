@@ -19,10 +19,13 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
 
         PlainText,
         Ini,
+
         CSharp,
 
         Html,
         Xml,
+
+        Json,
 
         Png,
         Jpeg,
@@ -59,6 +62,14 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
             return new[] {
                 BrowserKind.Html,
                 BrowserKind.Xml,
+            }.Any(bk => bk == browserKind);
+        }
+
+
+        public static bool IsJson(this BrowserKind browserKind)
+        {
+            return new[] {
+                BrowserKind.Json,
             }.Any(bk => bk == browserKind);
         }
 

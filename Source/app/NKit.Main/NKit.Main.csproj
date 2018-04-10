@@ -184,7 +184,8 @@
     <Compile Include="Model\Cli\CliManagerModel.cs" />
     <Compile Include="Model\File\Browser\BrowserKind.cs" />
     <Compile Include="Model\File\Browser\BrowserModel.cs" />
-    <Compile Include="Model\File\Browser\XmlHtmlTreeNode.cs" />
+    <Compile Include="ViewModel\File\Browser\ViewWrapper\JsonNode.cs" />
+    <Compile Include="ViewModel\File\Browser\ViewWrapper\XmlHtmlTreeNode.cs" />
     <Compile Include="Model\File\FilePropertySearchResult.cs" />
     <Compile Include="Model\Finder\FinderUtility.cs" />
     <Compile Include="Model\Finder\FindGroupCache.cs" />
@@ -228,6 +229,9 @@
     <Compile Include="View\File\Browser\BrowserDetail.cs" />
     <Compile Include="View\File\Browser\BrowserImageControl.xaml.cs">
       <DependentUpon>BrowserImageControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\File\Browser\BrowserJsonControl.xaml.cs">
+      <DependentUpon>BrowserJsonControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\File\Browser\BrowserTextControl.xaml.cs">
       <DependentUpon>BrowserTextControl.xaml</DependentUpon>
@@ -276,6 +280,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\File\Browser\BrowserImageControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\File\Browser\BrowserJsonControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

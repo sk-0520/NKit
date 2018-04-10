@@ -27,6 +27,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.File.Browser
 
         public bool IsText => Model.IsText;
         public bool IsXmlHtml => Model.IsXmlHtml;
+        public bool IsJson => Model.IsJson;
         public bool IsImage => Model.IsImage;
         public bool IsProgram => Model.IsProgram;
 

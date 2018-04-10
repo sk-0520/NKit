@@ -35,6 +35,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
 
         public bool IsText => BrowserKind.IsText();
         public bool IsXmlHtml => BrowserKind.IsXmlHtml();
+        public bool IsJson => BrowserKind.IsJson();
         public bool IsImage => BrowserKind.IsImage();
         public bool IsProgram => BrowserKind.IsProgram();
 
@@ -52,6 +53,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
                 // ex text
                 new { Kind = BrowserKind.Xml, Extensions = new [] { "xml" } },
                 new { Kind = BrowserKind.Html, Extensions = new [] { "html", "htm" } },
+                new { Kind = BrowserKind.Json, Extensions = new [] { "json" } },
                 // image
                 new { Kind = BrowserKind.Bmp, Extensions = new [] { "bmp" } },
                 new { Kind = BrowserKind.Png, Extensions = new [] { "png" } },
@@ -75,13 +77,19 @@ namespace ContentTypeTextNet.NKit.Main.Model.File.Browser
         public bool CanBrowse(BrowserKind browserKind)
         {
             if(browserKind.IsText()) {
-                if(IsText || IsXmlHtml) {
+                if(IsText || IsXmlHtml || IsJson) {
                     return true;
                 }
             }
 
             if(browserKind.IsXmlHtml()) {
                 if(IsText || IsXmlHtml) {
+                    return true;
+                }
+            }
+
+            if(browserKind.IsJson()) {
+                if(IsText || IsJson) {
                     return true;
                 }
             }

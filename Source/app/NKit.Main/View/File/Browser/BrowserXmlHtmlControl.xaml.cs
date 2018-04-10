@@ -17,6 +17,7 @@ using System.Xml;
 using System.Xml.Linq;
 using ContentTypeTextNet.NKit.Main.Model.File.Browser;
 using ContentTypeTextNet.NKit.Main.ViewModel.File.Browser;
+using ContentTypeTextNet.NKit.Main.ViewModel.File.Browser.ViewWrapper;
 using ContentTypeTextNet.NKit.Utility.Model;
 using HtmlAgilityPack;
 
