@@ -54,7 +54,7 @@
           <TreeView x:Name="treeView" Grid.Column="2" Style="{StaticResource NodeTreeView}" ScrollViewer.ScrollChanged="treeView_ScrollChanged">
             <TreeView.ItemTemplate>
               <HierarchicalDataTemplate ItemsSource="{Binding ChildNodes}">
-                <ContentControl>
+                <ContentControl IsTabStop="False" IsHitTestVisible="False">
                   <ContentControl.Style>
                     <Style TargetType="ContentControl">
                       <Style.Triggers>
@@ -82,7 +82,7 @@
                               <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                   <StackPanel x:Name="rootAttribute" Orientation="Horizontal">
-                                    <ItemsControl ItemsSource="{Binding}">
+                                    <ItemsControl IsTabStop="False" ItemsSource="{Binding}">
                                       <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                           <DataTemplate.Resources>
