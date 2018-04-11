@@ -122,57 +122,6 @@ namespace ContentTypeTextNet.NKit.Browser.View
 
         #endregion
 
-        #region UserControl
-
-        //protected override void OnRender(DrawingContext drawingContext)
-        //{
-        //    base.OnRender(drawingContext);
-
-        //    var items = UIUtility.FindChildren<TreeViewItem>(this.treeView)
-        //        .Where(t => t.IsVisible)
-        //        .Select(t => new { View = t, Data = (XmlHtmlTreeNodeBase)t.DataContext })
-        //        .Where(i => !i.Data.HasText)
-        //        .ToList()
-        //    ;
-
-        //    //this.treeHeader.Children.Clear();
-
-        //    var typeface = new Typeface(
-        //        FontFamily,
-        //        FontStyle,
-        //        FontWeight,
-        //        FontStretch
-        //    );
-        //    foreach(var item in items) {
-        //        var trans = item.View.TransformToAncestor(this.treeView);
-        //        var position = trans.Transform(new Point(0, 0));
-        //        if(position.Y < 0) {
-        //            continue;
-        //        }
-                
-        //        if(this.treeView.ActualHeight < position.Y) {
-        //            continue;
-        //        }
-        //        position.X = 0;
-        //        position.Y = 20;
-        //        var header = new TextBlock() {
-        //            Text = item.Data.Name,
-        //        };
-        //        var formattedText = new FormattedText(item.Data.Name, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, typeface, FontSize, Foreground);
-        //        header.SetValue(Canvas.TopProperty, position.Y);
-        //        //this.treeHeader.Children.Add(header);
-        //        drawingContext.DrawText(formattedText, position);
-
-        //        drawingContext.DrawRoundedRectangle(
-        //        Brushes.Red,
-        //        null,
-        //        new Rect(0, 0, ActualWidth, ActualHeight),
-        //        4.0d, 4.0d);
-        //    }
-        //}
-
-        #endregion
-
         private void webBrowser_Loaded(object sender, RoutedEventArgs e)
         {
             if(this.webBrowser.IsVisible) {
