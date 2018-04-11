@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -54,6 +55,24 @@ namespace ContentTypeTextNet.NKit.JustLooking.Model
             }
 
             Browser = new BrowserModel(browserKind, fileInfo, encoding);
+        }
+
+        public void OpenDirectory()
+        {
+            try {
+                Process.Start(Browser.FileInfo.Directory.FullName);
+            } catch(Exception ex) {
+                Logger.Warning(ex);
+            }
+        }
+
+        public void OpenFile()
+        {
+            try {
+                Process.Start(Browser.FileInfo.FullName);
+            } catch(Exception ex) {
+                Logger.Warning(ex);
+            }
         }
 
         #endregion

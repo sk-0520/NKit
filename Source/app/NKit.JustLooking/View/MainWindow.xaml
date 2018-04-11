@@ -36,7 +36,12 @@
     <StatusBar Grid.Row="1">
       <TextBlock>
         <Run>path:</Run>
-        <Run Text="{Binding FilePath, Mode=OneTime}" />
+        <Hyperlink Command="{Binding OpenDirectoryCommand}">
+          <Run Text="{Binding DirectoryPath, Mode=OneTime}" />
+        </Hyperlink>
+        <Hyperlink Command="{Binding OpenFileCommand}">
+          <Run Text="{Binding FileName, Mode=OneTime}" />
+        </Hyperlink>
       </TextBlock>
     </StatusBar>
   </Grid>
