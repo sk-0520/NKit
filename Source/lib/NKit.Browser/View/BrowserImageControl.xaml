@@ -30,10 +30,10 @@
             <Style TargetType="Run">
               <Style.Triggers>
                 <DataTrigger Binding="{Binding IsAnimation, ElementName=root}" Value="True">
-                  <Setter Property="Text" Value="{Binding AnimationWidth, Mode=OneWay, ElementName=root, StringFormat={}{0:#,0}}" />
+                  <Setter Property="Text" Value="{Binding AnimationWidth, Mode=OneWay, ElementName=root, StringFormat='{}{0:#,0}'}" />
                 </DataTrigger>
               </Style.Triggers>
-              <Setter Property="Text" Value="{Binding Source.Width, Mode=OneWay, ElementName=image, StringFormat={}{0:#,0}}" />
+              <Setter Property="Text" Value="{Binding Source.Width, Mode=OneWay, ElementName=image, StringFormat='{}{0:#,0}'}" />
             </Style>
           </Run.Style>
         </Run>
@@ -43,10 +43,10 @@
             <Style TargetType="Run">
               <Style.Triggers>
                 <DataTrigger Binding="{Binding IsAnimation, ElementName=root}" Value="True">
-                  <Setter Property="Text" Value="{Binding AnimationHeight, Mode=OneWay, ElementName=root, StringFormat={}{0:#,0}}" />
+                  <Setter Property="Text" Value="{Binding AnimationHeight, Mode=OneWay, ElementName=root, StringFormat='{}{0:#,0}'}" />
                 </DataTrigger>
               </Style.Triggers>
-              <Setter Property="Text" Value="{Binding Source.Height, Mode=OneWay, ElementName=image, StringFormat={}{0:#,0}}" />
+              <Setter Property="Text" Value="{Binding Source.Height, Mode=OneWay, ElementName=image, StringFormat='{}{0:#,0}'}" />
             </Style>
           </Run.Style>
         </Run>
