@@ -4,17 +4,21 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ContentTypeTextNet.NKit.Utility.ViewModel;
 using Newtonsoft.Json.Linq;
 
 namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
 {
-    public class JsonNode
+    public class JsonNode: ViewModelBase, INodeHeader
     {
         #region variable
 
         IList<JsonNode> _childNodes = null;
 
+        bool _isSelected;
+
         #endregion
+
         public JsonNode(JToken token)
         {
             Token = token;
@@ -90,6 +94,18 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
                 var value = jvalue.Value;
                 return value.ToString();
             }
+        }
+
+        #endregion
+
+        #region INodeHeader
+
+        public string DisplayHeader => Name;
+
+        public bool IsSelected
+        {
+            get { return this._isSelected; }
+            set { SetProperty(ref this._isSelected, value); }
         }
 
         #endregion

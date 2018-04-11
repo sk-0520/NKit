@@ -16,45 +16,26 @@
   d:DesignHeight="200"
 >
   <UserControl.Resources>
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/NKit.Browser;component/View/Resources/NodeResourceDictionary.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+      <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </ResourceDictionary>
   </UserControl.Resources>
   <Grid>
     <TabControl SelectedItem="{Binding SelectedTabItem, ElementName=root}">
       <TabItem x:Name="treeTabItem" Header="tree">
         <Grid>
           <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="15*" />
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="9*" />
+            <ColumnDefinition Width="85*" />
           </Grid.ColumnDefinitions>
 
-          <ListBox Grid.Column="0" x:Name="treeHeader" >
-            <ListBox.ItemsPanel>
-              <ItemsPanelTemplate>
-                <Canvas />
-              </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemContainerStyle>
-              <Style TargetType="ListBoxItem">
-                <Setter Property="Canvas.Top" Value="{Binding Position.Y}" />
-                <Setter Property="Width" Value="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Canvas} }" />
-                <Setter Property="IsSelected" Value="{Binding Data.IsSelected, Mode=TwoWay}" />
-              </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
-              <DataTemplate>
-                <TextBlock Text="{Binding Data.DisplayHeader}" />
-              </DataTemplate>
-            </ListBox.ItemTemplate>
-          </ListBox>
+          <ListBox Grid.Column="0" x:Name="treeHeader" Style="{StaticResource HeaderListBox}" />
 
-          <TreeView x:Name="treeView" Grid.Column="2" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard" ScrollViewer.CanContentScroll="True" ScrollViewer.ScrollChanged="treeView_ScrollChanged" >
-            <TreeView.ItemContainerStyle>
-              <Style TargetType="TreeViewItem">
-                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=OneTime}" />
-                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-              </Style>
-            </TreeView.ItemContainerStyle>
+          <TreeView x:Name="treeView" Grid.Column="2" Style="{StaticResource NodeTreeView}" ScrollViewer.ScrollChanged="treeView_ScrollChanged">
             <TreeView.ItemTemplate>
               <HierarchicalDataTemplate ItemsSource="{Binding ChildNodes}">
                 <ContentControl>

@@ -196,6 +196,7 @@ namespace ContentTypeTextNet.NKit.Browser.View
                 .Where(i => !i.Data.HasText)
                 .Select(i => new { i.View, i.Data, Position = i.View.TransformToAncestor(this.treeView).Transform(new Point(0, 0)) })
                 .Where(i => 0  < i.Position.Y&& i.Position.Y < this.treeView.ActualHeight)
+                .Select(i => new HeaderNode<XmlHtmlTreeNodeBase>(i.Data, i.Position))
                 .ToList()
             ;
             
