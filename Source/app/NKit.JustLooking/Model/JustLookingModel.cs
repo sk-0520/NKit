@@ -60,7 +60,7 @@ namespace ContentTypeTextNet.NKit.JustLooking.Model
         public void OpenDirectory()
         {
             try {
-                Process.Start(Browser.FileInfo.Directory.FullName);
+                Process.Start("explorer", $"/e, /select,{Browser.FileInfo.FullName}");
             } catch(Exception ex) {
                 Logger.Warning(ex);
             }
