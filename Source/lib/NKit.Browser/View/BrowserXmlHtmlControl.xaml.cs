@@ -190,17 +190,7 @@ namespace ContentTypeTextNet.NKit.Browser.View
 
         private void treeView_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            var items = UIUtility.FindChildren<TreeViewItem>(this.treeView)
-                .Where(t => t.IsVisible)
-                .Select(t => new { View = t, Data = (XmlHtmlTreeNodeBase)t.DataContext })
-                .Where(i => !i.Data.HasText)
-                .Select(i => new { i.View, i.Data, Position = i.View.TransformToAncestor(this.treeView).Transform(new Point(0, 0)) })
-                .Where(i => 0  < i.Position.Y&& i.Position.Y < this.treeView.ActualHeight)
-                .Select(i => new HeaderNode<XmlHtmlTreeNodeBase>(i.Data, i.Position))
-                .ToList()
-            ;
-            
-            this.treeHeader.ItemsSource = items;
+            this.treeHeader.ItemsSource = HeaderNodeUtility.GetHeaderNodes<XmlHtmlTreeNodeBase>(this.treeView);
         }
     }
 }

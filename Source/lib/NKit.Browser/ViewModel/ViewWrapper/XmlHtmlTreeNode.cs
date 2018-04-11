@@ -76,6 +76,8 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
             set { SetProperty(ref this._isSelected, value); }
         }
 
+        public bool IsHeader => !HasText;
+
         #endregion
     }
 
