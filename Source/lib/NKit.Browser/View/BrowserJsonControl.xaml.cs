@@ -72,12 +72,12 @@ namespace ContentTypeTextNet.NKit.Browser.View
 
         public void BuildControl(BrowserViewModel browser)
         {
-            SelectedTabItem = this.treeView;
+            SelectedTabItem = this.treeTabItem;
 
             lock(browser) {
                 using(var reader = new JsonTextReader(new StreamReader(browser.GetSharedStream(), browser.Encoding))) {
                     var json = JObject.Load(reader);
-                    this.node.ItemsSource = json.Children().Select(c => new JsonNode(c));
+                    this.treeView.ItemsSource = json.Children().Select(c => new JsonNode(c));
                 }
             }
         }

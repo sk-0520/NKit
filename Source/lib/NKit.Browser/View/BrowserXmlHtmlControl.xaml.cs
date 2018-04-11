@@ -102,7 +102,7 @@ namespace ContentTypeTextNet.NKit.Browser.View
 
         public void BuildControl(BrowserViewModel browser)
         {
-            SelectedTabItem = this.treeView;
+            SelectedTabItem = this.treeTabItem;
             try {
                 var nodes = new List<XmlHtmlTreeNodeBase>();
 
@@ -112,9 +112,9 @@ namespace ContentTypeTextNet.NKit.Browser.View
                 } else {
                     nodes.AddRange(GetXmlTreeNodes(browser));
                 }
-                this.nodes.ItemsSource = nodes.Where(n => n.Showable);
+                this.treeView.ItemsSource = nodes.Where(n => n.Showable);
             } catch(Exception ex) {
-                this.nodes.ItemsSource = new[] { new ExceptionNode(ex) };
+                this.treeView.ItemsSource = new[] { new ExceptionNode(ex) };
             }
 
         }
