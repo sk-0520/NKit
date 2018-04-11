@@ -21,66 +21,78 @@
   <Grid>
     <TabControl SelectedItem="{Binding SelectedTabItem, ElementName=root}">
       <TabItem x:Name="treeTabItem" Header="tree">
-        <TreeView x:Name="treeView" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard" ScrollViewer.CanContentScroll="True">
-          <TreeView.ItemContainerStyle>
-            <Style TargetType="TreeViewItem">
-              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=OneTime}" />
-            </Style>
-          </TreeView.ItemContainerStyle>
-          <TreeView.ItemTemplate>
-            <HierarchicalDataTemplate ItemsSource="{Binding ChildNodes}">
-              <ContentControl>
-                <ContentControl.Style>
-                  <Style TargetType="ContentControl">
-                    <Style.Triggers>
-                      <DataTrigger Binding="{Binding HasText}" Value="True">
-                        <Setter Property="Content">
-                          <Setter.Value>
-                            <TextBlock Text="{Binding Text, Mode=OneTime}" />
-                          </Setter.Value>
-                        </Setter>
-                      </DataTrigger>
-                    </Style.Triggers>
-                    <Setter Property="Content">
-                      <Setter.Value>
-                        <WrapPanel Orientation="Horizontal">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="9*" />
+          </Grid.ColumnDefinitions>
 
-                          <TextBlock Text="{Binding Name, Mode=OneTime}" />
+          <Canvas Grid.Column="0" x:Name="treeHeader" ClipToBounds="True" />
 
-                          <!-- 属性 -->
-                          <ItemsControl ItemsSource="{Binding Attributes, Mode=OneTime}" Margin="{StaticResource LeftMargin}" Visibility="{Binding HasAttribute, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <ItemsControl.ItemsPanel>
-                              <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal" />
-                              </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                              <DataTemplate>
-                                <StackPanel x:Name="rootAttribute" Orientation="Horizontal">
-                                  <ItemsControl ItemsSource="{Binding}">
-                                    <ItemsControl.ItemTemplate>
-                                      <DataTemplate>
-                                        <TextBlock Margin="{StaticResource LeftMargin}">
-                                          <Run Text="{Binding DataContext.Key, Mode=OneTime, ElementName=rootAttribute}" />
-                                          <Run Text="=" />
-                                          <Run Text="{Binding Mode=OneTime}" />
-                                        </TextBlock>
-                                      </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                  </ItemsControl>
-                                </StackPanel>
-                              </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                          </ItemsControl>
-                        </WrapPanel>
-                      </Setter.Value>
-                    </Setter>
-                  </Style>
-                </ContentControl.Style>
-              </ContentControl>
-            </HierarchicalDataTemplate>
-          </TreeView.ItemTemplate>
-        </TreeView>
+          <TreeView x:Name="treeView" Grid.Column="2" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard" ScrollViewer.CanContentScroll="True" ScrollViewer.ScrollChanged="treeView_ScrollChanged" >
+            <TreeView.ItemContainerStyle>
+              <Style TargetType="TreeViewItem">
+                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=OneTime}" />
+              </Style>
+            </TreeView.ItemContainerStyle>
+            <TreeView.ItemTemplate>
+              <HierarchicalDataTemplate ItemsSource="{Binding ChildNodes}">
+                <ContentControl>
+                  <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding HasText}" Value="True">
+                          <Setter Property="Content">
+                            <Setter.Value>
+                              <TextBlock Text="{Binding Text, Mode=OneTime}" />
+                            </Setter.Value>
+                          </Setter>
+                        </DataTrigger>
+                      </Style.Triggers>
+                      <Setter Property="Content">
+                        <Setter.Value>
+                          <WrapPanel Orientation="Horizontal">
+
+                            <TextBlock Text="{Binding Name, Mode=OneTime}" />
+
+                            <!-- 属性 -->
+                            <ItemsControl ItemsSource="{Binding Attributes, Mode=OneTime}" Margin="{StaticResource LeftMargin}" Visibility="{Binding HasAttribute, Converter={StaticResource BooleanToVisibilityConverter}}">
+                              <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                  <WrapPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                              </ItemsControl.ItemsPanel>
+                              <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                  <StackPanel x:Name="rootAttribute" Orientation="Horizontal">
+                                    <ItemsControl ItemsSource="{Binding}">
+                                      <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                          <TextBlock Margin="{StaticResource LeftMargin}">
+                                            <Run Text="{Binding DataContext.Key, Mode=OneTime, ElementName=rootAttribute}" />
+                                            <Run Text="=" />
+                                            <Run Text="{Binding Mode=OneTime}" />
+                                          </TextBlock>
+                                        </DataTemplate>
+                                      </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                  </StackPanel>
+                                </DataTemplate>
+                              </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                          </WrapPanel>
+                        </Setter.Value>
+                      </Setter>
+                    </Style>
+                  </ContentControl.Style>
+                </ContentControl>
+              </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+          </TreeView>
+
+          <GridSplitter Grid.Column="1" Style="{StaticResource DefaultVericalGridSplitter}" />
+        </Grid>
       </TabItem>
       <TabItem Header="text">
         <app_browser:BrowserTextControl />
