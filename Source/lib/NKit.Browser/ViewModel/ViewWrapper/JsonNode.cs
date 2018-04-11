@@ -16,6 +16,7 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
         IList<JsonNode> _childNodes = null;
 
         bool _isSelected;
+        bool _isExpanded = true;
 
         #endregion
 
@@ -25,7 +26,6 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
         }
 
         #region property
-        public bool IsExpanded { get; } = true;
 
         public JToken Token { get; }
 
@@ -104,6 +104,11 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
         {
             get { return this._isSelected; }
             set { SetProperty(ref this._isSelected, value); }
+        }
+        public bool IsExpanded
+        {
+            get { return this._isExpanded; }
+            set { SetProperty(ref this._isExpanded, value); }
         }
 
         public bool IsHeader => !IsValue;

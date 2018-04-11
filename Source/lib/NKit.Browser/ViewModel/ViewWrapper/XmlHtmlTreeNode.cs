@@ -22,12 +22,11 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
         #region variable
 
         bool _isSelected = false;
+        bool _isExpanded = true;
 
         #endregion
 
         #region property
-
-        public bool IsExpanded { get; } = true;
 
         public abstract IEnumerable<XmlHtmlTreeNodeBase> ChildNodesCore { get; }
         public IEnumerable<XmlHtmlTreeNodeBase> ChildNodes => ChildNodesCore.Where(n => n.Showable);
@@ -74,6 +73,12 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
         {
             get { return this._isSelected; }
             set { SetProperty(ref this._isSelected, value); }
+        }
+
+        public bool IsExpanded
+        {
+            get { return this._isExpanded; }
+            set { SetProperty(ref this._isExpanded, value); }
         }
 
         public bool IsHeader => !HasText;

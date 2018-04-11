@@ -17,6 +17,7 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
         string DisplayHeader { get; }
 
         bool IsSelected { get; set; }
+        bool IsExpanded { get; set; }
 
         bool IsHeader { get; }
 
