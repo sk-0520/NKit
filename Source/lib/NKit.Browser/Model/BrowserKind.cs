@@ -22,8 +22,8 @@ namespace ContentTypeTextNet.NKit.Browser.Model
 
         CSharp,
 
-        Html,
         Xml,
+        Html,
 
         Json,
 
