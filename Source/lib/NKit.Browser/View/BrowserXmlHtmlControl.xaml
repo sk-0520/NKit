@@ -8,6 +8,8 @@
 
   xmlns:htmlagilitypack="clr-namespace:HtmlAgilityPack;assembly=HtmlAgilityPack"
 
+  xmlns:app_utility_view_converter="clr-namespace:ContentTypeTextNet.NKit.Utility.View.Converter;assembly=NKit.Utility"
+  
   xmlns:app_browser="clr-namespace:ContentTypeTextNet.NKit.Browser.View"
 
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -21,6 +23,20 @@
         <ResourceDictionary Source="pack://application:,,,/NKit.Browser;component/View/Resources/NodeResourceDictionary.xaml" />
       </ResourceDictionary.MergedDictionaries>
       <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+      <app_utility_view_converter:TextIsNullOrWhiteSpaceConverter x:Key="TextIsNullOrWhiteSpaceConverter" />
+
+      <Style x:Key="MarkupSymbol" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#ff0000bb" />
+      </Style>
+      <Style x:Key="TagName" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#ff880000" />
+      </Style>
+      <Style x:Key="AttributeKey" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#ff888800" />
+      </Style>
+      <Style x:Key="AttributeValue" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#ff008888" />
+      </Style>
     </ResourceDictionary>
   </UserControl.Resources>
   <Grid>
@@ -52,12 +68,12 @@
                       </Style.Triggers>
                       <Setter Property="Content">
                         <Setter.Value>
-                          <WrapPanel Orientation="Horizontal">
-
-                            <TextBlock Text="{Binding Name, Mode=OneTime}" />
+                          <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&lt;" Style="{StaticResource MarkupSymbol}" />
+                            <TextBlock Text="{Binding Name, Mode=OneTime}" Style="{StaticResource TagName}" />
 
                             <!-- 属性 -->
-                            <ItemsControl ItemsSource="{Binding Attributes, Mode=OneTime}" Margin="{StaticResource LeftMargin}" Visibility="{Binding HasAttribute, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <ItemsControl IsTabStop="False" ItemsSource="{Binding Attributes, Mode=OneTime}" Margin="{StaticResource LeftMargin}" Visibility="{Binding HasAttribute, Converter={StaticResource BooleanToVisibilityConverter}}">
                               <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                   <WrapPanel Orientation="Horizontal" />
@@ -69,11 +85,27 @@
                                     <ItemsControl ItemsSource="{Binding}">
                                       <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                          <TextBlock Margin="{StaticResource LeftMargin}">
-                                            <Run Text="{Binding DataContext.Key, Mode=OneTime, ElementName=rootAttribute}" />
-                                            <Run Text="=" />
-                                            <Run Text="{Binding Mode=OneTime}" />
-                                          </TextBlock>
+                                          <DataTemplate.Resources>
+                                            <!--
+                                            空白判定するとあんまりよくない感じ,ライブラリ側が null なのか空文字列なのか取れてない
+                                            <Style x:Key="AttibuteValue" TargetType="TextBlock">
+                                              <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Converter={StaticResource TextIsNullOrWhiteSpaceConverter}}" Value="True">
+                                                  <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                                  <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                              </Style.Triggers>
+                                            </Style>
+                                            -->
+                                          </DataTemplate.Resources>
+                                          <StackPanel Orientation="Horizontal" Margin="{StaticResource LeftMargin}">
+                                            <TextBlock Text="{Binding DataContext.Key, Mode=OneTime, ElementName=rootAttribute}" Style="{StaticResource AttributeKey}" />
+                                            <TextBlock Text="=&quot;" Style="{StaticResource MarkupSymbol}" />
+                                            <TextBlock Text="{Binding Mode=OneTime}" Style="{StaticResource AttributeValue}" />
+                                            <TextBlock Text="&quot;" Style="{StaticResource MarkupSymbol}" />
+                                          </StackPanel>
                                         </DataTemplate>
                                       </ItemsControl.ItemTemplate>
                                     </ItemsControl>
@@ -81,7 +113,9 @@
                                 </DataTemplate>
                               </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                          </WrapPanel>
+
+                            <TextBlock Text="&gt;" Style="{StaticResource MarkupSymbol}" />
+                          </StackPanel>
                         </Setter.Value>
                       </Setter>
                     </Style>
