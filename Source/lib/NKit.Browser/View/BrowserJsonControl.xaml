@@ -24,7 +24,7 @@
             <HierarchicalDataTemplate ItemsSource="{Binding ChildNodes}">
               <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Name}"/>
-                <TextBlock Text="{Binding Token.Type}" Margin="8,0,0,0" />
+                <TextBlock Text="{Binding Token.Type}" Margin="{StaticResource LeftMargin}" />
               </StackPanel>
             </HierarchicalDataTemplate>
           </TreeView.ItemTemplate>

@@ -48,7 +48,7 @@
                           <TextBlock Text="{Binding Name, Mode=OneTime}" />
 
                           <!-- 属性 -->
-                          <ItemsControl ItemsSource="{Binding Attributes, Mode=OneTime}" Margin="8,0,0,0" Visibility="{Binding HasAttribute, Converter={StaticResource BooleanToVisibilityConverter}}">
+                          <ItemsControl ItemsSource="{Binding Attributes, Mode=OneTime}" Margin="{StaticResource LeftMargin}" Visibility="{Binding HasAttribute, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <ItemsControl.ItemsPanel>
                               <ItemsPanelTemplate>
                                 <WrapPanel Orientation="Horizontal" />
@@ -60,7 +60,7 @@
                                   <ItemsControl ItemsSource="{Binding}">
                                     <ItemsControl.ItemTemplate>
                                       <DataTemplate>
-                                        <TextBlock Margin="8,0,0,0">
+                                        <TextBlock Margin="{StaticResource LeftMargin}">
                                           <Run Text="{Binding DataContext.Key, Mode=OneTime, ElementName=rootAttribute}" />
                                           <Run Text="=" />
                                           <Run Text="{Binding Mode=OneTime}" />

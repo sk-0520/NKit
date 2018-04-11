@@ -96,6 +96,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="..\..\common\NKit.Common.Link\Resources\ImageDictionary.xaml">
+      <Link>Common\Resources\ImageDictionary.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\common\NKit.Common.Link\Resources\Theme\Generic.xaml">
+      <Link>Common\Resources\Theme\Generic.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

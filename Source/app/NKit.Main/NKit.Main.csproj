@@ -230,6 +230,16 @@
     <Compile Include="View\SystemEnvironment\SystemEnvironmentManagerControl.xaml.cs">
       <DependentUpon>SystemEnvironmentManagerControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="..\..\common\NKit.Common.Link\Resources\ImageDictionary.xaml">
+      <Link>Common\Resources\ImageDictionary.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\common\NKit.Common.Link\Resources\Theme\Generic.xaml">
+      <Link>Common\Resources\Theme\Generic.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\Capture\CaptureGroupControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -368,15 +378,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Resources\Theme\Generic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Control\RunnableControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Resources\ImageDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
