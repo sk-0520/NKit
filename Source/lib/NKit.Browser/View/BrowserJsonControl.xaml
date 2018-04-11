@@ -17,6 +17,41 @@
         <ResourceDictionary Source="pack://application:,,,/NKit.Browser;component/View/Resources/NodeResourceDictionary.xaml" />
       </ResourceDictionary.MergedDictionaries>
       <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+      <Style x:Key="KeyValue" TargetType="TextBlock">
+        <Style.Triggers>
+          <DataTrigger Binding="{Binding Token.Type}" Value="Property">
+            <Setter Property="Foreground" Value="#ff880000" />
+            <Setter Property="FontWeight" Value="Bold" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Token.Type}" Value="Object">
+            <Setter Property="Foreground" Value="#ff008800" />
+            <Setter Property="FontWeight" Value="Bold" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Token.Type}" Value="Array">
+            <Setter Property="Foreground" Value="#ff000088" />
+            <Setter Property="FontWeight" Value="Bold" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Token.Type}" Value="Null">
+            <Setter Property="Foreground" Value="#ff333333" />
+            <Setter Property="FontStyle" Value="Italic" />
+            <Setter Property="TextDecorations" Value="Underline" />
+            <Setter Property="Text" Value="NULL" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Token.Type}" Value="String">
+            <Setter Property="Text" Value="{Binding Name, StringFormat='&quot;{0}&quot;'}" />
+          </DataTrigger>
+        </Style.Triggers>
+        <Setter Property="Text" Value="{Binding Name}" />
+      </Style>
+      <Style x:Key="ValueType" TargetType="TextBlock">
+        <Style.Triggers>
+          <DataTrigger Binding="{Binding Token.Type}" Value="Null">
+            <Setter Property="Visibility" Value="Collapsed" />
+          </DataTrigger>
+        </Style.Triggers>
+        <Setter Property="Foreground" Value="#ff888888" />
+        <Setter Property="Margin" Value="{StaticResource LeftMargin}" />
+      </Style>
     </ResourceDictionary>
   </UserControl.Resources>
   <Grid>
@@ -35,8 +70,8 @@
             <TreeView.ItemTemplate>
               <HierarchicalDataTemplate ItemsSource="{Binding ChildNodes}">
                 <StackPanel Orientation="Horizontal">
-                  <TextBlock Text="{Binding Name}"/>
-                  <TextBlock Text="{Binding Token.Type}" Margin="{StaticResource LeftMargin}" />
+                  <TextBlock Style="{StaticResource KeyValue}" />
+                  <TextBlock Text="{Binding Token.Type}" Style="{StaticResource ValueType}" />
                 </StackPanel>
               </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>

@@ -22,14 +22,12 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
         public JsonNode(JToken token)
         {
             Token = token;
-            TokenType = Token.GetType();
         }
 
         #region property
         public bool IsExpanded { get; } = true;
 
         public JToken Token { get; }
-        Type TokenType { get; }
 
 
         public IEnumerable<JsonNode> ChildNodes
@@ -87,7 +85,7 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
                 Debug.Assert(IsValue);
 
                 if(ValueIsNull) {
-                    return "<null>";
+                    return string.Empty;
                 }
 
                 var jvalue = (JValue)Token;
