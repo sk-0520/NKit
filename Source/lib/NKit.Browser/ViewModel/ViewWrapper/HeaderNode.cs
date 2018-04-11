@@ -53,6 +53,7 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
                 .Select(t => new { View = t, Data = (TViewModel)t.DataContext })
                 .Where(i => i.Data.IsHeader)
                 .Select(i => new { i.View, i.Data, Position = i.View.TransformToAncestor(treeView).Transform(new Point(0, 0)) })
+//                .Select(i => new { i.View, i.Data, Position = new Point(i.Position.X, i.Position.Y - treeView.Margin.Top - treeView.Padding.Top) })
                 .Where(i => 0 < i.Position.Y && i.Position.Y < treeView.ActualHeight)
                 .Select(i => new HeaderNode<TViewModel>(i.Data, i.Position))
             ;
