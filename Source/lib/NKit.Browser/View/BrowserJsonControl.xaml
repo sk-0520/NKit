@@ -14,7 +14,7 @@
   <Grid>
     <TabControl SelectedItem="{Binding SelectedTabItem, ElementName=root}">
       <TabItem x:Name="treeTabItem" Header="tree">
-        <TreeView x:Name="treeView" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Item" ScrollViewer.CanContentScroll="True" VirtualizingPanel.VirtualizationMode="Standard">
+        <TreeView x:Name="treeView" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard" ScrollViewer.CanContentScroll="True">
           <TreeView.ItemContainerStyle>
             <Style TargetType="TreeViewItem">
               <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=OneTime}" />
