@@ -6,15 +6,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using ContentTypeTextNet.NKit.Common;
+using ContentTypeTextNet.NKit.Utility.ViewModel;
 using HtmlAgilityPack;
 
 namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
 {
-    public abstract class XmlHtmlTreeNodeBase
+    public abstract class XmlHtmlTreeNodeBase: ViewModelBase, INodeHeader
     {
         #region define
 
         protected static IEnumerable<IGrouping<string, string>> NoneAttributes { get; } = Enumerable.Empty<IGrouping<string, string>>();
+
+        #endregion
+
+        #region variable
+
+        bool _isSelected = false;
 
         #endregion
 
@@ -55,6 +62,18 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
             ;
 
             return string.Join(Environment.NewLine, contents);
+        }
+
+        #endregion
+
+        #region INodeHeader
+
+        public string DisplayHeader => Name;
+
+        public bool IsSelected
+        {
+            get { return this._isSelected; }
+            set { SetProperty(ref this._isSelected, value); }
         }
 
         #endregion

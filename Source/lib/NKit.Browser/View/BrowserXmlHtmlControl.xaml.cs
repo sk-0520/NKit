@@ -198,17 +198,8 @@ namespace ContentTypeTextNet.NKit.Browser.View
                 .Where(i => 0  < i.Position.Y&& i.Position.Y < this.treeView.ActualHeight)
                 .ToList()
             ;
-
-            this.treeHeader.Children.Clear();
-
-            foreach(var item in items) {
-                var header = new TextBlock() {
-                    Text = item.Data.Name,
-                };
-                header.SetValue(Canvas.TopProperty, item.Position.Y);
-                this.treeHeader.Children.Add(header);
-            }
-
+            
+            this.treeHeader.ItemsSource = items;
         }
     }
 }

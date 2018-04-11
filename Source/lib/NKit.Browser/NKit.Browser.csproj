@@ -78,6 +78,7 @@
     <Compile Include="Model\BrowserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\BrowserViewModel.cs" />
+    <Compile Include="ViewModel\ViewWrapper\INodeHeader.cs" />
     <Compile Include="ViewModel\ViewWrapper\JsonNode.cs" />
     <Compile Include="ViewModel\ViewWrapper\XmlHtmlTreeNode.cs" />
     <Compile Include="View\BrowserControl.xaml.cs">

@@ -28,12 +28,31 @@
             <ColumnDefinition Width="9*" />
           </Grid.ColumnDefinitions>
 
-          <Canvas Grid.Column="0" x:Name="treeHeader" ClipToBounds="True" />
+          <ListBox Grid.Column="0" x:Name="treeHeader" >
+            <ListBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <Canvas />
+              </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemContainerStyle>
+              <Style TargetType="ListBoxItem">
+                <Setter Property="Canvas.Top" Value="{Binding Position.Y}" />
+                <Setter Property="Width" Value="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Canvas} }" />
+                <Setter Property="IsSelected" Value="{Binding Data.IsSelected, Mode=TwoWay}" />
+              </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Data.DisplayHeader}" />
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
 
           <TreeView x:Name="treeView" Grid.Column="2" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard" ScrollViewer.CanContentScroll="True" ScrollViewer.ScrollChanged="treeView_ScrollChanged" >
             <TreeView.ItemContainerStyle>
               <Style TargetType="TreeViewItem">
                 <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=OneTime}" />
+                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
               </Style>
             </TreeView.ItemContainerStyle>
             <TreeView.ItemTemplate>
