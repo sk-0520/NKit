@@ -100,7 +100,7 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
 
         #region INodeHeader
 
-        public string DisplayHeader => Name;
+        public string DisplayHeader => IsProperty ? Name: $"<{Token.Type}>";
 
         public bool IsSelected
         {
