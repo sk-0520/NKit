@@ -23,7 +23,18 @@ namespace ContentTypeTextNet.NKit.JustLooking.ViewModel
         public BrowserViewModel Browser => new BrowserViewModel(Model.Browser);
 
         public string FilePath => Model.FilePath;
-        public string DirectoryPath => Path.GetDirectoryName(FilePath) + Path.DirectorySeparatorChar;
+        public string DirectoryPath
+        {
+            get
+            {
+                var dirPath = Path.GetDirectoryName(FilePath);
+                if(dirPath.Last() == Path.DirectorySeparatorChar) {
+                    return dirPath;
+                }
+
+                return dirPath + Path.DirectorySeparatorChar;
+            }
+        }
         public string FileName => Path.GetFileName(FilePath);
 
         #endregion
