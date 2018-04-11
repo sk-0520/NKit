@@ -57,6 +57,7 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
 //                .Select(i => new { i.View, i.Data, Position = new Point(i.Position.X, i.Position.Y - treeView.Margin.Top - treeView.Padding.Top) })
                 .Where(i => 0 < i.Position.Y && i.Position.Y < treeView.ActualHeight)
                 .Select(i => new HeaderNode<TViewModel>(i.Data, i.Position))
+                .ToList()
             ;
 
             return items;

@@ -88,6 +88,12 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
 
     public sealed class HtmlTreeNode : XmlHtmlTreeNodeBase
     {
+        #region variable
+
+        IList<HtmlTreeNode> _children;
+
+        #endregion
+
         public HtmlTreeNode(HtmlNode node)
         {
             Node = node;
@@ -101,7 +107,18 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
 
         #region NodeBase
 
-        public override IEnumerable<XmlHtmlTreeNodeBase> ChildNodesCore => Node.ChildNodes.Cast<HtmlNode>().Select(n => new HtmlTreeNode(n));
+        public override IEnumerable<XmlHtmlTreeNodeBase> ChildNodesCore {
+            get {
+                if(this._children == null) {
+                    this._children = Node.ChildNodes
+                        .Cast<HtmlNode>()
+                        .Select(n => new HtmlTreeNode(n))
+                        .ToList()
+                    ;
+                }
+                return this._children;
+            }
+        }
 
         public override string Name => Node.OriginalName;
 
@@ -116,6 +133,12 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
 
     public sealed class XmlTreeNode : XmlHtmlTreeNodeBase
     {
+        #region variable
+
+        IList<XmlTreeNode> _children;
+
+        #endregion
+
         public XmlTreeNode(XmlNode node)
         {
             Node = node;
@@ -129,7 +152,20 @@ namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
 
         #region NodeBase
 
-        public override IEnumerable<XmlHtmlTreeNodeBase> ChildNodesCore => Node.ChildNodes.Cast<XmlNode>().Select(n => new XmlTreeNode(n));
+        public override IEnumerable<XmlHtmlTreeNodeBase> ChildNodesCore
+        {
+            get
+            {
+                if(this._children == null) {
+                    this._children = Node.ChildNodes
+                        .Cast<XmlNode>()
+                        .Select(n => new XmlTreeNode(n))
+                        .ToList()
+                    ;
+                }
+                return this._children;
+            }
+        }
 
         public override string Name => Node.Name;
 
