@@ -143,5 +143,59 @@ namespace ContentTypeTextNet.NKit.Main.Properties {
                 return ResourceManager.GetString("String_View_Control_RunnableControl_RunText", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   簡易表示 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_ViewModel_Finder_FindItemDetail_Browse {
+            get {
+                return ResourceManager.GetString("String_ViewModel_Finder_FindItemDetail_Browse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   基本 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_ViewModel_Finder_FindItemDetail_General {
+            get {
+                return ResourceManager.GetString("String_ViewModel_Finder_FindItemDetail_General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   MS Office に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_ViewModel_Finder_FindItemDetail_MicrosoftOffice {
+            get {
+                return ResourceManager.GetString("String_ViewModel_Finder_FindItemDetail_MicrosoftOffice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   PDF に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_ViewModel_Finder_FindItemDetail_Pdf {
+            get {
+                return ResourceManager.GetString("String_ViewModel_Finder_FindItemDetail_Pdf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   テキスト に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_ViewModel_Finder_FindItemDetail_Text {
+            get {
+                return ResourceManager.GetString("String_ViewModel_Finder_FindItemDetail_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   XML/HTML に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_ViewModel_Finder_FindItemDetail_XmlHtml {
+            get {
+                return ResourceManager.GetString("String_ViewModel_Finder_FindItemDetail_XmlHtml", resourceCulture);
+            }
+        }
     }
 }

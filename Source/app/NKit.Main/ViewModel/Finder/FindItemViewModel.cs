@@ -24,37 +24,26 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         bool _isSelected;
 
-        bool _isSelectedContentGeneral;
-        bool _isSelectedContentText;
-        bool _isSelectedContentMsOffice;
-        bool _isSelectedContentPdf;
-        bool _isSelectedContentXmlHtml;
-
         #endregion
 
         public FindItemViewModel(FindItemModel model)
             : base(model)
         {
             GeneralDetail = new FindItemGeneralDetailViewModel(Model);
+            BrowserDetail = new FindItemBrowserDetailViewModel(Model);
+            TextDetail = new FindItemTextDetailViewModel(Model);
+            MsOfficeDetail = new FindItemMicrosoftOfficeDetailViewModel(Model);
+            PdfDetail = new FindItemPdfDetailViewModel(Model);
+            XmlHtmlDetail = new FindItemXmlHtmlDetailViewModel(Model);
 
-            // だっせぇ
-            if(Model.FileContentSearchResult.IsMatched) {
-                if(ContentIsText) {
-                    IsSelectedContentText = true;
-                }
-                if(ContentIsXmlHtml) {
-                    IsSelectedContentXmlHtml = true;
-                }
-                if(ContentIsPdf) {
-                    IsSelectedContentPdf = true;
-                }
-                if(ContentIsMsOffice) {
-                    IsSelectedContentMsOffice = true;
-                }
-            }
-            if(!(ContentIsText || ContentIsXmlHtml || IsSelectedContentPdf || ContentIsMsOffice)) {
-                IsSelectedContentGeneral = true;
-            }
+            DetailItems = new FindItemDetailViewModelBase[] {
+                GeneralDetail,
+                BrowserDetail,
+                TextDetail,
+                MsOfficeDetail,
+                PdfDetail,
+                XmlHtmlDetail,
+            };
         }
 
         #region property
@@ -63,6 +52,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public bool MatchedSize => Model.MatchedFileSize;
         public bool MatchedProperty => Model.FilePropertySearchResult.IsMatched;
         public bool MatchedContent => Model.FileContentSearchResult.IsMatched;
+
+        public IReadOnlyList<TextSearchMatch> FileNameMatches => Model.FileNameSearchResult.Matches;
 
         public string RelativeDirectoryPath => Model.RelativeDirectoryPath;
 
@@ -76,184 +67,14 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public long FileSize => GeneralDetail.FileSize;
         public bool IsHiddenFile => GeneralDetail.IsHiddenFile;
 
+        public FindItemDetailViewModelBase[] DetailItems { get; }
+
         public FindItemGeneralDetailViewModel GeneralDetail { get; }
-
-        public IReadOnlyList<TextSearchMatch> FileNameMatches => Model.FileNameSearchResult.Matches;
-
-        public bool ContentIsText => Model.FileContentSearchResult.IsMatched;
-        public TextSearchResult ContentText => Model.FileContentSearchResult.Text;
-
-        //public IReadOnlyList<TextSearchMatch> ContentMatches
-        //{
-        //    get
-        //    {
-        //        if(!ContentIsText) {
-        //            return null;
-        //        }
-        //        return ContentText.Matches;
-        //    }
-        //    set { /* TwoWay ダミー */}
-        //}
-        public FindItemTextDetailViewModel TextDetail => new FindItemTextDetailViewModel(Model);
-
-        public bool ContentIsMsOffice => Model.FileContentSearchResult.MicrosoftOffice.IsMatched;
-        public MicrosoftOfficeSearchResultBase ContentMsOffice => Model.FileContentSearchResult.MicrosoftOffice;
-
-        public IReadOnlyList<TextSearchMatch> ContentMsOfficeWordElements
-        {
-            get
-            {
-                if(!ContentIsMsOffice) {
-                    return null;
-                }
-
-                var wordResult = ContentMsOffice as MicrosoftOfficeWordSearchResult;
-                if(wordResult == null) {
-                    return null;
-                }
-
-                var list = new List<TextSearchMatch>();
-
-                foreach(var result in wordResult.ElementResults) {
-                    switch(result) {
-                        case MicrosoftOfficeWordParagraphSearchResult paragraph:
-                            list.AddRange(paragraph.TextResult.Matches);
-                            break;
-
-                        case MicrosoftOfficeWordTableSearchResult table:
-                            list.AddRange(table.CellResults.SelectMany(c => c.TextResult.Matches));
-                            break;
-
-                        default:
-                            throw new NotImplementedException();
-                    }
-                }
-
-                return list;
-            }
-            set { /* TwoWay ダミー */}
-        }
-
-        public FindItemMicrosoftOfficeDetailViewModel MsOfficeDetail => new FindItemMicrosoftOfficeDetailViewModel(Model);
-
-        public bool ContentIsPdf => Model.FileContentSearchResult.Pdf.IsMatched;
-
-        //public IReadOnlyList<TextSearchMatch> ContentPdfMatches
-        //{
-        //    get {
-        //        if(!ContentIsPdf) {
-        //            return null;
-        //        }
-
-        //        return Model.FileContentSearchResult.Pdf.Matches;
-        //    }
-        //    set { /* TwoWay ダミー */}
-        //}
-
-        public FindItemPdfDetailViewModel PdfDetail => new FindItemPdfDetailViewModel(Model);
-
-        public bool ContentIsXmlHtml => Model.FileContentSearchResult.XmlHtml.IsMatched;
-        public XmlHtmlSearchResult ContentXmlHtml => Model.FileContentSearchResult.XmlHtml;
-        //public IReadOnlyList<TextSearchMatch> ContentXmlHtmlMatches
-        //{
-        //    get
-        //    {
-        //        if(!ContentIsXmlHtml) {
-        //            return null;
-        //        }
-
-        //        var list = new List<TextSearchMatch>(ContentXmlHtml.Results.Count);
-        //        foreach(var result in ContentXmlHtml.Results) {
-        //            if(result.NodeType == HtmlAgilityPack.HtmlNodeType.Comment) {
-        //                var comment = (XmlHtmlCommentSearchResult)result;
-        //                list.AddRange(comment.Matches);
-        //            } else if(result.NodeType == HtmlAgilityPack.HtmlNodeType.Text) {
-        //                var text = (XmlHtmlTextSearchResult)result;
-        //                list.AddRange(text.Matches);
-        //            } else {
-        //                var element = (XmlHtmlElementSearchResult)result;
-        //                list.AddRange(element.ElementResult.Matches);
-        //                foreach(var attribute in element.AttributeKeyResults) {
-        //                    list.AddRange(attribute.KeyResult.Matches);
-        //                    list.AddRange(attribute.ValueResult.Matches);
-        //                }
-        //            }
-        //        }
-
-        //        return list;
-        //    }
-        //    set { /* TwoWay ダミー */}
-        //}
-
-        public FindItemXmlHtmlDetailViewModel XmlHtmlDetail => new FindItemXmlHtmlDetailViewModel(Model);
-
-        public FileTypeViewModel FileType => new FileTypeViewModel(Model.FileType);
-
-        public FileHashViewModel FileHash => new FileHashViewModel(Model.FileHash);
-
-        #region ISelectable
-
-        public bool IsSelected
-        {
-            get { return this._isSelected; }
-            set { SetProperty(ref this._isSelected, value); }
-        }
-
-        #endregion
-
-        public bool IsSelectedContentGeneral
-        {
-            get { return this._isSelectedContentGeneral; }
-            set { SetProperty(ref this._isSelectedContentGeneral, value); }
-        }
-        public bool IsSelectedContentText
-        {
-            get { return this._isSelectedContentText; }
-            set { SetProperty(ref this._isSelectedContentText, value); }
-        }
-        public bool IsSelectedContentMsOffice
-        {
-            get { return this._isSelectedContentMsOffice; }
-            set { SetProperty(ref this._isSelectedContentMsOffice, value); }
-        }
-
-        public bool IsSelectedContentPdf
-        {
-            get { return this._isSelectedContentPdf; }
-            set { SetProperty(ref this._isSelectedContentPdf, value); }
-        }
-
-        public bool IsSelectedContentXmlHtml
-        {
-            get { return this._isSelectedContentXmlHtml; }
-            set { SetProperty(ref this._isSelectedContentXmlHtml, value); }
-        }
-
-        //public BrowserViewModel Browser
-        //{
-        //    get
-        //    {
-        //        var model = Model.GetBrowser();
-        //        return new BrowserViewModel(model);
-        //    }
-        //    set { /*TwoWay*/ }
-        //}
-        public FindItemBrowserDetailViewModel BrowserDetail => new FindItemBrowserDetailViewModel(Model);
-
-        #endregion
-
-        #region function
-
-        AssociationOpenParameter CreateCommonAssociationOpenParameter(TextSearchMatch match)
-        {
-            var parameter = new AssociationOpenParameter() {
-                LineNumber = match.DisplayLineNumber,
-                CharacterPostion = match.DisplayCharacterPosition,
-                CharacterLength = match.Length,
-            };
-
-            return parameter;
-        }
+        public FindItemTextDetailViewModel TextDetail { get; }
+        public FindItemMicrosoftOfficeDetailViewModel MsOfficeDetail { get; }
+        public FindItemPdfDetailViewModel PdfDetail { get; }
+        public FindItemXmlHtmlDetailViewModel XmlHtmlDetail { get; }
+        public FindItemBrowserDetailViewModel BrowserDetail { get; }
 
         #endregion
 
@@ -334,20 +155,32 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         #endregion
 
         #region function
+
+        AssociationOpenParameter CreateCommonAssociationOpenParameter(TextSearchMatch match)
+        {
+            var parameter = new AssociationOpenParameter() {
+                LineNumber = match.DisplayLineNumber,
+                CharacterPostion = match.DisplayCharacterPosition,
+                CharacterLength = match.Length,
+            };
+
+            return parameter;
+        }
+
         public void Flash()
         {
             var propertyNames = new[]
             {
-                nameof(ContentIsText),
-                nameof(ContentText),
+                //nameof(ContentIsText),
+                //nameof(ContentText),
                 //nameof(ContentMatches),
 
-                nameof(ContentIsMsOffice),
-                nameof(ContentMsOffice),
-                nameof(ContentMsOfficeWordElements),
+                //nameof(ContentIsMsOffice),
+                //nameof(ContentMsOffice),
+                //nameof(ContentMsOfficeWordElements),
 
-                nameof(ContentIsXmlHtml),
-                nameof(ContentXmlHtml),
+                //nameof(ContentIsXmlHtml),
+                //nameof(ContentXmlHtml),
                 //nameof(ContentXmlHtmlMatches),
 
                 nameof(OpenTextFileCommand),
@@ -362,5 +195,16 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         }
 
         #endregion
+
+        #region ISelectable
+
+        public bool IsSelected
+        {
+            get { return this._isSelected; }
+            set { SetProperty(ref this._isSelected, value); }
+        }
+
+        #endregion
+
     }
 }

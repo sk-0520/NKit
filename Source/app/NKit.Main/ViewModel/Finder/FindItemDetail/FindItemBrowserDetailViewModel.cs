@@ -31,6 +31,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         #region FindItemDetailViewModelBase
 
+        public override string Header => Properties.Resources.String_ViewModel_Finder_FindItemDetail_Browse;
+
         public override bool Showable => Browser.BrowserKind != BrowserKind.Unknown;
 
         #endregion

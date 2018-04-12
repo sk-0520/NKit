@@ -32,9 +32,9 @@
     <app_main_view_converter:MicrosoftOfficeExcelCellAddressConverter x:Key="MicrosoftOfficeExcelCellAddressConverter" />
   </UserControl.Resources>
   <Grid>
-    <TabControl TabStripPlacement="Left">
+    <TabControl TabStripPlacement="Left" ItemsSource="{Binding SingleItem.DetailItems, ElementName=root}">
       <TabControl.Resources>
-        <DataTemplate DataType="">
+        <DataTemplate DataType="{x:Type app_main_viewmodel_finder_finditemdetail:FindItemGeneralDetailViewModel}">
           <ScrollViewer>
             <StackPanel>
               <Grid>
@@ -121,11 +121,11 @@
           </ScrollViewer>
         </DataTemplate>
 
-        <DataTemplate DataType="">
-          <app_browser:BrowserControl Browser="{Binding Browser, Mode=TwoWay}" />
+        <DataTemplate DataType="{x:Type app_main_viewmodel_finder_finditemdetail:FindItemBrowserDetailViewModel}">
+          <app_browser:BrowserControl Browser="{Binding Browser}" />
         </DataTemplate>
 
-        <DataTemplate DataType="">
+        <DataTemplate DataType="{x:Type app_main_viewmodel_finder_finditemdetail:FindItemTextDetailViewModel}">
           <ScrollViewer>
             <Grid>
               <Grid.RowDefinitions>
@@ -143,18 +143,18 @@
 
               <Label Grid.Row="1" Grid.Column="0">一致:</Label>
               <app_main_view_control:TextSearchMatchControl
-              Grid.Row="2"
-              Grid.Column="0"
-              Grid.ColumnSpan="2"
-              ItemsSource="{Binding Matches, Mode=TwoWay}"
-              UserSelectedCommand="{Binding SingleItem.OpenTextFileCommand, Mode=TwoWay, ElementName=root}"
-              MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
-            />
+                Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                ItemsSource="{Binding Matches}"
+                UserSelectedCommand="{Binding SingleItem.OpenTextFileCommand, ElementName=root}"
+                MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
+              />
             </Grid>
           </ScrollViewer>
         </DataTemplate>
 
-        <DataTemplate DataType="">
+        <DataTemplate DataType="{x:Type app_main_viewmodel_finder_finditemdetail:FindItemMicrosoftOfficeDetailViewModel}">
           <ScrollViewer>
             <Grid>
               <Grid.RowDefinitions>
@@ -202,8 +202,8 @@
                     <Label Grid.Row="0">要素:</Label>
                     <app_main_view_control:TextSearchMatchControl
                       Grid.Row="1"
-                      ItemsSource="{Binding Elements, Mode=TwoWay}"
-                      UserSelectedCommand="{Binding SingleItem.OpenMsOfficeWordFileCommand, Mode=TwoWay, ElementName=root}"
+                      ItemsSource="{Binding Elements}"
+                      UserSelectedCommand="{Binding SingleItem.OpenMsOfficeWordFileCommand, ElementName=root}"
                       MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
                     />
                   </Grid>
@@ -235,30 +235,35 @@
           </ScrollViewer>
         </DataTemplate>
 
-        <DataTemplate DataType="">
+        <DataTemplate DataType="{x:Type app_main_viewmodel_finder_finditemdetail:FindItemPdfDetailViewModel}">
           <ScrollViewer>
             <app_main_view_control:TextSearchMatchControl
-            HiddenTopLineOnly="False"
-            ItemsSource="{Binding Matches, Mode=TwoWay}"
-            UserSelectedCommand="{Binding SingleItem.OpenPdfFileCommand, Mode=TwoWay, ElementName=root}"
-            MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
-          />
+              HiddenTopLineOnly="False"
+              ItemsSource="{Binding Matches}"
+              UserSelectedCommand="{Binding SingleItem.OpenPdfFileCommand, ElementName=root}"
+              MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
+            />
           </ScrollViewer>
         </DataTemplate>
 
-        <DataTemplate DataType="">
+        <DataTemplate DataType="{x:Type app_main_viewmodel_finder_finditemdetail:FindItemXmlHtmlDetailViewModel}">
           <ScrollViewer>
             <app_main_view_control:TextSearchMatchControl
-            HiddenTopLineOnly="False"
-            ItemsSource="{Binding Matches, Mode=TwoWay}"
-            UserSelectedCommand="{Binding SingleItem.OpenXmlHtmlFileCommand, Mode=TwoWay, ElementName=root}"
-            MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
-          />
+              HiddenTopLineOnly="False"
+              ItemsSource="{Binding Matches}"
+              UserSelectedCommand="{Binding SingleItem.OpenXmlHtmlFileCommand, ElementName=root}"
+              MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
+            />
           </ScrollViewer>
         </DataTemplate>
 
       </TabControl.Resources>
-      <TabItem Header="基本" DataContext="{Binding SingleItem.GeneralDetail, ElementName=root}">
+      <TabControl.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding Header}" />
+        </DataTemplate>
+      </TabControl.ItemTemplate>
+      <!--<TabItem Header="基本" DataContext="{Binding SingleItem.GeneralDetail, ElementName=root}">
         <ScrollViewer>
           <StackPanel>
             <Grid>
@@ -435,9 +440,9 @@
               <ContentControl.Style>
                 <Style TargetType="ContentControl">
                   <Style.Triggers>
-                    <!--<DataTrigger Binding="{Binding IsMatched}" Value="False">
+                    --><!--<DataTrigger Binding="{Binding IsMatched}" Value="False">
                       <Setter Property="Content" Value="" />
-                    </DataTrigger>-->
+                    </DataTrigger>--><!--
                     <DataTrigger Binding="{Binding OfficeType}" Value="Excel1997">
                       <Setter Property="Content" Value="{StaticResource Excel}" />
                     </DataTrigger>
@@ -479,7 +484,7 @@
             MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
           />
         </ScrollViewer>
-      </TabItem>
+      </TabItem>-->
 
     </TabControl>
 

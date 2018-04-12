@@ -26,6 +26,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         #region FindItemDetailViewModelBase
 
+        public override string Header => Properties.Resources.String_ViewModel_Finder_FindItemDetail_MicrosoftOffice;
+
         public override bool Showable => Model.FileContentSearchResult.MicrosoftOffice.IsMatched;
 
         #endregion
@@ -71,6 +73,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         #region FindItemDetailViewModelBase
 
+        public override string Header => throw new NotSupportedException();
         public override bool Showable => throw new NotSupportedException();
 
         #endregion
@@ -109,6 +112,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         #region FindItemDetailViewModelBase
 
+        public override string Header => throw new NotSupportedException();
         public override bool Showable => throw new NotSupportedException();
 
         #endregion
@@ -162,6 +166,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         #region FindItemDetailViewModelBase
 
+        public override string Header => throw new NotSupportedException();
         public override bool Showable => throw new NotSupportedException();
 
         #endregion

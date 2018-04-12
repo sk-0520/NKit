@@ -141,6 +141,24 @@
   <data name="String_Finder_FindGroup_Output_Unmatched" xml:space="preserve">
     <value>(非検索一致)</value>
   </data>
+  <data name="String_ViewModel_Finder_FindItemDetail_Browse" xml:space="preserve">
+    <value>簡易表示</value>
+  </data>
+  <data name="String_ViewModel_Finder_FindItemDetail_General" xml:space="preserve">
+    <value>基本</value>
+  </data>
+  <data name="String_ViewModel_Finder_FindItemDetail_MicrosoftOffice" xml:space="preserve">
+    <value>MS Office</value>
+  </data>
+  <data name="String_ViewModel_Finder_FindItemDetail_Pdf" xml:space="preserve">
+    <value>PDF</value>
+  </data>
+  <data name="String_ViewModel_Finder_FindItemDetail_Text" xml:space="preserve">
+    <value>テキスト</value>
+  </data>
+  <data name="String_ViewModel_Finder_FindItemDetail_XmlHtml" xml:space="preserve">
+    <value>XML/HTML</value>
+  </data>
   <data name="String_View_Control_RunnableControl_CancelText" xml:space="preserve">
     <value>取消</value>
   </data>
