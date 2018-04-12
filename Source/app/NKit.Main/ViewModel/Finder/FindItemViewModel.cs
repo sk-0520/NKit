@@ -134,6 +134,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { /* TwoWay ダミー */}
         }
 
+        public FindItemMicrosoftOfficeDetailViewModel MsOfficeDetail => new FindItemMicrosoftOfficeDetailViewModel(Model);
+
         public bool ContentIsPdf => Model.FileContentSearchResult.Pdf.IsMatched;
 
         //public IReadOnlyList<TextSearchMatch> ContentPdfMatches
