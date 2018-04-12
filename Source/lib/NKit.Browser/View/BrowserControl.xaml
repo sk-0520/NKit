@@ -47,6 +47,14 @@
             </Setter>
           </DataTrigger>
         </Style.Triggers>
+        <!-- 簡易表示できないファイル -->
+        <Setter Property="Content">
+          <Setter.Value>
+            <Viewbox>
+              <TextBlock VerticalAlignment="Center">💩</TextBlock>
+            </Viewbox>
+          </Setter.Value>
+        </Setter>
       </Style>
     </ContentControl.Style>
   </ContentControl>
