@@ -196,6 +196,7 @@
     <Compile Include="ViewModel\Finder\FindItemDetail\FindItemBrowserDetailViewModel.cs" />
     <Compile Include="ViewModel\Finder\FindItemDetail\FindItemDetailViewModelBase.cs" />
     <Compile Include="ViewModel\Finder\FindItemDetail\FindItemPdfDetailViewModel.cs" />
+    <Compile Include="ViewModel\Finder\FindItemDetail\FindItemTextDetailViewModel.cs" />
     <Compile Include="ViewModel\Finder\FindItemDetail\FindItemXmlHtmlDetailViewModel.cs" />
     <Compile Include="ViewModel\Other\OtherManagerViewModel.cs" />
     <Compile Include="View\Capture\CaptureGroupControl.xaml.cs">

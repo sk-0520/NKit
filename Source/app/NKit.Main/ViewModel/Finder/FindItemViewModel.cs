@@ -83,17 +83,18 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public bool ContentIsText => Model.FileContentSearchResult.IsMatched;
         public TextSearchResult ContentText => Model.FileContentSearchResult.Text;
 
-        public IReadOnlyList<TextSearchMatch> ContentMatches
-        {
-            get
-            {
-                if(!ContentIsText) {
-                    return null;
-                }
-                return ContentText.Matches;
-            }
-            set { /* TwoWay ダミー */}
-        }
+        //public IReadOnlyList<TextSearchMatch> ContentMatches
+        //{
+        //    get
+        //    {
+        //        if(!ContentIsText) {
+        //            return null;
+        //        }
+        //        return ContentText.Matches;
+        //    }
+        //    set { /* TwoWay ダミー */}
+        //}
+        public FindItemTextDetailViewModel TextDetail => new FindItemTextDetailViewModel(Model);
 
         public bool ContentIsMsOffice => Model.FileContentSearchResult.MicrosoftOffice.IsMatched;
         public MicrosoftOfficeSearchResultBase ContentMsOffice => Model.FileContentSearchResult.MicrosoftOffice;
@@ -337,7 +338,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             {
                 nameof(ContentIsText),
                 nameof(ContentText),
-                nameof(ContentMatches),
+                //nameof(ContentMatches),
 
                 nameof(ContentIsMsOffice),
                 nameof(ContentMsOffice),

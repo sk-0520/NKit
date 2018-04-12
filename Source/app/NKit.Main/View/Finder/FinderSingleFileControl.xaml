@@ -124,28 +124,32 @@
         <app_browser:BrowserControl Browser="{Binding Browser, Mode=TwoWay}" />
       </TabItem>
 
-      <TabItem Header="テキスト" IsSelected="{Binding SingleItem.IsSelectedContentText, ElementName=root}" Visibility="{Binding SingleItem.ContentIsText, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
+      <TabItem Header="テキスト" DataContext="{Binding SingleItem.TextDetail, ElementName=root}">
         <ScrollViewer>
-          <StackPanel DataContext="{Binding SingleItem.ContentText, ElementName=root}">
-            <Grid>
-              <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-              </Grid.RowDefinitions>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-              </Grid.ColumnDefinitions>
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-              <Label Grid.Row="0" Grid.Column="0">エンコーディング:</Label>
-              <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding EncodingCheck.Encoding, Mode=OneTime}" />
+            <Label Grid.Row="0" Grid.Column="0">エンコーディング:</Label>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Encoding, Mode=OneTime}" />
 
-              <Label Grid.Row="1" Grid.Column="0">一致:</Label>
-              <app_main_view_control:TextSearchMatchControl  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding SingleItem.ContentMatches, Mode=TwoWay, ElementName=root}" UserSelectedCommand="{Binding SingleItem.OpenTextFileCommand, Mode=TwoWay, ElementName=root}" MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"/>
-            </Grid>
-          </StackPanel>
-
+            <Label Grid.Row="1" Grid.Column="0">一致:</Label>
+            <app_main_view_control:TextSearchMatchControl
+              Grid.Row="2"
+              Grid.Column="0"
+              Grid.ColumnSpan="2"
+              ItemsSource="{Binding Matches, Mode=TwoWay}"
+              UserSelectedCommand="{Binding SingleItem.OpenTextFileCommand, Mode=TwoWay, ElementName=root}"
+              MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
+            />
+          </Grid>
         </ScrollViewer>
       </TabItem>
 
