@@ -26,7 +26,6 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
                 return Model.FileContentSearchResult.Pdf.Matches;
             }
-            set { /* TwoWay ダミー */}
         }
 
         #endregion

@@ -45,7 +45,6 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
                 return list;
             }
-            set { /* TwoWay ダミー */}
         }
 
         #endregion

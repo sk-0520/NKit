@@ -258,11 +258,12 @@
         </DataTemplate>
 
       </TabControl.Resources>
-      <TabControl.ItemTemplate>
-        <DataTemplate>
-          <TextBlock Text="{Binding Header}" />
-        </DataTemplate>
-      </TabControl.ItemTemplate>
+      <TabControl.ItemContainerStyle>
+        <Style TargetType="TabItem">
+          <Setter Property="Header" Value="{Binding Header}" />
+          <Setter Property="Visibility" Value="{Binding Showable, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </Style>
+      </TabControl.ItemContainerStyle>
       <!--<TabItem Header="基本" DataContext="{Binding SingleItem.GeneralDetail, ElementName=root}">
         <ScrollViewer>
           <StackPanel>
