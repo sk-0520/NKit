@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Library.PInvoke.Windows;
+using ContentTypeTextNet.NKit.Browser.Model;
 using ContentTypeTextNet.NKit.Common;
 using ContentTypeTextNet.NKit.Main.Model.NKit;
 using ContentTypeTextNet.NKit.Setting.Define;
@@ -53,6 +54,26 @@ namespace ContentTypeTextNet.NKit.Main.Model.File
         public void ShowProperty(FileSystemInfo fileSystemInfo, IntPtr hWnd)
         {
             NativeMethods.SHObjectProperties(hWnd, SHOP.SHOP_FILEPATH, fileSystemInfo.FullName, string.Empty);
+        }
+
+        public void Browse(BrowserModel browser)
+        {
+            var args = new[] {
+                "--browser_kind",
+                ProgramRelationUtility.EscapesequenceToArgument(browser.BrowserKind.ToString()),
+
+                "--file_path",
+                ProgramRelationUtility.EscapesequenceToArgument(browser.FileInfo.FullName),
+
+                "--encoding",
+                ProgramRelationUtility.EscapesequenceToArgument(browser.Encoding.WebName),
+            };
+            var arguments = string.Join(" ", args);
+            using(var client = new ApplicationSwitcher(StartupOptions.ServiceUri)) {
+                client.Initialize();
+                var manageId = client.PreparateApplication(NKitApplicationKind.JustLooking, arguments, string.Empty);
+                client.WakeupApplication(manageId);
+            }
         }
     }
 

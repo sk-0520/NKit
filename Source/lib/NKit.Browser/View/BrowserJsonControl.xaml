@@ -1,0 +1,88 @@
+<UserControl
+  x:Name="root"
+  x:Class="ContentTypeTextNet.NKit.Browser.View.BrowserJsonControl"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  
+  xmlns:app_browser="clr-namespace:ContentTypeTextNet.NKit.Browser.View"
+
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+  mc:Ignorable="d" 
+  d:DesignWidth="200"
+  d:DesignHeight="200"
+>
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/NKit.Browser;component/View/Resources/NodeResourceDictionary.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+      <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+      <Style x:Key="KeyValue" TargetType="TextBlock">
+        <Style.Triggers>
+          <DataTrigger Binding="{Binding Token.Type}" Value="Property">
+            <Setter Property="Foreground" Value="#ff880000" />
+            <Setter Property="FontWeight" Value="Bold" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Token.Type}" Value="Object">
+            <Setter Property="Foreground" Value="#ff008800" />
+            <Setter Property="FontWeight" Value="Bold" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Token.Type}" Value="Array">
+            <Setter Property="Foreground" Value="#ff000088" />
+            <Setter Property="FontWeight" Value="Bold" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Token.Type}" Value="Null">
+            <Setter Property="Foreground" Value="#ff333333" />
+            <Setter Property="FontStyle" Value="Italic" />
+            <Setter Property="TextDecorations" Value="Underline" />
+            <Setter Property="Text" Value="NULL" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Token.Type}" Value="String">
+            <Setter Property="Text" Value="{Binding Name, StringFormat='&quot;{0}&quot;'}" />
+          </DataTrigger>
+        </Style.Triggers>
+        <Setter Property="Text" Value="{Binding Name}" />
+      </Style>
+      <Style x:Key="ValueType" TargetType="TextBlock">
+        <Style.Triggers>
+          <DataTrigger Binding="{Binding Token.Type}" Value="Null">
+            <Setter Property="Visibility" Value="Collapsed" />
+          </DataTrigger>
+        </Style.Triggers>
+        <Setter Property="Foreground" Value="#ff888888" />
+        <Setter Property="Margin" Value="{StaticResource LeftMargin}" />
+      </Style>
+    </ResourceDictionary>
+  </UserControl.Resources>
+  <Grid>
+    <TabControl SelectedItem="{Binding SelectedTabItem, ElementName=root}">
+      <TabItem x:Name="treeTabItem" Header="構造">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="85*" />
+          </Grid.ColumnDefinitions>
+
+          <ListBox x:Name="treeHeader" Grid.Column="0" Style="{StaticResource HeaderListBox}" />
+
+          <TreeView x:Name="treeView" Grid.Column="2" Style="{StaticResource NodeTreeView}" ScrollViewer.ScrollChanged="treeView_ScrollChanged">
+            <TreeView.ItemTemplate>
+              <HierarchicalDataTemplate ItemsSource="{Binding ChildNodes}">
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Style="{StaticResource KeyValue}" />
+                  <TextBlock Text="{Binding Token.Type}" Style="{StaticResource ValueType}" />
+                </StackPanel>
+              </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+          </TreeView>
+
+          <GridSplitter Grid.Column="1" Style="{StaticResource DefaultVericalGridSplitter}" />
+        </Grid>
+      </TabItem>
+      <TabItem Header="テキスト">
+        <app_browser:BrowserTextControl />
+      </TabItem>
+    </TabControl>
+  </Grid>
+</UserControl>

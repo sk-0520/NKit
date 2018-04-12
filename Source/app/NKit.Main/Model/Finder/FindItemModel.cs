@@ -5,10 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ContentTypeTextNet.NKit.Browser.Model;
+using ContentTypeTextNet.NKit.Common;
+using ContentTypeTextNet.NKit.Main.Define;
 using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Main.Model.Searcher;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Setting.File;
+using ContentTypeTextNet.NKit.Setting.Finder;
 using ContentTypeTextNet.NKit.Setting.NKit;
 using ContentTypeTextNet.NKit.Utility.Model;
 
@@ -16,7 +20,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
 {
     public class FindItemModel : ModelBase
     {
-        public FindItemModel(DirectoryInfo baseDirectory, FileInfo fileInfo, TextSearchResult fileNameSearchResult, bool matchedFileSize, FilePropertySearchResult filePropertySearchResult, FileContentSearchResult fileContentSearchResult, IReadOnlyAssociationFileSetting associationFileSetting, IReadOnlyNKitSetting nkitSetting)
+        public FindItemModel(DirectoryInfo baseDirectory, FileInfo fileInfo, TextSearchResult fileNameSearchResult, bool matchedFileSize, FilePropertySearchResult filePropertySearchResult, FileContentSearchResult fileContentSearchResult, IReadOnlyFinderSetting finderSetting, IReadOnlyAssociationFileSetting associationFileSetting, IReadOnlyNKitSetting nkitSetting)
         {
             BaseDirectory = baseDirectory;
             FileInfo = fileInfo;
@@ -24,6 +28,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             MatchedFileSize = matchedFileSize;
             FilePropertySearchResult = filePropertySearchResult;
             FileContentSearchResult = fileContentSearchResult;
+            FinderSetting = finderSetting;
             AssociationFileSetting = associationFileSetting;
             NKitSetting = nkitSetting;
         }
@@ -37,6 +42,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         public FilePropertySearchResult FilePropertySearchResult { get; }
         public FileContentSearchResult FileContentSearchResult { get; }
 
+        IReadOnlyFinderSetting FinderSetting { get; }
         IReadOnlyAssociationFileSetting AssociationFileSetting { get; }
         IReadOnlyNKitSetting NKitSetting { get; }
 
@@ -63,6 +69,13 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
         {
             var opener = new FileOpener();
             opener.Open((FileInfo)FileInfo);
+        }
+
+        public void BrowseFile()
+        {
+            var opener = new FileOpener();
+            var browser = GetBrowser();
+            opener.Browse(browser);
         }
 
         public void OpenDirectory()
@@ -115,6 +128,46 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
             var ao = new AssociationFileOpener(AssociationFileSetting);
 
             return ao.Open(associationFileKind, FileInfo, parameter);
+        }
+
+
+        BrowserKind GetBrowserKindFromSetting(string fileName)
+        {
+            var dotExt = Path.GetExtension(fileName).ToLower();
+
+            var patternCreator = new SearchPatternCreator();
+
+            var map = FinderUtility.CreateFileNameKinds(FinderSetting);
+
+            if(map[FileNameKind.XmlHtml].IsMatch(dotExt)) {
+                return BrowserKind.Xml;
+            }
+
+            if(map[FileNameKind.Text].IsMatch(dotExt)) {
+                return BrowserKind.PlainText;
+            }
+
+            return BrowserKind.Unknown;
+        }
+
+        BrowserKind GetBrowserKind(string fileName)
+        {
+            var force = BrowserModel.GetBrowserKind(fileName);
+            if(force != BrowserKind.Unknown) {
+                return force;
+            }
+
+            return GetBrowserKindFromSetting(fileName);
+        }
+
+        public BrowserModel GetBrowser()
+        {
+            var browserKind = GetBrowserKind(FileInfo.Name);
+            var encoding = Encoding.UTF8;
+            if(FileContentSearchResult.Text.IsMatched) {
+                encoding = FileContentSearchResult.Text.EncodingCheck.Encoding;
+            }
+            return new BrowserModel(browserKind, FileInfo, encoding);
         }
 
         #endregion

@@ -9,6 +9,8 @@
 
   xmlns:app_utility_view_converter="clr-namespace:ContentTypeTextNet.NKit.Utility.View.Converter;assembly=NKit.Utility"
 
+  xmlns:app_browser="clr-namespace:ContentTypeTextNet.NKit.Browser.View;assembly=NKit.Browser"
+
   xmlns:app_main_view_converter="clr-namespace:ContentTypeTextNet.NKit.Main.View.Converter"
   xmlns:app_main_view_control="clr-namespace:ContentTypeTextNet.NKit.Main.View.Control"
   xmlns:app_main_view_finder="clr-namespace:ContentTypeTextNet.NKit.Main.View.Finder"
@@ -98,6 +100,8 @@
 
               <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ToolTip="こいつらは消える運命" >
                 <StackPanel Orientation="Horizontal">
+                  <Button Content="簡易表示" Command="{Binding SingleItem.BrowseFileCommand, ElementName=root}" />
+                  <Separator />
                   <Button Content="ファイルを開く" Command="{Binding SingleItem.OpenFileCommand, ElementName=root}" />
                   <Button Content="親ディレクトリを開く" Command="{Binding SingleItem.OpenDirectoryCommand, ElementName=root}"/>
                   <Button Content="プロパティ" Command="{Binding SingleItem.ShowPropertyCommand, ElementName=root}" />
@@ -111,10 +115,13 @@
               </StackPanel>
 
             </Grid>
-
           </StackPanel>
 
         </ScrollViewer>
+      </TabItem>
+
+      <TabItem Header="簡易表示">
+        <app_browser:BrowserControl Browser="{Binding SingleItem.Browser, Mode=TwoWay, ElementName=root}" />
       </TabItem>
 
       <TabItem Header="テキスト" IsSelected="{Binding SingleItem.IsSelectedContentText, ElementName=root}" Visibility="{Binding SingleItem.ContentIsText, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -234,7 +241,7 @@
           </StackPanel>
         </ScrollViewer>
       </TabItem>
-      
+
       <TabItem Header="XML/HTML" IsSelected="{Binding SingleItem.IsSelectedContentXmlHtml, ElementName=root}" Visibility="{Binding SingleItem.ContentIsXmlHtml, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
         <ScrollViewer>
           <StackPanel DataContext="{Binding SingleItem.ContentXmlHtml, ElementName=root}">

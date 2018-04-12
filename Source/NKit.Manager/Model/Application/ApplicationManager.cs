@@ -200,6 +200,12 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                     };
                     break;
 
+                case NKitApplicationKind.JustLooking:
+                    item = new NKitApplicationItem(targetApplication, LogFactory) {
+                        Arguments = AddNKitArguments(arguments, nkitArgs),
+                    };
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }

@@ -31,7 +31,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Searcher
             return wildcardPattern;
         }
 
-        string AddWildcardBothLimit(string s) => "^" + s + "$";
+        string AddWildcardBothLimit(string s) => "^(" + s + ")$";
 
         Regex CreateWildcardRegex(string pattern, RegexOptions options)
         {

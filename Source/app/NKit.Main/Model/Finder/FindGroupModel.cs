@@ -479,18 +479,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                 try {
                     Cache.FileContent = patternCreator.CreateRegex(FindGroupSetting.FileContentSearchPatternKind, FindGroupSetting.FileContentSearchPattern, !FindGroupSetting.FileContentCase);
 
-                    Cache.FileNameKinds = new[] {
-                        new { Kind = FileNameKind.Text,  Pattern = FinderSetting.TextFileNamePattern, },
-                        new { Kind = FileNameKind.MicrosoftOffice,  Pattern = FinderSetting.MicrosoftOfficeFileNamePattern, },
-                        new { Kind = FileNameKind.Pdf,  Pattern = FinderSetting.PdfFileNamePattern, },
-                        new { Kind = FileNameKind.XmlHtml,  Pattern = FinderSetting.XmlHtmlFileNamePattern, },
-                    }.Select(i => new {
-                        Kind = i.Kind,
-                        Regex = patternCreator.CreateFileNameFilterRegex(i.Pattern)
-                    }).ToDictionary(
-                        i => i.Kind,
-                        i => i.Regex
-                    )
+                    Cache.FileNameKinds = FinderUtility.CreateFileNameKinds(FinderSetting);
                     ;
                     Debug.Assert(Cache.FileNameKinds.Count == EnumUtility.GetMembers<FileNameKind>().Count());
 
@@ -546,7 +535,7 @@ namespace ContentTypeTextNet.NKit.Main.Model.Finder
                         }
                     }
 
-                    var findItem = new FindItemModel(dirInfo, fileInfo, fileNameSearchResult, matchedFileSize, filePropertySearchResult, fileContentSearchResult, FileSetting.AssociationFile, NKitSetting);
+                    var findItem = new FindItemModel(dirInfo, fileInfo, fileNameSearchResult, matchedFileSize, filePropertySearchResult, fileContentSearchResult, FinderSetting, FileSetting.AssociationFile, NKitSetting);
                     Items.Add(findItem);
                 }
 

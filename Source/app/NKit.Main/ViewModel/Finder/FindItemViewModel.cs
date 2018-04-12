@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using ContentTypeTextNet.NKit.Browser.ViewModel;
 using ContentTypeTextNet.NKit.Main.Model;
 using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
@@ -220,6 +221,15 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { SetProperty(ref this._isSelectedContentXmlHtml, value); }
         }
 
+        public BrowserViewModel Browser
+        {
+            get
+            {
+                var model = Model.GetBrowser();
+                return new BrowserViewModel(model);
+            }
+            set { /*TwoWay*/ }
+        }
 
         #endregion
 
@@ -243,6 +253,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public ICommand CopyFileSizeCommand => new DelegateCommand(() => Model.CopyFileSize());
 
         public ICommand OpenFileCommand => new DelegateCommand(() => Model.OpenFile());
+        public ICommand BrowseFileCommand => new DelegateCommand(() => Model.BrowseFile());
         public ICommand OpenDirectoryCommand => new DelegateCommand(() => Model.OpenDirectory());
         public ICommand ShowPropertyCommand => new DelegateCommand(() => Model.ShowProperty());
 

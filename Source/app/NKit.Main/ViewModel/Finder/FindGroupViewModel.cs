@@ -362,6 +362,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             get { return this._selectedItem; }
             set
             {
+                var prev = this._selectedItem;
                 if(SetProperty(ref this._selectedItem, value)) {
                     ShowSelectedFileDetail = SelectedItem != null;
                     SelectedItem?.Flash();

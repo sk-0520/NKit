@@ -183,6 +183,7 @@
     <Compile Include="Model\Capture\CaptureKeyUtility.cs" />
     <Compile Include="Model\Cli\CliManagerModel.cs" />
     <Compile Include="Model\File\FilePropertySearchResult.cs" />
+    <Compile Include="Model\Finder\FinderUtility.cs" />
     <Compile Include="Model\Finder\FindGroupCache.cs" />
     <Compile Include="Model\ISelectable.cs" />
     <Compile Include="Model\NKit\NKitApplicationExecutor.cs" />
@@ -229,6 +230,16 @@
     <Compile Include="View\SystemEnvironment\SystemEnvironmentManagerControl.xaml.cs">
       <DependentUpon>SystemEnvironmentManagerControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="..\..\common\NKit.Common.Link\Resources\ImageDictionary.xaml">
+      <Link>Common\Resources\ImageDictionary.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\common\NKit.Common.Link\Resources\Theme\Generic.xaml">
+      <Link>Common\Resources\Theme\Generic.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\Capture\CaptureGroupControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -367,15 +378,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Resources\Theme\Generic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Control\RunnableControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Resources\ImageDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -418,6 +421,11 @@
     <Folder Include="Model\Wapper\GnuWin32\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\lib\NKit.Browser\NKit.Browser.csproj">
+      <Project>{cc68e1cb-a7e5-4444-a2aa-bc436e1537e9}</Project>
+      <Name>NKit.Browser</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\lib\NKit.Package\NKit.Package.csproj">
       <Project>{afa0c4ad-38a8-416d-922d-f66f976f8106}</Project>
       <Name>NKit.Package</Name>

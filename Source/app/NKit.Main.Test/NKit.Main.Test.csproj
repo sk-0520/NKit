@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Finder\FindGroupModeTest.cs" />
+    <Compile Include="Model\Finder\FinderUtilityTest.cs" />
     <Compile Include="Model\Searcher\XmlHtmlSearcherTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

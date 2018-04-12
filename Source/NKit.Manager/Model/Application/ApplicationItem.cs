@@ -195,6 +195,9 @@ namespace ContentTypeTextNet.NKit.Manager.Model.Application
                 case NKitApplicationKind.Cameraman:
                     return CommonUtility.GetCameramanApplication(CommonUtility.GetApplicationDirectory()).FullName;
 
+                case NKitApplicationKind.JustLooking:
+                    return CommonUtility.GetJustLookingApplication(CommonUtility.GetApplicationDirectory()).FullName;
+
                 default:
                     throw new NotImplementedException();
             }

@@ -255,7 +255,11 @@ namespace ContentTypeTextNet.NKit.Common
             return new FileInfo(path);
         }
 
-
+        public static FileInfo GetJustLookingApplication(DirectoryInfo applicationDirectory)
+        {
+            var path = Path.Combine(applicationDirectory.FullName, "NKit.JustLooking.exe");
+            return new FileInfo(path);
+        }
 
         static string ReplaceNKitTextCore(string source, DateTime utcTimestamp, IReadOnlyDictionary<string, string> customMap)
         {
