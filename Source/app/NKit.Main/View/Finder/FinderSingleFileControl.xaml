@@ -120,8 +120,8 @@
         </ScrollViewer>
       </TabItem>
 
-      <TabItem Header="簡易表示">
-        <app_browser:BrowserControl Browser="{Binding SingleItem.Browser, Mode=TwoWay, ElementName=root}" />
+      <TabItem Header="{Binding Browser.FileUri}" DataContext="{Binding SingleItem.BrowserDetail, ElementName=root}">
+        <app_browser:BrowserControl Browser="{Binding Browser, Mode=TwoWay}" />
       </TabItem>
 
       <TabItem Header="テキスト" IsSelected="{Binding SingleItem.IsSelectedContentText, ElementName=root}" Visibility="{Binding SingleItem.ContentIsText, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">

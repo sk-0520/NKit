@@ -11,6 +11,7 @@ using ContentTypeTextNet.NKit.Main.Model.File;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
 using ContentTypeTextNet.NKit.Main.Model.Searcher;
 using ContentTypeTextNet.NKit.Main.ViewModel.File;
+using ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail;
 using ContentTypeTextNet.NKit.Setting.Define;
 using ContentTypeTextNet.NKit.Utility.ViewModel;
 using Prism.Commands;
@@ -221,15 +222,16 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { SetProperty(ref this._isSelectedContentXmlHtml, value); }
         }
 
-        public BrowserViewModel Browser
-        {
-            get
-            {
-                var model = Model.GetBrowser();
-                return new BrowserViewModel(model);
-            }
-            set { /*TwoWay*/ }
-        }
+        //public BrowserViewModel Browser
+        //{
+        //    get
+        //    {
+        //        var model = Model.GetBrowser();
+        //        return new BrowserViewModel(model);
+        //    }
+        //    set { /*TwoWay*/ }
+        //}
+        public FindItemBrowserDetailViewModel BrowserDetail => new FindItemBrowserDetailViewModel(Model);
 
         #endregion
 
