@@ -94,6 +94,17 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
         public IReadOnlyList<MicrosoftOfficeExcelCellSearchResult> CellResults  => SheetResult.CellResults;
         public IReadOnlyList<MicrosoftOfficeExcelShapeSearchResult> ShapeResults => SheetResult.ShapeResults;
 
+        public IEnumerable<TextSearchMatch> Matches
+        {
+            get
+            {
+                return SheetResult.CellResults
+                    .SelectMany(r => r.Matches.Concat(r.CommentMatch))
+                    .Concat(SheetResult.ShapeResults.SelectMany(r => r.Matches))
+                ;
+            }
+        }
+
         #endregion
 
         #region FindItemDetailViewModelBase

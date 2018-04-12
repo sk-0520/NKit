@@ -268,30 +268,12 @@
                             ItemsSource="{Binding SheetNameMatches}"
                           />
                         </GroupBox.Header>
-                        <Grid>
-                          <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                          </Grid.RowDefinitions>
-
-                          <Label Grid.Row="0">セル:</Label>
-                          <app_main_view_control:TextSearchMatchControl
+                        <app_main_view_control:TextSearchMatchControl
                             Grid.Row="1"
-                            ItemsSource="{Binding CellResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}"
+                            ItemsSource="{Binding Matches}"
                             UserSelectedCommand="{Binding SingleItem.OpenMsOfficeExcelFileCommand, ElementName=root}"
                             MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
                           />
-
-                          <Label Grid.Row="2">オートシェイプ:</Label>
-                          <app_main_view_control:TextSearchMatchControl
-                            Grid.Row="3"
-                            ItemsSource="{Binding ShapeResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}"
-                            UserSelectedCommand="{Binding SingleItem.OpenMsOfficeExcelFileCommand, ElementName=root}"
-                            MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
-                          />
-                        </Grid>
                       </GroupBox>
                     </DataTemplate>
                   </ItemsControl.ItemTemplate>
