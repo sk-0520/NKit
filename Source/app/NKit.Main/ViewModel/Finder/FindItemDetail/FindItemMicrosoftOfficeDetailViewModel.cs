@@ -19,6 +19,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         public MicrosoftOfficeFileType OfficeType => Model.FileContentSearchResult.MicrosoftOffice.OfficeType;
 
+        public FindItemMicrosoftOfficeExcelBookDetailViewModel Excel => new FindItemMicrosoftOfficeExcelBookDetailViewModel(Model);
         public FindItemMicrosoftOfficeWordDetailViewModel Word => new FindItemMicrosoftOfficeWordDetailViewModel(Model);
 
         #endregion
@@ -29,6 +30,79 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         #endregion
     }
+
+    public class FindItemMicrosoftOfficeExcelBookDetailViewModel : FindItemDetailViewModelBase
+    {
+        #region variable
+
+        IReadOnlyList<FindItemMicrosoftOfficeExcelSheetDetailViewModel> _sheets;
+
+        #endregion
+
+        public FindItemMicrosoftOfficeExcelBookDetailViewModel(FindItemModel model)
+            : base(model)
+        { }
+
+        public IReadOnlyList<FindItemMicrosoftOfficeExcelSheetDetailViewModel> Sheets
+        {
+            get
+            {
+                if(this._sheets == null) {
+                    if(!Model.FileContentSearchResult.MicrosoftOffice.IsMatched) {
+                        this._sheets = Enumerable.Empty<FindItemMicrosoftOfficeExcelSheetDetailViewModel>().ToList();
+                        return null;
+                    }
+
+                    var excelResult = Model.FileContentSearchResult.MicrosoftOffice as MicrosoftOfficeExcelSearchResult;
+                    if(excelResult == null) {
+                        this._sheets = Enumerable.Empty<FindItemMicrosoftOfficeExcelSheetDetailViewModel>().ToList();
+                        return null;
+                    }
+
+                    this._sheets = excelResult.MatchSheet
+                        .Select(s => new FindItemMicrosoftOfficeExcelSheetDetailViewModel(Model, s))
+                        .ToList()
+                    ;
+                }
+
+                return this._sheets;
+            }
+        }
+
+        #region FindItemDetailViewModelBase
+
+        public override bool Showable => throw new NotSupportedException();
+
+        #endregion
+    }
+
+    public class FindItemMicrosoftOfficeExcelSheetDetailViewModel : FindItemDetailViewModelBase
+    {
+        public FindItemMicrosoftOfficeExcelSheetDetailViewModel(FindItemModel model, MicrosoftOfficeExcelSheetSearchResult sheetResult)
+            : base(model)
+        {
+            SheetResult = sheetResult;
+        }
+
+        #region property
+
+        MicrosoftOfficeExcelSheetSearchResult SheetResult { get; }
+
+        public string SheetName => SheetResult.SheetName;
+        public IReadOnlyList<TextSearchMatch> SheetNameMatches => SheetResult.SheetNameResult.Matches;
+
+        public IReadOnlyList<MicrosoftOfficeExcelCellSearchResult> CellResults  => SheetResult.CellResults;
+        public IReadOnlyList<MicrosoftOfficeExcelShapeSearchResult> ShapeResults => SheetResult.ShapeResults;
+
+        #endregion
+
+        #region FindItemDetailViewModelBase
+
+        public override bool Showable => throw new NotSupportedException();
+
+        #endregion
+    }
+
 
     public class FindItemMicrosoftOfficeWordDetailViewModel : FindItemDetailViewModelBase
     {
@@ -77,7 +151,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         #region FindItemDetailViewModelBase
 
-        public override bool Showable => throw new NotImplementedException();
+        public override bool Showable => throw new NotSupportedException();
 
         #endregion
     }
