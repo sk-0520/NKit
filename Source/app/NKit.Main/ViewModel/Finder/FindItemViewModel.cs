@@ -135,50 +135,52 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         public bool ContentIsPdf => Model.FileContentSearchResult.Pdf.IsMatched;
 
-        public IReadOnlyList<TextSearchMatch> ContentPdfMatches
-        {
-            get {
-                if(!ContentIsPdf) {
-                    return null;
-                }
+        //public IReadOnlyList<TextSearchMatch> ContentPdfMatches
+        //{
+        //    get {
+        //        if(!ContentIsPdf) {
+        //            return null;
+        //        }
 
-                return Model.FileContentSearchResult.Pdf.Matches;
-            }
-            set { /* TwoWay ダミー */}
-        }
+        //        return Model.FileContentSearchResult.Pdf.Matches;
+        //    }
+        //    set { /* TwoWay ダミー */}
+        //}
+
+        public FindItemPdfDetailViewModel PdfDetail => new FindItemPdfDetailViewModel(Model);
 
         public bool ContentIsXmlHtml => Model.FileContentSearchResult.XmlHtml.IsMatched;
         public XmlHtmlSearchResult ContentXmlHtml => Model.FileContentSearchResult.XmlHtml;
-        public IReadOnlyList<TextSearchMatch> ContentXmlHtmlMatches
-        {
-            get
-            {
-                if(!ContentIsXmlHtml) {
-                    return null;
-                }
+        //public IReadOnlyList<TextSearchMatch> ContentXmlHtmlMatches
+        //{
+        //    get
+        //    {
+        //        if(!ContentIsXmlHtml) {
+        //            return null;
+        //        }
 
-                var list = new List<TextSearchMatch>(ContentXmlHtml.Results.Count);
-                foreach(var result in ContentXmlHtml.Results) {
-                    if(result.NodeType == HtmlAgilityPack.HtmlNodeType.Comment) {
-                        var comment = (XmlHtmlCommentSearchResult)result;
-                        list.AddRange(comment.Matches);
-                    } else if(result.NodeType == HtmlAgilityPack.HtmlNodeType.Text) {
-                        var text = (XmlHtmlTextSearchResult)result;
-                        list.AddRange(text.Matches);
-                    } else {
-                        var element = (XmlHtmlElementSearchResult)result;
-                        list.AddRange(element.ElementResult.Matches);
-                        foreach(var attribute in element.AttributeKeyResults) {
-                            list.AddRange(attribute.KeyResult.Matches);
-                            list.AddRange(attribute.ValueResult.Matches);
-                        }
-                    }
-                }
+        //        var list = new List<TextSearchMatch>(ContentXmlHtml.Results.Count);
+        //        foreach(var result in ContentXmlHtml.Results) {
+        //            if(result.NodeType == HtmlAgilityPack.HtmlNodeType.Comment) {
+        //                var comment = (XmlHtmlCommentSearchResult)result;
+        //                list.AddRange(comment.Matches);
+        //            } else if(result.NodeType == HtmlAgilityPack.HtmlNodeType.Text) {
+        //                var text = (XmlHtmlTextSearchResult)result;
+        //                list.AddRange(text.Matches);
+        //            } else {
+        //                var element = (XmlHtmlElementSearchResult)result;
+        //                list.AddRange(element.ElementResult.Matches);
+        //                foreach(var attribute in element.AttributeKeyResults) {
+        //                    list.AddRange(attribute.KeyResult.Matches);
+        //                    list.AddRange(attribute.ValueResult.Matches);
+        //                }
+        //            }
+        //        }
 
-                return list;
-            }
-            set { /* TwoWay ダミー */}
-        }
+        //        return list;
+        //    }
+        //    set { /* TwoWay ダミー */}
+        //}
 
         public FindItemXmlHtmlDetailViewModel XmlHtmlDetail => new FindItemXmlHtmlDetailViewModel(Model);
 
