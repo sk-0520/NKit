@@ -24,6 +24,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         bool _isSelected;
 
+        FindItemDetailViewModelBase _selectedDetailItem;
+
         #endregion
 
         public FindItemViewModel(FindItemModel model)
@@ -44,6 +46,20 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 PdfDetail,
                 XmlHtmlDetail,
             };
+
+            if(Model.FileContentSearchResult.IsMatched) {
+                var detailPriority = new FindItemDetailViewModelBase[] {
+                    MsOfficeDetail,
+                    PdfDetail,
+                    XmlHtmlDetail,
+                    TextDetail,
+                    GeneralDetail,
+                    BrowserDetail,
+                };
+                SelectedDetailItem = detailPriority.FirstOrDefault(d => d.Showable);
+            } else {
+                SelectedDetailItem = GeneralDetail;
+            }
         }
 
         #region property
@@ -70,11 +86,17 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public FindItemDetailViewModelBase[] DetailItems { get; }
 
         public FindItemGeneralDetailViewModel GeneralDetail { get; }
+        public FindItemBrowserDetailViewModel BrowserDetail { get; }
         public FindItemTextDetailViewModel TextDetail { get; }
         public FindItemMicrosoftOfficeDetailViewModel MsOfficeDetail { get; }
         public FindItemPdfDetailViewModel PdfDetail { get; }
         public FindItemXmlHtmlDetailViewModel XmlHtmlDetail { get; }
-        public FindItemBrowserDetailViewModel BrowserDetail { get; }
+
+        public FindItemDetailViewModelBase SelectedDetailItem
+        {
+            get { return this._selectedDetailItem; }
+            set { SetProperty(ref this._selectedDetailItem, value); }
+        }
 
         #endregion
 

@@ -32,7 +32,7 @@
     <app_main_view_converter:MicrosoftOfficeExcelCellAddressConverter x:Key="MicrosoftOfficeExcelCellAddressConverter" />
   </UserControl.Resources>
   <Grid>
-    <TabControl TabStripPlacement="Left" ItemsSource="{Binding SingleItem.DetailItems, ElementName=root}">
+    <TabControl TabStripPlacement="Left" SelectedItem="{Binding SingleItem.SelectedDetailItem, ElementName=root}" ItemsSource="{Binding SingleItem.DetailItems, ElementName=root}">
       <TabControl.Resources>
         <DataTemplate DataType="{x:Type app_main_viewmodel_finder_finditemdetail:FindItemGeneralDetailViewModel}">
           <ScrollViewer>
