@@ -353,7 +353,6 @@
     <Compile Include="ViewModel\SystemEnvironment\SystemEnvironmentManagerViewModel.cs" />
     <Compile Include="View\Converter\FilePathToIconConverter.cs" />
     <Compile Include="View\Converter\MicrosoftOfficeExcelCellAddressConverter.cs" />
-    <Compile Include="View\Converter\MicrosoftOfficeExcelMatchesConverter.cs" />
     <Compile Include="View\Finder\FinderFindGroupControl.xaml.cs">
       <DependentUpon>FinderFindGroupControl.xaml</DependentUpon>
     </Compile>

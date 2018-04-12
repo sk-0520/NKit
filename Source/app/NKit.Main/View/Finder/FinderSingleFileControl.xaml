@@ -29,7 +29,6 @@
     <app_utility_view_converter:DoubleToParameterPercentConverter x:Key="DoubleToParameterPercentConverter" />
     <app_utility_view_converter:DoubleToPercentConverter x:Key="DoubleToPercentConverter" />
     <app_main_view_converter:MicrosoftOfficeExcelCellAddressConverter x:Key="MicrosoftOfficeExcelCellAddressConverter" />
-    <app_main_view_converter:MicrosoftOfficeExcelMatchesConverter x:Key="MicrosoftOfficeExcelMatchesConverter" />
   </UserControl.Resources>
   <Grid>
     <TabControl TabStripPlacement="Left">
@@ -150,91 +149,6 @@
               MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
             />
           </Grid>
-        </ScrollViewer>
-      </TabItem>
-
-      <TabItem Header="MS Office" IsSelected="{Binding SingleItem.IsSelectedContentMsOffice, ElementName=root}" Visibility="{Binding SingleItem.ContentIsMsOffice, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
-        <ScrollViewer>
-          <Grid DataContext="{Binding SingleItem.ContentMsOffice, ElementName=root}">
-            <Grid.RowDefinitions>
-              <RowDefinition Height="Auto" />
-              <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="Auto" />
-              <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-
-            <Label Grid.Row="0" Grid.Column="0">種類:</Label>
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding OfficeType}" />
-
-            <ContentControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-              <ContentControl.Resources>
-                <StackPanel x:Key="Excel">
-                  <ItemsControl ItemsSource="{Binding MatchSheet}">
-                    <ItemsControl.ItemTemplate>
-                      <DataTemplate>
-                        <GroupBox>
-                          <GroupBox.Header>
-                            <app_main_view_control:TextSearchMatchControl Grid.Row="0" Grid.Column="1" IsSelectable="False" ShowSingleLine="True" ShowSingleUnmatchText="{Binding SheetName}" ItemsSource="{Binding SheetNameResult.Matches}" MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" />
-                          </GroupBox.Header>
-                          <Grid>
-                            <Grid.RowDefinitions>
-                              <RowDefinition Height="Auto" />
-                              <RowDefinition Height="Auto" />
-                              <RowDefinition Height="Auto" />
-                              <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <Label Grid.Row="0">セル:</Label>
-                            <app_main_view_control:TextSearchMatchControl Grid.Row="1" ItemsSource="{Binding CellResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}" UserSelectedCommand="{Binding SingleItem.OpenMsOfficeExcelFileCommand, ElementName=root}" MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" />
-
-                            <Label Grid.Row="2">オートシェイプ:</Label>
-                            <app_main_view_control:TextSearchMatchControl Grid.Row="3" ItemsSource="{Binding ShapeResults, Converter={StaticResource MicrosoftOfficeExcelMatchesConverter}}" UserSelectedCommand="{Binding SingleItem.OpenMsOfficeExcelFileCommand, ElementName=root}" MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" />
-                          </Grid>
-                        </GroupBox>
-                      </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                  </ItemsControl>
-                </StackPanel>
-                <StackPanel x:Key="Word">
-                  <ScrollViewer>
-                    <Grid>
-                      <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                      </Grid.RowDefinitions>
-                      <Label Grid.Row="0">要素:</Label>
-                      <app_main_view_control:TextSearchMatchControl Grid.Row="1" ItemsSource="{Binding SingleItem.ContentMsOfficeWordElements, Mode=TwoWay, ElementName=root}" UserSelectedCommand="{Binding SingleItem.OpenMsOfficeWordFileCommand, Mode=TwoWay, ElementName=root}" MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" />
-                    </Grid>
-                  </ScrollViewer>
-                </StackPanel>
-              </ContentControl.Resources>
-              <ContentControl.Style>
-                <Style TargetType="ContentControl">
-                  <Style.Triggers>
-                    <!--<DataTrigger Binding="{Binding IsMatched}" Value="False">
-                      <Setter Property="Content" Value="" />
-                    </DataTrigger>-->
-                    <DataTrigger Binding="{Binding OfficeType}" Value="Excel1997">
-                      <Setter Property="Content" Value="{StaticResource Excel}" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding OfficeType}" Value="Excel2007">
-                      <Setter Property="Content" Value="{StaticResource Excel}" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding OfficeType}" Value="Word1997">
-                      <Setter Property="Content" Value="{StaticResource Word}" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding OfficeType}" Value="Word2007">
-                      <Setter Property="Content" Value="{StaticResource Word}" />
-                    </DataTrigger>
-                  </Style.Triggers>
-                </Style>
-              </ContentControl.Style>
-            </ContentControl>
-          </Grid>
-
         </ScrollViewer>
       </TabItem>
 
