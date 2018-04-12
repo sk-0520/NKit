@@ -79,7 +79,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         public IReadOnlyList<TextSearchMatch> FileNameMatches => Model.FileNameSearchResult.Matches;
 
-        public bool ContentIsText => Model.FileContentSearchResult.Text != null && Model.FileContentSearchResult.IsMatched;
+        public bool ContentIsText => Model.FileContentSearchResult.IsMatched;
         public TextSearchResult ContentText => Model.FileContentSearchResult.Text;
 
         public IReadOnlyList<TextSearchMatch> ContentMatches
@@ -94,7 +94,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { /* TwoWay ダミー */}
         }
 
-        public bool ContentIsMsOffice => Model.FileContentSearchResult.MicrosoftOffice != null && Model.FileContentSearchResult.MicrosoftOffice.IsMatched;
+        public bool ContentIsMsOffice => Model.FileContentSearchResult.MicrosoftOffice.IsMatched;
         public MicrosoftOfficeSearchResultBase ContentMsOffice => Model.FileContentSearchResult.MicrosoftOffice;
 
         public IReadOnlyList<TextSearchMatch> ContentMsOfficeWordElements
@@ -132,7 +132,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { /* TwoWay ダミー */}
         }
 
-        public bool ContentIsPdf => Model.FileContentSearchResult.Pdf != null && Model.FileContentSearchResult.Pdf.IsMatched;
+        public bool ContentIsPdf => Model.FileContentSearchResult.Pdf.IsMatched;
 
         public IReadOnlyList<TextSearchMatch> ContentPdfMatches
         {
@@ -146,7 +146,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { /* TwoWay ダミー */}
         }
 
-        public bool ContentIsXmlHtml => Model.FileContentSearchResult.XmlHtml != null;
+        public bool ContentIsXmlHtml => Model.FileContentSearchResult.XmlHtml.IsMatched;
         public XmlHtmlSearchResult ContentXmlHtml => Model.FileContentSearchResult.XmlHtml;
         public IReadOnlyList<TextSearchMatch> ContentXmlHtmlMatches
         {
