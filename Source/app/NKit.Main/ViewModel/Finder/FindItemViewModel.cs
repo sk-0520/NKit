@@ -35,7 +35,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public FindItemViewModel(FindItemModel model)
             : base(model)
         {
-            FileInfo = Model.FileInfo;
+            GeneralDetail = new FindItemGeneralDetailViewModel(Model);
 
             // だっせぇ
             if(Model.FileContentSearchResult.IsMatched) {
@@ -59,8 +59,6 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         #region property
 
-        FileInfo FileInfo { get; }
-
         public bool MatchedName => Model.FileNameSearchResult.IsMatched;
         public bool MatchedSize => Model.MatchedFileSize;
         public bool MatchedProperty => Model.FilePropertySearchResult.IsMatched;
@@ -70,13 +68,15 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         public int RelativeDirectoryDepth => RelativeDirectoryPath.Split(Path.DirectorySeparatorChar).Length;
 
-        public string FilePath => Model.FileInfo.FullName;
-        public string FileName => Model.FileInfo.Name;
-        public string FileNameWithoutExtension => Path.GetFileNameWithoutExtension(FileName);
-        public string Extension => Path.GetExtension(FilePath).Replace(".", string.Empty);
-        public string DirectoryPath => Path.GetDirectoryName(FilePath);
-        public long FileSize => FileInfo.Length;
-        public bool IsHiddenFile => FileInfo.Attributes.HasFlag(FileAttributes.Hidden);
+        public string FilePath => GeneralDetail.FilePath;
+        public string FileName => GeneralDetail.FileName;
+        public string FileNameWithoutExtension => GeneralDetail.FileNameWithoutExtension;
+        public string Extension => GeneralDetail.Extension;
+        public string DirectoryPath => GeneralDetail.DirectoryPath;
+        public long FileSize => GeneralDetail.FileSize;
+        public bool IsHiddenFile => GeneralDetail.IsHiddenFile;
+
+        public FindItemGeneralDetailViewModel GeneralDetail { get; }
 
         public IReadOnlyList<TextSearchMatch> FileNameMatches => Model.FileNameSearchResult.Matches;
 

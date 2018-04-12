@@ -14,6 +14,7 @@
   xmlns:app_main_view_converter="clr-namespace:ContentTypeTextNet.NKit.Main.View.Converter"
   xmlns:app_main_view_control="clr-namespace:ContentTypeTextNet.NKit.Main.View.Control"
   xmlns:app_main_view_finder="clr-namespace:ContentTypeTextNet.NKit.Main.View.Finder"
+  xmlns:app_main_viewmodel_finder_finditemdetail="clr-namespace:ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail"
 
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   mc:Ignorable="d"
@@ -32,7 +33,232 @@
   </UserControl.Resources>
   <Grid>
     <TabControl TabStripPlacement="Left">
-      <TabItem Header="基本" IsSelected="{Binding SingleItem.IsSelectedContentGeneral, ElementName=root}">
+      <TabControl.Resources>
+        <DataTemplate DataType="">
+          <ScrollViewer>
+            <StackPanel>
+              <Grid>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0">パス:</Label>
+                <TextBox Grid.Row="0" Grid.Column="1" IsReadOnly="True" Text="{Binding FilePath, Mode=OneWay}"/>
+
+                <Label Grid.Row="1" Grid.Column="0">サイズ:</Label>
+                <Grid Grid.Row="1" Grid.Column="1">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+
+                  <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding FileSize, Mode=OneTime}"/>
+                  <Button Grid.Column="1" Command="{Binding SingleItem.CopyFileSizeCommand, ElementName=root}">copy</Button>
+                </Grid>
+
+                <Label Grid.Row="2" Grid.Column="0" >ハッシュ:</Label>
+                <Grid Grid.Row="2" Grid.Column="1" DataContext="{Binding FileHash}">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+
+                  <ComboBox Grid.Column="0" ItemsSource="{Binding HashTypeItems}" SelectedItem="{Binding SelectedHashType}" />
+                  <app_main_view_control:RunnableControl Grid.Column="1" RunnableItem="{Binding}" />
+                  <ContentControl Grid.Column="2">
+                    <ContentControl.Style>
+                      <Style TargetType="ContentControl">
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding RunState}" Value="Finished">
+                            <Setter Property="Content">
+                              <Setter.Value>
+                                <TextBlock>
+                              <Hyperlink Command="{Binding CopyHashCommand}" CommandParameter="{Binding HashValue}">
+                                <Run Text="copy:" />
+                                <Run Text="{Binding CurrentHashType, Mode=OneTime}" />
+                                <Run Text="{Binding HashValue, Mode=OneWay, Converter={StaticResource BinaryToTextConverter}}" />
+                              </Hyperlink>
+                                </TextBlock>
+                              </Setter.Value>
+                            </Setter>
+                          </DataTrigger>
+                        </Style.Triggers>
+                        <Setter Property="Content" Value="{Binding RunState}" />
+                      </Style>
+                    </ContentControl.Style>
+                  </ContentControl>
+
+                </Grid>
+
+
+                <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ToolTip="こいつらは消える運命" >
+                  <StackPanel Orientation="Horizontal">
+                    <Button Content="簡易表示" Command="{Binding SingleItem.BrowseFileCommand, ElementName=root}" />
+                    <Separator />
+                    <Button Content="ファイルを開く" Command="{Binding SingleItem.OpenFileCommand, ElementName=root}" />
+                    <Button Content="親ディレクトリを開く" Command="{Binding SingleItem.OpenDirectoryCommand, ElementName=root}"/>
+                    <Button Content="プロパティ" Command="{Binding SingleItem.ShowPropertyCommand, ElementName=root}" />
+                  </StackPanel>
+                  <StackPanel Orientation="Horizontal">
+                    <Button Content="ファイルをコピー"  Command="{Binding SingleItem.CopyFileCommand, ElementName=root}"/>
+                    <Button Content="ファイル名をコピー"  Command="{Binding SingleItem.CopyNameWithExtensionCommand, ElementName=root}"/>
+                    <Button Content="拡張子を外したファイル名をコピー"  Command="{Binding SingleItem.CopyNameWithoutExtensionCommand, ElementName=root}"/>
+                    <Button Content="親ディレクトリをコピー"  Command="{Binding SingleItem.CopyDirectoryCommand, ElementName=root}"/>
+                  </StackPanel>
+                </StackPanel>
+
+              </Grid>
+            </StackPanel>
+
+          </ScrollViewer>
+        </DataTemplate>
+
+        <DataTemplate DataType="">
+          <app_browser:BrowserControl Browser="{Binding Browser, Mode=TwoWay}" />
+        </DataTemplate>
+
+        <DataTemplate DataType="">
+          <ScrollViewer>
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+
+              <Label Grid.Row="0" Grid.Column="0">エンコーディング:</Label>
+              <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Encoding, Mode=OneTime}" />
+
+              <Label Grid.Row="1" Grid.Column="0">一致:</Label>
+              <app_main_view_control:TextSearchMatchControl
+              Grid.Row="2"
+              Grid.Column="0"
+              Grid.ColumnSpan="2"
+              ItemsSource="{Binding Matches, Mode=TwoWay}"
+              UserSelectedCommand="{Binding SingleItem.OpenTextFileCommand, Mode=TwoWay, ElementName=root}"
+              MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
+            />
+            </Grid>
+          </ScrollViewer>
+        </DataTemplate>
+
+        <DataTemplate DataType="">
+          <ScrollViewer>
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+
+
+              <Label Grid.Row="0" Grid.Column="0">種類:</Label>
+              <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding OfficeType}" />
+
+              <ContentControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                <ContentControl.Resources>
+                  <ItemsControl x:Key="Excel" DataContext="{Binding Excel}" ItemsSource="{Binding Sheets}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate>
+                        <GroupBox>
+                          <GroupBox.Header>
+                            <app_main_view_control:TextSearchMatchControl
+                            IsSelectable="False"
+                            ShowSingleLine="True"
+                            ShowSingleUnmatchText="{Binding SheetName}"
+                            ItemsSource="{Binding SheetNameMatches}"
+                          />
+                          </GroupBox.Header>
+                          <app_main_view_control:TextSearchMatchControl
+                            Grid.Row="1"
+                            ItemsSource="{Binding Matches}"
+                            UserSelectedCommand="{Binding SingleItem.OpenMsOfficeExcelFileCommand, ElementName=root}"
+                            MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
+                          />
+                        </GroupBox>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                  <Grid x:Key="Word" DataContext="{Binding Word}">
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto" />
+                      <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0">要素:</Label>
+                    <app_main_view_control:TextSearchMatchControl
+                      Grid.Row="1"
+                      ItemsSource="{Binding Elements, Mode=TwoWay}"
+                      UserSelectedCommand="{Binding SingleItem.OpenMsOfficeWordFileCommand, Mode=TwoWay, ElementName=root}"
+                      MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
+                    />
+                  </Grid>
+                </ContentControl.Resources>
+                <ContentControl.Style>
+                  <Style TargetType="ContentControl">
+                    <Style.Triggers>
+                      <!--<DataTrigger Binding="{Binding IsMatched}" Value="False">
+                      <Setter Property="Content" Value="" />
+                    </DataTrigger>-->
+                      <DataTrigger Binding="{Binding OfficeType}" Value="Excel1997">
+                        <Setter Property="Content" Value="{StaticResource Excel}" />
+                      </DataTrigger>
+                      <DataTrigger Binding="{Binding OfficeType}" Value="Excel2007">
+                        <Setter Property="Content" Value="{StaticResource Excel}" />
+                      </DataTrigger>
+                      <DataTrigger Binding="{Binding OfficeType}" Value="Word1997">
+                        <Setter Property="Content" Value="{StaticResource Word}" />
+                      </DataTrigger>
+                      <DataTrigger Binding="{Binding OfficeType}" Value="Word2007">
+                        <Setter Property="Content" Value="{StaticResource Word}" />
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </ContentControl.Style>
+              </ContentControl>
+            </Grid>
+
+          </ScrollViewer>
+        </DataTemplate>
+
+        <DataTemplate DataType="">
+          <ScrollViewer>
+            <app_main_view_control:TextSearchMatchControl
+            HiddenTopLineOnly="False"
+            ItemsSource="{Binding Matches, Mode=TwoWay}"
+            UserSelectedCommand="{Binding SingleItem.OpenPdfFileCommand, Mode=TwoWay, ElementName=root}"
+            MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
+          />
+          </ScrollViewer>
+        </DataTemplate>
+
+        <DataTemplate DataType="">
+          <ScrollViewer>
+            <app_main_view_control:TextSearchMatchControl
+            HiddenTopLineOnly="False"
+            ItemsSource="{Binding Matches, Mode=TwoWay}"
+            UserSelectedCommand="{Binding SingleItem.OpenXmlHtmlFileCommand, Mode=TwoWay, ElementName=root}"
+            MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
+          />
+          </ScrollViewer>
+        </DataTemplate>
+
+      </TabControl.Resources>
+      <TabItem Header="基本" DataContext="{Binding SingleItem.GeneralDetail, ElementName=root}">
         <ScrollViewer>
           <StackPanel>
             <Grid>
@@ -48,7 +274,7 @@
               </Grid.ColumnDefinitions>
 
               <Label Grid.Row="0" Grid.Column="0">パス:</Label>
-              <TextBox Grid.Row="0" Grid.Column="1" IsReadOnly="True" Text="{Binding SingleItem.FilePath, ElementName=root, Mode=OneWay}"/>
+              <TextBox Grid.Row="0" Grid.Column="1" IsReadOnly="True" Text="{Binding FilePath, Mode=OneWay}"/>
 
               <Label Grid.Row="1" Grid.Column="0">サイズ:</Label>
               <Grid Grid.Row="1" Grid.Column="1">
@@ -57,12 +283,12 @@
                   <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding SingleItem.FileSize, ElementName=root, Mode=OneWay}"/>
+                <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding FileSize, Mode=OneTime}"/>
                 <Button Grid.Column="1" Command="{Binding SingleItem.CopyFileSizeCommand, ElementName=root}">copy</Button>
               </Grid>
 
               <Label Grid.Row="2" Grid.Column="0" >ハッシュ:</Label>
-              <Grid Grid.Row="2" Grid.Column="1" DataContext="{Binding SingleItem.FileHash, ElementName=root}">
+              <Grid Grid.Row="2" Grid.Column="1" DataContext="{Binding FileHash}">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto" />
                   <ColumnDefinition Width="Auto" />
