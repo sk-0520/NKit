@@ -120,7 +120,7 @@
         </ScrollViewer>
       </TabItem>
 
-      <TabItem Header="{Binding Browser.FileUri}" DataContext="{Binding SingleItem.BrowserDetail, ElementName=root}">
+      <TabItem Header="簡易表示" DataContext="{Binding SingleItem.BrowserDetail, ElementName=root}">
         <app_browser:BrowserControl Browser="{Binding Browser, Mode=TwoWay}" />
       </TabItem>
 
@@ -242,13 +242,17 @@
         </ScrollViewer>
       </TabItem>
 
-      <TabItem Header="XML/HTML" IsSelected="{Binding SingleItem.IsSelectedContentXmlHtml, ElementName=root}" Visibility="{Binding SingleItem.ContentIsXmlHtml, ElementName=root, Converter={StaticResource BooleanToVisibilityConverter}}">
+      <TabItem Header="XML/HTML" DataContext="{Binding SingleItem.XmlHtmlDetail, ElementName=root}">
         <ScrollViewer>
-          <StackPanel DataContext="{Binding SingleItem.ContentXmlHtml, ElementName=root}">
-            <app_main_view_control:TextSearchMatchControl HiddenTopLineOnly="False"  ItemsSource="{Binding SingleItem.ContentXmlHtmlMatches, Mode=TwoWay, ElementName=root}" UserSelectedCommand="{Binding SingleItem.OpenXmlHtmlFileCommand, Mode=TwoWay, ElementName=root}" MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" />
-          </StackPanel>
+          <app_main_view_control:TextSearchMatchControl
+            HiddenTopLineOnly="False"
+            ItemsSource="{Binding Matches, Mode=TwoWay}"
+            UserSelectedCommand="{Binding SingleItem.OpenXmlHtmlFileCommand, Mode=TwoWay, ElementName=root}"
+            MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
+          />
         </ScrollViewer>
       </TabItem>
+
     </TabControl>
 
   </Grid>

@@ -180,6 +180,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             set { /* TwoWay ダミー */}
         }
 
+        public FindItemXmlHtmlDetailViewModel XmlHtmlDetail => new FindItemXmlHtmlDetailViewModel(Model);
+
         public FileTypeViewModel FileType => new FileTypeViewModel(Model.FileType);
 
         public FileHashViewModel FileHash => new FileHashViewModel(Model.FileHash);

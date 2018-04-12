@@ -195,6 +195,7 @@
     <Compile Include="ViewModel\Cli\CliManagerViewModel.cs" />
     <Compile Include="ViewModel\Finder\FindItemDetail\FindItemBrowserDetailViewModel.cs" />
     <Compile Include="ViewModel\Finder\FindItemDetail\FindItemDetailViewModelBase.cs" />
+    <Compile Include="ViewModel\Finder\FindItemDetail\FindItemXmlHtmlDetailViewModel.cs" />
     <Compile Include="ViewModel\Other\OtherManagerViewModel.cs" />
     <Compile Include="View\Capture\CaptureGroupControl.xaml.cs">
       <DependentUpon>CaptureGroupControl.xaml</DependentUpon>
