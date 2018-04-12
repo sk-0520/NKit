@@ -56,7 +56,7 @@
   </UserControl.Resources>
   <Grid>
     <TabControl SelectedItem="{Binding SelectedTabItem, ElementName=root}">
-      <TabItem x:Name="treeTabItem" Header="tree">
+      <TabItem x:Name="treeTabItem" Header="構造">
         <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="15*" />
@@ -80,7 +80,7 @@
           <GridSplitter Grid.Column="1" Style="{StaticResource DefaultVericalGridSplitter}" />
         </Grid>
       </TabItem>
-      <TabItem Header="text">
+      <TabItem Header="テキスト">
         <app_browser:BrowserTextControl />
       </TabItem>
     </TabControl>

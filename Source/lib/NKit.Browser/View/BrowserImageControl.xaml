@@ -24,7 +24,7 @@
     </Grid.RowDefinitions>
 
     <ToolBar Grid.Row="0">
-      <TextBlock>
+      <TextBlock VerticalAlignment="Center">
         <Run>
           <Run.Style>
             <Style TargetType="Run">
@@ -52,10 +52,19 @@
         </Run>
       </TextBlock>
       <Separator />
-      <CheckBox x:Name="selectOrigin">origin</CheckBox>
-      <Slider Width="100" Minimum="{Binding MinimumScale, ElementName=root}" Maximum="{Binding MaximumScale, ElementName=root}" Value="{Binding Scale, ElementName=root}" />
-      <TextBlock Text="{Binding Scale, ElementName=root}" />
-      <Button Command="{Binding ResetCommand, ElementName=root}">reset</Button>
+      <CheckBox x:Name="selectOrigin">元の大きさで表示</CheckBox>
+      <Slider
+        Width="100"
+        LargeChange="1"
+        SmallChange="0.5"
+        TickPlacement="BottomRight"
+        IsEnabled="{Binding IsChecked, ElementName=selectOrigin}"
+        Minimum="{Binding MinimumScale, ElementName=root}"
+        Maximum="{Binding MaximumScale, ElementName=root}"
+        Value="{Binding Scale, ElementName=root}"
+      />
+      <TextBlock VerticalAlignment="Center" IsEnabled="{Binding IsChecked, ElementName=selectOrigin}" Text="{Binding Scale, StringFormat='{}{0:P}', ElementName=root}"  />
+      <Button IsEnabled="{Binding IsChecked, ElementName=selectOrigin}" Command="{Binding ResetCommand, ElementName=root}">リセット</Button>
     </ToolBar>
 
     <ScrollViewer x:Name="imageScroller" Grid.Row="1" PreviewMouseLeftButtonDown="imageScroller_PreviewMouseLeftButtonDown" PreviewMouseMove="imageScroller_PreviewMouseMove" PreviewMouseLeftButtonUp="imageScroller_PreviewMouseLeftButtonUp">
@@ -124,8 +133,18 @@
     </ScrollViewer>
 
     <StatusBar Grid.Row="2" Visibility="{Binding Visibility, ElementName=player}">
-      <CheckBox x:Name="animationReplay" IsChecked="{Binding IsReplay, ElementName=root}">replay</CheckBox>
-      <Button Command="{Binding PlayAnimationCommand, ElementName=root}">start</Button>
+      <CheckBox x:Name="animationReplay" IsChecked="{Binding IsReplay, ElementName=root}">繰り返し表示</CheckBox>
+      <Button Command="{Binding PlayAnimationCommand, ElementName=root}" Content="再生">
+        <Button.Style>
+          <Style TargetType="Button">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding IsReplay, ElementName=root}" Value="True">
+                <Setter Property="IsEnabled" Value="False" />
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Button.Style>
+      </Button>
     </StatusBar>
 
   </Grid>
