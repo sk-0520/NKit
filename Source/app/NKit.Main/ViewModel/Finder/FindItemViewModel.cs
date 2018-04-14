@@ -24,7 +24,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         bool _isSelected;
 
-        FindItemDetailViewModelBase _selectedDetailItem;
+        int _selectedDetailIndex;
 
         #endregion
 
@@ -34,31 +34,28 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             GeneralDetail = new FindItemGeneralDetailViewModel(Model);
             BrowserDetail = new FindItemBrowserDetailViewModel(Model);
             TextDetail = new FindItemTextDetailViewModel(Model);
-            MsOfficeDetail = new FindItemMicrosoftOfficeDetailViewModel(Model);
+            MicrosoftOfficeDetail = new FindItemMicrosoftOfficeDetailViewModel(Model);
             PdfDetail = new FindItemPdfDetailViewModel(Model);
             XmlHtmlDetail = new FindItemXmlHtmlDetailViewModel(Model);
 
-            DetailItems = new FindItemDetailViewModelBase[] {
-                GeneralDetail,
-                BrowserDetail,
-                TextDetail,
-                MsOfficeDetail,
-                PdfDetail,
-                XmlHtmlDetail,
-            };
+            var detailItems = new [] {
+                new { Detail = (FindItemDetailViewModelBase)GeneralDetail, Priority = 5 },
+                new { Detail = (FindItemDetailViewModelBase)BrowserDetail, Priority = 6 },
+                new { Detail = (FindItemDetailViewModelBase)TextDetail, Priority = 4 },
+                new { Detail = (FindItemDetailViewModelBase)MicrosoftOfficeDetail, Priority = 1 },
+                new { Detail = (FindItemDetailViewModelBase)PdfDetail, Priority = 2 },
+                new { Detail = (FindItemDetailViewModelBase)XmlHtmlDetail, Priority = 3 },
+            }.Select((d, i) => new { d.Detail, d.Priority, Index = i }).ToList();
 
             if(Model.FileContentSearchResult.IsMatched) {
-                var detailPriority = new FindItemDetailViewModelBase[] {
-                    MsOfficeDetail,
-                    PdfDetail,
-                    XmlHtmlDetail,
-                    TextDetail,
-                    GeneralDetail,
-                    BrowserDetail,
-                };
-                SelectedDetailItem = detailPriority.FirstOrDefault(d => d.Showable);
+                SelectedDetailIndex = detailItems
+                    .Where(d => d.Detail.Showable)
+                    .OrderBy(i => i.Priority)
+                    .First()
+                    .Index
+                ;
             } else {
-                SelectedDetailItem = GeneralDetail;
+                SelectedDetailIndex = detailItems.First().Index;
             }
         }
 
@@ -83,19 +80,17 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public long FileSize => GeneralDetail.FileSize;
         public bool IsHiddenFile => GeneralDetail.IsHiddenFile;
 
-        public FindItemDetailViewModelBase[] DetailItems { get; }
-
         public FindItemGeneralDetailViewModel GeneralDetail { get; }
         public FindItemBrowserDetailViewModel BrowserDetail { get; }
         public FindItemTextDetailViewModel TextDetail { get; }
-        public FindItemMicrosoftOfficeDetailViewModel MsOfficeDetail { get; }
+        public FindItemMicrosoftOfficeDetailViewModel MicrosoftOfficeDetail { get; }
         public FindItemPdfDetailViewModel PdfDetail { get; }
         public FindItemXmlHtmlDetailViewModel XmlHtmlDetail { get; }
 
-        public FindItemDetailViewModelBase SelectedDetailItem
+        public int SelectedDetailIndex
         {
-            get { return this._selectedDetailItem; }
-            set { SetProperty(ref this._selectedDetailItem, value); }
+            get { return this._selectedDetailIndex; }
+            set { SetProperty(ref this._selectedDetailIndex, value); }
         }
 
         #endregion

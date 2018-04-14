@@ -24,6 +24,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
         public BrowserViewModel Browser
         {
             get { return new BrowserViewModel(BrowserModel); }
+            set { /* TwoWay */ }
         }
 
         #endregion

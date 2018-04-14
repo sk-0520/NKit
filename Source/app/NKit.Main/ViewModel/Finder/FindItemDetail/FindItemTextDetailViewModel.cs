@@ -28,6 +28,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
                 return Model.FileContentSearchResult.Text.Matches;
             }
+            set { /* TwoWay */ }
         }
 
         #endregion
