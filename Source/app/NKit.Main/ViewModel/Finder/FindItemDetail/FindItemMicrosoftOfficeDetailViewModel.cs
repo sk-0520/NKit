@@ -30,10 +30,27 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         public override bool Showable => Model.FileContentSearchResult.MicrosoftOffice.IsMatched;
 
+        public override bool IsEnabled => true;
+
         #endregion
     }
 
-    public class FindItemMicrosoftOfficeExcelBookDetailViewModel : FindItemDetailViewModelBase
+    public abstract class FindItemMicrosoftOfficeContentDetailViewModelBase : FindItemDetailViewModelBase
+    {
+        public FindItemMicrosoftOfficeContentDetailViewModelBase(FindItemModel model)
+            : base(model)
+        { }
+
+        #region FindItemDetailViewModelBase
+
+        public sealed override string Header => throw new NotSupportedException();
+        public sealed override bool Showable => throw new NotSupportedException();
+        public sealed override bool IsEnabled => throw new NotSupportedException();
+
+        #endregion
+    }
+
+    public class FindItemMicrosoftOfficeExcelBookDetailViewModel : FindItemMicrosoftOfficeContentDetailViewModelBase
     {
         #region variable
 
@@ -70,16 +87,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
                 return this._sheets;
             }
         }
-
-        #region FindItemDetailViewModelBase
-
-        public override string Header => throw new NotSupportedException();
-        public override bool Showable => throw new NotSupportedException();
-
-        #endregion
     }
 
-    public class FindItemMicrosoftOfficeExcelSheetDetailViewModel : FindItemDetailViewModelBase
+    public class FindItemMicrosoftOfficeExcelSheetDetailViewModel : FindItemMicrosoftOfficeContentDetailViewModelBase
     {
         public FindItemMicrosoftOfficeExcelSheetDetailViewModel(FindItemModel model, MicrosoftOfficeExcelSheetSearchResult sheetResult)
             : base(model)
@@ -109,17 +119,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
         }
 
         #endregion
-
-        #region FindItemDetailViewModelBase
-
-        public override string Header => throw new NotSupportedException();
-        public override bool Showable => throw new NotSupportedException();
-
-        #endregion
     }
 
-
-    public class FindItemMicrosoftOfficeWordDetailViewModel : FindItemDetailViewModelBase
+    public class FindItemMicrosoftOfficeWordDetailViewModel : FindItemMicrosoftOfficeContentDetailViewModelBase
     {
         public FindItemMicrosoftOfficeWordDetailViewModel(FindItemModel model)
             : base(model)
@@ -161,13 +163,6 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
             }
             set { /* TwoWay ダミー */}
         }
-
-        #endregion
-
-        #region FindItemDetailViewModelBase
-
-        public override string Header => throw new NotSupportedException();
-        public override bool Showable => throw new NotSupportedException();
 
         #endregion
     }

@@ -35,6 +35,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         public override string Header => Properties.Resources.String_ViewModel_Finder_FindItemDetail_Pdf;
         public override bool Showable => Model.FileContentSearchResult.Pdf.IsMatched;
+        public override bool IsEnabled => true;
 
         #endregion
     }

@@ -27,6 +27,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         public abstract bool Showable { get; }
 
+        public abstract bool IsEnabled { get; }
+
         #endregion
 
         #region ISelectable

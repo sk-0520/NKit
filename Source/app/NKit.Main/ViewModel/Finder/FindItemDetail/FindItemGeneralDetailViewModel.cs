@@ -43,6 +43,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         public override bool Showable => true;
 
+        public override bool IsEnabled => true;
+
         #endregion
     }
 }
