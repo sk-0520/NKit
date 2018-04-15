@@ -209,25 +209,28 @@
     <Content Include="Resources\File\ReleaseNoteLayout.html">
       <LastGenOutput>ReleaseNoteLayout.html1.cs</LastGenOutput>
     </Content>
-    <Content Include="doc\release-notes\ver_0-3-0.md">
+    <Content Include="doc\release-notes\ver_0-1-0_0-1-9\ver_0-3-0.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="doc\release-notes\ver_0-4-0.md">
+    <Content Include="doc\release-notes\ver_0-1-0_0-1-9\ver_0-4-0.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="doc\release-notes\ver_0-5-0.md">
+    <Content Include="doc\release-notes\ver_0-1-0_0-1-9\ver_0-5-0.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="doc\release-notes\ver_0-6-0.md">
+    <Content Include="doc\release-notes\ver_0-1-0_0-1-9\ver_0-6-0.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="doc\release-notes\ver_0-7-0.md">
+    <Content Include="doc\release-notes\ver_0-1-0_0-1-9\ver_0-7-0.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="doc\release-notes\ver_0-8-0.md">
+    <Content Include="doc\release-notes\ver_0-1-0_0-1-9\ver_0-8-0.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="doc\release-notes\ver_0-9-0.md">
+    <Content Include="doc\release-notes\ver_0-1-0_0-1-9\ver_0-9-0.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="doc\release-notes\ver_0-10-0.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\NKit.Manager.png" />
@@ -268,10 +271,10 @@
     <Content Include="doc\release-notes\ver_0-0-1_0-0-9\ver_0-0-9.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="doc\release-notes\ver_0-1-0.md">
+    <Content Include="doc\release-notes\ver_0-1-0_0-1-9\ver_0-1-0.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="doc\release-notes\ver_0-2-0.md">
+    <Content Include="doc\release-notes\ver_0-1-0_0-1-9\ver_0-2-0.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="NKit.exe.config">
