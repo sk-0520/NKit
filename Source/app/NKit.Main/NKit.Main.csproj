@@ -185,7 +185,6 @@
     <Compile Include="Model\File\FilePropertySearchResult.cs" />
     <Compile Include="Model\Finder\FinderUtility.cs" />
     <Compile Include="Model\Finder\FindGroupCache.cs" />
-    <Compile Include="Model\ISelectable.cs" />
     <Compile Include="Model\NKit\NKitApplicationExecutor.cs" />
     <Compile Include="Model\Other\OtherManagerModel.cs" />
     <Compile Include="Model\Searcher\PdfSearcher.cs" />
@@ -193,6 +192,13 @@
     <Compile Include="ViewModel\Capture\CaptureGroupViewModel.cs" />
     <Compile Include="ViewModel\Capture\CaptureImageViewModel.cs" />
     <Compile Include="ViewModel\Cli\CliManagerViewModel.cs" />
+    <Compile Include="ViewModel\Finder\FindItemDetail\FindItemGeneralDetailViewModel.cs" />
+    <Compile Include="ViewModel\Finder\FindItemDetail\FindItemBrowserDetailViewModel.cs" />
+    <Compile Include="ViewModel\Finder\FindItemDetail\FindItemDetailViewModelBase.cs" />
+    <Compile Include="ViewModel\Finder\FindItemDetail\FindItemPdfDetailViewModel.cs" />
+    <Compile Include="ViewModel\Finder\FindItemDetail\FindItemMicrosoftOfficeDetailViewModel.cs" />
+    <Compile Include="ViewModel\Finder\FindItemDetail\FindItemTextDetailViewModel.cs" />
+    <Compile Include="ViewModel\Finder\FindItemDetail\FindItemXmlHtmlDetailViewModel.cs" />
     <Compile Include="ViewModel\Other\OtherManagerViewModel.cs" />
     <Compile Include="View\Capture\CaptureGroupControl.xaml.cs">
       <DependentUpon>CaptureGroupControl.xaml</DependentUpon>
@@ -347,7 +353,6 @@
     <Compile Include="ViewModel\SystemEnvironment\SystemEnvironmentManagerViewModel.cs" />
     <Compile Include="View\Converter\FilePathToIconConverter.cs" />
     <Compile Include="View\Converter\MicrosoftOfficeExcelCellAddressConverter.cs" />
-    <Compile Include="View\Converter\MicrosoftOfficeExcelMatchesConverter.cs" />
     <Compile Include="View\Finder\FinderFindGroupControl.xaml.cs">
       <DependentUpon>FinderFindGroupControl.xaml</DependentUpon>
     </Compile>

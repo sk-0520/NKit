@@ -32,7 +32,7 @@ namespace ContentTypeTextNet.NKit.Browser.View
             nameof(Browser),
             typeof(BrowserViewModel),
             typeof(BrowserControl),
-            new FrameworkPropertyMetadata(default(BrowserViewModel), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(OnBrowserChanged))
+            new FrameworkPropertyMetadata(default(BrowserViewModel), new PropertyChangedCallback(OnBrowserChanged))
         );
 
         private static void OnBrowserChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

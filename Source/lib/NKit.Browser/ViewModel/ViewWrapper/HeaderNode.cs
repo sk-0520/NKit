@@ -10,14 +10,11 @@ using ContentTypeTextNet.NKit.Utility.ViewModel;
 
 namespace ContentTypeTextNet.NKit.Browser.ViewModel.ViewWrapper
 {
-    public interface INodeHeader
+    public interface INodeHeader: ISelectable, IExpandable
     {
         #region property
 
         string DisplayHeader { get; }
-
-        bool IsSelected { get; set; }
-        bool IsExpanded { get; set; }
 
         bool IsHeader { get; }
 
