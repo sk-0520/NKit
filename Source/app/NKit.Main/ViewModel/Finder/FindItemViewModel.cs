@@ -13,6 +13,7 @@ using ContentTypeTextNet.NKit.Main.Model.Searcher;
 using ContentTypeTextNet.NKit.Main.ViewModel.File;
 using ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail;
 using ContentTypeTextNet.NKit.Setting.Define;
+using ContentTypeTextNet.NKit.Utility.Model;
 using ContentTypeTextNet.NKit.Utility.ViewModel;
 using Prism.Commands;
 

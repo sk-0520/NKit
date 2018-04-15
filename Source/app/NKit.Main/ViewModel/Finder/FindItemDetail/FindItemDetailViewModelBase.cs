@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.NKit.Main.Model;
 using ContentTypeTextNet.NKit.Main.Model.Finder;
+using ContentTypeTextNet.NKit.Utility.Model;
 using ContentTypeTextNet.NKit.Utility.ViewModel;
 
 namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
