@@ -137,7 +137,6 @@
             <Grid.RowDefinitions>
               <RowDefinition Height="Auto" />
               <RowDefinition Height="Auto" />
-              <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="Auto" />
@@ -145,11 +144,10 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0">エンコーディング:</Label>
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Encoding, Mode=OneTime}" />
+            <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Text="{Binding Encoding, Mode=OneTime}" />
 
-            <Label Grid.Row="1" Grid.Column="0">一致:</Label>
             <app_main_view_control:TextSearchMatchControl
-                Grid.Row="2"
+                Grid.Row="1"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 ItemsSource="{Binding Matches, Mode=TwoWay}"
