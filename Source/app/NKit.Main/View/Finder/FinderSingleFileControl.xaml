@@ -33,12 +33,12 @@
   </UserControl.Resources>
   <Grid>
     <TabControl TabStripPlacement="Left" SelectedIndex="{Binding SingleItem.SelectedDetailIndex, ElementName=root}" >
-      <TabControl.Resources>
+      <TabControl.ItemContainerStyle>
         <Style TargetType="TabItem">
-          <Setter Property="Header" Value="{Binding DataContext.Header}" />
-          <Setter Property="Visibility" Value="{Binding DataContext.Showable, Converter={StaticResource BooleanToVisibilityConverter}}" />
+          <Setter Property="Header" Value="{Binding Header}" />
+          <Setter Property="Visibility" Value="{Binding Showable, Converter={StaticResource BooleanToVisibilityConverter}}" />
         </Style>
-      </TabControl.Resources>
+      </TabControl.ItemContainerStyle>
 
       <!-- 基本 -->
       <TabItem DataContext="{Binding SingleItem.GeneralDetail, ElementName=root}">
@@ -134,7 +134,7 @@
       </TabItem>
 
       <!-- テキスト -->
-      <TabControl DataContext="{Binding SingleItem.TextDetail, ElementName=root}">
+      <TabItem DataContext="{Binding SingleItem.TextDetail, ElementName=root}">
         <ScrollViewer>
           <Grid>
             <Grid.RowDefinitions>
@@ -155,16 +155,16 @@
                 Grid.Row="2"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
-                ItemsSource="{Binding Matches}"
+                ItemsSource="{Binding Matches, Mode=TwoWay}"
                 UserSelectedCommand="{Binding SingleItem.OpenTextFileCommand, ElementName=root}"
                 MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
               />
           </Grid>
         </ScrollViewer>
-      </TabControl>
+      </TabItem>
 
       <!-- Office-->
-      <TabControl DataContext="{Binding SingleItem.MicrosoftOfficeDetail, ElementName=root}">
+      <TabItem DataContext="{Binding SingleItem.MicrosoftOfficeDetail, ElementName=root}">
         <ScrollViewer>
           <Grid>
             <Grid.RowDefinitions>
@@ -212,7 +212,7 @@
                   <Label Grid.Row="0">要素:</Label>
                   <app_main_view_control:TextSearchMatchControl
                       Grid.Row="1"
-                      ItemsSource="{Binding Elements}"
+                      ItemsSource="{Binding Elements, Mode=TwoWay}"
                       UserSelectedCommand="{Binding SingleItem.OpenMsOfficeWordFileCommand, ElementName=root}"
                       MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
                     />
@@ -243,31 +243,31 @@
           </Grid>
 
         </ScrollViewer>
-      </TabControl>
+      </TabItem>
 
       <!-- PDF -->
-      <TabControl DataContext="{Binding SingleItem.PdfDetail, ElementName=root}">
+      <TabItem DataContext="{Binding SingleItem.PdfDetail, ElementName=root}">
         <ScrollViewer>
           <app_main_view_control:TextSearchMatchControl
               HiddenTopLineOnly="False"
-              ItemsSource="{Binding Matches}"
+              ItemsSource="{Binding Matches, Mode=TwoWay}"
               UserSelectedCommand="{Binding SingleItem.OpenPdfFileCommand, ElementName=root}"
               MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
             />
         </ScrollViewer>
-      </TabControl>
+      </TabItem>
 
       <!-- XML/HTML-->
-      <TabControl DataContext="{Binding SingleItem.XmlHtmlDetail, ElementName=root}">
+      <TabItem DataContext="{Binding SingleItem.XmlHtmlDetail, ElementName=root}">
         <ScrollViewer>
           <app_main_view_control:TextSearchMatchControl
               HiddenTopLineOnly="False"
-              ItemsSource="{Binding Matches}"
+              ItemsSource="{Binding Matches, Mode=TwoWay}"
               UserSelectedCommand="{Binding SingleItem.OpenXmlHtmlFileCommand, ElementName=root}"
               MaxHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
             />
         </ScrollViewer>
-      </TabControl>
+      </TabItem>
     </TabControl>
 
   </Grid>

@@ -200,6 +200,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 //nameof(ContentXmlHtml),
                 //nameof(ContentXmlHtmlMatches),
 
+                nameof(TextDetail),
+
                 nameof(OpenTextFileCommand),
                 nameof(OpenXmlHtmlFileCommand),
                 nameof(OpenMsOfficeExcelFileCommand),
