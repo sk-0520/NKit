@@ -35,14 +35,12 @@
     <TabControl TabStripPlacement="Left" SelectedIndex="{Binding SingleItem.SelectedDetailIndex, ElementName=root}" >
       <TabControl.ItemContainerStyle>
         <Style TargetType="TabItem">
-          <Setter Property="Header" Value="{Binding Header}" />
           <Setter Property="Visibility" Value="{Binding Showable, Converter={StaticResource BooleanToVisibilityConverter}}" />
           <Setter Property="IsEnabled" Value="{Binding IsEnabled}" />
         </Style>
       </TabControl.ItemContainerStyle>
 
-      <!-- 基本 -->
-      <TabItem DataContext="{Binding SingleItem.GeneralDetail, ElementName=root}">
+      <TabItem Header="基本" DataContext="{Binding SingleItem.GeneralDetail, ElementName=root}">
         <ScrollViewer>
           <StackPanel>
             <Grid>
@@ -129,13 +127,11 @@
         </ScrollViewer>
       </TabItem>
 
-      <!-- 簡易表示 -->
-      <TabItem DataContext="{Binding SingleItem.BrowserDetail, ElementName=root}">
+      <TabItem Header="簡易表示" DataContext="{Binding SingleItem.BrowserDetail, ElementName=root}">
         <app_browser:BrowserControl Browser="{Binding Browser, Mode=TwoWay}" />
       </TabItem>
 
-      <!-- テキスト -->
-      <TabItem DataContext="{Binding SingleItem.TextDetail, ElementName=root}">
+      <TabItem Header="テキスト" DataContext="{Binding SingleItem.TextDetail, ElementName=root}">
         <ScrollViewer>
           <Grid>
             <Grid.RowDefinitions>
@@ -164,8 +160,7 @@
         </ScrollViewer>
       </TabItem>
 
-      <!-- Office-->
-      <TabItem DataContext="{Binding SingleItem.MicrosoftOfficeDetail, ElementName=root}">
+      <TabItem Header="MS Office" DataContext="{Binding SingleItem.MicrosoftOfficeDetail, ElementName=root}">
         <ScrollViewer>
           <Grid>
             <Grid.RowDefinitions>
@@ -246,8 +241,7 @@
         </ScrollViewer>
       </TabItem>
 
-      <!-- PDF -->
-      <TabItem DataContext="{Binding SingleItem.PdfDetail, ElementName=root}">
+      <TabItem Header="PDF" DataContext="{Binding SingleItem.PdfDetail, ElementName=root}">
         <ScrollViewer>
           <app_main_view_control:TextSearchMatchControl
               HiddenTopLineOnly="False"
@@ -258,8 +252,7 @@
         </ScrollViewer>
       </TabItem>
 
-      <!-- XML/HTML-->
-      <TabItem DataContext="{Binding SingleItem.XmlHtmlDetail, ElementName=root}">
+      <TabItem Header="XML/HTML" DataContext="{Binding SingleItem.XmlHtmlDetail, ElementName=root}">
         <ScrollViewer>
           <app_main_view_control:TextSearchMatchControl
               HiddenTopLineOnly="False"

@@ -24,8 +24,6 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         #region property
 
-        public abstract string Header { get; }
-
         public abstract bool Showable { get; }
 
         public abstract bool IsEnabled { get; }

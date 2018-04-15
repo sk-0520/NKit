@@ -26,8 +26,6 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         #region FindItemDetailViewModelBase
 
-        public override string Header => Properties.Resources.String_ViewModel_Finder_FindItemDetail_MicrosoftOffice;
-
         public override bool Showable => Model.FileContentSearchResult.MicrosoftOffice.IsMatched;
 
         public override bool IsEnabled => true;
@@ -43,7 +41,6 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         #region FindItemDetailViewModelBase
 
-        public sealed override string Header => throw new NotSupportedException();
         public sealed override bool Showable => throw new NotSupportedException();
         public sealed override bool IsEnabled => throw new NotSupportedException();
 

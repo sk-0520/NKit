@@ -51,7 +51,6 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         #region FindItemDetailViewModelBase
 
-        public override string Header => Properties.Resources.String_ViewModel_Finder_FindItemDetail_XmlHtml;
         public override bool Showable => Model.FileContentSearchResult.XmlHtml.IsMatched;
         public override bool IsEnabled => true;
 

@@ -39,8 +39,6 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         #region FindItemDetailViewModelBase
 
-        public override string Header => Properties.Resources.String_ViewModel_Finder_FindItemDetail_General;
-
         public override bool Showable => true;
 
         public override bool IsEnabled => true;
