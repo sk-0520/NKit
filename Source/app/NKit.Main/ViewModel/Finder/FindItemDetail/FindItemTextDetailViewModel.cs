@@ -16,7 +16,8 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder.FindItemDetail
 
         #region property
 
-        public Encoding Encoding => Model.FileContentSearchResult.Text.EncodingCheck.Encoding;
+        //TODO: 暫定的な null チェック。正直不要
+        public Encoding Encoding => Model.FileContentSearchResult.Text.EncodingCheck?.Encoding;
 
         public IReadOnlyList<TextSearchMatch> Matches
         {
