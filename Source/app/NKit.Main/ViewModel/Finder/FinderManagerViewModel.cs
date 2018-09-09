@@ -59,30 +59,30 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         #region command
 
-        public ICommand AddNewGroupCommand => new DelegateCommand(() => {
+        public ICommand AddNewGroupCommand => GetOrCreateCommand(() => new DelegateCommand(() => {
             // TODO: ObservableManager による管理
             var model = Model.AddNewGroup();
             var viewModel = new FindGroupViewModel(model);
 
             GroupViewModels.Add(viewModel);
             SelectedGroupItem = viewModel;
-        });
+        }));
 
-        public ICommand RecallHistoryCommand => new DelegateCommand<IReadOnlyFindGroupSetting>(setting => {
+        public ICommand RecallHistoryCommand => GetOrCreateCommand(() => new DelegateCommand<IReadOnlyFindGroupSetting>(setting => {
             var model = Model.RecallHistory(setting);
             var viewModel = new FindGroupViewModel(model);
 
             GroupViewModels.Add(viewModel);
             SelectedGroupItem = viewModel;
             IsOpenHistory = false;
-        });
+        }));
 
-        public ICommand ClearHistoryCommand => new DelegateCommand(() => {
+        public ICommand ClearHistoryCommand => GetOrCreateCommand(() => new DelegateCommand(() => {
             Model.ClearHistory();
             IsOpenHistory = false;
-        });
+        }));
 
-        public ICommand RemoveGroupCommand => new DelegateCommand<FindGroupViewModel>(vm => {
+        public ICommand RemoveGroupCommand => GetOrCreateCommand(() => new DelegateCommand<FindGroupViewModel>(vm => {
             if(SelectedGroupItem == vm) {
                 // くるしい, 近しい子を選んであげるべき
                 SelectedGroupItem = GroupViewModels.Where(g => g != vm).FirstOrDefault();
@@ -92,7 +92,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
             GroupViewModels.RemoveAt(index);
             vm.Dispose();
             Model.RemoveGroupAt(index);
-        });
+        }));
 
 
         #endregion

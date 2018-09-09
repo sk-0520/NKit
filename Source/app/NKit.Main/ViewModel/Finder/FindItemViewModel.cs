@@ -98,26 +98,26 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         #region command
 
-        public ICommand CopyFileSizeCommand => new DelegateCommand(() => Model.CopyFileSize());
+        public ICommand CopyFileSizeCommand => GetOrCreateCommand(() => new DelegateCommand(() => Model.CopyFileSize()));
 
-        public ICommand OpenFileCommand => new DelegateCommand(() => Model.OpenFile());
-        public ICommand BrowseFileCommand => new DelegateCommand(() => Model.BrowseFile());
-        public ICommand OpenDirectoryCommand => new DelegateCommand(() => Model.OpenDirectory());
-        public ICommand ShowPropertyCommand => new DelegateCommand(() => Model.ShowProperty());
+        public ICommand OpenFileCommand => GetOrCreateCommand(() => new DelegateCommand(() => Model.OpenFile()));
+        public ICommand BrowseFileCommand => GetOrCreateCommand(() => new DelegateCommand(() => Model.BrowseFile()));
+        public ICommand OpenDirectoryCommand => GetOrCreateCommand(() => new DelegateCommand(() => Model.OpenDirectory()));
+        public ICommand ShowPropertyCommand => GetOrCreateCommand(() => new DelegateCommand(() => Model.ShowProperty()));
 
-        public ICommand CopyFileCommand => new DelegateCommand(() => Model.CopyFile());
-        public ICommand CopyNameWithExtensionCommand => new DelegateCommand(() => Model.CopyNameWithExtension());
-        public ICommand CopyNameWithoutExtensionCommand => new DelegateCommand(() => Model.CopyNameWithoutExtension());
-        public ICommand CopyDirectoryCommand => new DelegateCommand(() => Model.CopyDirectory());
+        public ICommand CopyFileCommand => GetOrCreateCommand(() => new DelegateCommand(() => Model.CopyFile()));
+        public ICommand CopyNameWithExtensionCommand => GetOrCreateCommand(() => new DelegateCommand(() => Model.CopyNameWithExtension()));
+        public ICommand CopyNameWithoutExtensionCommand => GetOrCreateCommand(() => new DelegateCommand(() => Model.CopyNameWithoutExtension()));
+        public ICommand CopyDirectoryCommand => GetOrCreateCommand(() => new DelegateCommand(() => Model.CopyDirectory()));
 
         public ICommand OpenTextFileCommand
         {
             get
             {
-                return new DelegateCommand<TextSearchMatch>(match => {
+                return GetOrCreateCommand(() => new DelegateCommand<TextSearchMatch>(match => {
                     var parameter = CreateCommonAssociationOpenParameter(match);
                     Model.OpenAssociationFile(AssociationFileKind.Text, parameter);
-                });
+                }));
             }
             set { /* TwoWay ダミー */}
         }
@@ -125,11 +125,11 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         {
             get
             {
-                return new DelegateCommand<TextSearchMatch>(match => {
+                return GetOrCreateCommand(() => new DelegateCommand<TextSearchMatch>(match => {
                     var parameter = CreateCommonAssociationOpenParameter(match);
                     parameter.SpreadSeet = (AssociationSpreadSeetParameter)match.Tag;
                     Model.OpenAssociationFile(AssociationFileKind.MicrosoftOfficeExcel, parameter);
-                });
+                }));
             }
             //set { /* TwoWay ダミー */}
         }
@@ -137,11 +137,11 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         {
             get
             {
-                return new DelegateCommand<TextSearchMatch>(match => {
+                return GetOrCreateCommand(() => new DelegateCommand<TextSearchMatch>(match => {
                     var parameter = CreateCommonAssociationOpenParameter(match);
                     parameter.Document = (AssociationDocumentParameter)match.Tag;
                     Model.OpenAssociationFile(AssociationFileKind.MicrosoftOfficeWord, parameter);
-                });
+                }));
             }
             set { /* TwoWay ダミー */}
         }
@@ -150,11 +150,11 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         {
             get
             {
-                return new DelegateCommand<TextSearchMatch>(match => {
+                return GetOrCreateCommand(() => new DelegateCommand<TextSearchMatch>(match => {
                     var parameter = CreateCommonAssociationOpenParameter(match);
                     parameter.Document = (AssociationDocumentParameter)match.Tag;
                     Model.OpenAssociationFile(AssociationFileKind.Pdf, parameter);
-                });
+                }));
             }
             set { /* TwoWay ダミー */}
         }
@@ -162,10 +162,10 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         {
             get
             {
-                return new DelegateCommand<TextSearchMatch>(match => {
+                return GetOrCreateCommand(() => new DelegateCommand<TextSearchMatch>(match => {
                     var parameter = CreateCommonAssociationOpenParameter(match);
                     Model.OpenAssociationFile(AssociationFileKind.XmlHtml, parameter);
-                });
+                }));
             }
             set { /* TwoWay ダミー */}
         }

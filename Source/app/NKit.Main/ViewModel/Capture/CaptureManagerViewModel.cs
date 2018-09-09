@@ -101,15 +101,15 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
 
         #region command
 
-        public ICommand AddNewGroupCommand => new DelegateCommand(() => {
+        public ICommand AddNewGroupCommand => GetOrCreateCommand(() => new DelegateCommand(() => {
             var model = Model.AddNewGroup();
             var viewModel = new CaptureGroupViewModel(model);
 
             GroupViewModels.Add(viewModel);
             SelectedGroupItem = viewModel;
-        });
+        }));
 
-        public DelegateCommand<CaptureGroupViewModel> RemoveGroupCommand => new DelegateCommand<CaptureGroupViewModel>(
+        public DelegateCommand<CaptureGroupViewModel> RemoveGroupCommand => GetOrCreateCommand(() => new DelegateCommand<CaptureGroupViewModel>(
             vm => {
                 if(SelectedGroupItem == vm) {
                     // くるしい, 近しい子を選んであげるべき
@@ -122,20 +122,20 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
                 Model.RemoveGroupAt(index);
             },
             vm => !(vm.RunState == Utility.Define.RunState.Preparate || vm.RunState == Utility.Define.RunState.Running)
-        );
+        ));
 
-        public ICommand SimpleCaptureControlCommand => new DelegateCommand(
+        public ICommand SimpleCaptureControlCommand => GetOrCreateCommand(() => new DelegateCommand(
             () => { Model.SimpleCapture(Setting.Define.CaptureTarget.Control); },
             () => !NowCapturing
-        );
-        public ICommand SimpleCaptureWindowCommand => new DelegateCommand(
+        ));
+        public ICommand SimpleCaptureWindowCommand => GetOrCreateCommand(() => new DelegateCommand(
             () => { Model.SimpleCapture(Setting.Define.CaptureTarget.Window); },
             () => !NowCapturing
-        );
-        public ICommand SimpleCaptureScrollCommand => new DelegateCommand(
+        ));
+        public ICommand SimpleCaptureScrollCommand => GetOrCreateCommand(() => new DelegateCommand(
             () => { Model.SimpleCapture(Setting.Define.CaptureTarget.Scroll); },
             () => !NowCapturing
-        );
+        ));
 
         #endregion
 

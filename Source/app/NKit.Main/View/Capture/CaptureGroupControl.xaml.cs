@@ -31,7 +31,17 @@ namespace ContentTypeTextNet.NKit.Main.View.Capture
 
         #region command
 
-        public ICommand ScrollCommand => new DelegateCommand<InteractionRequestedEventArgs>(p => Scroll((ScrollNotification<CaptureImageViewModel>)p.Context));
+        ICommand _ScrollCommand;
+        public ICommand ScrollCommand
+        {
+            get
+            {
+                if(this._ScrollCommand == null) {
+                    this._ScrollCommand = new DelegateCommand<InteractionRequestedEventArgs>(p => Scroll((ScrollNotification<CaptureImageViewModel>)p.Context));
+                }
+                return this._ScrollCommand;
+            }
+        }
 
         #endregion
 

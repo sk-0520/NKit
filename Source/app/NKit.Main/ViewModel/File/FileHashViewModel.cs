@@ -47,7 +47,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.File
 
         #region command
 
-        public ICommand CopyHashCommand => new DelegateCommand<byte[]>(hash => Model.CopyHash(hash));
+        public ICommand CopyHashCommand => GetOrCreateCommand(() => new DelegateCommand<byte[]>(hash => Model.CopyHash(hash)));
 
         #endregion
 

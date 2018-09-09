@@ -508,24 +508,24 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
 
         #region command
 
-        public ICommand UpRootDirectoryPathCommand => new DelegateCommand(() => {
+        public ICommand UpRootDirectoryPathCommand => GetOrCreateCommand(() => new DelegateCommand(() => {
             if(Model.UpRootDirectoryPath()) {
                 RaisePropertyChanged(nameof(RootDirectoryPath));
             }
-        });
+        }));
 
-        public ICommand SelectRootDirectoryPathCommand => new DelegateCommand(() => {
+        public ICommand SelectRootDirectoryPathCommand => GetOrCreateCommand(() => new DelegateCommand(() => {
             // TODO: メッセージにした方がいいかも
             if(Model.SelectRootDirectoryPathFromDialog()) {
                 RaisePropertyChanged(nameof(RootDirectoryPath));
             }
-        });
+        }));
 
-        public ICommand SetDefaultSettingCommand => new DelegateCommand(() => {
+        public ICommand SetDefaultSettingCommand => GetOrCreateCommand(() => new DelegateCommand(() => {
             Model.SetDefaultSetting();
-        });
+        }));
 
-        public ICommand OpenSelectedFileCommand => new DelegateCommand<MouseButtonEventArgs>(
+        public ICommand OpenSelectedFileCommand => GetOrCreateCommand(() => new DelegateCommand<MouseButtonEventArgs>(
             e => {
                 if(e.LeftButton == MouseButtonState.Pressed) {
                     if(UIUtility.IsEnabledEventArea((DependencyObject)e.OriginalSource, new[] { typeof(ListViewItem) })) {
@@ -534,19 +534,19 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 }
             },
             e => true//SelectedItem != null
-        );
+        ));
 
         //TODO: シェルメニュー表示
-        //public ICommand OpenSelectedFilesContextMenuCommand => new DelegateCommand(
+        //public ICommand OpenSelectedFilesContextMenuCommand => GetOrCreateCommand(() => new DelegateCommand(
         //    () => {
         //        if(MultiSelectedItem.IsEnabled) {
         //        } else {
         //        }
         //    },
         //    () => SelectedItem != null || MultiSelectedItem.IsEnabled
-        //);
+        //));
 
-        public ICommand FindItemsSelectionChangedCommand => new DelegateCommand<SelectionChangedEventArgs>(
+        public ICommand FindItemsSelectionChangedCommand => GetOrCreateCommand(() => new DelegateCommand<SelectionChangedEventArgs>(
             e => {
                 foreach(var item in e.RemovedItems.OfType<ISelectable>()) {
                     item.IsSelected = false;
@@ -555,9 +555,9 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                     item.IsSelected = true;
                 }
             }
-        );
+        ));
 
-        public DelegateCommand OutputListFileCommand => new DelegateCommand(
+        public DelegateCommand OutputListFileCommand => GetOrCreateCommand(() => new DelegateCommand(
             () => {
                 if(!CanRun || !GetOutputItemsIndex().Any()) {
                     return;
@@ -581,7 +581,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
                 }
             }//,
             //NOTE うごかねぇぇぇ, () => CanRun //&& GetOutputItemsIndex().Any()
-        );
+        ));
 
         #endregion
 
