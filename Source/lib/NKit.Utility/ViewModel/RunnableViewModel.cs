@@ -46,7 +46,7 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
         public RunnableViewModelBase(TModel model)
             : base(model)
         {
-            RunCommand = GetInvokeUI(() =>
+            RunCommand = GetInvokeUI(() => GetOrCreateCommand(() =>
                 new DelegateCommand(
                     () => {
                         if(CanAsync) {
@@ -57,14 +57,14 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
                     },
                     () => CanRun
                 )
-            );
+            ));
 
-            CancelRunCommand = GetInvokeUI(() =>
-                new DelegateCommand(
+            CancelRunCommand = GetInvokeUI(() => GetOrCreateCommand(() =>
+                 new DelegateCommand(
                     () => CancelCore(),
                     () => CanCancel
                 )
-            );
+            ));
         }
 
         #region IReadOnlyRunnableStatus

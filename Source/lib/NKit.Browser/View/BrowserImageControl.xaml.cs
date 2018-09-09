@@ -197,17 +197,38 @@ namespace ContentTypeTextNet.NKit.Browser.View
 
         #region command
 
-        public ICommand ResetCommand => new DelegateCommand(() => {
-            Scale = 1;
-        });
+        ICommand _ResetCommand;
+        public ICommand ResetCommand
+        {
+            get
+            {
+                if(this._ResetCommand == null) {
+                    this._ResetCommand = new DelegateCommand(() => {
+                        Scale = 1;
+                    });
+                }
 
-        public DelegateCommand PlayAnimationCommand => new DelegateCommand(
-            () => {
-                this.player.Stop();
-                this.player.Position = TimeSpan.FromMilliseconds(1);
-                this.player.Play();
+                return this._ResetCommand;
             }
-        );
+        }
+
+        DelegateCommand _PlayAnimationCommand;
+        public DelegateCommand PlayAnimationCommand
+        {
+            get
+            {
+                if(this._PlayAnimationCommand==null) {
+                    this._PlayAnimationCommand = new DelegateCommand(
+                        () => {
+                            this.player.Stop();
+                            this.player.Position = TimeSpan.FromMilliseconds(1);
+                            this.player.Play();
+                        }
+                    );
+                }
+                return this._PlayAnimationCommand;
+            }
+        }
 
         #endregion
 

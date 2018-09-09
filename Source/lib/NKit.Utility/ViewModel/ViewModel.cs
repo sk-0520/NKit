@@ -26,6 +26,13 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
             Dispose(false);
         }
 
+        #region property
+
+        IDictionary<string, ICommand> CommandCache { get; } = new Dictionary<string, ICommand>();
+        protected IEnumerable<ICommand> Commands => CommandCache.Values;
+
+        #endregion
+
         #region function
 
         protected virtual bool SetPropertyValue<TValue>(object obj, TValue value, [CallerMemberName] string targetMemberName = "", [CallerMemberName] string notifyPropertyName = "")
@@ -67,7 +74,27 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
             }
         }
 
+        protected TCommand GetOrCreateCommand<TCommand>(Func<TCommand> creator, [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = 0)
+            where TCommand: ICommand
+        {
+            var sb = new StringBuilder();
+            sb.Append(GetType().FullName);
+            sb.Append(':');
+            sb.Append(callerMemberName);
+            sb.Append(':');
+            sb.Append(callerLineNumber);
 
+            var key = sb.ToString();
+
+            if(CommandCache.TryGetValue(key, out var cahceCommand)) {
+                return (TCommand)cahceCommand;
+            }
+
+            var command = creator();
+            CommandCache.Add(key, command);
+
+            return command;
+        }
 
         #endregion
 

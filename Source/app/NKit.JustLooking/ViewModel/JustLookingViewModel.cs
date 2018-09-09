@@ -41,12 +41,12 @@ namespace ContentTypeTextNet.NKit.JustLooking.ViewModel
 
         #region command
 
-        public ICommand OpenDirectoryCommand => new DelegateCommand(() => {
+        public ICommand OpenDirectoryCommand => GetOrCreateCommand(() => new DelegateCommand(() => {
             Model.OpenDirectory();
-        });
-        public ICommand OpenFileCommand => new DelegateCommand(() => {
+        }));
+        public ICommand OpenFileCommand => GetOrCreateCommand(() => new DelegateCommand(() => {
             Model.OpenFile();
-        });
+        }));
 
         #endregion
 

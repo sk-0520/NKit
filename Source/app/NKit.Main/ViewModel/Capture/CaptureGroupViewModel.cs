@@ -138,12 +138,12 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
 
         #region command
 
-        public ICommand RemoveImageCommand => new DelegateCommand<CaptureImageViewModel>(
+        public ICommand RemoveImageCommand => GetOrCreateCommand(() => new DelegateCommand<CaptureImageViewModel>(
             vm => {
                 var index = ImageItemCollectionManager.ViewModels.IndexOf(vm);
                 Model.RemoveImageAt(index);
             }
-        );
+        ));
 
         #endregion
 

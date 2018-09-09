@@ -60,17 +60,17 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
 
         #region command
 
-        public ICommand CopyCommand => new DelegateCommand(() => {
+        public ICommand CopyCommand => GetOrCreateCommand(() => new DelegateCommand(() => {
             Model.CopyImage();
-        });
+        }));
 
-        public ICommand OpenCommand => new DelegateCommand<MouseButtonEventArgs>(e => {
+        public ICommand OpenCommand => GetOrCreateCommand(() => new DelegateCommand<MouseButtonEventArgs>(e => {
             if(e.LeftButton == MouseButtonState.Pressed) {
                 if(UIUtility.IsEnabledEventArea((DependencyObject)e.OriginalSource, new[] { typeof(ListBoxItem) }, new Type[] { typeof(TextBox) })) {
                     Model.OpenImage();
                 }
             }
-        });
+        }));
 
         #endregion
 

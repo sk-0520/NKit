@@ -32,11 +32,12 @@ if not %ERROR_ANY% == 0 echo "build error Any CPU: %ERROR_ANY%" >> "%ERROR%"
 
 for /F "usebackq" %%s in (`cscript "%GV%" "%VER_TARGET%"`) do set EXEVER=%%s
 
+del /Q "%OUTPUT_ANY%\@NKit.*.user.config
+
 if "%2" == "FULL" goto REMOVED
 
 echo remove
 echo remove *.pdb, *.xml, @NKit.*.user.config
-del /Q "%OUTPUT_ANY%\@NKit.*.user.config
 del /S /Q "%OUTPUT_ANY%\*.pdb
 del /S /Q "%OUTPUT_ANY%\lib\*.xml"
 

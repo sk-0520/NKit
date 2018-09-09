@@ -30,13 +30,24 @@ namespace ContentTypeTextNet.NKit.Main.View.Finder
 
         #region command
 
-        public ICommand SaveFileDialogCommand => new DelegateCommand<InteractionRequestedEventArgs>(
-            o => {
-                var confirmation = (Confirmation)o.Context;
-                var dialog = (SaveFileDialog)confirmation.Content;
-                confirmation.Confirmed =  dialog.ShowDialog().GetValueOrDefault();
+        ICommand _SaveFileDialogCommand;
+        public ICommand SaveFileDialogCommand
+        {
+            get
+            {
+                if(this._SaveFileDialogCommand == null) {
+                    this._SaveFileDialogCommand = new DelegateCommand<InteractionRequestedEventArgs>(
+                        o => {
+                            var confirmation = (Confirmation)o.Context;
+                            var dialog = (SaveFileDialog)confirmation.Content;
+                            confirmation.Confirmed = dialog.ShowDialog().GetValueOrDefault();
+                        }
+                    );
+                }
+
+                return this._SaveFileDialogCommand;
             }
-        );
+        }
 
         #endregion
     }
