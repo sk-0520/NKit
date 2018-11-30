@@ -40,7 +40,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
         public CaptureGroupViewModel(CaptureGroupModel model)
             : base(model)
         {
-            ImageItemCollectionManager = new ActionViewViewModelObservableCollectionManager<CaptureImageModel, CaptureImageViewModel>(Model.Images);
+            ImageItemCollectionManager = new ActionModeliewModelObservableCollectionManager<CaptureImageModel, CaptureImageViewModel>(Model.Images);
             ImageItems = GetInvokeUI(() => CollectionViewSource.GetDefaultView(ImageItemCollectionManager.ViewModels));
             ImageItems.Filter = CaptureItemFilter;
 
@@ -109,7 +109,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Capture
             set { SetProperty(ref this._selectedImageItem, value); }
         }
 
-        ActionViewViewModelObservableCollectionManager<CaptureImageModel, CaptureImageViewModel> ImageItemCollectionManager { get; }
+        ActionModeliewModelObservableCollectionManager<CaptureImageModel, CaptureImageViewModel> ImageItemCollectionManager { get; }
         public ICollectionView ImageItems { get; set; }
 
         public ObservableCollection<DateTime> FilterStartUtcTimestampItems { get; } = new ObservableCollection<DateTime>();

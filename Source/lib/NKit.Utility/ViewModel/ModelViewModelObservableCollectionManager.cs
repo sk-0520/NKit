@@ -22,11 +22,11 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
     /// <typeparam name="TViewModel"></typeparam>
-    public abstract class ViewViewModelObservableCollectionManagerBase<TModel, TViewModel> : ObservableCollectionManagerBase<TModel>
+    public abstract class ModelViewModelObservableCollectionManagerBase<TModel, TViewModel> : ObservableCollectionManagerBase<TModel>
         where TModel : ModelBase
         where TViewModel: ViewModelBase
     {
-        public ViewViewModelObservableCollectionManagerBase(ObservableCollection<TModel> collection)
+        public ModelViewModelObservableCollectionManagerBase(ObservableCollection<TModel> collection)
             : base(collection)
         {
             ViewModels = new ObservableCollection<TViewModel>(Collection.Select(m => ToViewModelCore(m)));
@@ -126,7 +126,7 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
     }
 
 
-    public class ActionViewViewModelObservableCollectionManager<TModel, TViewModel> : ViewViewModelObservableCollectionManagerBase<TModel, TViewModel>
+    public class ActionModeliewModelObservableCollectionManager<TModel, TViewModel> : ModelViewModelObservableCollectionManagerBase<TModel, TViewModel>
         where TModel : ModelBase
         where TViewModel : ViewModelBase
     {
@@ -141,7 +141,7 @@ namespace ContentTypeTextNet.NKit.Utility.ViewModel
 
         #endregion
 
-        public ActionViewViewModelObservableCollectionManager(ObservableCollection<TModel> collection)
+        public ActionModeliewModelObservableCollectionManager(ObservableCollection<TModel> collection)
             : base(collection)
         { }
 

@@ -60,7 +60,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         public FindGroupViewModel(FindGroupModel model)
             : base(model)
         {
-            FindItemCollectionManager = new ActionViewViewModelObservableCollectionManager<FindItemModel, FindItemViewModel>(Model.Items);
+            FindItemCollectionManager = new ActionModeliewModelObservableCollectionManager<FindItemModel, FindItemViewModel>(Model.Items);
             Items = GetInvokeUI(() => CollectionViewSource.GetDefaultView(FindItemCollectionManager.ViewModels));
 
             Items.Filter = FilterFileList;
@@ -350,7 +350,7 @@ namespace ContentTypeTextNet.NKit.Main.ViewModel.Finder
         //    set { SetProperty(ref this._expandedFileContent, value); }
         //}
 
-        ActionViewViewModelObservableCollectionManager<FindItemModel, FindItemViewModel> FindItemCollectionManager { get; }
+        ActionModeliewModelObservableCollectionManager<FindItemModel, FindItemViewModel> FindItemCollectionManager { get; }
         public long EnabledItemsCount => FindItemCollectionManager.ViewModels.Count(i => i.MatchedName && (!Model.CurrentCache.Setting.FindFileContent || (Model.CurrentCache.Setting.FindFileContent && i.MatchedContent)));
         public long TotalItemsCount => FindItemCollectionManager.ViewModels.Count;
 
